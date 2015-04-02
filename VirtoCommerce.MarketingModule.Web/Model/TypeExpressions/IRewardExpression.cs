@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using VirtoCommerce.Domain.Marketing.Model;
 
-namespace VirtoCommerce.MarketingModule.Web.Model.TypedExpression
+namespace VirtoCommerce.MarketingModule.Web.Model.TypeExpressions
 {
 	public interface IRewardExpression
 	{

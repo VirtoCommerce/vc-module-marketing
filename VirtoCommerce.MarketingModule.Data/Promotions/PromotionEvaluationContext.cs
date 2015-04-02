@@ -11,9 +11,9 @@ using VirtoCommerce.Foundation.Money;
 namespace VirtoCommerce.MarketingModule.Data.Services
 {
 
-	public class DefaultPromotionEvaluationContext : IPromotionEvaluationContext
+	public class PromotionEvaluationContext : IPromotionEvaluationContext
 	{
-		public DefaultPromotionEvaluationContext()
+		public PromotionEvaluationContext()
 		{
 			IsEveryone = true;
 		}
