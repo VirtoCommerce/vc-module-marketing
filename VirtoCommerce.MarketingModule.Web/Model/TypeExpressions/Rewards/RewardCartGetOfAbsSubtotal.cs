@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using VirtoCommerce.Domain.Common.Expressions;
 using VirtoCommerce.Domain.Marketing.Model;
 
-namespace VirtoCommerce.MarketingModule.Web.Model.TypedExpression.Actions
+namespace VirtoCommerce.MarketingModule.Web.Model.TypeExpressions.Actions
 {
-	public class RewardCartGetOfAbsSubtotal : CompositeElement, IRewardExpression
+	//Get [] $ off cart subtotal
+	public class RewardCartGetOfAbsSubtotal : DynamicExpressionBase, IRewardExpression
 	{
 		public decimal Amount { get; set; }
 
@@ -17,8 +17,8 @@ namespace VirtoCommerce.MarketingModule.Web.Model.TypedExpression.Actions
 		{
 			var retVal = new CartSubtotalReward()
 			{
-				IsValid = true,
-				Amount = Amount
+				Amount = Amount,
+				AmountType = RewardAmountType.Absolute
 			};
 			return new PromotionReward[] { retVal };
 		}
