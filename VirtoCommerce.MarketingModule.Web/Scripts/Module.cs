@@ -1,14 +1,15 @@
-﻿using Microsoft.Practices.Unity;
-using System.Linq;
+﻿using System.Linq;
+using Microsoft.Practices.Unity;
 using VirtoCommerce.Domain.Common;
 using VirtoCommerce.Domain.Marketing.Services;
-using VirtoCommerce.Foundation.Data.Infrastructure.Interceptors;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.MarketingModule.Data.Services;
-using VirtoCommerce.MarketingModule.Expressions.Promotion;
 using VirtoCommerce.MarketingModule.Expressions;
+using VirtoCommerce.MarketingModule.Expressions.Promotion;
 using VirtoCommerce.MarketingModule.Web.Model;
 using VirtoCommerce.Platform.Core.Modularity;
+using VirtoCommerce.Platform.Data.Infrastructure;
+using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
 
 namespace VirtoCommerce.MarketingModule.Web
 {
@@ -25,13 +26,17 @@ namespace VirtoCommerce.MarketingModule.Web
 
         public void SetupDatabase(SampleDataLevel sampleDataLevel)
         {
+			using (var context = new MarketingRepositoryImpl())
+			{
+				var initializer = new SetupDatabaseInitializer<MarketingRepositoryImpl, VirtoCommerce.MarketingModule.Data.Migrations.Configuration>();
+				initializer.InitializeDatabase(context);
+			}
         }
 
         public void Initialize()
         {
-            _container.RegisterType<IFoundationPromotionRepository>(new InjectionFactory(c => new PromotionRepositoryImpl("VirtoCommerce", new AuditChangeInterceptor())));
-            _container.RegisterType<IFoundationDynamicContentRepository>(new InjectionFactory(c => new DynamicContentRepositoryImpl("VirtoCommerce", new AuditChangeInterceptor())));
-
+			_container.RegisterType<IMarketingRepository>(new InjectionFactory(c => new MarketingRepositoryImpl("VirtoCommerce", new EntityPrimaryKeyGeneratorInterceptor(), new AuditableInterceptor())));
+          
             var promotionExtensionManager = new InMemoryExtensionManagerImpl();
             promotionExtensionManager.PromotionDynamicExpressionTree = GetDynamicExpression();
 
