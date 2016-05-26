@@ -6,7 +6,8 @@ using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.MarketingModule.Web.Converters;
 using VirtoCommerce.MarketingModule.Web.Security;
-using VirtoCommerce.Platform.Core.Security;
+using VirtoCommerce.Platform.Core.Serialization;
+using VirtoCommerce.Platform.Core.Web.Security;
 using coreModel = VirtoCommerce.Domain.Marketing.Model;
 using webModel = VirtoCommerce.MarketingModule.Web.Model;
 
@@ -19,12 +20,14 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         private readonly IMarketingExtensionManager _marketingExtensionManager;
         private readonly IPromotionService _promotionService;
         private readonly IMarketingPromoEvaluator _promoEvaluator;
+        private readonly IExpressionSerializer _expressionSerializer;
 
-        public MarketingModulePromotionController(IPromotionService promotionService, IMarketingExtensionManager promotionManager, IMarketingPromoEvaluator promoEvaluator)
+        public MarketingModulePromotionController(IPromotionService promotionService, IMarketingExtensionManager promotionManager, IMarketingPromoEvaluator promoEvaluator, IExpressionSerializer expressionSerializer)
         {
             _marketingExtensionManager = promotionManager;
             _promotionService = promotionService;
             _promoEvaluator = promoEvaluator;
+            _expressionSerializer = expressionSerializer;
         }
 
 
@@ -88,7 +91,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [CheckPermission(Permission = MarketingPredefinedPermissions.Create)]
         public IHttpActionResult CreatePromotion(webModel.Promotion promotion)
         {
-            var retVal = _promotionService.CreatePromotion(promotion.ToCoreModel());
+            var retVal = _promotionService.CreatePromotion(promotion.ToCoreModel(_expressionSerializer));
             return GetPromotionById(retVal.Id);
         }
 
@@ -103,7 +106,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [CheckPermission(Permission = MarketingPredefinedPermissions.Update)]
         public IHttpActionResult UpdatePromotions(webModel.Promotion promotion)
         {
-            _promotionService.UpdatePromotions(new coreModel.Promotion[] { promotion.ToCoreModel() });
+            _promotionService.UpdatePromotions(new[] { promotion.ToCoreModel(_expressionSerializer) });
             return StatusCode(HttpStatusCode.NoContent);
         }
 

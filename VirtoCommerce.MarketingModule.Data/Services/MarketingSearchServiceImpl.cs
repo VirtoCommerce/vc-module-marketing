@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Data.Entity;
 using VirtoCommerce.Domain.Marketing.Services;
+using VirtoCommerce.MarketingModule.Data.Converters;
 using VirtoCommerce.MarketingModule.Data.Repositories;
-using dataModel = VirtoCommerce.MarketingModule.Data.Model;
+using VirtoCommerce.Platform.Core.Serialization;
 using coreModel = VirtoCommerce.Domain.Marketing.Model;
-using Omu.ValueInjecter;
-using VirtoCommerce.CustomerModule.Data.Converters;
-using ExpressionSerialization;
 
 namespace VirtoCommerce.MarketingModule.Data.Services
 {
@@ -17,41 +14,41 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         private readonly Func<IMarketingRepository> _repositoryFactory;
         private readonly IMarketingExtensionManager _customPromotionManager;
         private readonly IDynamicContentService _dynamicContentService;
+        private readonly IExpressionSerializer _expressionSerializer;
 
-        public MarketingSearchServiceImpl(Func<IMarketingRepository> repositoryFactory, IMarketingExtensionManager customPromotionManager, IDynamicContentService dynamicContentService)
+        public MarketingSearchServiceImpl(Func<IMarketingRepository> repositoryFactory, IMarketingExtensionManager customPromotionManager, IDynamicContentService dynamicContentService, IExpressionSerializer expressionSerializer)
         {
             _repositoryFactory = repositoryFactory;
             _customPromotionManager = customPromotionManager;
             _dynamicContentService = dynamicContentService;
+            _expressionSerializer = expressionSerializer;
         }
-
 
         #region IMarketingSearchService Members
 
         public coreModel.MarketingSearchResult SearchResources(coreModel.MarketingSearchCriteria criteria)
         {
             var retVal = new coreModel.MarketingSearchResult();
-            var count = criteria.Count;
 
             if ((criteria.ResponseGroup & coreModel.SearchResponseGroup.WithPromotions) == coreModel.SearchResponseGroup.WithPromotions)
             {
                 SearchPromotions(criteria, retVal);
-                criteria.Count -= retVal.Promotions.Count();
+                criteria.Count -= retVal.Promotions.Count;
             }
             if ((criteria.ResponseGroup & coreModel.SearchResponseGroup.WithContentItems) == coreModel.SearchResponseGroup.WithContentItems)
             {
                 SearchContentItems(criteria, retVal);
-                criteria.Count -= retVal.ContentItems.Count();
+                criteria.Count -= retVal.ContentItems.Count;
             }
             if ((criteria.ResponseGroup & coreModel.SearchResponseGroup.WithContentPlaces) == coreModel.SearchResponseGroup.WithContentPlaces)
             {
                 SearchContentPlaces(criteria, retVal);
-                criteria.Count -= retVal.ContentPlaces.Count();
+                criteria.Count -= retVal.ContentPlaces.Count;
             }
             if ((criteria.ResponseGroup & coreModel.SearchResponseGroup.WithContentPublications) == coreModel.SearchResponseGroup.WithContentPublications)
             {
                 SearchContentPublications(criteria, retVal);
-                criteria.Count -= retVal.ContentPublications.Count();
+                criteria.Count -= retVal.ContentPublications.Count;
             }
             if ((criteria.ResponseGroup & coreModel.SearchResponseGroup.WithFolders) == coreModel.SearchResponseGroup.WithFolders)
             {
@@ -62,6 +59,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         }
 
         #endregion
+
         private void SearchFolders(coreModel.MarketingSearchCriteria criteria, coreModel.MarketingSearchResult result)
         {
             using (var repository = _repositoryFactory())
@@ -138,10 +136,9 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             }
 
         }
+
         private void SearchPromotions(coreModel.MarketingSearchCriteria criteria, coreModel.MarketingSearchResult result)
         {
-            var promotions = new List<coreModel.Promotion>();
-            var totalCount = 0;
             using (var repository = _repositoryFactory())
             {
                 var query = repository.Promotions;
@@ -150,21 +147,20 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                     query = query.Where(x => x.Name.Contains(criteria.Keyword) || x.Description.Contains(criteria.Keyword));
                 }
 
-                promotions = query.OrderBy(x => x.Id)
+                var promotions = query.OrderBy(x => x.Id)
                                               .Skip(criteria.Start)
                                               .Take(criteria.Count)
                                               .ToArray()
-                                              .Select(x => x.ToCoreModel())
+                                              .Select(x => x.ToCoreModel(_expressionSerializer))
                                               .ToList();
-                totalCount = query.Count();
+                var totalCount = query.Count();
+
+                promotions.AddRange(_customPromotionManager.Promotions.Skip(criteria.Start).Take(criteria.Count));
+                totalCount += _customPromotionManager.Promotions.Count();
+
+                result.Promotions = promotions;
+                result.TotalCount += totalCount;
             }
-
-
-            promotions.AddRange(_customPromotionManager.Promotions.Skip(criteria.Start).Take(criteria.Count));
-            totalCount += _customPromotionManager.Promotions.Count();
-
-            result.Promotions = promotions;
-            result.TotalCount += totalCount;
         }
     }
 }

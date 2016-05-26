@@ -1,6 +1,6 @@
 ﻿using System;
-using VirtoCommerce.CustomerModule.Data.Converters;
 using VirtoCommerce.Domain.Marketing.Services;
+using VirtoCommerce.MarketingModule.Data.Converters;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;

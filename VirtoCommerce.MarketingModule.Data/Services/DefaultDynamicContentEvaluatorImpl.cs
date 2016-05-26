@@ -1,43 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Data.Entity;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq;
+using Common.Logging;
+using VirtoCommerce.Domain.Common;
+using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Model.DynamicContent;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Repositories;
-using VirtoCommerce.Domain.Marketing.Model;
-using VirtoCommerce.Domain.Common;
-using VirtoCommerce.CoreModule.Data.Common;
-using Common.Logging;
+using VirtoCommerce.Platform.Core.Serialization;
 
 namespace VirtoCommerce.MarketingModule.Data.Services
 {
-	public class DefaultDynamicContentEvaluatorImpl : IMarketingDynamicContentEvaluator
-	{
-		private readonly Func<IMarketingRepository> _repositoryFactory;
-		private readonly IDynamicContentService _dynamicContentService;
+    public class DefaultDynamicContentEvaluatorImpl : IMarketingDynamicContentEvaluator
+    {
+        private readonly Func<IMarketingRepository> _repositoryFactory;
+        private readonly IDynamicContentService _dynamicContentService;
+        private readonly IExpressionSerializer _expressionSerializer;
         private readonly ILog _logger;
-        public DefaultDynamicContentEvaluatorImpl(Func<IMarketingRepository> repositoryFactory, IDynamicContentService dynamicContentService, ILog logger)
-		{
-			_repositoryFactory = repositoryFactory;
-			_dynamicContentService = dynamicContentService;
+
+        public DefaultDynamicContentEvaluatorImpl(Func<IMarketingRepository> repositoryFactory, IDynamicContentService dynamicContentService, IExpressionSerializer expressionSerializer, ILog logger)
+        {
+            _repositoryFactory = repositoryFactory;
+            _dynamicContentService = dynamicContentService;
+            _expressionSerializer = expressionSerializer;
             _logger = logger;
         }
-		#region IMarketingDynamicContentEvaluator Members
 
-		public DynamicContentItem[] EvaluateItems(IEvaluationContext context)
-		{
+        #region IMarketingDynamicContentEvaluator Members
+
+        public DynamicContentItem[] EvaluateItems(IEvaluationContext context)
+        {
             var dynamicContext = context as DynamicContentEvaluationContext;
-			if(context == null)
-			{
-				throw new ArgumentNullException("dynamicContext");
-			}
+            if (context == null)
+            {
+                throw new ArgumentException("The context must be a DynamicContentEvaluationContext.");
+            }
 
             var retVal = new List<DynamicContentItem>();
             using (var repository = _repositoryFactory())
-			{
+            {
                 var publishings = repository.PublishingGroups.Include(x => x.ContentItems)
                                                        .Where(x => x.IsActive)
                                                        .Where(x => x.StoreId == dynamicContext.StoreId)
@@ -51,15 +53,15 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                                                 .SelectMany(x => x.ContentItems)
                                                 .Select(x => x.DynamicContentItemId)
                                                 .ToList();
-                foreach (var publishing in publishings.Where(x=>x.ConditionExpression != null))
+                foreach (var publishing in publishings.Where(x => x.ConditionExpression != null))
                 {
                     try
                     {
                         //Next step need filter assignments contains dynamicexpression
-                        var condition = SerializationUtil.DeserializeExpression<Func<IEvaluationContext, bool>>(publishing.ConditionExpression);
+                        var condition = _expressionSerializer.DeserializeExpression<Func<IEvaluationContext, bool>>(publishing.ConditionExpression);
                         if (condition(context))
                         {
-                            contentItemIds.AddRange(publishing.ContentItems.Select(x=>x.DynamicContentItemId));
+                            contentItemIds.AddRange(publishing.ContentItems.Select(x => x.DynamicContentItemId));
                         }
                     }
                     catch (Exception ex)
@@ -68,17 +70,12 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                     }
                 }
 
-                foreach (var contentItemId in contentItemIds)
-				{
-					var contentItem = _dynamicContentService.GetContentItemById(contentItemId);
-					retVal.Add(contentItem);
-				}
-			
-			}
+                retVal.AddRange(contentItemIds.Select(contentItemId => _dynamicContentService.GetContentItemById(contentItemId)));
+            }
 
-			return retVal.ToArray();
-		}
+            return retVal.ToArray();
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

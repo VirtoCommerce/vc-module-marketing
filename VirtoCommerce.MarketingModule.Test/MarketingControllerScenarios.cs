@@ -1,20 +1,21 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Web.Http.Results;
 using CacheManager.Core;
 using VirtoCommerce.Domain.Common;
 using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Services;
-using VirtoCommerce.DynamicExpressionModule.Data.Promotion;
+using VirtoCommerce.DynamicExpressionsModule.Data.Promotion;
 using VirtoCommerce.MarketingModule.Data.Migrations;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.MarketingModule.Data.Services;
-using VirtoCommerce.MarketingModule.Test.CustomDynamicPromotionExpressions;
+using VirtoCommerce.MarketingModule.Test.CustomPromotionExpressions;
 using VirtoCommerce.MarketingModule.Web.Controllers.Api;
+using VirtoCommerce.Platform.Core.Serialization;
 using VirtoCommerce.Platform.Data.Infrastructure;
 using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
-using VirtoCommerce.Platform.Tests.Bases;
+using VirtoCommerce.Platform.Data.Serialization;
+using VirtoCommerce.Platform.Testing.Bases;
 using Xunit;
 using dataModel = VirtoCommerce.MarketingModule.Data.Model;
 using webModel = VirtoCommerce.MarketingModule.Web.Model;
@@ -27,7 +28,7 @@ namespace VirtoCommerce.MarketingModule.Test
         [Trait("Category", "CI")]
         public void Can_create_marketing_contentitem()
         {
-            var repository = this.GetRepository();
+            var repository = GetRepository();
             var contentItem = new dataModel.DynamicContentItem()
             {
                 Name = "ss",
@@ -109,12 +110,12 @@ namespace VirtoCommerce.MarketingModule.Test
                 promotion.Name = "TaggedProductDiscount";
                 promotion.Id = "TaggedProductDiscount";
 
-                blockExpression = promotion.DynamicExpression as DynamicExpression;
+                blockExpression = promotion.DynamicExpression;
                 blockCatalogCondition = blockExpression.FindChildrenExpression<BlockCatalogCondition>();
                 var blockReward = blockExpression.FindChildrenExpression<RewardBlock>();
 
                 var conditionExpr = blockCatalogCondition.FindAvailableExpression<ConditionItemWithTag>();
-                conditionExpr.Tags = new string[] { "#FOOTBAL" };
+                conditionExpr.Tags = new[] { "#FOOTBAL" };
                 blockCatalogCondition.Children.Add(conditionExpr);
 
                 var rewardExpr = blockReward.FindAvailableExpression<RewardItemGetOfRel>();
@@ -131,7 +132,6 @@ namespace VirtoCommerce.MarketingModule.Test
             var result = marketingEval.EvaluatePromotion(context);
         }
 
-
         [Fact]
         public void EvaluatePromotionWhenCatalogBrowsing()
         {
@@ -141,6 +141,7 @@ namespace VirtoCommerce.MarketingModule.Test
         public void EvaluateCartPromotion()
         {
         }
+
 
         private static PromotionEvaluationContext GetPromotionEvaluationContext()
         {
@@ -180,44 +181,70 @@ namespace VirtoCommerce.MarketingModule.Test
 
         private IPromotionService GetMarketingService()
         {
-            Func<IMarketingRepository> foundationRepositoryFactory = () => GetRepository();
             var promotionExtensionManager = new DefaultMarketingExtensionManagerImpl();
             var cacheManager = new Moq.Mock<ICacheManager<object>>();
-            var retVal = new PromotionServiceImpl(foundationRepositoryFactory, promotionExtensionManager, cacheManager.Object);
+            var retVal = new PromotionServiceImpl(GetRepository, promotionExtensionManager, GetExpressionSerializer(), cacheManager.Object);
             return retVal;
         }
 
         private MarketingModulePromotionController GetMarketingController(IMarketingExtensionManager extensionManager)
         {
-            var retVal = new MarketingModulePromotionController(GetMarketingService(), extensionManager, null);
+            var retVal = new MarketingModulePromotionController(GetMarketingService(), extensionManager, null, GetExpressionSerializer());
             return retVal;
+        }
+
+        private IExpressionSerializer GetExpressionSerializer()
+        {
+            return new XmlExpressionSerializer();
         }
 
         private IMarketingExtensionManager GetPromotionExtensionManager()
         {
-            var retVal = new DefaultMarketingExtensionManagerImpl();
-            retVal.PromotionDynamicExpressionTree = GetDynamicExpression();
+            var retVal = new DefaultMarketingExtensionManagerImpl
+            {
+                PromotionDynamicExpressionTree = GetDynamicExpression()
+            };
             return retVal;
         }
 
         private PromoDynamicExpressionTree GetDynamicExpression()
         {
-            var customerConditionBlock = new BlockCustomerCondition();
-            customerConditionBlock.AvailableChildren = new DynamicExpression[] { new ConditionIsEveryone(), new ConditionIsFirstTimeBuyer(),
-                                                                                  new ConditionIsRegisteredUser() }.ToList();
+            var customerConditionBlock = new BlockCustomerCondition
+            {
+                AvailableChildren = new DynamicExpression[]
+                {
+                    new ConditionIsEveryone(), new ConditionIsFirstTimeBuyer(),
+                    new ConditionIsRegisteredUser()
+                }.ToList()
+            };
 
-            var catalogConditionBlock = new BlockCatalogCondition();
-            catalogConditionBlock.AvailableChildren = new DynamicExpression[] { new ConditionEntryIs(), new ConditionCurrencyIs(),
-                                                                               new  ConditionCodeContains(), new ConditionCategoryIs(),
-                                                                                }.ToList();
+            var catalogConditionBlock = new BlockCatalogCondition
+            {
+                AvailableChildren = new DynamicExpression[]
+                {
+                    new ConditionEntryIs(), new ConditionCurrencyIs(),
+                    new ConditionCodeContains(), new ConditionCategoryIs(),
+                }.ToList()
+            };
 
-            var cartConditionBlock = new BlockCartCondition();
-            cartConditionBlock.AvailableChildren = new DynamicExpression[] { new ConditionCartSubtotalLeast(), new ConditionAtNumItemsInCart(),
-                                                                             new ConditionAtNumItemsInCategoryAreInCart(), new ConditionAtNumItemsOfEntryAreInCart() }.ToList();
-            var rewardBlock = new RewardBlock();
-            rewardBlock.AvailableChildren = new DynamicExpression[] { new RewardCartGetOfAbsSubtotal(),  new RewardItemGetFreeNumItemOfProduct(),  new RewardItemGetOfAbs(),
-                                                                       new RewardItemGetOfAbsForNum(), new RewardItemGetOfRel(), new RewardItemGetOfRelForNum(),
-                                                                       new RewardItemGiftNumItem(), new RewardShippingGetOfAbsShippingMethod(), new RewardShippingGetOfRelShippingMethod ()}.ToList();
+            var cartConditionBlock = new BlockCartCondition
+            {
+                AvailableChildren = new DynamicExpression[]
+                {
+                    new ConditionCartSubtotalLeast(), new ConditionAtNumItemsInCart(),
+                    new ConditionAtNumItemsInCategoryAreInCart(), new ConditionAtNumItemsOfEntryAreInCart()
+                }.ToList()
+            };
+
+            var rewardBlock = new RewardBlock
+            {
+                AvailableChildren = new DynamicExpression[]
+                {
+                    new RewardCartGetOfAbsSubtotal(), new RewardItemGetFreeNumItemOfProduct(), new RewardItemGetOfAbs(),
+                    new RewardItemGetOfAbsForNum(), new RewardItemGetOfRel(), new RewardItemGetOfRelForNum(),
+                    new RewardItemGiftNumItem(), new RewardShippingGetOfAbsShippingMethod(), new RewardShippingGetOfRelShippingMethod()
+                }.ToList()
+            };
 
             var rootBlockExpressions = new DynamicExpression[] { customerConditionBlock, catalogConditionBlock, cartConditionBlock, rewardBlock }.ToList();
             var retVal = new PromoDynamicExpressionTree()
@@ -238,17 +265,11 @@ namespace VirtoCommerce.MarketingModule.Test
 
         public override void Dispose()
         {
-            try
+            // Ensure LocalDb databases are deleted after use so that LocalDb doesn't throw if
+            // the temp location in which they are stored is later cleaned.
+            using (var context = new MarketingRepositoryImpl(ConnectionString))
             {
-                // Ensure LocalDb databases are deleted after use so that LocalDb doesn't throw if
-                // the temp location in which they are stored is later cleaned.
-                using (var context = new MarketingRepositoryImpl(ConnectionString))
-                {
-                    context.Database.Delete();
-                }
-            }
-            finally
-            {
+                context.Database.Delete();
             }
         }
     }

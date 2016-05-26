@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.Entity;
+using System.Linq;
+using VirtoCommerce.MarketingModule.Data.Model;
 using VirtoCommerce.Platform.Data.Infrastructure;
 using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
-using VirtoCommerce.MarketingModule.Data.Model;
 
 namespace VirtoCommerce.MarketingModule.Data.Repositories
 {

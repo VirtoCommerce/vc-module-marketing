@@ -51,7 +51,6 @@ namespace VirtoCommerce.MarketingModule.Web
 
         public override void PostInitialize()
         {
-            var promotionExtensionManager = _container.Resolve<IMarketingExtensionManager>();
             EnsureRootFoldersExist(new[] { VirtoCommerce.MarketingModule.Web.Model.MarketingConstants.ContentPlacesRootFolderId, VirtoCommerce.MarketingModule.Web.Model.MarketingConstants.CotentItemRootFolderId });
 
             //Create standard dynamic properties for dynamic content item
@@ -68,7 +67,6 @@ namespace VirtoCommerce.MarketingModule.Web
 
             dynamicPropertyService.SaveProperties(new[] { contentItemTypeProperty });
         }
-
 
         #endregion
 
@@ -113,7 +111,6 @@ namespace VirtoCommerce.MarketingModule.Web
                     dynamicContentService.CreateFolder(rootFolder);
                 }
             }
-
         }
     }
 }

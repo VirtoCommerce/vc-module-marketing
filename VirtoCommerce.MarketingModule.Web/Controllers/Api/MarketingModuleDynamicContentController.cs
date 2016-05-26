@@ -2,11 +2,11 @@
 using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
-using VirtoCommerce.Domain.Common;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Web.Converters;
 using VirtoCommerce.MarketingModule.Web.Security;
-using VirtoCommerce.Platform.Core.Security;
+using VirtoCommerce.Platform.Core.Serialization;
+using VirtoCommerce.Platform.Core.Web.Security;
 using coreModel = VirtoCommerce.Domain.Marketing.Model;
 using webModel = VirtoCommerce.MarketingModule.Web.Model;
 
@@ -19,13 +19,15 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         private readonly IMarketingExtensionManager _marketingExtensionManager;
         private readonly IDynamicContentService _dynamicContentService;
         private readonly IMarketingDynamicContentEvaluator _dynamicContentEvaluator;
+        private readonly IExpressionSerializer _expressionSerializer;
 
         public MarketingModuleDynamicContentController(IDynamicContentService dynamicContentService, IMarketingExtensionManager marketingExtensionManager,
-            IMarketingDynamicContentEvaluator dynamicContentEvaluator)
+            IMarketingDynamicContentEvaluator dynamicContentEvaluator, IExpressionSerializer expressionSerializer)
         {
             _dynamicContentService = dynamicContentService;
             _marketingExtensionManager = marketingExtensionManager;
             _dynamicContentEvaluator = dynamicContentEvaluator;
+            _expressionSerializer = expressionSerializer;
         }
 
         /// <summary>
@@ -84,7 +86,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [CheckPermission(Permission = MarketingPredefinedPermissions.Update)]
         public IHttpActionResult UpdateDynamicContent(webModel.DynamicContentItem contentItem)
         {
-            _dynamicContentService.UpdateContents(new coreModel.DynamicContentItem[] { contentItem.ToCoreModel() });
+            _dynamicContentService.UpdateContents(new[] { contentItem.ToCoreModel() });
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -178,7 +180,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
             {
                 ContentItems = new webModel.DynamicContentItem[] { },
                 ContentPlaces = new webModel.DynamicContentPlace[] { },
-                DynamicExpression = _marketingExtensionManager.DynamicContentExpressionTree as ConditionExpressionTree,
+                DynamicExpression = _marketingExtensionManager.DynamicContentExpressionTree,
                 IsActive = true
             };
             return Ok(retVal);
@@ -213,7 +215,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [CheckPermission(Permission = MarketingPredefinedPermissions.Create)]
         public IHttpActionResult CreateDynamicContentPublication(webModel.DynamicContentPublication publication)
         {
-            var retVal = _dynamicContentService.CreatePublication(publication.ToCoreModel());
+            var retVal = _dynamicContentService.CreatePublication(publication.ToCoreModel(_expressionSerializer));
             return GetDynamicContentPublicationById(retVal.Id);
         }
 
@@ -228,7 +230,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [CheckPermission(Permission = MarketingPredefinedPermissions.Update)]
         public IHttpActionResult UpdateDynamicContentPublication(webModel.DynamicContentPublication publication)
         {
-            _dynamicContentService.UpdatePublications(new coreModel.DynamicContentPublication[] { publication.ToCoreModel() });
+            _dynamicContentService.UpdatePublications(new[] { publication.ToCoreModel(_expressionSerializer) });
             return StatusCode(HttpStatusCode.NoContent);
         }
 

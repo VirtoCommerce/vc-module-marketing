@@ -4,7 +4,7 @@ using System.Web.Http.Description;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Web.Converters;
 using VirtoCommerce.MarketingModule.Web.Security;
-using VirtoCommerce.Platform.Core.Security;
+using VirtoCommerce.Platform.Core.Web.Security;
 using coreModel = VirtoCommerce.Domain.Marketing.Model;
 using webModel = VirtoCommerce.MarketingModule.Web.Model;
 

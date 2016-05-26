@@ -2,7 +2,7 @@
 using VirtoCommerce.MarketingModule.Data.Migrations;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Data.Infrastructure;
-using VirtoCommerce.Platform.Tests.Bases;
+using VirtoCommerce.Platform.Testing.Bases;
 using Xunit;
 
 namespace VirtoCommerce.MarketingModule.Test
@@ -20,7 +20,7 @@ namespace VirtoCommerce.MarketingModule.Test
             using (var context = CreateContext<MarketingRepositoryImpl>())
             {
                 context.Database.CreateIfNotExists();
-                new SetupDatabaseInitializer<MarketingRepositoryImpl,Configuration>().InitializeDatabase(context);
+                new SetupDatabaseInitializer<MarketingRepositoryImpl, Configuration>().InitializeDatabase(context);
                 Assert.Equal(0, context.Promotions.Count());
             }
 
