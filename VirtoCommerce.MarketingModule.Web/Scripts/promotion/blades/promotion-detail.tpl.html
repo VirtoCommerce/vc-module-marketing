@@ -89,7 +89,7 @@
                 </fieldset>
 
                 <!--ui-validate=" 'promotionExpressionValidator(blade.isExpresionValid)' " ng-model="blade.isExpresionValid"-->
-                <fieldset ng-if="blade.currentEntity.type==='DynamicPromotion'">
+                <fieldset ng-if="blade.currentEntity.dynamicExpression && blade.currentEntity.type==='DynamicPromotion'">
                     <legend>{{ 'marketing.blades.promotion-detail.labels.promotion-conditions' | translate }}</legend>
                     <div class="dynamic-expression">
                         <va-dynamic-expression-tree ng-controller="virtoCommerce.marketingModule.promotionExpressionsController" source="blade.currentEntity.dynamicExpression"></va-dynamic-expression-tree>

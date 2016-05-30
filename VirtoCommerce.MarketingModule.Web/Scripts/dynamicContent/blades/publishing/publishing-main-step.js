@@ -65,8 +65,10 @@
     }
 
     function initializeBlade(data) {
-        _.each(data.dynamicExpression.children, extendElementBlock);
-        groupAvailableChildren(data.dynamicExpression.children[0]);
+        if (data.dynamicExpression) {
+            _.each(data.dynamicExpression.children, extendElementBlock);
+            groupAvailableChildren(data.dynamicExpression.children[0]);
+        }
 
         blade.entity = data;
         blade.originalEntity = angular.copy(blade.entity);
@@ -112,8 +114,10 @@
         blade.closeChildrenBlades();
 
         blade.isLoading = true;
-        blade.entity.dynamicExpression.availableChildren = undefined;
-        _.each(blade.entity.dynamicExpression.children, stripOffUiInformation);
+        if (blade.entity.dynamicExpression) {
+            blade.entity.dynamicExpression.availableChildren = undefined;
+            _.each(blade.entity.dynamicExpression.children, stripOffUiInformation);
+        }
 
         if (blade.isNew) {
             contentPublications.save({}, blade.entity, function (data) {
@@ -161,7 +165,7 @@
 							blade.entity.contentPlaces.length > 0;
 
         if (retVal) {
-        	retVal = !angular.equals(blade.entity, blade.originalEntity);
+            retVal = !angular.equals(blade.entity, blade.originalEntity);
 
             if (!retVal) {
                 var ciIdse = blade.entity.contentItems.map(function (v) {
@@ -292,5 +296,5 @@
     }
 
     blade.initializeBlade();
-	$scope.stores = stores.query();
+    $scope.stores = stores.query();
 }]);

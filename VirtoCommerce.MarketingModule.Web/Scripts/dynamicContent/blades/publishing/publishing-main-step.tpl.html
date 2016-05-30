@@ -94,7 +94,7 @@
                 </li>-->
             </ul>
 
-            <fieldset>
+            <fieldset ng-if="blade.entity.dynamicExpression">
                 <legend>{{ 'marketing.blades.publishing.publishing-main-step.labels.publishing-conditions' | translate }}</legend>
                 <div class="dynamic-expression">
                     <va-dynamic-expression-tree source="blade.entity.dynamicExpression"></va-dynamic-expression-tree>

@@ -60,17 +60,21 @@ namespace VirtoCommerce.MarketingModule.Web.Converters
                 retVal.ContentPlaces = publication.ContentPlaces.Select(x => x.ToCoreModel()).ToList();
             }
 
-            var conditionExpression = publication.DynamicExpression.GetConditionExpression();
-            retVal.PredicateSerialized = expressionSerializer.SerializeExpression(conditionExpression);
-
-            //Clear availableElements in expression (for decrease size)
-            publication.DynamicExpression.AvailableChildren = null;
-            var allBlocks = ((DynamicExpression)publication.DynamicExpression).Traverse(x => x.Children);
-            foreach (var block in allBlocks)
+            if (publication.DynamicExpression != null)
             {
-                block.AvailableChildren = null;
+                var conditionExpression = publication.DynamicExpression.GetConditionExpression();
+                retVal.PredicateSerialized = expressionSerializer.SerializeExpression(conditionExpression);
+
+                //Clear availableElements in expression (for decrease size)
+                publication.DynamicExpression.AvailableChildren = null;
+                var allBlocks = ((DynamicExpression)publication.DynamicExpression).Traverse(x => x.Children);
+                foreach (var block in allBlocks)
+                {
+                    block.AvailableChildren = null;
+                }
+                retVal.PredicateVisualTreeSerialized = JsonConvert.SerializeObject(publication.DynamicExpression);
             }
-            retVal.PredicateVisualTreeSerialized = JsonConvert.SerializeObject(publication.DynamicExpression);
+
             return retVal;
         }
     }
