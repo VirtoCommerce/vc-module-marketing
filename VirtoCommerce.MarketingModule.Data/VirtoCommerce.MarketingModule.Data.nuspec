@@ -10,7 +10,7 @@
         <projectUrl>https://github.com/VirtoCommerce/vc-module-marketing</projectUrl>
         <iconUrl>https://github.com/VirtoCommerce/vc-module-marketing/raw/master/NuGet/icon.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Dynamic expressions implementation</description>
+        <description>Marketing implementation</description>
         <copyright>Copyright © VirtoCommerce 2011-2016</copyright>
     </metadata>
 </package>
