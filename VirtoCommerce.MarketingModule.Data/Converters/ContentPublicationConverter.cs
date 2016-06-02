@@ -25,7 +25,11 @@ namespace VirtoCommerce.MarketingModule.Data.Converters
 
             retVal.PredicateSerialized = dbEntity.ConditionExpression;
             retVal.PredicateVisualTreeSerialized = dbEntity.PredicateVisualTreeSerialized;
-
+            if (!string.IsNullOrEmpty(retVal.PredicateVisualTreeSerialized))
+            {
+                //Temporary back data compatibility fix for serialized expressions
+                retVal.PredicateVisualTreeSerialized = retVal.PredicateVisualTreeSerialized.Replace("VirtoCommerce.DynamicExpressionModule.", "VirtoCommerce.DynamicExpressionsModule.");
+            }
             if (dbEntity.ContentItems != null)
             {
                 retVal.ContentItems = dbEntity.ContentItems.Select(x => x.ContentItem.ToCoreModel()).ToList();

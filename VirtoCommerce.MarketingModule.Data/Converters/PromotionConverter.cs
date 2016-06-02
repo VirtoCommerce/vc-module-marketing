@@ -24,6 +24,11 @@ namespace VirtoCommerce.MarketingModule.Data.Converters
 
             var retVal = new DynamicPromotion(expressionSerializer);
             retVal.InjectFrom(dbEntity);
+            if(!string.IsNullOrEmpty(retVal.PredicateVisualTreeSerialized))
+            {
+                //Temporary back data compatibility fix for serialized expressions
+                retVal.PredicateVisualTreeSerialized = retVal.PredicateVisualTreeSerialized.Replace("VirtoCommerce.DynamicExpressionModule.", "VirtoCommerce.DynamicExpressionsModule.");
+            }
             retVal.Coupons = dbEntity.Coupons.Select(x => x.Code).ToArray();
             retVal.Store = dbEntity.StoreId;
             retVal.MaxUsageCount = dbEntity.TotalLimit;
