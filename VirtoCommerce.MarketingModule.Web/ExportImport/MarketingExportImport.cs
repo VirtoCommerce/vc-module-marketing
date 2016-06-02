@@ -37,12 +37,12 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
         public void DoExport(Stream backupStream, Action<ExportImportProgressInfo> progressCallback)
         {
 			var backupObject = GetBackupObject(progressCallback);
-            backupObject.SerializeJson(backupStream, GetJsonSerializer());
+            backupObject.SerializeJson(backupStream);
         }
 
         public void DoImport(Stream backupStream, Action<ExportImportProgressInfo> progressCallback)
         {
-            var backupObject = backupStream.DeserializeJson<BackupObject>(GetJsonSerializer());
+            var backupObject = backupStream.DeserializeJson<BackupObject>();
 			var originalObject = GetBackupObject(progressCallback);
 
 			var progressInfo = new ExportImportProgressInfo();
@@ -249,19 +249,7 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
             });
         }
 
-        #endregion
-
-        private static JsonSerializer GetJsonSerializer()
-        {
-            return new JsonSerializer
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                Formatting = Formatting.Indented,
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                TypeNameHandling = TypeNameHandling.Auto,
-                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Full
-            };
-        }
+        #endregion     
 
     }
 }
