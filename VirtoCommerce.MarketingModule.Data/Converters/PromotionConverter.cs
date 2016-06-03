@@ -29,6 +29,11 @@ namespace VirtoCommerce.MarketingModule.Data.Converters
                 //Temporary back data compatibility fix for serialized expressions
                 retVal.PredicateVisualTreeSerialized = retVal.PredicateVisualTreeSerialized.Replace("VirtoCommerce.DynamicExpressionModule.", "VirtoCommerce.DynamicExpressionsModule.");
             }
+            if(!string.IsNullOrEmpty(retVal.PredicateSerialized))
+            {
+                //Temporary back data compatibility fix for serialized expressions
+                retVal.PredicateSerialized = retVal.PredicateSerialized.Replace("VirtoCommerce.DynamicExpressionModule.", "VirtoCommerce.DynamicExpressionsModule.");
+            }
             retVal.Coupons = dbEntity.Coupons.Select(x => x.Code).ToArray();
             retVal.Store = dbEntity.StoreId;
             retVal.MaxUsageCount = dbEntity.TotalLimit;

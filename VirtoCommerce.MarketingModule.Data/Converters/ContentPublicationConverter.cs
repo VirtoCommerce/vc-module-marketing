@@ -30,6 +30,11 @@ namespace VirtoCommerce.MarketingModule.Data.Converters
                 //Temporary back data compatibility fix for serialized expressions
                 retVal.PredicateVisualTreeSerialized = retVal.PredicateVisualTreeSerialized.Replace("VirtoCommerce.DynamicExpressionModule.", "VirtoCommerce.DynamicExpressionsModule.");
             }
+            if (!string.IsNullOrEmpty(retVal.PredicateSerialized))
+            {
+                //Temporary back data compatibility fix for serialized expressions
+                retVal.PredicateSerialized = retVal.PredicateSerialized.Replace("VirtoCommerce.DynamicExpressionModule.", "VirtoCommerce.DynamicExpressionsModule.");
+            }
             if (dbEntity.ContentItems != null)
             {
                 retVal.ContentItems = dbEntity.ContentItems.Select(x => x.ContentItem.ToCoreModel()).ToList();
