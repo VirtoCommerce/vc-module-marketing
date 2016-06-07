@@ -126,6 +126,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="CustomPromotionExpressions\ConditionItemWithTag.cs" />
     <Compile Include="CustomPromotionExpressions\CustomPromotionEvaluationContextExtension.cs" />
     <Compile Include="CustomPromotion\BuyProductWithTagPromotion.cs" />
