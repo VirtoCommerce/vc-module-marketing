@@ -10,13 +10,15 @@ Key features:
 # Documentation
 User guide: <a href="http://docs.virtocommerce.com/x/xAHr" target="_blank">Marketing</a>
 
-Developer guide:
+Developer guide: <a href="http://docs.virtocommerce.com/display/vc2devguide/Composing+dynamic+conditions" target="_blank">Composing dynamic conditions</a>
 
 # Installation
 Installing the module:
 * Automatically: in VC Manager go to Configuration -> Modules -> Marketing module -> Install
 * Manually: download module zip package from https://github.com/VirtoCommerce/vc-module-marketing/releases. In VC Manager go to Configuration -> Modules -> Advanced -> upload module package -> Install.
 
+# Documentation
+http://docs.virtocommerce.com/display/vc2devguide/Composing+dynamic+conditions
 
 # Available resources
 * Module related service implementations as a <a href="https://www.nuget.org/packages/VirtoCommerce.MarketingModule.Data" target="_blank">NuGet package</a>
