@@ -53,15 +53,15 @@
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="ExpressionSerialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.Platform.Data.Serialization.2.11.0\lib\net451\ExpressionSerialization.dll</HintPath>
+      <HintPath>..\packages\VirtoCommerce.Platform.Data.Serialization.2.12.0\lib\net451\ExpressionSerialization.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Omu.ValueInjecter">
@@ -85,24 +85,24 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="VirtoCommerce.Domain, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.Domain.2.11.0\lib\net451\VirtoCommerce.Domain.dll</HintPath>
+    <Reference Include="VirtoCommerce.Domain, Version=2.17.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.Domain.2.17.0\lib\net451\VirtoCommerce.Domain.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="VirtoCommerce.DynamicExpressionsModule.Data, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VirtoCommerce.DynamicExpressionsModule.Data.2.11.0\lib\net451\VirtoCommerce.DynamicExpressionsModule.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.Platform.Core, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.Platform.Core.2.11.0\lib\net451\VirtoCommerce.Platform.Core.dll</HintPath>
+    <Reference Include="VirtoCommerce.Platform.Core, Version=2.12.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.Platform.Core.2.12.0\lib\net451\VirtoCommerce.Platform.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.Platform.Data, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.Platform.Data.2.11.0\lib\net451\VirtoCommerce.Platform.Data.dll</HintPath>
+    <Reference Include="VirtoCommerce.Platform.Data, Version=2.12.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.Platform.Data.2.12.0\lib\net451\VirtoCommerce.Platform.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtoCommerce.Platform.Data.Serialization, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.Platform.Data.Serialization.2.11.0\lib\net451\VirtoCommerce.Platform.Data.Serialization.dll</HintPath>
+    <Reference Include="VirtoCommerce.Platform.Data.Serialization, Version=2.12.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.Platform.Data.Serialization.2.12.0\lib\net451\VirtoCommerce.Platform.Data.Serialization.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="VirtoCommerce.Platform.Testing, Version=2.11.0.0, Culture=neutral, processorArchitecture=MSIL">
