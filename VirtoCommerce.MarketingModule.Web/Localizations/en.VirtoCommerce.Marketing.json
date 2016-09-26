@@ -216,11 +216,11 @@
           "menu": {
             "placeholders": {
               "title": "Placeholders",
-              "description": "Chosen {{quontity}} placeholders"
+              "description": "Chosen {{quantity}} placeholders"
             },
             "content-items": {
               "title": "Content items",
-              "description": "Chosen {{quontity}} content items"
+              "description": "Chosen {{quantity}} content items"
             }
           }
         },
@@ -260,7 +260,7 @@
       },
       "promotions-delete": {
         "title": "Delete confirmation",
-        "message": "Are you sure you want to delete selected Promitions?"
+        "message": "Are you sure you want to delete selected Promotions?"
       },
       "promotion-save": {
         "title": "Save changes",

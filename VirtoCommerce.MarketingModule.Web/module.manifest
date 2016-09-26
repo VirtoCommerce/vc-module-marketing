@@ -15,8 +15,8 @@
     <owners>
         <owner>Virto Commerce</owner>
     </owners>
-    <projectUrl>http://virtocommerce.com/</projectUrl>
-    <iconUrl>Modules/$(VirtoCommerce.Marketing)/Content/logo.png</iconUrl>
+    <projectUrl>https://github.com/VirtoCommerce/vc-module-marketing</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/VirtoCommerce/vc-module-marketing/master/VirtoCommerce.MarketingModule.Web/Content/logo.png</iconUrl>
     <releaseNotes>First version.</releaseNotes>
     <copyright>Copyright © 2011-2016 Virto Commerce. All rights reserved</copyright>
     <tags>marketing promotion</tags>

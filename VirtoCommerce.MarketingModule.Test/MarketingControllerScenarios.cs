@@ -22,10 +22,10 @@ using webModel = VirtoCommerce.MarketingModule.Web.Model;
 
 namespace VirtoCommerce.MarketingModule.Test
 {
+    [Trait("Category", "CI")]
     public class MarketingControllerScenarios : FunctionalTestBase
     {
         [Fact]
-        [Trait("Category", "CI")]
         public void Can_create_marketing_contentitem()
         {
             var repository = GetRepository();
@@ -39,7 +39,6 @@ namespace VirtoCommerce.MarketingModule.Test
         }
 
         [Fact]
-        [Trait("Category", "CI")]
         public void Can_create_marketing_dynamicpromotion_using_api()
         {
             var marketingController = GetMarketingController(GetPromotionExtensionManager());
@@ -83,7 +82,6 @@ namespace VirtoCommerce.MarketingModule.Test
         }
 
         [Fact]
-        [Trait("Category", "CI")]
         public void Can_extend_marketing_promotion_expressiontree_and_create_new_dynamicpromotion()
         {
             var extensionManager = GetPromotionExtensionManager();
