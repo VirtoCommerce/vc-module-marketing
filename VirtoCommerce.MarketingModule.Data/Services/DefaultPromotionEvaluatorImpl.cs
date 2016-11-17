@@ -42,7 +42,11 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             //best shipment promotion
             var curShipmentAmount = promoContext.ShipmentMethodCode != null ? promoContext.ShipmentMethodPrice : 0m;
             var allShipmentRewards = rewards.OfType<ShipmentReward>().ToArray();
-            EvaluteBestAmountRewards(curShipmentAmount, allShipmentRewards).ToList().ForEach(x => retVal.Rewards.Add(x));
+            var groupedByShippingMethodRewards = allShipmentRewards.GroupBy(x => x.ShippingMethod).Where(x => x.Key != null);
+            foreach (var shipmentRewards in groupedByShippingMethodRewards)
+            {
+                EvaluteBestAmountRewards(curShipmentAmount, shipmentRewards.ToArray()).ToList().ForEach(x => retVal.Rewards.Add(x));
+            }
 
             //best catalog item promotion
             var allItemsRewards = rewards.OfType<CatalogItemAmountReward>().ToArray();
