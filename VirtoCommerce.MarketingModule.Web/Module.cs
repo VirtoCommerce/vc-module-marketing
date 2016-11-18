@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Web.Http;
 using Microsoft.Practices.Unity;
 using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.MarketingModule.Data.Services;
 using VirtoCommerce.MarketingModule.Web.ExportImport;
+using VirtoCommerce.MarketingModule.Web.JsonConverters;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
@@ -66,6 +68,11 @@ namespace VirtoCommerce.MarketingModule.Web
             };
 
             dynamicPropertyService.SaveProperties(new[] { contentItemTypeProperty });
+
+            //Next lines allow to use polymorph types in API controller methods
+            var httpConfiguration = _container.Resolve<HttpConfiguration>();
+            httpConfiguration.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new PolymorphicPromoEvalContextJsonConverter());
+
         }
 
         #endregion
