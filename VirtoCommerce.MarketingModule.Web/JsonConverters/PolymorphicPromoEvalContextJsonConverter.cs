@@ -31,7 +31,7 @@ namespace VirtoCommerce.MarketingModule.Web.JsonConverters
             if (typeof(PromotionEvaluationContext).IsAssignableFrom(objectType))
             {
                 retVal = Platform.Core.Common.AbstractTypeFactory<PromotionEvaluationContext>.TryCreateInstance();
-            }        
+            }
             serializer.Populate(obj.CreateReader(), retVal);
             return retVal;
         }
@@ -41,3 +41,4 @@ namespace VirtoCommerce.MarketingModule.Web.JsonConverters
             throw new NotImplementedException();
         }
     }
+}
