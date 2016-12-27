@@ -3,16 +3,13 @@ using System.Web.Http;
 using Microsoft.Practices.Unity;
 using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Services;
-using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.MarketingModule.Data.Services;
 using VirtoCommerce.MarketingModule.Web.ExportImport;
 using VirtoCommerce.MarketingModule.Web.JsonConverters;
-using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
-using VirtoCommerce.Platform.Core.Serialization;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.Infrastructure;
 using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
@@ -52,9 +49,6 @@ namespace VirtoCommerce.MarketingModule.Web
             _container.RegisterType<IDynamicContentService, DynamicContentServiceImpl>();
             _container.RegisterType<IMarketingSearchService, MarketingSearchServiceImpl>();
             _container.RegisterType<IMarketingPromoEvaluator, DefaultPromotionEvaluatorImpl>();
-
-            AbstractTypeFactory<DynamicPromotion>.RegisterType<DynamicPromotion>()
-                .WithFactory(() => new DynamicPromotion(_container.Resolve<IExpressionSerializer>()));
         }
 
         public override void PostInitialize()

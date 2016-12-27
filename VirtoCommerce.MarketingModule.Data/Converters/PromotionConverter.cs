@@ -4,6 +4,7 @@ using System.Linq;
 using Omu.ValueInjecter;
 using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Serialization;
 using VirtoCommerce.Platform.Data.Common.ConventionInjections;
 using coreModel = VirtoCommerce.Domain.Marketing.Model;
 using dataModel = VirtoCommerce.MarketingModule.Data.Model;
@@ -16,12 +17,12 @@ namespace VirtoCommerce.MarketingModule.Data.Converters
         /// Converting to model type
         /// </summary>
         /// <returns></returns>
-        public static coreModel.Promotion ToCoreModel(this dataModel.Promotion dbEntity)
+        public static coreModel.Promotion ToCoreModel(this dataModel.Promotion dbEntity, IExpressionSerializer expressionSerializer)
         {
             if (dbEntity == null)
                 throw new ArgumentNullException(nameof(dbEntity));
 
-            var result = AbstractTypeFactory<DynamicPromotion>.TryCreateInstance();
+            var result = DynamicPromotion.CreateInstance(expressionSerializer);
             result.InjectFrom(dbEntity);
 
             if (!string.IsNullOrEmpty(result.PredicateVisualTreeSerialized))

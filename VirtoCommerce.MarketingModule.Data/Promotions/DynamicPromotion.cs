@@ -4,26 +4,30 @@ using System.Linq;
 using Newtonsoft.Json;
 using VirtoCommerce.Domain.Common;
 using VirtoCommerce.Domain.Marketing.Model;
+using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Serialization;
 
 namespace VirtoCommerce.MarketingModule.Data.Promotions
 {
     public class DynamicPromotion : Promotion
     {
-        private readonly IExpressionSerializer _expressionSerializer;
+        public static DynamicPromotion CreateInstance(IExpressionSerializer expressionSerializer)
+        {
+            var result = AbstractTypeFactory<DynamicPromotion>.TryCreateInstance();
+            result.ExpressionSerializer = expressionSerializer;
+            return result;
+        }
+
         private Func<IEvaluationContext, bool> _condition;
         private PromotionReward[] _rewards;
 
-        public DynamicPromotion(IExpressionSerializer expressionSerializer)
-        {
-            _expressionSerializer = expressionSerializer;
-        }
+        protected IExpressionSerializer ExpressionSerializer { get; set; }
 
         public string PredicateSerialized { get; set; }
         public string PredicateVisualTreeSerialized { get; set; }
         public string RewardsSerialized { get; set; }
 
-        protected Func<IEvaluationContext, bool> Condition => _condition ?? (_condition = _expressionSerializer.DeserializeExpression<Func<IEvaluationContext, bool>>(PredicateSerialized));
+        protected Func<IEvaluationContext, bool> Condition => _condition ?? (_condition = ExpressionSerializer.DeserializeExpression<Func<IEvaluationContext, bool>>(PredicateSerialized));
         protected PromotionReward[] Rewards => _rewards ?? (_rewards = JsonConvert.DeserializeObject<PromotionReward[]>(RewardsSerialized, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All }));
 
         public override PromotionReward[] EvaluatePromotion(IEvaluationContext context)

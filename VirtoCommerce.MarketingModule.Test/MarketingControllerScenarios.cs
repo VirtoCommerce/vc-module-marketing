@@ -7,12 +7,10 @@ using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.DynamicExpressionsModule.Data.Promotion;
 using VirtoCommerce.MarketingModule.Data.Migrations;
-using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.MarketingModule.Data.Services;
 using VirtoCommerce.MarketingModule.Test.CustomPromotionExpressions;
 using VirtoCommerce.MarketingModule.Web.Controllers.Api;
-using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Serialization;
 using VirtoCommerce.Platform.Data.Infrastructure;
 using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
@@ -27,12 +25,6 @@ namespace VirtoCommerce.MarketingModule.Test
     [Trait("Category", "CI")]
     public class MarketingControllerScenarios : FunctionalTestBase
     {
-        public MarketingControllerScenarios()
-        {
-            AbstractTypeFactory<DynamicPromotion>.RegisterType<DynamicPromotion>()
-                .WithFactory(() => new DynamicPromotion(GetExpressionSerializer()));
-        }
-
         [Fact]
         public void Can_create_marketing_contentitem()
         {
@@ -189,7 +181,7 @@ namespace VirtoCommerce.MarketingModule.Test
         {
             var promotionExtensionManager = new DefaultMarketingExtensionManagerImpl();
             var cacheManager = new Moq.Mock<ICacheManager<object>>();
-            var retVal = new PromotionServiceImpl(GetRepository, promotionExtensionManager, cacheManager.Object);
+            var retVal = new PromotionServiceImpl(GetRepository, promotionExtensionManager, GetExpressionSerializer(), cacheManager.Object);
             return retVal;
         }
 

@@ -56,7 +56,7 @@ namespace VirtoCommerce.MarketingModule.Web.Converters
 
         public static Promotion ToCoreModel(this webModel.Promotion promotion, IExpressionSerializer expressionSerializer)
         {
-            var result = AbstractTypeFactory<DynamicPromotion>.TryCreateInstance();
+            var result = DynamicPromotion.CreateInstance(expressionSerializer);
             result.InjectFrom(promotion);
 
             result.Coupons = promotion.Coupons;
