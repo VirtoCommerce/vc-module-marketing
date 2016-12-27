@@ -13,6 +13,7 @@ using VirtoCommerce.MarketingModule.Data.Services;
 using VirtoCommerce.MarketingModule.Test.CustomPromotionExpressions;
 using VirtoCommerce.MarketingModule.Web.Controllers.Api;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Serialization;
 using VirtoCommerce.Platform.Data.Infrastructure;
 using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
 using VirtoCommerce.Platform.Data.Serialization;
@@ -26,6 +27,12 @@ namespace VirtoCommerce.MarketingModule.Test
     [Trait("Category", "CI")]
     public class MarketingControllerScenarios : FunctionalTestBase
     {
+        public MarketingControllerScenarios()
+        {
+            AbstractTypeFactory<DynamicPromotion>.RegisterType<DynamicPromotion>()
+                .WithFactory(() => new DynamicPromotion(GetExpressionSerializer()));
+        }
+
         [Fact]
         public void Can_create_marketing_contentitem()
         {
@@ -188,13 +195,13 @@ namespace VirtoCommerce.MarketingModule.Test
 
         private MarketingModulePromotionController GetMarketingController(IMarketingExtensionManager extensionManager)
         {
-            var expressionSerializer = new XmlExpressionSerializer();
-
-            AbstractTypeFactory<DynamicPromotion>.RegisterType<DynamicPromotion>()
-                .WithFactory(() => new DynamicPromotion(expressionSerializer));
-
-            var retVal = new MarketingModulePromotionController(GetMarketingService(), extensionManager, null, expressionSerializer);
+            var retVal = new MarketingModulePromotionController(GetMarketingService(), extensionManager, null, GetExpressionSerializer());
             return retVal;
+        }
+
+        private IExpressionSerializer GetExpressionSerializer()
+        {
+            return new XmlExpressionSerializer();
         }
 
         private IMarketingExtensionManager GetPromotionExtensionManager()
