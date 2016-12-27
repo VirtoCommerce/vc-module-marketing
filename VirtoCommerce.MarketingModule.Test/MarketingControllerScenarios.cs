@@ -7,11 +7,12 @@ using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.DynamicExpressionsModule.Data.Promotion;
 using VirtoCommerce.MarketingModule.Data.Migrations;
+using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.MarketingModule.Data.Services;
 using VirtoCommerce.MarketingModule.Test.CustomPromotionExpressions;
 using VirtoCommerce.MarketingModule.Web.Controllers.Api;
-using VirtoCommerce.Platform.Core.Serialization;
+using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Data.Infrastructure;
 using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
 using VirtoCommerce.Platform.Data.Serialization;
@@ -187,13 +188,13 @@ namespace VirtoCommerce.MarketingModule.Test
 
         private MarketingModulePromotionController GetMarketingController(IMarketingExtensionManager extensionManager)
         {
-            var retVal = new MarketingModulePromotionController(GetMarketingService(), extensionManager, null, GetExpressionSerializer());
-            return retVal;
-        }
+            var expressionSerializer = new XmlExpressionSerializer();
 
-        private IExpressionSerializer GetExpressionSerializer()
-        {
-            return new XmlExpressionSerializer();
+            AbstractTypeFactory<DynamicPromotion>.RegisterType<DynamicPromotion>()
+                .WithFactory(() => new DynamicPromotion(expressionSerializer));
+
+            var retVal = new MarketingModulePromotionController(GetMarketingService(), extensionManager, null, expressionSerializer);
+            return retVal;
         }
 
         private IMarketingExtensionManager GetPromotionExtensionManager()
