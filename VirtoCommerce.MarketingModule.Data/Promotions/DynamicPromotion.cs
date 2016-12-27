@@ -4,38 +4,36 @@ using System.Linq;
 using Newtonsoft.Json;
 using VirtoCommerce.Domain.Common;
 using VirtoCommerce.Domain.Marketing.Model;
+using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Serialization;
 
 namespace VirtoCommerce.MarketingModule.Data.Promotions
 {
     public class DynamicPromotion : Promotion
     {
-        private readonly IExpressionSerializer _expressionSerializer;
+        public static DynamicPromotion CreateInstance(IExpressionSerializer expressionSerializer)
+        {
+            var result = AbstractTypeFactory<DynamicPromotion>.TryCreateInstance();
+            result.ExpressionSerializer = expressionSerializer;
+            return result;
+        }
+
         private Func<IEvaluationContext, bool> _condition;
         private PromotionReward[] _rewards;
 
-        public DynamicPromotion(IExpressionSerializer expressionSerializer)
-        {
-            _expressionSerializer = expressionSerializer;
-        }
+        protected IExpressionSerializer ExpressionSerializer { get; set; }
 
         public string PredicateSerialized { get; set; }
         public string PredicateVisualTreeSerialized { get; set; }
         public string RewardsSerialized { get; set; }
 
-        private Func<IEvaluationContext, bool> Condition
-        {
-            get { return _condition ?? (_condition = _expressionSerializer.DeserializeExpression<Func<IEvaluationContext, bool>>(PredicateSerialized)); }
-        }
-
-        private PromotionReward[] Rewards
-        {
-            get { return _rewards ?? (_rewards = JsonConvert.DeserializeObject<PromotionReward[]>(RewardsSerialized, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All })); }
-        }
+        protected Func<IEvaluationContext, bool> Condition => _condition ?? (_condition = ExpressionSerializer.DeserializeExpression<Func<IEvaluationContext, bool>>(PredicateSerialized));
+        protected PromotionReward[] Rewards => _rewards ?? (_rewards = JsonConvert.DeserializeObject<PromotionReward[]>(RewardsSerialized, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All }));
 
         public override PromotionReward[] EvaluatePromotion(IEvaluationContext context)
         {
-            var retVal = new List<PromotionReward>();
+            var result = new List<PromotionReward>();
+
             var promoContext = context as PromotionEvaluationContext;
             if (promoContext == null)
             {
@@ -43,27 +41,23 @@ namespace VirtoCommerce.MarketingModule.Data.Promotions
             }
 
             //Check coupon
-            var couponValid = Coupons == null || !Coupons.Any() || Coupons.Any(x => string.Equals(x, promoContext.Coupon, StringComparison.InvariantCultureIgnoreCase));
+            var couponIsValid = Coupons == null || !Coupons.Any() || Coupons.Any(x => string.Equals(x, promoContext.Coupon, StringComparison.InvariantCultureIgnoreCase));
 
             //Evaluate reward for all promoEntry in context
             foreach (var promoEntry in promoContext.PromoEntries)
             {
                 //Set current context promo entry for evaluation
                 promoContext.PromoEntry = promoEntry;
-                foreach (var reward in Rewards.Select(x => x.Clone()))
+
+                foreach (var reward in Rewards)
                 {
-                    reward.Promotion = this;
-                    reward.IsValid = couponValid && Condition(promoContext);
-                    var catalogItemReward = reward as CatalogItemAmountReward;
-                    //Set productId for catalog item reward
-                    if (catalogItemReward != null && catalogItemReward.ProductId == null)
-                    {
-                        catalogItemReward.ProductId = promoEntry.ProductId;
-                    }
-                    retVal.Add(reward);
+                    var promoReward = reward.Clone();
+                    EvaluateReward(promoContext, couponIsValid, promoReward);
+                    result.Add(promoReward);
                 }
             }
-            return retVal.ToArray();
+
+            return result.ToArray();
         }
 
         public override PromotionReward[] ProcessEvent(IMarketingEvent marketingEvent)
@@ -71,5 +65,18 @@ namespace VirtoCommerce.MarketingModule.Data.Promotions
             return null;
         }
 
+
+        protected virtual void EvaluateReward(PromotionEvaluationContext promoContext, bool couponIsValid, PromotionReward reward)
+        {
+            reward.Promotion = this;
+            reward.IsValid = couponIsValid && Condition(promoContext);
+
+            //Set productId for catalog item reward
+            var catalogItemReward = reward as CatalogItemAmountReward;
+            if (catalogItemReward != null && catalogItemReward.ProductId == null)
+            {
+                catalogItemReward.ProductId = promoContext.PromoEntry.ProductId;
+            }
+        }
     }
 }
