@@ -4,7 +4,6 @@ using System.Linq;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Converters;
 using VirtoCommerce.MarketingModule.Data.Repositories;
-using VirtoCommerce.Platform.Core.Serialization;
 using coreModel = VirtoCommerce.Domain.Marketing.Model;
 
 namespace VirtoCommerce.MarketingModule.Data.Services
@@ -14,14 +13,12 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         private readonly Func<IMarketingRepository> _repositoryFactory;
         private readonly IMarketingExtensionManager _customPromotionManager;
         private readonly IDynamicContentService _dynamicContentService;
-        private readonly IExpressionSerializer _expressionSerializer;
 
-        public MarketingSearchServiceImpl(Func<IMarketingRepository> repositoryFactory, IMarketingExtensionManager customPromotionManager, IDynamicContentService dynamicContentService, IExpressionSerializer expressionSerializer)
+        public MarketingSearchServiceImpl(Func<IMarketingRepository> repositoryFactory, IMarketingExtensionManager customPromotionManager, IDynamicContentService dynamicContentService)
         {
             _repositoryFactory = repositoryFactory;
             _customPromotionManager = customPromotionManager;
             _dynamicContentService = dynamicContentService;
-            _expressionSerializer = expressionSerializer;
         }
 
         #region IMarketingSearchService Members
@@ -151,7 +148,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                                               .Skip(criteria.Start)
                                               .Take(criteria.Count)
                                               .ToArray()
-                                              .Select(x => x.ToCoreModel(_expressionSerializer))
+                                              .Select(x => x.ToCoreModel())
                                               .ToList();
                 var totalCount = query.Count();
 

@@ -181,7 +181,7 @@ namespace VirtoCommerce.MarketingModule.Test
         {
             var promotionExtensionManager = new DefaultMarketingExtensionManagerImpl();
             var cacheManager = new Moq.Mock<ICacheManager<object>>();
-            var retVal = new PromotionServiceImpl(GetRepository, promotionExtensionManager, GetExpressionSerializer(), cacheManager.Object);
+            var retVal = new PromotionServiceImpl(GetRepository, promotionExtensionManager, cacheManager.Object);
             return retVal;
         }
 

@@ -8,7 +8,6 @@ using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Converters;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.Serialization;
 using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.MarketingModule.Data.Services
@@ -17,14 +16,12 @@ namespace VirtoCommerce.MarketingModule.Data.Services
     {
         private readonly Func<IMarketingRepository> _repositoryFactory;
         private readonly IMarketingExtensionManager _customPromotionManager;
-        private readonly IExpressionSerializer _expressionSerializer;
         private readonly ICacheManager<object> _cacheManager;
 
-        public PromotionServiceImpl(Func<IMarketingRepository> repositoryFactory, IMarketingExtensionManager customPromotionManager, IExpressionSerializer expressionSerializer, ICacheManager<object> cacheManager)
+        public PromotionServiceImpl(Func<IMarketingRepository> repositoryFactory, IMarketingExtensionManager customPromotionManager, ICacheManager<object> cacheManager)
         {
             _repositoryFactory = repositoryFactory;
             _customPromotionManager = customPromotionManager;
-            _expressionSerializer = expressionSerializer;
             _cacheManager = cacheManager;
         }
 
@@ -35,7 +32,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             var retVal = new List<Promotion>(_customPromotionManager.Promotions);
             using (var repository = _repositoryFactory())
             {
-                var dbStoredPromotions = repository.GetActivePromotions().Select(x => x.ToCoreModel(_expressionSerializer)).ToList();
+                var dbStoredPromotions = repository.GetActivePromotions().Select(x => x.ToCoreModel()).ToList();
                 var promoComparer = AnonymousComparer.Create((Promotion x) => x.Id);
                 dbStoredPromotions.Patch(retVal, promoComparer, (source, target) => target.InjectFrom(source));
             }
@@ -51,7 +48,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
                 if (entity != null)
                 {
-                    retVal = entity.ToCoreModel(_expressionSerializer);
+                    retVal = entity.ToCoreModel();
                 }
             }
 
