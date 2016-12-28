@@ -34,7 +34,7 @@
 				        permission: blade.updatePermission
 				    },
 				    {
-				        name: "platform.commands.delete", icon: 'fa fa-trash',
+				        name: "platform.commands.delete", icon: 'fa fa-trash-o',
 				        executeMethod: function () {
 				            var dialog = {
 				                id: "confirmDeleteContentItem",

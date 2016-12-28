@@ -144,7 +144,7 @@
             expressionBlock.children = [];
         }
         _.each(expressionBlock.excludingCategoryIds, function (id) {
-            expressionBlock.children.push({ id: 'ExcludingCategoryCondition', selectedCategoryId: id });
+            expressionBlock.children.push({ id: 'ExcludingCategoryCondition', categoryId: id });
         });
         _.each(expressionBlock.excludingProductIds, function (id) {
             expressionBlock.children.push({ id: 'ExcludingProductCondition', productId: id });
@@ -163,7 +163,7 @@
         expressionElement.templateURL = undefined;
 
         var selectedCategories = _.where(expressionElement.children, { id: 'ExcludingCategoryCondition' });
-        expressionElement.excludingCategoryIds = _.pluck(selectedCategories, 'selectedCategoryId');
+        expressionElement.excludingCategoryIds = _.pluck(selectedCategories, 'categoryId');
         expressionElement.children = _.difference(expressionElement.children, selectedCategories);
 
         var selectedProducts = _.where(expressionElement.children, { id: 'ExcludingProductCondition' });
