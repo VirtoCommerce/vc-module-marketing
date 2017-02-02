@@ -65,6 +65,11 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             using (var repository = _repositoryFactory())
             {
                 var query = repository.Folders.Where(x => x.ParentFolderId == criteria.FolderId);
+                if (!string.IsNullOrEmpty(criteria.Keyword))
+                {
+                    query = query.Where(q => q.Name.Contains(criteria.Keyword));
+                }
+
                 var folderIds = query.Select(x => x.Id).ToArray();
 
                 result.ContentFolders = new List<coreModel.DynamicContentFolder>();
@@ -96,6 +101,11 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             using (var repository = _repositoryFactory())
             {
                 var query = repository.Items.Where(x => x.FolderId == criteria.FolderId);
+                if (!string.IsNullOrEmpty(criteria.Keyword))
+                {
+                    query = query.Where(q => q.Name.Contains(criteria.Keyword));
+                }
+
                 result.TotalCount += query.Count();
                 var ids = query.OrderBy(x => x.Id)
                                .Select(x => x.Id)
@@ -126,6 +136,11 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             using (var repository = _repositoryFactory())
             {
                 var query = repository.PublishingGroups;
+                if (!string.IsNullOrEmpty(criteria.Keyword))
+                {
+                    query = query.Where(q => q.Name.Contains(criteria.Keyword));
+                }
+
                 result.TotalCount += query.Count();
 
                 var ids = query.OrderBy(x => x.Id)

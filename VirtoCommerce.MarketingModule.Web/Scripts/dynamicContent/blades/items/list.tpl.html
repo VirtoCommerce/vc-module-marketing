@@ -1,60 +1,75 @@
-﻿<div class="blade-static __collapsed">
+﻿<div class="blade-static __expanded">
     <va-breadcrumb ng-model="blade.breadcrumbs" blade-id="blade.id"></va-breadcrumb>
+    <div class="form-group">
+        <div class="form-input __other">
+            <input placeholder="{{ 'platform.placeholders.search-keyword' | translate }}" ng-model="blade.searchKeyword" ng-keyup="$event.which === 13 && blade.refresh()" />
+            <button class="btn __other" type="button">
+                <i class="btn-ico fa fa-times-circle" title="Clear" ng-click="clearKeyword()"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="blade-static __bottom" ng-if="pageSettings.itemsPerPageCount < pageSettings.totalItems" ng-include="'pagerTemplate.html'"></div>
+<div class="blade-content __medium-wide">
+    <div class="blade-inner">
+        <div class="inner-block">
+            <div class="note" ng-show="pageSettings.totalItems === 0" ng-bind="'marketing.blades.items.list.noItemsMessage' | translate"></div>
+            <div class="table-wrapper" ng-show="pageSettings.totalItems > 0" ng-init="setGridOptions({
+                data: 'listEntries',
+                useExternalSorting: true,
+                rowTemplate: 'dynamic-content-item.row.html',
+                enableSelectionBatchEvent: false,
+                columnDefs: [{
+                    name: 'actions',
+                    displayName: '',
+                    enableColumnResizing: false,
+                    enableSorting: false,
+                    width: 30,
+                    cellTemplate: 'list-actions.cell.html',
+                    pinnedLeft: true
+                }, {
+                    name: 'icon',
+                    displayName: 'marketing.blades.items.list.labels.picture',
+                    cellTemplate: 'dynamic-content-icon.cell.html',
+                    enableColumnResizing: false,
+                    enableSorting: false,
+                    width: 60
+                }, {
+                    name: 'name',
+                    displayName: 'marketing.blades.items.list.labels.name'
+                }, {
+                    name: 'description',
+                    displayNAme: 'marketing.blades.items.list.labels.description'
+                }]
+            })">
+                <div ui-grid="gridOptions" ui-grid-auto-resize ui-grid-save-state ui-grid-selection ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-height></div>
+                <ul class="menu __context" role="menu" id="prl_menu">
+                    <li class="menu-item" ng-click='manageItem(contextMenuEntity)' va-permission="pricing:delete">
+                        <i class="menu-ico fa fa-edit"></i> {{ 'platform.commands.manage' | translate }}
+                    </li>
+                    <li class="menu-item" ng-click='deleteItems([contextMenuEntity])' va-permission="pricing:delete">
+                        <i class="menu-ico fa fa-trash-o"></i> {{ 'platform.commands.delete' | translate }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="blade-content __medium-wide">
-	<div class="blade-inner">
-		<div class="inner-block">
-			<div class="table-wrapper">
-				<table class="table" ng-if="blade.currentEntity && (blade.currentEntity.childrenFolders.length > 0 || blade.currentEntity.items.length > 0)">
-					<thead>
-						<tr>
-							<th class="table-col">{{ 'marketing.blades.items.list.labels.picture' | translate }}</th>
-							<th class="table-col">{{ 'marketing.blades.items.list.labels.name' | translate }}</th>
-							<th class="table-col">{{ 'marketing.blades.items.list.labels.description' | translate }}</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr class="table-item" ng-repeat="data in blade.currentEntity.childrenFolders" ng-click="blade.folderClick(data)" context-menu data-target="ipl_menu_{{data.id}}">
-							<td class="table-col __product-img">
-								<div class="product-img">
-									<i class="table-ico fa fa-folder"></i>
-								</div>
-							</td>
-							<td class="table-col __product-name">
-								{{data.name}}
-								<ul class="menu __context" role="menu" id="ipl_menu_{{data.id}}">
-									<li class="menu-item" ng-click='blade.deleteFolder(data); $event.stopPropagation();'>
-										<i class="menu-ico fa fa-trash-o"></i> {{ 'platform.commands.delete' | translate }}
-									</li>
-									<li class="menu-item" ng-click='blade.editFolder(data); $event.stopPropagation();'>
-										<i class="menu-ico fa fa-pencil-square-o"></i> {{ 'platform.commands.edit' | translate }}
-									</li>
-								</ul>
-							</td>
-							<td class="table-col">
-								{{data.description}}
-							</td>
-						</tr>
-						<tr class="table-item" ng-repeat="item in blade.currentEntity.items" ng-click="blade.editContentItem(item)">
-							<td class="table-col __product-img">
-								<div class="product-img">
-									<i class="table-ico fa fa-location-arrow"></i>
-								</div>
-							</td>
-							<td class="table-col __product-name">
-								{{item.name}}
-							</td>
-							<td class="table-col">
-								{{item.description}}
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="note" ng-if="(blade.currentEntity.childrenFolders.length === 0 && blade.currentEntity.items.length === 0)">
-				{{ 'marketing.blades.items.list.labels.no-data' | translate }}
-			</div>
-		</div>
-	</div>
-</div>
+<script id="dynamic-content-item.row.html" type="text/ng-template">
+    <div ng-click='grid.appScope.selectNode(row.entity)' ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.uid" ui-grid-one-bind-id-grid="rowRenderIndex + '-' + col.uid + '-cell'" class="ui-grid-cell" ng-class="{'ui-grid-row-header-cell': col.isRowHeader, '__hovered': grid.appScope.contextMenuEntity === row.entity, '__selected': row.entity.id === grid.appScope.selectedNodeId}" role="{{col.isRowHeader ? 'rowheader' : 'gridcell' }}" ui-grid-cell context-menu="grid.appScope.contextMenuEntity = row.entity" data-target="prl_menu"></div>
+</script>
+
+<script id="list-actions.cell.html" type="text/ng-template">
+    <div class="ui-grid-actions" left-click-menu="grid.appScope.contextMenuEntity = row.entity" data-target="prl_menu">
+        <i class="fa fa-ellipsis-v"></i>
+    </div>
+</script>
+
+<script id="dynamic-content-icon.cell.html" type="text/ng-template">
+    <div class="ui-grid-cell-contents">
+        <div class="product-img">
+            <i class="table-ico fa" ng-class="row.entity.icon"></i>
+        </div>
+    </div>
+</script>
