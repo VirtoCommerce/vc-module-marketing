@@ -107,7 +107,8 @@
             "name": "Name",
             "description": "Description",
             "no-data": "No data"
-          }
+          },
+          "noItemsMessage": "There are no content items yet"
         }
       },
       "placeholders": {
@@ -227,7 +228,11 @@
         "list": {
           "title": "Content publishing",
           "subtitle": "Content publishing list",
+          "noItemsMessage": "There are no content publishings yet",
           "labels": {
+            "picture": "Icon",
+            "name": "Name",
+            "description": "Description",
             "no-data": "No Publishings yet"
           }
         }
