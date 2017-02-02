@@ -4,6 +4,7 @@ using System.Linq;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Converters;
 using VirtoCommerce.MarketingModule.Data.Repositories;
+using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Serialization;
 using coreModel = VirtoCommerce.Domain.Marketing.Model;
 
@@ -30,29 +31,40 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         {
             var retVal = new coreModel.MarketingSearchResult();
 
-            if ((criteria.ResponseGroup & coreModel.SearchResponseGroup.WithPromotions) == coreModel.SearchResponseGroup.WithPromotions)
+            if (string.IsNullOrEmpty(criteria.Sort))
             {
-                SearchPromotions(criteria, retVal);
-                criteria.Count -= retVal.Promotions.Count;
+                criteria.Sort = "name:asc";
             }
-            if ((criteria.ResponseGroup & coreModel.SearchResponseGroup.WithContentItems) == coreModel.SearchResponseGroup.WithContentItems)
+
+            if (!string.IsNullOrEmpty(criteria.ResponseGroup))
             {
-                SearchContentItems(criteria, retVal);
-                criteria.Count -= retVal.ContentItems.Count;
-            }
-            if ((criteria.ResponseGroup & coreModel.SearchResponseGroup.WithContentPlaces) == coreModel.SearchResponseGroup.WithContentPlaces)
-            {
-                SearchContentPlaces(criteria, retVal);
-                criteria.Count -= retVal.ContentPlaces.Count;
-            }
-            if ((criteria.ResponseGroup & coreModel.SearchResponseGroup.WithContentPublications) == coreModel.SearchResponseGroup.WithContentPublications)
-            {
-                SearchContentPublications(criteria, retVal);
-                criteria.Count -= retVal.ContentPublications.Count;
-            }
-            if ((criteria.ResponseGroup & coreModel.SearchResponseGroup.WithFolders) == coreModel.SearchResponseGroup.WithFolders)
-            {
-                SearchFolders(criteria, retVal);
+                var responseGroup = EnumUtility.SafeParse(criteria.ResponseGroup, coreModel.SearchResponseGroup.Full);
+
+                if ((responseGroup & coreModel.SearchResponseGroup.WithPromotions) == coreModel.SearchResponseGroup.WithPromotions)
+                {
+                    SearchPromotions(criteria, retVal);
+                    criteria.Take -= retVal.Promotions.Count;
+                }
+                if ((responseGroup & coreModel.SearchResponseGroup.WithContentItems) == coreModel.SearchResponseGroup.WithContentItems)
+                {
+                    SearchContentItems(criteria, retVal);
+                    criteria.Take -= retVal.ContentItems.Count;
+                }
+                if ((responseGroup & coreModel.SearchResponseGroup.WithContentPlaces) == coreModel.SearchResponseGroup.WithContentPlaces)
+                {
+                    SearchContentPlaces(criteria, retVal);
+                    criteria.Take -= retVal.ContentPlaces.Count;
+                }
+                if ((responseGroup & coreModel.SearchResponseGroup.WithContentPublications) == coreModel.SearchResponseGroup.WithContentPublications)
+                {
+                    SearchContentPublications(criteria, retVal);
+                    criteria.Take -= retVal.ContentPublications.Count;
+                }
+                if ((responseGroup & coreModel.SearchResponseGroup.WithFolders) == coreModel.SearchResponseGroup.WithFolders)
+                {
+                    SearchFolders(criteria, retVal);
+                    criteria.Take -= retVal.ContentFolders.Count;
+                }
             }
 
             return retVal;
@@ -64,11 +76,19 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         {
             using (var repository = _repositoryFactory())
             {
+                var sortingAliases = new Dictionary<string, string>();
+                sortingAliases["contentFolders"] = ReflectionUtility.GetPropertyName<coreModel.DynamicContentFolder>(x => x.Name);
+
                 var query = repository.Folders.Where(x => x.ParentFolderId == criteria.FolderId);
                 if (!string.IsNullOrEmpty(criteria.Keyword))
                 {
                     query = query.Where(q => q.Name.Contains(criteria.Keyword));
                 }
+
+                TryTransformSortingInfoColumnNames(sortingAliases, criteria.SortInfos);
+                query = query.OrderBySortInfos(criteria.SortInfos);
+
+                result.TotalCount += query.Count();
 
                 var folderIds = query.Select(x => x.Id).ToArray();
 
@@ -100,17 +120,22 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         {
             using (var repository = _repositoryFactory())
             {
+                var sortingAliases = new Dictionary<string, string>();
+                sortingAliases["contentItems"] = ReflectionUtility.GetPropertyName<coreModel.DynamicContentItem>(x => x.Name);
+
                 var query = repository.Items.Where(x => x.FolderId == criteria.FolderId);
                 if (!string.IsNullOrEmpty(criteria.Keyword))
                 {
                     query = query.Where(q => q.Name.Contains(criteria.Keyword));
                 }
 
+                TryTransformSortingInfoColumnNames(sortingAliases, criteria.SortInfos);
+                query = query.OrderBySortInfos(criteria.SortInfos);
+
                 result.TotalCount += query.Count();
-                var ids = query.OrderBy(x => x.Id)
-                               .Select(x => x.Id)
-                               .Skip(criteria.Start)
-                               .Take(criteria.Count).ToArray();
+                var ids = query.Select(x => x.Id)
+                               .Skip(criteria.Skip)
+                               .Take(criteria.Take).ToArray();
                 result.ContentItems = ids.Select(x => _dynamicContentService.GetContentItemById(x)).ToList();
             }
 
@@ -120,12 +145,18 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         {
             using (var repository = _repositoryFactory())
             {
+                var sortingAliases = new Dictionary<string, string>();
+                sortingAliases["contentPlaces"] = ReflectionUtility.GetPropertyName<coreModel.DynamicContentPlace>(x => x.Name);
+
                 var query = repository.Places.Where(x => x.FolderId == criteria.FolderId);
+
+                TryTransformSortingInfoColumnNames(sortingAliases, criteria.SortInfos);
+                query = query.OrderBySortInfos(criteria.SortInfos);
+
                 result.TotalCount += query.Count();
-                var ids = query.OrderBy(x => x.Id)
-                               .Select(x => x.Id)
-                               .Skip(criteria.Start)
-                               .Take(criteria.Count).ToArray();
+                var ids = query.Select(x => x.Id)
+                               .Skip(criteria.Skip)
+                               .Take(criteria.Take).ToArray();
                 result.ContentPlaces = ids.Select(x => _dynamicContentService.GetPlaceById(x)).ToList();
             }
 
@@ -135,18 +166,23 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         {
             using (var repository = _repositoryFactory())
             {
+                var sortingAliases = new Dictionary<string, string>();
+                sortingAliases["contentPublications"] = ReflectionUtility.GetPropertyName<coreModel.DynamicContentPublication>(x => x.Name);
+
                 var query = repository.PublishingGroups;
                 if (!string.IsNullOrEmpty(criteria.Keyword))
                 {
                     query = query.Where(q => q.Name.Contains(criteria.Keyword));
                 }
 
+                TryTransformSortingInfoColumnNames(sortingAliases, criteria.SortInfos);
+                query = query.OrderBySortInfos(criteria.SortInfos);
+
                 result.TotalCount += query.Count();
 
-                var ids = query.OrderBy(x => x.Id)
-                           .Select(x => x.Id)
-                           .Skip(criteria.Start)
-                           .Take(criteria.Count).ToArray();
+                var ids = query.Select(x => x.Id)
+                           .Skip(criteria.Skip)
+                           .Take(criteria.Take).ToArray();
                 result.ContentPublications = ids.Select(x => _dynamicContentService.GetPublicationById(x)).ToList();
             }
 
@@ -156,25 +192,42 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         {
             using (var repository = _repositoryFactory())
             {
+                var sortingAliases = new Dictionary<string, string>();
+                sortingAliases["promotions"] = ReflectionUtility.GetPropertyName<coreModel.Promotion>(x => x.Name);
+
                 var query = repository.Promotions;
                 if (!string.IsNullOrEmpty(criteria.Keyword))
                 {
                     query = query.Where(x => x.Name.Contains(criteria.Keyword) || x.Description.Contains(criteria.Keyword));
                 }
 
-                var promotions = query.OrderBy(x => x.Id)
-                                              .Skip(criteria.Start)
-                                              .Take(criteria.Count)
-                                              .ToArray()
-                                              .Select(x => x.ToCoreModel(_expressionSerializer))
-                                              .ToList();
+                TryTransformSortingInfoColumnNames(sortingAliases, criteria.SortInfos);
+                query = query.OrderBySortInfos(criteria.SortInfos);
+
+                var promotions = query.Skip(criteria.Skip)
+                                      .Take(criteria.Take)
+                                      .ToArray()
+                                      .Select(x => x.ToCoreModel(_expressionSerializer))
+                                      .ToList();
                 var totalCount = query.Count();
 
-                promotions.AddRange(_customPromotionManager.Promotions.Skip(criteria.Start).Take(criteria.Count));
+                promotions.AddRange(_customPromotionManager.Promotions.Skip(criteria.Skip).Take(criteria.Take));
                 totalCount += _customPromotionManager.Promotions.Count();
 
                 result.Promotions = promotions;
                 result.TotalCount += totalCount;
+            }
+        }
+
+        private static void TryTransformSortingInfoColumnNames(IDictionary<string, string> transformationMap, SortInfo[] sortingInfos)
+        {
+            foreach (var sortInfo in sortingInfos)
+            {
+                string newColumnName;
+                if (transformationMap.TryGetValue(sortInfo.SortColumn.ToLowerInvariant(), out newColumnName))
+                {
+                    sortInfo.SortColumn = newColumnName;
+                }
             }
         }
     }
