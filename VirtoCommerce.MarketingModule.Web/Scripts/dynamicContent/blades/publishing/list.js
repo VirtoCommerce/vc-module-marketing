@@ -44,8 +44,8 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentSearchA
     blade.refresh = function () {
         blade.isLoading = true;
         dynamicContentSearchApi.search({
-            start: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
-            count: $scope.pageSettings.itemsPerPageCount,
+            skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
+            take: $scope.pageSettings.itemsPerPageCount,
             sort: uiGridHelper.getSortExpression($scope),
             responseGroup: '8',
             keyword: blade.searchKeyword

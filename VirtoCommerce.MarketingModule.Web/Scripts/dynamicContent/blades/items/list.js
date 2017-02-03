@@ -61,8 +61,8 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentSearchA
     blade.refresh = function () {
         blade.isLoading = true;
         return dynamicContentSearchApi.search({
-            start: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
-            count: $scope.pageSettings.itemsPerPageCount,
+            skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
+            take: $scope.pageSettings.itemsPerPageCount,
             keyword: blade.searchKeyword,
             folderId: blade.chosenFolderId,
             sort: uiGridHelper.getSortExpression($scope),
