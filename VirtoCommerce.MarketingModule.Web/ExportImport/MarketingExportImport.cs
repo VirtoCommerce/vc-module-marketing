@@ -190,8 +190,8 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
             progressCallback(progressInfo);
 			var allPromotions = _marketingSearchService.SearchResources(new MarketingSearchCriteria
             {
-                Count = int.MaxValue,
-                ResponseGroup = SearchResponseGroup.WithPromotions
+                Take = int.MaxValue,
+                ResponseGroup = SearchResponseGroup.WithPromotions.ToString()
             }).Promotions;
 
 			progressInfo.Description = String.Format("{0} promotions loading...", allPromotions.Count());
@@ -244,8 +244,8 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
             return _marketingSearchService.SearchResources(new MarketingSearchCriteria
             {
 				FolderId = folderId,
-                Count = int.MaxValue,
-                ResponseGroup = SearchResponseGroup.WithContentItems | SearchResponseGroup.WithContentPlaces | SearchResponseGroup.WithContentPublications | SearchResponseGroup.WithFolders
+                Take = int.MaxValue,
+                ResponseGroup = (SearchResponseGroup.WithContentItems | SearchResponseGroup.WithContentPlaces | SearchResponseGroup.WithContentPublications | SearchResponseGroup.WithFolders).ToString()
             });
         }
 
