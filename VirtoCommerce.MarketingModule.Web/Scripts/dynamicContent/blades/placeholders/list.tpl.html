@@ -69,7 +69,8 @@
 <script id="dynamic-content-icon.cell.html" type="text/ng-template">
     <div class="ui-grid-cell-contents">
         <div class="product-img">
-            <i class="table-ico fa" ng-class="row.entity.icon"></i>
+            <i class="table-ico fa" ng-class="row.entity.icon" ng-if="row.entity.isFolder"></i>
+            <div class="image" style="background-image: url('{{ row.entity.imageUrl }}');" va-showbigimage="placeholder.imageUrl" ng-if="!row.entity.isFolder"></div>
         </div>
     </div>
 </script>
