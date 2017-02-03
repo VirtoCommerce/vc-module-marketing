@@ -4,6 +4,7 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentSearchA
     var bladeNavigationService = bladeUtils.bladeNavigationService;
     var blade = $scope.blade;
     blade.headIcon = 'fa-location-arrow';
+    blade.chosenFolderId = 'ContentPlace';
     blade.currentEntity = {};
 
     blade.initialize = function () {
@@ -22,7 +23,7 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentSearchA
             id: 'listItemChild',
             title: 'marketing.blades.placeholders.add.title',
             subtitle: 'marketing.blades.placeholders.add.subtitle',
-            chosenFolder: blade.chosenFolder,
+            chosenFolder: blade.chosenFolderId,
             controller: 'virtoCommerce.marketingModule.addPlaceholderElementController',
             template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/dynamicContent/blades/placeholders/add.tpl.html'
         };
@@ -119,7 +120,7 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentSearchA
                 blade.breadcrumbs = blade.breadcrumbs.slice(0, position + 1);
             }
         } else {
-            blade.breadcrumbs = [generateBreadcrumb({ id: null, name: 'all' })];
+            blade.breadcrumbs = [generateBreadcrumb({ id: 'ContentPlace', name: 'all', isFolder: true })];
         }
     }
 
@@ -153,7 +154,7 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentSearchA
 
     $scope.selectNode = function (node) {
         blade.closeChildrenBlades();
-        if (!node.id || node.isFolder) {
+        if (node.id && node.isFolder) {
             blade.currentEntity = node;
             blade.chosenFolderId = node.id;
             blade.refresh();

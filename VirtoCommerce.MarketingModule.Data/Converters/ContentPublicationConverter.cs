@@ -83,6 +83,8 @@ namespace VirtoCommerce.MarketingModule.Data.Converters
                                                                                                   x => x.StartDate, x => x.EndDate, x => x.PredicateVisualTreeSerialized, x => x.ConditionExpression);
 
             target.InjectFrom(patchInjection, source);
+            target.StartDate = source.StartDate;
+            target.EndDate = source.EndDate;
 
             if (!source.ContentItems.IsNullCollection())
             {
