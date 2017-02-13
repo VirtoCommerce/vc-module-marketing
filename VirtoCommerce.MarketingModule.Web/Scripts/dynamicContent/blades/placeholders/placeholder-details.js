@@ -16,7 +16,7 @@
                 autoUpload: true,
                 removeAfterUpload: true
             });
-            
+
             uploader.onSuccessItem = function (fileItem, images, status, headers) {
                 blade.entity.imageUrl = images[0].url;
             };
@@ -34,9 +34,7 @@
             $scope.blade.toolbarCommands = [
 				{
 				    name: "platform.commands.save", icon: 'fa fa-save',
-				    executeMethod: function () {
-				        blade.saveChanges();
-				    },
+				    executeMethod: blade.saveChanges,
 				    canExecuteMethod: function () {
 				        return !angular.equals(blade.originalEntity, blade.entity) && !$scope.formScope.$invalid;
 				    },
@@ -68,9 +66,7 @@
 
 				        dialogService.showConfirmationDialog(dialog);
 				    },
-				    canExecuteMethod: function () {
-				        return true;
-				    },
+				    canExecuteMethod: function () { return true; },
 				    permission: blade.updatePermission
 				}
             ];
@@ -84,8 +80,7 @@
         marketing_dynamicContents_res_contentPlaces.delete({ ids: [blade.entity.id] }, function () {
             blade.parentBlade.initialize();
             bladeNavigationService.closeBlade(blade);
-        },
-        function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); blade.isLoading = false; });
+        });
     }
 
     blade.saveChanges = function () {
@@ -95,16 +90,14 @@
             marketing_dynamicContents_res_contentPlaces.save({}, blade.entity, function (data) {
                 blade.parentBlade.initialize();
                 bladeNavigationService.closeBlade(blade);
-            },
-            function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); blade.isLoading = false; });
+            });
         }
         else {
             marketing_dynamicContents_res_contentPlaces.update({}, blade.entity, function (data) {
                 blade.parentBlade.initialize();
                 blade.originalEntity = angular.copy(blade.entity);
                 blade.isLoading = false;
-            },
-            function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); blade.isLoading = false; });
+            });
         }
     }
 

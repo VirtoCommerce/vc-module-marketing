@@ -5,15 +5,14 @@
 
     blade.refresh = function (parentRefresh) {
         if (blade.isNew) {
-            marketing_res_promotions.getNew({}, initializeBlade, function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+            marketing_res_promotions.getNew(initializeBlade);
         } else {
             marketing_res_promotions.get({ id: blade.currentEntityId }, function (data) {
                 initializeBlade(data);
                 if (parentRefresh) {
                     blade.parentBlade.refresh();
                 }
-            },
-            function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+            });
         }
     };
 
@@ -59,14 +58,10 @@
                 blade.currentEntityId = data.id;
                 initializeToolbar();
                 blade.refresh(true);
-            }, function (error) {
-                bladeNavigationService.setError('Error ' + error.status, blade);
             });
         } else {
             marketing_res_promotions.update({}, blade.currentEntity, function (data) {
                 blade.refresh(true);
-            }, function (error) {
-                bladeNavigationService.setError('Error ' + error.status, blade);
             });
         }
     };
@@ -80,7 +75,7 @@
             && (!blade.currentEntity.dynamicExpression
              || (blade.currentEntity.dynamicExpression.children[0].children.length > 0
               && blade.currentEntity.dynamicExpression.children[3].children.length > 0));
-    }
+    };
 
     blade.onClose = function (closeCallback) {
         bladeNavigationService.showConfirmationIfNeeded(isDirty() && !blade.isNew, $scope.isValid(), blade, $scope.saveChanges, closeCallback, "marketing.dialogs.promotion-save.title", "marketing.dialogs.promotion-save.message");
@@ -115,7 +110,7 @@
     $scope.datepickers = {
         str: false,
         end: false
-    }
+    };
 
     $scope.open = function ($event, which) {
         $event.preventDefault();
@@ -125,10 +120,9 @@
     };
 
     $scope.dateOptions = {
-        'year-format': "'yyyy'",
+        'year-format': "'yyyy'"
     };
 
-    // $scope.formats = ['shortDate', 'dd-MMMM-yyyy', 'yyyy/MM/dd'];
     $scope.format = 'shortDate';
 
     // Dynamic ExpressionBlock
@@ -153,7 +147,7 @@
         _.each(expressionBlock.children, extendElementBlock);
         _.each(expressionBlock.availableChildren, extendElementBlock);
         return expressionBlock;
-    };
+    }
 
     function stripOffUiInformation(expressionElement) {
         expressionElement.availableChildren = undefined;
@@ -171,7 +165,7 @@
         expressionElement.children = _.difference(expressionElement.children, selectedProducts);
 
         _.each(expressionElement.children, stripOffUiInformation);
-    };
+    }
 
 
     initializeToolbar();

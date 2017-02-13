@@ -10,8 +10,7 @@
             blade.currentEntity.placeholders = data.contentPlaces;
             setBreadcrumbs();
             blade.isLoading = false;
-        },
-        function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+        });
     }
 
     blade.initialize = function () {
@@ -26,7 +25,7 @@
                 }
                 el.path = data.path;
                 el.outline = data.outline;
-            }, function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+            });
         });
     }
 
@@ -45,19 +44,19 @@
             blade.chosenFolder = placeholderFolder.parentFolderId;
             blade.currentEntity = undefined;
         }
-    }
+    };
 
     blade.deleteAllPlaceholder = function () {
         blade.entity.contentPlaces = [];
-    }
+    };
 
     blade.deletePlaceholder = function (data) {
-        blade.entity.contentPlaces = _.filter(blade.entity.contentPlaces, function (place) { return !angular.equals(data.id, place.id); });;
-    }
+        blade.entity.contentPlaces = _.filter(blade.entity.contentPlaces, function (place) { return !angular.equals(data.id, place.id); });
+    };
 
     blade.checkPlaceholder = function (data) {
-        return _.filter(blade.entity.contentPlaces, function (ci) { return angular.equals(ci.id, data.id); }).length == 0;
-    }
+        return _.filter(blade.entity.contentPlaces, function (ci) { return angular.equals(ci.id, data.id); }).length === 0;
+    };
 
     function setBreadcrumbs() {
         if (blade.breadcrumbs) {

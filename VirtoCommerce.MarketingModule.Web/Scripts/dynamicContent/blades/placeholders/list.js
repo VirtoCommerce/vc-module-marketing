@@ -11,52 +11,49 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentSearchA
         blade.refresh();
     };
 
-    blade.closeChildrenBlades = function () {
-        angular.forEach(blade.childrenBlades.slice(), function (child) {
-            bladeNavigationService.closeBlade(child);
-        });
-    }
-
     blade.addNew = function () {
-        blade.closeChildrenBlades();
-        var newBlade = {
-            id: 'listItemChild',
-            title: 'marketing.blades.placeholders.add.title',
-            subtitle: 'marketing.blades.placeholders.add.subtitle',
-            chosenFolder: blade.chosenFolderId,
-            controller: 'virtoCommerce.marketingModule.addPlaceholderElementController',
-            template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/dynamicContent/blades/placeholders/add.tpl.html'
-        };
-        bladeNavigationService.showBlade(newBlade, blade);
-    }
+        bladeNavigationService.closeChildrenBlades(blade, function () {
+            var newBlade = {
+                id: 'listItemChild',
+                title: 'marketing.blades.placeholders.add.title',
+                subtitle: 'marketing.blades.placeholders.add.subtitle',
+                chosenFolder: blade.chosenFolderId,
+                controller: 'virtoCommerce.marketingModule.addPlaceholderElementController',
+                template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/dynamicContent/blades/placeholders/add.tpl.html'
+            };
+            bladeNavigationService.showBlade(newBlade, blade);
+        });
+    };
 
     blade.addNewFolder = function (data) {
-        blade.closeChildrenBlades();
-        var newBlade = {
-            id: 'listItemChild',
-            title: 'marketing.blades.placeholders.folder-details.title-new',
-            subtitle: 'marketing.blades.placeholders.folder-details.subtitle-new',
-            entity: data,
-            isNew: true,
-            controller: 'virtoCommerce.marketingModule.addFolderPlaceholderController',
-            template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/dynamicContent/blades/placeholders/folder-details.tpl.html'
-        };
-        bladeNavigationService.showBlade(newBlade, blade);
-    }
+        bladeNavigationService.closeChildrenBlades(blade, function () {
+            var newBlade = {
+                id: 'listItemChild',
+                title: 'marketing.blades.placeholders.folder-details.title-new',
+                subtitle: 'marketing.blades.placeholders.folder-details.subtitle-new',
+                entity: data,
+                isNew: true,
+                controller: 'virtoCommerce.marketingModule.addFolderPlaceholderController',
+                template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/dynamicContent/blades/placeholders/folder-details.tpl.html'
+            };
+            bladeNavigationService.showBlade(newBlade, blade);
+        });
+    };
 
     blade.addNewPlaceholder = function (data) {
-        blade.closeChildrenBlades();
-        var newBlade = {
-            id: 'listItemChild',
-            title: 'marketing.blades.placeholders.placeholder-details.title-new',
-            subtitle: 'marketing.blades.placeholders.placeholder-details.subtitle-new',
-            entity: data,
-            isNew: true,
-            controller: 'virtoCommerce.marketingModule.addPlaceholderController',
-            template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/dynamicContent/blades/placeholders/placeholder-details.tpl.html'
-        };
-        bladeNavigationService.showBlade(newBlade, blade);
-    }
+        bladeNavigationService.closeChildrenBlades(blade, function () {
+            var newBlade = {
+                id: 'listItemChild',
+                title: 'marketing.blades.placeholders.placeholder-details.title-new',
+                subtitle: 'marketing.blades.placeholders.placeholder-details.subtitle-new',
+                entity: data,
+                isNew: true,
+                controller: 'virtoCommerce.marketingModule.addPlaceholderController',
+                template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/dynamicContent/blades/placeholders/placeholder-details.tpl.html'
+            };
+            bladeNavigationService.showBlade(newBlade, blade);
+        });
+    };
 
     blade.refresh = function () {
         blade.isLoading = true;
@@ -80,38 +77,28 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentSearchA
             });
             setBreadcrumbs();
             blade.isLoading = false;
-        }, function (error) {
-            bladeNavigationService.setError('Error ' + error.status, blade);
-            blade.isLoading = false;
         });
-    }
+    };
 
     blade.toolbarCommands = [{
-        name: 'platform.commands.add',
-        icon: 'fa fa-plus',
-        canExecuteMethod: function () {
-            return true;
-        },
+        name: 'platform.commands.refresh', icon: 'fa fa-refresh',
+        canExecuteMethod: function () { return true; },
+        executeMethod: blade.refresh
+    }, {
+        name: 'platform.commands.add', icon: 'fa fa-plus',
+        canExecuteMethod: function () { return true; },
         executeMethod: blade.addNew
     }, {
-        name: 'platform.commands.delete',
-        icon: 'fa fa-trash',
+        name: 'platform.commands.delete', icon: 'fa fa-trash',
         canExecuteMethod: isItemsChecked,
         executeMethod: function () {
             $scope.deleteItems($scope.gridApi.selection.getSelectedRows());
         }
-    }, {
-        name: 'platform.commands.refresh',
-        icon: 'fa fa-refresh',
-        canExecuteMethod: function () {
-            return true;
-        },
-        executeMethod: blade.refresh
     }];
 
     function setBreadcrumbs() {
         if (blade.breadcrumbs) {
-            var breadcrumb = _.find(blade.breadcrumbs, function (b) { return b.id === blade.currentEntity.id });
+            var breadcrumb = _.find(blade.breadcrumbs, function (b) { return b.id === blade.currentEntity.id; });
             if (!breadcrumb) {
                 breadCrumb = generateBreadcrumb(blade.currentEntity);
                 blade.breadcrumbs.push(breadCrumb);
@@ -131,7 +118,7 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentSearchA
             navigate: function () {
                 $scope.selectNode(node);
             }
-        }
+        };
     }
 
     function isItemsChecked() {
@@ -145,23 +132,24 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentSearchA
         } else {
             blade.refresh();
         }
-    }
+    };
 
     $scope.clearKeyword = function () {
         blade.searchKeyword = null;
         blade.refresh();
-    }
+    };
 
     $scope.selectNode = function (node) {
-        blade.closeChildrenBlades();
-        if (node.id && node.isFolder) {
-            blade.currentEntity = node;
-            blade.chosenFolderId = node.id;
-            blade.refresh();
-        } else {
-            $scope.manageItem(node);
-        }
-    }
+        bladeNavigationService.closeChildrenBlades(blade, function () {
+            if (node.id && node.isFolder) {
+                blade.currentEntity = node;
+                blade.chosenFolderId = node.id;
+                blade.refresh();
+            } else {
+                $scope.manageItem(node);
+            }
+        });
+    };
 
     $scope.manageItem = function (node) {
         var newBlade = {
@@ -193,23 +181,17 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentSearchA
                     var folderItems = _.filter(items, function (i) { return i.isFolder });
                     if (folderItems.length) {
                         dynamicContentFoldersApi.delete({
-                            ids: _.map(folderItems, function (f) { return f.id })
+                            ids: _.pluck(folderItems, 'id')
                         }, function () {
                             blade.refresh();
-                        }, function (error) {
-                            bladeNavigationService.setError('Error ' + error.status, blade);
-                            blade.isLoading = false();
                         });
                     }
                     var placeholderItems = _.filter(items, function (i) { return !i.isFolder });
                     if (placeholderItems.length) {
                         dynamicContentPlaceholdersApi.delete({
-                            ids: _.map(placeholderItems, function (i) { return i.id })
+                            ids: _.pluck(placeholderItems, 'id')
                         }, function () {
                             blade.refresh();
-                        }, function (error) {
-                            bladeNavigationService.setError('Error ' + error.status, blade);
-                            blade.isLoading = false();
                         });
                     }
                 }

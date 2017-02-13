@@ -48,11 +48,13 @@
                 message: "marketing.dialogs.promotions-delete.message",
                 callback: function (remove) {
                     if (remove) {
-                        closeChildrenBlades();
+                        bladeNavigationService.closeChildrenBlades(blade, function () {
+                            blade.isLoading = true;
 
-                        var itemIds = _.pluck(list, 'id');
-                        promotions.remove({ ids: itemIds }, function () {
-                            blade.refresh();
+                            var itemIds = _.pluck(list, 'id');
+                            promotions.remove({ ids: itemIds }, function () {
+                                blade.refresh();
+                            });
                         });
                     }
                 }
@@ -60,40 +62,30 @@
             dialogService.showConfirmationDialog(dialog);
         };
 
-        function closeChildrenBlades() {
-            angular.forEach(blade.childrenBlades.slice(), function (child) {
-                bladeNavigationService.closeBlade(child);
-            });
-        }
-
         blade.headIcon = 'fa-area-chart';
 
         blade.toolbarCommands = [
             {
                 name: "platform.commands.refresh", icon: 'fa fa-refresh',
                 executeMethod: blade.refresh,
-                canExecuteMethod: function () {
-                    return true;
-                }
+                canExecuteMethod: function () { return true; }
             },
             {
                 name: "platform.commands.add", icon: 'fa fa-plus',
                 executeMethod: function () {
-                    closeChildrenBlades();
-
-                    var newBlade = {
-                        id: 'listItemChild',
-                        title: 'marketing.blades.promotion-detail.title-new',
-                        subtitle: blade.subtitle,
-                        isNew: true,
-                        controller: 'virtoCommerce.marketingModule.promotionDetailController',
-                        template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/promotion/blades/promotion-detail.tpl.html'
-                    };
-                    bladeNavigationService.showBlade(newBlade, blade);
+                    bladeNavigationService.closeChildrenBlades(blade, function () {
+                        var newBlade = {
+                            id: 'listItemChild',
+                            title: 'marketing.blades.promotion-detail.title-new',
+                            subtitle: blade.subtitle,
+                            isNew: true,
+                            controller: 'virtoCommerce.marketingModule.promotionDetailController',
+                            template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/promotion/blades/promotion-detail.tpl.html'
+                        };
+                        bladeNavigationService.showBlade(newBlade, blade);
+                    });
                 },
-                canExecuteMethod: function () {
-                    return true;
-                },
+                canExecuteMethod: function () { return true; },
                 permission: 'marketing:create'
             },
             {

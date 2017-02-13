@@ -1,16 +1,13 @@
 ﻿angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.addFolderPlaceholderController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.folders', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', function ($scope, marketing_dynamicContents_res_folders, bladeNavigationService, dialogService) {
-    $scope.setForm = function (form) {
-        $scope.formScope = form;
-    }
-
     var blade = $scope.blade;
     blade.updatePermission = 'marketing:update';
+
     blade.originalEntity = angular.copy(blade.entity);
 
     blade.initialize = function () {
         if (!blade.isNew) {
-            $scope.blade.toolbarCommands = [
+            blade.toolbarCommands = [
 			    {
 			        name: "platform.commands.save", icon: 'fa fa-save',
 			        executeMethod: function () {
@@ -33,60 +30,59 @@
                 },
 			    {
 			        name: "platform.commands.delete", icon: 'fa fa-trash-o',
-				    executeMethod: function () {
-				    	var dialog = {
-				    		id: "confirmDeleteContentPlaceholdersFolder",
-				    		title: "marketing.dialogs.placeholders-folder-delete.title",
-				    		message: "marketing.dialogs.placeholders-folder-delete.message",
-				    		callback: function (remove) {
-				    			if (remove) {
-				    				blade.deleteFolder(blade.entity);
-				    				bladeNavigationService.closeBlade(blade);
-				    			}
-				    		}
-				    	};
+			        executeMethod: function () {
+			            var dialog = {
+			                id: "confirmDeleteContentPlaceholdersFolder",
+			                title: "marketing.dialogs.placeholders-folder-delete.title",
+			                message: "marketing.dialogs.placeholders-folder-delete.message",
+			                callback: function (remove) {
+			                    if (remove) {
+			                        blade.deleteFolder(blade.entity);
+			                        bladeNavigationService.closeBlade(blade);
+			                    }
+			                }
+			            };
 
-				    	dialogService.showConfirmationDialog(dialog);
-				    },
-				    canExecuteMethod: function () {
-				        return true;
-				    },
-				    permission: blade.updatePermission
+			            dialogService.showConfirmationDialog(dialog);
+			        },
+			        canExecuteMethod: function () {
+			            return true;
+			        },
+			        permission: blade.updatePermission
 			    }
             ];
         }
 
         blade.isLoading = false;
-    }
+    };
 
     blade.saveChanges = function () {
         if (blade.isNew) {
             marketing_dynamicContents_res_folders.save({}, blade.entity, function (data) {
-            	blade.parentBlade.initialize();
-            	bladeNavigationService.closeBlade(blade);
-            },
-            function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); });
+                blade.parentBlade.initialize();
+                bladeNavigationService.closeBlade(blade);
+            });
         }
         else {
             marketing_dynamicContents_res_folders.update({}, blade.entity, function (data) {
                 blade.originalEntity = angular.copy(blade.entity);
                 blade.parentBlade.initialize();
-            },
-            function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); });
+            });
         }
-    }
+    };
 
     blade.deleteFolder = function (data) {
-    	marketing_dynamicContents_res_folders.delete({ ids: [data.id] }, function () {
-    		var pathSteps = data.outline.split(';');
-    		var id = pathSteps[pathSteps.length - 2];
-    		blade.parentBlade.chosenFolder = id;
-    		blade.parentBlade.initialize();
-    	},
-        function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); blade.isLoading = false; });
-    }
+        marketing_dynamicContents_res_folders.delete({ ids: [data.id] }, function () {
+            var pathSteps = data.outline.split(';');
+            var id = pathSteps[pathSteps.length - 2];
+            blade.parentBlade.chosenFolder = id;
+            blade.parentBlade.initialize();
+        });
+    };
 
-    $scope.blade.headIcon = 'fa-location-arrow';
+    $scope.setForm = function (form) { $scope.formScope = form; };
+
+    blade.headIcon = 'fa-location-arrow';
 
     blade.initialize();
 }]);

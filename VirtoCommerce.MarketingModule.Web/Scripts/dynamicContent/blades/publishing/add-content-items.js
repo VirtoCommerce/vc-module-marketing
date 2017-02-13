@@ -10,8 +10,7 @@
             blade.currentEntity.items = data.contentItems;
             setBreadcrumbs();
             blade.isLoading = false;
-        },
-        function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+        });
     }
 
     blade.initialize = function () {
@@ -30,7 +29,7 @@
                 el.outline = data.outline;
                 el.dynamicProperties = data.dynamicProperties;
                 el.objectType = data.objectType;
-            }, function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+            });
         });
     }
 
@@ -47,7 +46,7 @@
     }
 
     blade.checkContentItem = function (data) {
-        return _.filter(blade.entity.contentItems, function (ci) { return angular.equals(ci.id, data.id); }).length == 0;
+        return _.filter(blade.entity.contentItems, function (ci) { return angular.equals(ci.id, data.id); }).length === 0;
     }
 
     blade.folderClick = function (contentItem) {

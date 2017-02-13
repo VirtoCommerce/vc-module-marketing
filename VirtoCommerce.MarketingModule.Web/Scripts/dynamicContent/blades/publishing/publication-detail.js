@@ -1,9 +1,5 @@
 ﻿angular.module('virtoCommerce.marketingModule')
-.controller('virtoCommerce.marketingModule.addPublishingFirstStepController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.contentPublications', 'platformWebApp.bladeNavigationService', 'virtoCommerce.coreModule.common.dynamicExpressionService', 'virtoCommerce.storeModule.stores', 'platformWebApp.dialogService', function ($scope, contentPublications, bladeNavigationService, dynamicExpressionService, stores, dialogService) {
-    $scope.setForm = function (form) {
-        $scope.formScope = form;
-    }
-
+.controller('virtoCommerce.marketingModule.publicationDetailController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.contentPublications', 'platformWebApp.bladeNavigationService', 'virtoCommerce.coreModule.common.dynamicExpressionService', 'virtoCommerce.storeModule.stores', 'platformWebApp.dialogService', function ($scope, contentPublications, bladeNavigationService, dynamicExpressionService, stores, dialogService) {
     var blade = $scope.blade;
     blade.updatePermission = 'marketing:update';
 
@@ -12,7 +8,7 @@
             contentPublications.get({ id: blade.entity.id }, function (data) {
                 initializeBlade(data);
 
-                $scope.blade.toolbarCommands = [
+                blade.toolbarCommands = [
 				    {
 				        name: "platform.commands.save", icon: 'fa fa-save',
 				        executeMethod: function () {
@@ -47,20 +43,16 @@
 				                    }
 				                }
 				            };
-
 				            dialogService.showConfirmationDialog(dialog);
 				        },
-				        canExecuteMethod: function () {
-				            return true;
-				        },
+				        canExecuteMethod: function () { return true; },
 				        permission: blade.updatePermission
 				    }
                 ];
-            },
-            function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); });
+            });
         }
         else {
-            contentPublications.getNew(initializeBlade, function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); });
+            contentPublications.getNew(initializeBlade);
         }
     }
 
@@ -77,72 +69,62 @@
     }
 
     blade.addPlaceholders = function () {
-        blade.closeChildrenBlades();
-
-        var newBlade = {
-            id: 'publishing_add_placeholders',
-            title: 'marketing.blades.publishing.add-placeholders.title',
-            subtitle: 'marketing.blades.publishing.add-placeholders.subtitle',
-            entity: blade.entity,
-            controller: 'virtoCommerce.marketingModule.addPublishingPlaceholdersStepController',
-            template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/dynamicContent/blades/publishing/add-placeholders.tpl.html'
-        };
-        bladeNavigationService.showBlade(newBlade, $scope.blade);
+        bladeNavigationService.closeChildrenBlades(blade, function () {
+            var newBlade = {
+                id: 'publishing_add_placeholders',
+                title: 'marketing.blades.publishing.add-placeholders.title',
+                subtitle: 'marketing.blades.publishing.add-placeholders.subtitle',
+                entity: blade.entity,
+                controller: 'virtoCommerce.marketingModule.addPublishingPlaceholdersStepController',
+                template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/dynamicContent/blades/publishing/add-placeholders.tpl.html'
+            };
+            bladeNavigationService.showBlade(newBlade, blade);
+        });
     }
 
     blade.addContentItems = function () {
-        blade.closeChildrenBlades();
-
-        var newBlade = {
-            id: 'publishing_add_content_items',
-            title: 'marketing.blades.publishing.add-content-items.title',
-            subtitle: 'marketing.blades.publishing.add-content-items.subtitle',
-            entity: blade.entity,
-            controller: 'virtoCommerce.marketingModule.addPublishingContentItemsStepController',
-            template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/dynamicContent/blades/publishing/add-content-items.tpl.html'
-        };
-        bladeNavigationService.showBlade(newBlade, $scope.blade);
-    }
-
-    blade.closeChildrenBlades = function () {
-        angular.forEach(blade.childrenBlades.slice(), function (child) {
-            bladeNavigationService.closeBlade(child);
+        bladeNavigationService.closeChildrenBlades(blade, function () {
+            var newBlade = {
+                id: 'publishing_add_content_items',
+                title: 'marketing.blades.publishing.add-content-items.title',
+                subtitle: 'marketing.blades.publishing.add-content-items.subtitle',
+                entity: blade.entity,
+                controller: 'virtoCommerce.marketingModule.addPublishingContentItemsStepController',
+                template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/dynamicContent/blades/publishing/add-content-items.tpl.html'
+            };
+            bladeNavigationService.showBlade(newBlade, blade);
         });
     }
 
     blade.saveChanges = function () {
-        blade.closeChildrenBlades();
+        bladeNavigationService.closeChildrenBlades(blade, function () {
+            blade.isLoading = true;
+            if (blade.entity.dynamicExpression) {
+                blade.entity.dynamicExpression.availableChildren = undefined;
+                _.each(blade.entity.dynamicExpression.children, stripOffUiInformation);
+            }
 
-        blade.isLoading = true;
-        if (blade.entity.dynamicExpression) {
-            blade.entity.dynamicExpression.availableChildren = undefined;
-            _.each(blade.entity.dynamicExpression.children, stripOffUiInformation);
-        }
+            if (blade.isNew) {
+                contentPublications.save({}, blade.entity, function (data) {
+                    blade.entity = data;
+                    blade.originalEntity = angular.copy(data);
 
-        if (blade.isNew) {
-            contentPublications.save({}, blade.entity, function (data) {
-                blade.entity = data;
-                blade.originalEntity = angular.copy(data);
+                    blade.isNew = false;
+                    blade.initializeBlade();
+                    blade.parentBlade.initialize();
+                });
+            }
+            else {
+                contentPublications.update({}, blade.entity, function (data) {
+                    blade.entity = data;
+                    blade.originalEntity = angular.copy(data);
 
-                blade.isNew = false;
-                blade.initializeBlade();
-                blade.parentBlade.isLoading = true;
-                blade.parentBlade.initialize();
-            },
-            function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); });
-        }
-        else {
-            contentPublications.update({}, blade.entity, function (data) {
-                blade.entity = data;
-                blade.originalEntity = angular.copy(data);
-
-                blade.isNew = false;
-                blade.initializeBlade();
-                blade.parentBlade.isLoading = true;
-                blade.parentBlade.initialize();
-            },
-            function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); });
-        }
+                    blade.isNew = false;
+                    blade.initializeBlade();
+                    blade.parentBlade.initialize();
+                });
+            }
+        });
     }
 
     blade.availableSave = function () {
@@ -153,10 +135,8 @@
 
     blade.delete = function () {
         contentPublications.delete({ ids: [blade.entity.id] }, function () {
-            blade.parentBlade.isLoading = true;
             blade.parentBlade.initialize();
-        },
-        function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); });
+        });
     }
 
     blade.checkDifferense = function () {
@@ -193,7 +173,9 @@
         }
 
         return retVal;
-    }
+    };
+
+    $scope.setForm = function (form) { $scope.formScope = form; };
 
     // datepicker
     $scope.datepickers = {
@@ -217,7 +199,7 @@
     $scope.formats = ['shortDate', 'dd-MMMM-yyyy', 'yyyy/MM/dd'];
     $scope.format = $scope.formats[0];
 
-    $scope.blade.headIcon = 'fa-paperclip';
+    blade.headIcon = 'fa-paperclip';
 
     // Dynamic ExpressionBlock
     function extendElementBlock(expressionBlock) {

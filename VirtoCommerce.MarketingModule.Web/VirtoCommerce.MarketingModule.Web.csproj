@@ -192,8 +192,8 @@
     <Content Include="Scripts\dynamicContent\blades\publishing\add-content-items.js" />
     <Content Include="Scripts\dynamicContent\blades\publishing\add-content-items.tpl.html" />
     <Content Include="Scripts\dynamicContent\blades\publishing\content-items.tpl.html" />
-    <Content Include="Scripts\dynamicContent\blades\publishing\publishing-main-step.js" />
-    <Content Include="Scripts\dynamicContent\blades\publishing\publishing-main-step.tpl.html" />
+    <Content Include="Scripts\dynamicContent\blades\publishing\publication-detail.js" />
+    <Content Include="Scripts\dynamicContent\blades\publishing\publication-detail.tpl.html" />
     <Content Include="Scripts\dynamicContent\blades\publishing\add-placeholders.js" />
     <Content Include="Scripts\dynamicContent\blades\publishing\add-placeholders.tpl.html" />
     <Content Include="Scripts\dynamicContent\blades\publishing\placeholders.tpl.html" />
@@ -214,7 +214,7 @@
     <Content Include="Scripts\promotion\blades\promotion-list.js" />
     <Content Include="Scripts\promotion\blades\promotion-list.tpl.html" />
     <Content Include="Scripts\marketing.js" />
-    <Content Include="Scripts\promotion\resources\marketing.js" />
+    <Content Include="Scripts\promotion\resources\promotions.js" />
     <Content Include="Scripts\promotion\widgets\dashboard.js" />
     <None Include="web.config" />
     <None Include="app.config" />

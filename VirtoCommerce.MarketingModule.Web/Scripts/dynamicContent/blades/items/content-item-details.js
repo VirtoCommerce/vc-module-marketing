@@ -1,13 +1,11 @@
 ﻿angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.addContentItemsController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.contentItems', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.dynamicProperties.dictionaryItemsApi', 'platformWebApp.settings',
     function ($scope, marketing_dynamicContents_res_contentItems, bladeNavigationService, dialogService, dictionaryItemsApi, settings) {
-        $scope.setForm = function (form) {
-            $scope.formScope = form;
-        }
-
         var blade = $scope.blade;
         blade.updatePermission = 'marketing:update';
 
+        $scope.setForm = function (form) { $scope.formScope = form; };
+        
         blade.initialize = function () {
             blade.toolbarCommands = [];
 
@@ -77,16 +75,15 @@
             blade.originalEntity = angular.copy(blade.entity);
 
             blade.isLoading = false;
-        }
+        };
 
         blade.delete = function () {
             blade.isLoading = true;
             marketing_dynamicContents_res_contentItems.delete({ ids: [blade.entity.id] }, function () {
                 blade.parentBlade.initializeBlade();
                 bladeNavigationService.closeBlade(blade);
-            },
-            function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); blade.isLoading = false; });
-        }
+            });
+        };
 
         blade.saveChanges = function () {
             blade.isLoading = true;
@@ -95,18 +92,16 @@
                 marketing_dynamicContents_res_contentItems.save({}, blade.entity, function (data) {
                     blade.parentBlade.initializeBlade();
                     bladeNavigationService.closeBlade(blade);
-                },
-                function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); blade.isLoading = false; });
+                });
             }
             else {
                 marketing_dynamicContents_res_contentItems.update({}, blade.entity, function (data) {
                     blade.parentBlade.initializeBlade();
                     blade.originalEntity = angular.copy(blade.entity);
                     blade.isLoading = false;
-                },
-                function (error) { bladeNavigationService.setError('Error ' + error.status, $scope.blade); blade.isLoading = false; });
+                });
             }
-        }
+        };
 
         $scope.editDictionary = function (property) {
             var newBlade = {

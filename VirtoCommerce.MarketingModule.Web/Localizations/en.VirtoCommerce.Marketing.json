@@ -258,15 +258,15 @@
         "dialogs": {
             "content-item-delete": {
                 "title": "Delete confirmation",
-                "message": "Are you sure you want to delete content item?"
+                "message": "Are you sure you want to delete this content item?"
             },
             "placeholders-folder-delete": {
                 "title": "Delete confirmation",
-                "message": "Are you sure you want to delete content placeholders folder?"
+                "message": "Are you sure you want to delete this content placeholders folder?"
             },
             "content-item-folder-delete": {
                 "title": "Delete confirmation",
-                "message": "Are you sure you want to delete content items folder?"
+                "message": "Are you sure you want to delete this content items folder?"
             },
             "content-folder-delete": {
                 "title": "Delete confirmation",
@@ -274,11 +274,11 @@
             },
             "publication-delete": {
                 "title": "Delete confirmation",
-                "message": "Are you sure you want to delete publication?"
+                "message": "Are you sure you want to delete this publication?"
             },
             "content-placeholder-delete": {
                 "title": "Delete confirmation",
-                "message": "Are you sure you want to delete content placeholder?"
+                "message": "Are you sure you want to delete this content placeholder?"
             },
             "promotions-delete": {
                 "title": "Delete confirmation",
