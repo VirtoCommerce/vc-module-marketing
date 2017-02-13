@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using VirtoCommerce.Domain.Marketing.Model;
+using VirtoCommerce.Domain.Marketing.Model.DynamicContent.Search;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
@@ -23,15 +24,17 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
 
     public sealed class MarketingExportImport
     {
-        private readonly IMarketingSearchService _marketingSearchService;
+        private readonly IPromotionSearchService _promotionSearchService;
+        private readonly IDynamicContentSearchService _dynamicContentSearchService;
         private readonly IPromotionService _promotionService;
         private readonly IDynamicContentService _dynamicContentService;
 
-        public MarketingExportImport(IMarketingSearchService marketingSearchService, IPromotionService promotionService, IDynamicContentService dynamicContentService)
+        public MarketingExportImport(IPromotionSearchService promotionSearchService, IPromotionService promotionService, IDynamicContentService dynamicContentService, IDynamicContentSearchService dynamicContentSearchService)
         {
-            _marketingSearchService = marketingSearchService;
+            _promotionSearchService = promotionSearchService;
             _promotionService = promotionService;
             _dynamicContentService = dynamicContentService;
+            _dynamicContentSearchService = dynamicContentSearchService;
         }
 
         public void DoExport(Stream backupStream, Action<ExportImportProgressInfo> progressCallback)
@@ -188,67 +191,36 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
 	        var result = new BackupObject();
             var progressInfo = new ExportImportProgressInfo { Description = "Search promotions..." };
             progressCallback(progressInfo);
-			var allPromotions = _marketingSearchService.SearchResources(new MarketingSearchCriteria
+			var allPromotions = _promotionSearchService.SearchPromotions(new Domain.Marketing.Model.Promotions.Search.PromotionSearchCriteria
             {
-                Take = int.MaxValue,
-                ResponseGroup = SearchResponseGroup.WithPromotions.ToString()
-            }).Promotions;
+                Take = int.MaxValue
+            }).Results;
 
 			progressInfo.Description = String.Format("{0} promotions loading...", allPromotions.Count());
             progressCallback(progressInfo);
 			result.Promotions = allPromotions.Select(x=> _promotionService.GetPromotionById(x.Id)).ToList();
 
-			progressInfo.Description = "Search dynamic content objects...";
-			 progressCallback(progressInfo);
+            progressInfo.Description = "Search dynamic content objects...";
+            progressCallback(progressInfo);
 
-            var searchResult = SearchInFolder(null);
-            var allFolderSearchResults = searchResult != null ? searchResult.Traverse(ChildrenForFolder).ToArray() : null;
+            progressInfo.Description = String.Format("Loading folders...");
+            progressCallback(progressInfo);
+            result.ContentFolders = _dynamicContentSearchService.SearchFolders(new DynamicContentFolderSearchCriteria { Take = int.MaxValue }).Results.ToList();
 
+            progressInfo.Description = String.Format("Loading places...");
+            progressCallback(progressInfo);
+            result.ContentPlaces = _dynamicContentSearchService.SearchContentPlaces(new DynamicContentPlaceSearchCriteria { Take = int.MaxValue }).Results.ToList();
 
-            if (allFolderSearchResults != null)
-            {
-				progressInfo.Description = String.Format("Loading folders...");
-				progressCallback(progressInfo);
-				result.ContentFolders = allFolderSearchResults.SelectMany(x => x.ContentFolders).ToList();
+            progressInfo.Description = String.Format("Loading contents...");
+            progressCallback(progressInfo);
+            result.ContentItems = _dynamicContentSearchService.SearchContentItems(new DynamicContentItemSearchCriteria { Take = int.MaxValue }).Results.ToList();
 
-				progressInfo.Description = String.Format("Loading places...");
-				progressCallback(progressInfo);
-                result.ContentPlaces = allFolderSearchResults.SelectMany(x => x.ContentPlaces)
-															 .Select(x => _dynamicContentService.GetPlaceById(x.Id))
-															 .ToList();
+            progressInfo.Description = String.Format("Loading publications...");
+            progressCallback(progressInfo);
+            result.ContentPublications = _dynamicContentSearchService.SearchContentPublications(new DynamicContentPublicationSearchCriteria { Take = int.MaxValue }).Results.ToList();
 
-				progressInfo.Description = String.Format("Loading contents...");
-				progressCallback(progressInfo);
-                result.ContentItems = allFolderSearchResults.SelectMany(x => x.ContentItems)
-														    .Select(x => _dynamicContentService.GetContentItemById(x.Id))
-															.ToList();
-	
-				progressInfo.Description = String.Format("Loading publications...");
-				progressCallback(progressInfo);
-				result.ContentPublications = allFolderSearchResults.SelectMany(x => x.ContentPublications)
-																   .Select(x => _dynamicContentService.GetPublicationById(x.Id))
-																   .ToList();
-            }
             return result;
         }
-
-		private IEnumerable<MarketingSearchResult> ChildrenForFolder(MarketingSearchResult result)
-        {
-            return result != null && result.ContentFolders != null
-				? result.ContentFolders.Select(x => SearchInFolder(x.Id))
-                : null;
-        }
-
-		private MarketingSearchResult SearchInFolder(string folderId)
-        {
-            return _marketingSearchService.SearchResources(new MarketingSearchCriteria
-            {
-				FolderId = folderId,
-                Take = int.MaxValue,
-                ResponseGroup = (SearchResponseGroup.WithContentItems | SearchResponseGroup.WithContentPlaces | SearchResponseGroup.WithContentPublications | SearchResponseGroup.WithFolders).ToString()
-            });
-        }
-
         #endregion     
 
     }

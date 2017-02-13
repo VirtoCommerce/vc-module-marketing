@@ -12,15 +12,12 @@ namespace VirtoCommerce.MarketingModule.Web.Model
 	/// Represent dynamic content publication and link content and places together
 	/// may contain conditional expressions applicability 
 	/// </summary>
-	public class DynamicContentPublication : AuditableEntity
-	{
-		public string Name { get; set; }
-		public string Description { get; set; }
+	public class DynamicContentPublication : DynamicContentListEntry
+    {
 		/// <summary>
 		/// Priority used for chose publication in combination
 		/// </summary>
 		public int Priority { get; set; }
-		public bool IsActive { get; set; }
 		/// <summary>
 		/// Store where the publication is active 
 		/// </summary>

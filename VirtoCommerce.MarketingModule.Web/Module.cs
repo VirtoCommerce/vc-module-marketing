@@ -47,8 +47,9 @@ namespace VirtoCommerce.MarketingModule.Web
             _container.RegisterType<IPromotionService, PromotionServiceImpl>();
             _container.RegisterType<IMarketingDynamicContentEvaluator, DefaultDynamicContentEvaluatorImpl>();
             _container.RegisterType<IDynamicContentService, DynamicContentServiceImpl>();
-            _container.RegisterType<IMarketingSearchService, MarketingSearchServiceImpl>();
             _container.RegisterType<IMarketingPromoEvaluator, DefaultPromotionEvaluatorImpl>();
+            _container.RegisterType<IPromotionSearchService, MarketingSearchServiceImpl>();
+            _container.RegisterType<IDynamicContentSearchService, MarketingSearchServiceImpl>();
         }
 
         public override void PostInitialize()

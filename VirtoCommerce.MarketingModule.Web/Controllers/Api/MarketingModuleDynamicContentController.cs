@@ -1,10 +1,15 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
+using VirtoCommerce.Domain.Commerce.Model.Search;
+using VirtoCommerce.Domain.Marketing.Model.DynamicContent.Search;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Web.Converters;
 using VirtoCommerce.MarketingModule.Web.Security;
+using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Serialization;
 using VirtoCommerce.Platform.Core.Web.Security;
 using coreModel = VirtoCommerce.Domain.Marketing.Model;
@@ -20,15 +25,116 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         private readonly IDynamicContentService _dynamicContentService;
         private readonly IMarketingDynamicContentEvaluator _dynamicContentEvaluator;
         private readonly IExpressionSerializer _expressionSerializer;
+        private readonly IDynamicContentSearchService _dynamicConentSearchService;
 
         public MarketingModuleDynamicContentController(IDynamicContentService dynamicContentService, IMarketingExtensionManager marketingExtensionManager,
-            IMarketingDynamicContentEvaluator dynamicContentEvaluator, IExpressionSerializer expressionSerializer)
+            IMarketingDynamicContentEvaluator dynamicContentEvaluator, IExpressionSerializer expressionSerializer, IDynamicContentSearchService dynamicConentSearchService)
         {
             _dynamicContentService = dynamicContentService;
             _marketingExtensionManager = marketingExtensionManager;
             _dynamicContentEvaluator = dynamicContentEvaluator;
             _expressionSerializer = expressionSerializer;
+            _dynamicConentSearchService = dynamicConentSearchService;
         }
+
+        /// <summary>
+        /// Search content places list entries by given criteria
+        /// </summary>
+        /// <param name="criteria">criteria</param>
+        [HttpPost]
+        [Route("contentplaces/listentries/search")]
+        [ResponseType(typeof(GenericSearchResult<webModel.DynamicContentListEntry>))]
+        public IHttpActionResult DynamicContentPlaceListEntriesSearch(DynamicContentPlaceSearchCriteria criteria)
+        {
+            var retVal = new GenericSearchResult<webModel.DynamicContentListEntry>();
+            retVal.Results = new List<webModel.DynamicContentListEntry>();
+            var foldersSearchResult = _dynamicConentSearchService.SearchFolders(new DynamicContentFolderSearchCriteria { FolderId = criteria.FolderId, Keyword = criteria.Keyword, Take = criteria.Take, Skip = criteria.Skip, Sort = criteria.Sort });
+            retVal.Results.AddRange(foldersSearchResult.Results.Select(x => x.ToWebModel()));
+            retVal.TotalCount = foldersSearchResult.TotalCount;
+
+            criteria.Skip = Math.Max(0, criteria.Skip - retVal.TotalCount);
+            criteria.Take = Math.Max(0, criteria.Take - retVal.Results.Count());
+
+            var placesSearchResult = _dynamicConentSearchService.SearchContentPlaces(criteria);
+            retVal.TotalCount += placesSearchResult.TotalCount;
+            retVal.Results.AddRange(placesSearchResult.Results.Select(x=>x.ToWebModel()));
+
+            return Ok(retVal);
+        }
+
+        /// <summary>
+        /// Search dynamic content places by given criteria
+        /// </summary>
+        /// <param name="criteria">criteria</param>
+        [HttpPost]
+        [Route("contentplaces/search")]
+        [ResponseType(typeof(GenericSearchResult<webModel.DynamicContentPlace>))]
+        public IHttpActionResult DynamicContentPlacesSearch(DynamicContentPlaceSearchCriteria criteria)
+        {
+            var retVal = new GenericSearchResult<webModel.DynamicContentPlace>();          
+            var placesSearchResult = _dynamicConentSearchService.SearchContentPlaces(criteria);
+            retVal.TotalCount = placesSearchResult.TotalCount;
+            retVal.Results = placesSearchResult.Results.Select(x => x.ToWebModel()).ToList();
+            return Ok(retVal);
+        }
+
+        /// <summary>
+        /// Search content places list entries by given criteria
+        /// </summary>
+        /// <param name="criteria">criteria</param>
+        [HttpPost]
+        [Route("contentitems/listentries/search")]
+        [ResponseType(typeof(GenericSearchResult<webModel.DynamicContentListEntry>))]
+        public IHttpActionResult DynamicContentItemsEntriesSearch(DynamicContentItemSearchCriteria criteria)
+        {
+            var retVal = new GenericSearchResult<webModel.DynamicContentListEntry>();
+            retVal.Results = new List<webModel.DynamicContentListEntry>();
+            var foldersSearchResult = _dynamicConentSearchService.SearchFolders(new DynamicContentFolderSearchCriteria { FolderId = criteria.FolderId, Keyword = criteria.Keyword, Take = criteria.Take, Skip = criteria.Skip, Sort = criteria.Sort });
+            retVal.Results.AddRange(foldersSearchResult.Results.Select(x => x.ToWebModel()));
+            retVal.TotalCount = foldersSearchResult.TotalCount;
+
+            criteria.Skip = Math.Max(0, criteria.Skip - retVal.TotalCount);
+            criteria.Take = Math.Max(0, criteria.Take - retVal.Results.Count());
+
+            var itemsSearchResult = _dynamicConentSearchService.SearchContentItems(criteria);
+            retVal.TotalCount += itemsSearchResult.TotalCount;
+            retVal.Results.AddRange(itemsSearchResult.Results.Select(x => x.ToWebModel()));
+
+            return Ok(retVal);
+        }
+
+        /// <summary>
+        /// Search dynamic content items by given criteria
+        /// </summary>
+        /// <param name="criteria">criteria</param>
+        [HttpPost]
+        [Route("contentitems/search")]
+        [ResponseType(typeof(GenericSearchResult<webModel.DynamicContentItem>))]
+        public IHttpActionResult DynamicContentItemsSearch(DynamicContentItemSearchCriteria criteria)
+        {
+            var retVal = new GenericSearchResult<webModel.DynamicContentItem>();
+            var itemsSearchResult = _dynamicConentSearchService.SearchContentItems(criteria);
+            retVal.TotalCount = itemsSearchResult.TotalCount;
+            retVal.Results = itemsSearchResult.Results.Select(x => x.ToWebModel()).ToList();
+            return Ok(retVal);
+        }
+
+        /// <summary>
+        /// Search dynamic content items by given criteria
+        /// </summary>
+        /// <param name="criteria">criteria</param>
+        [HttpPost]
+        [Route("contentpublications/search")]
+        [ResponseType(typeof(GenericSearchResult<webModel.DynamicContentPublication>))]
+        public IHttpActionResult DynamicContentPublicationsSearch(DynamicContentPublicationSearchCriteria criteria)
+        {
+            var retVal = new GenericSearchResult<webModel.DynamicContentPublication>();
+            var publicationSearchResult = _dynamicConentSearchService.SearchContentPublications(criteria);
+            retVal.TotalCount = publicationSearchResult.TotalCount;
+            retVal.Results = publicationSearchResult.Results.Select(x => x.ToWebModel()).ToList();
+            return Ok(retVal);
+        }
+
 
         /// <summary>
         /// Get dynamic content for given placeholders
