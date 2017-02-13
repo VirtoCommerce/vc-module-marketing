@@ -2,6 +2,8 @@
 using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
+using VirtoCommerce.Domain.Commerce.Model.Search;
+using VirtoCommerce.Domain.Marketing.Model.Promotions.Search;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.MarketingModule.Web.Converters;
@@ -21,15 +23,32 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         private readonly IPromotionService _promotionService;
         private readonly IMarketingPromoEvaluator _promoEvaluator;
         private readonly IExpressionSerializer _expressionSerializer;
+        private readonly IPromotionSearchService _promoSearchService;
 
-        public MarketingModulePromotionController(IPromotionService promotionService, IMarketingExtensionManager promotionManager, IMarketingPromoEvaluator promoEvaluator, IExpressionSerializer expressionSerializer)
+        public MarketingModulePromotionController(IPromotionService promotionService, IMarketingExtensionManager promotionManager, IMarketingPromoEvaluator promoEvaluator, IExpressionSerializer expressionSerializer, IPromotionSearchService promoSearchService)
         {
             _marketingExtensionManager = promotionManager;
             _promotionService = promotionService;
             _promoEvaluator = promoEvaluator;
             _expressionSerializer = expressionSerializer;
+            _promoSearchService = promoSearchService;
         }
 
+        /// <summary>
+        /// Search dynamic content places by given criteria
+        /// </summary>
+        /// <param name="criteria">criteria</param>
+        [HttpPost]
+        [Route("search")]
+        [ResponseType(typeof(GenericSearchResult<webModel.Promotion>))]
+        public IHttpActionResult PromotionsSearch(PromotionSearchCriteria criteria)
+        {
+            var retVal = new GenericSearchResult<webModel.Promotion>();
+            var promoSearchResult = _promoSearchService.SearchPromotions(criteria);
+            retVal.TotalCount = promoSearchResult.TotalCount;
+            retVal.Results = promoSearchResult.Results.Select(x => x.ToWebModel()).ToList();
+            return Ok(retVal);
+        }
 
         /// <summary>
         /// Evaluate promotions

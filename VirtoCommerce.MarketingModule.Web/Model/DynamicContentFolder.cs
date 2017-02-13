@@ -9,10 +9,8 @@ namespace VirtoCommerce.MarketingModule.Web.Model
 	/// <summary>
 	/// Represent folder contains dynamic content system entries, used for hierarchy storing and easy management 
 	/// </summary>
-	public class DynamicContentFolder : AuditableEntity
-	{
-		public string Name { get; set; }
-		public string Description { get; set; }
+	public class DynamicContentFolder : DynamicContentListEntry
+    {
 		/// <summary>
 		/// Folder all parent ids concatenated (1;21;344)
 		/// </summary>
@@ -22,7 +20,6 @@ namespace VirtoCommerce.MarketingModule.Web.Model
 		/// </summary>
 		public string Path { get; set; }
 		public string ParentFolderId { get; set; }
-		public string ImageUrl { get; set; }
 		
 	}
 }

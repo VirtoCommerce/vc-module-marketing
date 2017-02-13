@@ -11,10 +11,8 @@ namespace VirtoCommerce.MarketingModule.Web.Model
 	/// <summary>
 	/// Represent content entry for presentation (Images, Html, Banner etc) 
 	/// </summary>
-	public class DynamicContentItem : AuditableEntity
+	public class DynamicContentItem : DynamicContentListEntry
 	{
-		public string Name { get; set; }
-		public string Description { get; set; }
 		public string ContentType { get; set; }
 		public string FolderId { get; set; }
 		/// <summary>
@@ -26,7 +24,7 @@ namespace VirtoCommerce.MarketingModule.Web.Model
 		/// </summary>
 		public string Path { get; set; }
 
-		public string ObjectType { get; set; }
+	
 		public ICollection<DynamicObjectProperty> DynamicProperties { get; set; }
 	}
 }
