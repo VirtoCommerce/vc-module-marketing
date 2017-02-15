@@ -44,7 +44,6 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 if(criteria.OnlyActive)
                 {
                     query = query.Where(x => x.IsActive == true);
-                    query2 = query2.Where(x => x.Store == criteria.Store);
                 }
                 if (!string.IsNullOrEmpty(criteria.Keyword))
                 {
@@ -151,7 +150,8 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 {
                     query = query.Where(x => x.StoreId == criteria.Store);
                 }
-                if(criteria.OnlyActive != null)
+
+                if(criteria.OnlyActive)
                 {
                     query = query.Where(x => x.IsActive == true);
                 }
