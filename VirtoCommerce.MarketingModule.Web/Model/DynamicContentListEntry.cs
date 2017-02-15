@@ -20,12 +20,7 @@ namespace VirtoCommerce.MarketingModule.Web.Model
         /// The type.
         /// </value>
 		public string ObjectType { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this entry is active.
-        /// </summary>
-		public bool? IsActive { get; set; }
-
+        
         /// <summary>
         /// Gets or sets the image URL.
         /// </summary>

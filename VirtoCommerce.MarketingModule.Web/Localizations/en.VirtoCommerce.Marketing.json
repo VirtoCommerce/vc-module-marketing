@@ -32,6 +32,7 @@
             "promotion-list": {
                 "labels": {
                     "name": "Name",
+                    "isActive": "Is active",
                     "last-modified": "Modified"
                 },
                 "new-filter": "Add new filter",
@@ -46,7 +47,8 @@
                 "unnamed-filter": "Unnamed filter",
                 "labels": {
                     "name": "Filter name",
-                    "name_": "How will you call this filter?"
+                    "name_": "How will you call this filter?",
+                    "active": "Only active"
                 },
                 "placeholders": {
                     "all": "Not specified"
@@ -108,8 +110,8 @@
                     "title-new": "New content items folder element",
                     "subtitle-new": "Add new content items folder element",
                     "labels": {
-                        "folder-name": "Folder name:",
-                        "folder-description": "Folder description:"
+                        "folder-name": "Folder name",
+                        "folder-description": "Folder description"
                     },
                     "placeholders": {
                         "folder-name": "Enter folder name",
@@ -166,8 +168,8 @@
                     "title-new": "New placeholders folder",
                     "subtitle-new": "Add new placeholders folder",
                     "labels": {
-                        "folder-name": "Folder name:",
-                        "folder-description": "Folder description:"
+                        "folder-name": "Folder name",
+                        "folder-description": "Folder description"
                     },
                     "placeholders": {
                         "folder-name": "Enter folder name",

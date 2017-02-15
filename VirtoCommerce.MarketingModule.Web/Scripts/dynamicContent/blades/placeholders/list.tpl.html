@@ -17,37 +17,20 @@
             <div class="table-wrapper" ng-show="pageSettings.totalItems > 0" ng-init="setGridOptions({
                 data: 'listEntries',
                 useExternalSorting: true,
+                rowHeight: 50,
                 rowTemplate: 'dynamic-content-placeholder.row.html',
-                enableSelectionBatchEvent: false,
-                columnDefs: [{
-                    name: 'actions',
-                    displayName: '',
-                    enableColumnResizing: false,
-                    enableSorting: false,
-                    width: 30,
-                    cellTemplate: 'list-actions.cell.html',
-                    pinnedLeft: true
-                }, {
-                    name: 'icon',
-                    displayName: 'marketing.blades.placeholders.list.labels.picture',
-                    cellTemplate: 'dynamic-content-icon.cell.html',
-                    enableColumnResizing: false,
-                    enableSorting: false,
-                    width: 60
-                }, {
-                    name: 'name',
-                    displayName: 'marketing.blades.placeholders.list.labels.name'
-                }, {
-                    name: 'description',
-                    displayNAme: 'marketing.blades.placeholders.list.labels.description'
-                }]
-            })">
+                columnDefs: [
+                 { name: 'actions', displayName: '', enableColumnResizing: false, enableSorting: false, width: 30, cellTemplate: 'list-actions.cell.html', pinnedLeft: true }, 
+                 { name: 'imageUrl', displayName: 'marketing.blades.placeholders.list.labels.picture', cellTemplate: 'dynamic-content-icon.cell.html', enableColumnResizing: false, enableSorting: false, width: 60 }, 
+                 { name: 'name', displayName: 'marketing.blades.placeholders.list.labels.name' }, 
+                 { name: 'description', displayNAme: 'marketing.blades.placeholders.list.labels.description' }
+                 ]})">
                 <div ui-grid="gridOptions" ui-grid-auto-resize ui-grid-save-state ui-grid-selection ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-height></div>
                 <ul class="menu __context" role="menu" id="prl_menu">
-                    <li class="menu-item" ng-click='manageItem(contextMenuEntity)' va-permission="pricing:delete">
+                    <li class="menu-item" ng-click='openDetailsBlade(contextMenuEntity)' va-permission="marketing:delete">
                         <i class="menu-ico fa fa-edit"></i> {{ 'platform.commands.manage' | translate }}
                     </li>
-                    <li class="menu-item" ng-click='deleteItems([contextMenuEntity])' va-permission="pricing:delete">
+                    <li class="menu-item" ng-click='deleteItems([contextMenuEntity])' va-permission="marketing:delete">
                         <i class="menu-ico fa fa-trash-o"></i> {{ 'platform.commands.delete' | translate }}
                     </li>
                 </ul>
@@ -69,8 +52,8 @@
 <script id="dynamic-content-icon.cell.html" type="text/ng-template">
     <div class="ui-grid-cell-contents">
         <div class="product-img">
-            <i class="table-ico fa" ng-class="row.entity.icon" ng-if="row.entity.isFolder"></i>
-            <div class="image" style="background-image: url('{{ row.entity.imageUrl }}');" va-showbigimage="placeholder.imageUrl" ng-if="!row.entity.isFolder"></div>
+            <i class="table-ico fa fa-folder" ng-if="row.entity.isFolder"></i>
+            <div class="image" style="background-image: url('{{COL_FIELD}}');" va-showbigimage="COL_FIELD" ng-if="!row.entity.isFolder"></div>
         </div>
     </div>
 </script>

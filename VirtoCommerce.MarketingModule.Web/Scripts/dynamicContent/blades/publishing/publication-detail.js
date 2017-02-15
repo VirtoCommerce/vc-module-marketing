@@ -5,7 +5,7 @@
 
     blade.initializeBlade = function () {
         if (!blade.isNew) {
-            contentPublications.get({ id: blade.entity.id }, function (data) {
+            contentPublications.get({ id: blade.currentEntity.id }, function (data) {
                 initializeBlade(data);
 
                 blade.toolbarCommands = [
@@ -22,7 +22,7 @@
 				    {
 				        name: "platform.commands.reset", icon: 'fa fa-undo',
 				        executeMethod: function () {
-				            blade.entity = angular.copy(blade.originalEntity);
+				            angular.copy(blade.origEntity, blade.currentEntity);
 				        },
 				        canExecuteMethod: function () {
 				            return blade.checkDifferense();
@@ -38,8 +38,11 @@
 				                message: "marketing.dialogs.publication-delete.message",
 				                callback: function (remove) {
 				                    if (remove) {
-				                        bladeNavigationService.closeBlade(blade);
-				                        blade.delete();
+				                        blade.isLoading = true;
+				                        contentPublications.delete({ ids: [blade.currentEntity.id] }, function () {
+				                            blade.parentBlade.initialize();
+				                            bladeNavigationService.closeBlade(blade);
+				                        });
 				                    }
 				                }
 				            };
@@ -62,19 +65,20 @@
             groupAvailableChildren(data.dynamicExpression.children[0]);
         }
 
-        blade.entity = data;
-        blade.originalEntity = angular.copy(blade.entity);
+        blade.currentEntity = data;
+        blade.origEntity = angular.copy(blade.currentEntity);
         blade.isLoading = false;
-        $scope.$watch('blade.entity', blade.autogenerateName, true);
+        $scope.$watch('blade.currentEntity', blade.autogenerateName, true);
     }
 
     blade.addPlaceholders = function () {
         bladeNavigationService.closeChildrenBlades(blade, function () {
+            blade.selectedNodeId = 'addPlaceholders';
             var newBlade = {
                 id: 'publishing_add_placeholders',
                 title: 'marketing.blades.publishing.add-placeholders.title',
                 subtitle: 'marketing.blades.publishing.add-placeholders.subtitle',
-                entity: blade.entity,
+                publication: blade.currentEntity,
                 controller: 'virtoCommerce.marketingModule.addPublishingPlaceholdersStepController',
                 template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/dynamicContent/blades/publishing/add-placeholders.tpl.html'
             };
@@ -84,11 +88,12 @@
 
     blade.addContentItems = function () {
         bladeNavigationService.closeChildrenBlades(blade, function () {
+            blade.selectedNodeId = 'addContentItems';
             var newBlade = {
                 id: 'publishing_add_content_items',
                 title: 'marketing.blades.publishing.add-content-items.title',
                 subtitle: 'marketing.blades.publishing.add-content-items.subtitle',
-                entity: blade.entity,
+                publication: blade.currentEntity,
                 controller: 'virtoCommerce.marketingModule.addPublishingContentItemsStepController',
                 template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/dynamicContent/blades/publishing/add-content-items.tpl.html'
             };
@@ -99,15 +104,15 @@
     blade.saveChanges = function () {
         bladeNavigationService.closeChildrenBlades(blade, function () {
             blade.isLoading = true;
-            if (blade.entity.dynamicExpression) {
-                blade.entity.dynamicExpression.availableChildren = undefined;
-                _.each(blade.entity.dynamicExpression.children, stripOffUiInformation);
+            if (blade.currentEntity.dynamicExpression) {
+                blade.currentEntity.dynamicExpression.availableChildren = undefined;
+                _.each(blade.currentEntity.dynamicExpression.children, stripOffUiInformation);
             }
 
             if (blade.isNew) {
-                contentPublications.save({}, blade.entity, function (data) {
-                    blade.entity = data;
-                    blade.originalEntity = angular.copy(data);
+                contentPublications.save({}, blade.currentEntity, function (data) {
+                    blade.currentEntity = data;
+                    blade.origEntity = angular.copy(data);
 
                     blade.isNew = false;
                     blade.initializeBlade();
@@ -115,9 +120,9 @@
                 });
             }
             else {
-                contentPublications.update({}, blade.entity, function (data) {
-                    blade.entity = data;
-                    blade.originalEntity = angular.copy(data);
+                contentPublications.update({}, blade.currentEntity, function (data) {
+                    blade.currentEntity = data;
+                    blade.origEntity = angular.copy(data);
 
                     blade.isNew = false;
                     blade.initializeBlade();
@@ -129,30 +134,24 @@
 
     blade.availableSave = function () {
         return !$scope.formScope.$invalid &&
-			blade.entity.contentItems.length > 0 &&
-			blade.entity.contentPlaces.length > 0;
-    }
-
-    blade.delete = function () {
-        contentPublications.delete({ ids: [blade.entity.id] }, function () {
-            blade.parentBlade.initialize();
-        });
-    }
-
+			blade.currentEntity.contentItems.length > 0 &&
+			blade.currentEntity.contentPlaces.length > 0;
+    };
+    
     blade.checkDifferense = function () {
         var retVal = !$scope.formScope.$invalid &&
-							blade.entity.contentItems.length > 0 &&
-							blade.entity.contentPlaces.length > 0;
+							blade.currentEntity.contentItems.length > 0 &&
+							blade.currentEntity.contentPlaces.length > 0;
 
         if (retVal) {
-            retVal = !angular.equals(blade.entity, blade.originalEntity);
+            retVal = !angular.equals(blade.currentEntity, blade.origEntity);
 
             if (!retVal) {
-                var ciIdse = blade.entity.contentItems.map(function (v) {
+                var ciIdse = blade.currentEntity.contentItems.map(function (v) {
                     return v.id;
                 });
 
-                var ciIdsoe = blade.originalEntity.contentItems.map(function (v) {
+                var ciIdsoe = blade.origEntity.contentItems.map(function (v) {
                     return v.id;
                 });
 
@@ -160,11 +159,11 @@
             }
 
             if (!retVal) {
-                var cpIdse = blade.entity.contentPlaces.map(function (v) {
+                var cpIdse = blade.currentEntity.contentPlaces.map(function (v) {
                     return v.id;
                 });
 
-                var cpIdsoe = blade.originalEntity.contentPlaces.map(function (v) {
+                var cpIdsoe = blade.origEntity.contentPlaces.map(function (v) {
                     return v.id;
                 });
 
@@ -254,25 +253,25 @@
             var placeholderPublicationNamePart = '';
             var contentItemPublicationNamePart = '';
 
-            if (!angular.isUndefined(blade.entity)) {
-                if (!angular.isUndefined(blade.entity.contentPlaces) && blade.entity.contentPlaces.length == 1) {
-                    placeholderPublicationNamePart = blade.entity.contentPlaces[0].name;
+            if (!angular.isUndefined(blade.currentEntity)) {
+                if (!angular.isUndefined(blade.currentEntity.contentPlaces) && blade.currentEntity.contentPlaces.length == 1) {
+                    placeholderPublicationNamePart = blade.currentEntity.contentPlaces[0].name;
                 }
 
-                if (!angular.isUndefined(blade.entity.contentItems) && blade.entity.contentItems.length == 1) {
-                    contentItemPublicationNamePart = blade.entity.contentItems[0].name;
+                if (!angular.isUndefined(blade.currentEntity.contentItems) && blade.currentEntity.contentItems.length == 1) {
+                    contentItemPublicationNamePart = blade.currentEntity.contentItems[0].name;
                 }
             }
 
             var newName = (placeholderPublicationNamePart + '_' + contentItemPublicationNamePart).trimLeft('_').trimRight('_');
 
-            if (!angular.isUndefined(blade.entity.name) && blade.entity.name !== null && blade.entity.name !== '' && newName !== '_') {
-                if (blade.entity.name.indexOf(placeholderPublicationNamePart) >= 0 || blade.entity.name.indexOf(contentItemPublicationNamePart) >= 0) {
-                    blade.entity.name = newName;
+            if (!angular.isUndefined(blade.currentEntity.name) && blade.currentEntity.name !== null && blade.currentEntity.name !== '' && newName !== '_') {
+                if (blade.currentEntity.name.indexOf(placeholderPublicationNamePart) >= 0 || blade.currentEntity.name.indexOf(contentItemPublicationNamePart) >= 0) {
+                    blade.currentEntity.name = newName;
                 }
             }
             else if (newName !== '_') {
-                blade.entity.name = newName;
+                blade.currentEntity.name = newName;
             }
         }
     }

@@ -146,11 +146,10 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             using (var repository = _repositoryFactory())
             {             
                 var query = repository.PublishingGroups;
-                if(string.IsNullOrEmpty(criteria.Store))
+                if(!string.IsNullOrEmpty(criteria.Store))
                 {
                     query = query.Where(x => x.StoreId == criteria.Store);
                 }
-
                 if(criteria.OnlyActive)
                 {
                     query = query.Where(x => x.IsActive == true);
@@ -164,6 +163,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 {
                     sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<coreModel.DynamicContentPublication>(x => x.Name), SortDirection = SortDirection.Ascending } };
                 }
+                query = query.OrderBySortInfos(sortInfos);
 
                 retVal.TotalCount = query.Count();
 

@@ -13,11 +13,16 @@
                 sort: uiGridHelper.getSortExpression($scope),
                 start: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
                 count: $scope.pageSettings.itemsPerPageCount
-            }, function (data) {
+            };
+            if (filter.current) {
+                angular.extend(criteria, filter.current);
+            }
+
+            promotions.search(criteria, function (data) {
                 blade.isLoading = false;
 
                 $scope.pageSettings.totalItems = data.totalCount;
-                blade.currentEntities = data.promotions;
+                blade.currentEntities = data.results;
             });
         };
 

@@ -1,6 +1,6 @@
 ﻿angular.module('virtoCommerce.marketingModule')
-.controller('virtoCommerce.marketingModule.publishingDynamicContentListController', ['$scope', 'platformWebApp.bladeUtils', 'platformWebApp.uiGridHelper', 'platformWebApp.dialogService', 'virtoCommerce.marketingModule.dynamicContent.search', 'virtoCommerce.marketingModule.dynamicContent.contentPublications',
-function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentSearchApi, dynamicContentPublicationsApi) {
+.controller('virtoCommerce.marketingModule.publishingDynamicContentListController', ['$scope', 'platformWebApp.bladeUtils', 'platformWebApp.uiGridHelper', 'platformWebApp.dialogService', 'virtoCommerce.marketingModule.dynamicContent.contentPublications',
+function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentPublicationsApi) {
     var bladeNavigationService = bladeUtils.bladeNavigationService;
     var blade = $scope.blade;
     blade.headIcon = 'fa-paperclip';
@@ -29,14 +29,14 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentSearchA
 
     blade.refresh = function () {
         blade.isLoading = true;
-        dynamicContentSearchApi.search({
+        dynamicContentPublicationsApi.search({
             skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
             take: $scope.pageSettings.itemsPerPageCount,
             sort: uiGridHelper.getSortExpression($scope),
             responseGroup: '8',
             keyword: blade.searchKeyword
         }, function (data) {
-            $scope.listEntries = data.contentPublications;
+            $scope.listEntries = data.results;
             $scope.pageSettings.totalItems = data.totalCount;
             blade.isLoading = false;
         });
@@ -71,10 +71,6 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentSearchA
         $scope.selectedNodeId = node.id;
 
         var newBlade = {
-            id: 'edit_publishing_element',
-            title: 'marketing.blades.publishing.publishing-main-step.title',
-            subtitle: 'marketing.blades.publishing.publishing-main-step.subtitle',
-            entity: node,
             isNew: isNew,
             controller: 'virtoCommerce.marketingModule.publicationDetailController',
             template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/dynamicContent/blades/publishing/publication-detail.tpl.html'
@@ -85,6 +81,13 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentSearchA
                 id: 'add_publishing_element',
                 title: 'marketing.blades.publishing.publishing-main-step.title-new',
                 subtitle: 'marketing.blades.publishing.publishing-main-step.subtitle-new'
+            });
+        } else {
+            angular.extend(newBlade, {
+                id: 'edit_publishing_element',
+                title: 'marketing.blades.publishing.publishing-main-step.title',
+                subtitle: 'marketing.blades.publishing.publishing-main-step.subtitle',
+                currentEntity: node
             });
         }
         bladeNavigationService.showBlade(newBlade, blade);
@@ -109,9 +112,14 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentSearchA
     }
 
     $scope.setGridOptions = function (gridOptions) {
-        uiGridHelper.initialize($scope, gridOptions, function (gridApi) {
-            uiGridHelper.bindRefreshOnSortChanged($scope);
-        });
+        $scope.gridOptions = gridOptions;
+
+        gridOptions.onRegisterApi = function (gridApi) {
+            gridApi.core.on.sortChanged($scope, function () {
+                if (!blade.isLoading) blade.refresh();
+            });
+        };
+
         bladeUtils.initializePagination($scope);
     };
 }]);

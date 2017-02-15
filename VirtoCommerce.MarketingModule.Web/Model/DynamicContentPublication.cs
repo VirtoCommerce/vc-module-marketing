@@ -18,10 +18,16 @@ namespace VirtoCommerce.MarketingModule.Web.Model
 		/// Priority used for chose publication in combination
 		/// </summary>
 		public int Priority { get; set; }
-		/// <summary>
-		/// Store where the publication is active 
-		/// </summary>
-		public string StoreId { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this entry is active.
+        /// </summary>
+		public bool IsActive { get; set; }
+
+        /// <summary>
+        /// Store where the publication is active 
+        /// </summary>
+        public string StoreId { get; set; }
 		public DateTime? StartDate { get; set; }
 		public DateTime? EndDate { get; set; }
 

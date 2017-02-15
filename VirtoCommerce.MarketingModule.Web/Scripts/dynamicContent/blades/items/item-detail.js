@@ -1,11 +1,9 @@
 ﻿angular.module('virtoCommerce.marketingModule')
-.controller('virtoCommerce.marketingModule.addContentItemsController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.contentItems', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.dynamicProperties.dictionaryItemsApi', 'platformWebApp.settings',
-    function ($scope, marketing_dynamicContents_res_contentItems, bladeNavigationService, dialogService, dictionaryItemsApi, settings) {
+.controller('virtoCommerce.marketingModule.itemDetailController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.contentItems', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.dynamicProperties.dictionaryItemsApi', 'platformWebApp.settings',
+    function ($scope, dynamicContentItemsApi, bladeNavigationService, dialogService, dictionaryItemsApi, settings) {
         var blade = $scope.blade;
         blade.updatePermission = 'marketing:update';
-
-        $scope.setForm = function (form) { $scope.formScope = form; };
-        
+       
         blade.initialize = function () {
             blade.toolbarCommands = [];
 
@@ -17,17 +15,17 @@
                             blade.saveChanges();
                         },
                         canExecuteMethod: function () {
-                            return !angular.equals(blade.originalEntity, blade.entity) && !$scope.formScope.$invalid;
+                            return !angular.equals(blade.origEntity, blade.currentEntity) && $scope.formScope.$valid;
                         },
                         permission: blade.updatePermission
                     },
                     {
                         name: "platform.commands.reset", icon: 'fa fa-undo',
                         executeMethod: function () {
-                            blade.entity = angular.copy(blade.originalEntity);
+                            angular.copy(blade.origEntity, blade.currentEntity);
                         },
                         canExecuteMethod: function () {
-                            return !angular.equals(blade.originalEntity, blade.entity);
+                            return !angular.equals(blade.origEntity, blade.currentEntity);
                         },
                         permission: blade.updatePermission
                     },
@@ -40,7 +38,11 @@
                                 message: "marketing.dialogs.content-item-delete.message",
                                 callback: function (remove) {
                                     if (remove) {
-                                        blade.delete();
+                                        blade.isLoading = true;
+                                        dynamicContentItemsApi.delete({ ids: [blade.currentEntity.id] }, function () {
+                                            blade.parentBlade.initializeBlade();
+                                            bladeNavigationService.closeBlade(blade);
+                                        });
                                     }
                                 }
                             };
@@ -61,43 +63,35 @@
                     executeMethod: function () {
                         var newBlade = {
                             id: 'dynamicPropertyList',
-                            objectType: blade.entity.objectType,
+                            objectType: blade.currentEntity.objectType,
                             controller: 'platformWebApp.dynamicPropertyListController',
                             template: '$(Platform)/Scripts/app/dynamicProperties/blades/dynamicProperty-list.tpl.html'
                         };
                         bladeNavigationService.showBlade(newBlade, blade);
                     },
                     canExecuteMethod: function () {
-                        return angular.isDefined(blade.entity.objectType);
+                        return angular.isDefined(blade.currentEntity.objectType);
                     }
                 });
 
-            blade.originalEntity = angular.copy(blade.entity);
-
+            blade.origEntity = blade.entity;
+            blade.currentEntity = angular.copy(blade.origEntity);
             blade.isLoading = false;
         };
-
-        blade.delete = function () {
-            blade.isLoading = true;
-            marketing_dynamicContents_res_contentItems.delete({ ids: [blade.entity.id] }, function () {
-                blade.parentBlade.initializeBlade();
-                bladeNavigationService.closeBlade(blade);
-            });
-        };
-
+        
         blade.saveChanges = function () {
             blade.isLoading = true;
 
             if (blade.isNew) {
-                marketing_dynamicContents_res_contentItems.save({}, blade.entity, function (data) {
+                dynamicContentItemsApi.save(blade.currentEntity, function (data) {
                     blade.parentBlade.initializeBlade();
                     bladeNavigationService.closeBlade(blade);
                 });
             }
             else {
-                marketing_dynamicContents_res_contentItems.update({}, blade.entity, function (data) {
+                dynamicContentItemsApi.update(blade.currentEntity, function (data) {
                     blade.parentBlade.initializeBlade();
-                    blade.originalEntity = angular.copy(blade.entity);
+                    blade.origEntity = angular.copy(blade.currentEntity);
                     blade.isLoading = false;
                 });
             }
@@ -111,7 +105,7 @@
                 controller: 'platformWebApp.propertyDictionaryController',
                 template: '$(Platform)/Scripts/app/dynamicProperties/blades/property-dictionary.tpl.html',
                 onChangesConfirmedFn: function () {
-                    blade.entity.dynamicProperties = angular.copy(blade.entity.dynamicProperties);
+                    blade.currentEntity.dynamicProperties = angular.copy(blade.currentEntity.dynamicProperties);
                 }
             };
             bladeNavigationService.showBlade(newBlade, blade);
@@ -119,7 +113,9 @@
 
         $scope.getDictionaryValues = function (property, callback) {
             dictionaryItemsApi.query({ id: property.objectType, propertyId: property.id }, callback);
-        }
+        };
+
+        $scope.setForm = function (form) { $scope.formScope = form; };
 
         blade.headIcon = 'fa-inbox';
 

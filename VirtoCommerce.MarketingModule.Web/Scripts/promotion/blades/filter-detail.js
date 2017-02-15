@@ -14,22 +14,24 @@
 
         blade.metaFields = [
             {
-                name: 'storeIds',
+                name: 'onlyActive',
+                title: "marketing.blades.filter-detail.labels.active",
+                valueType: "Boolean"
+            }, {
+                name: 'store',
                 title: "marketing.blades.promotion-detail.labels.store",
                 templateUrl: 'storeSelector.html'
-            },
-            {
-                name: 'startDate',
-                title: "marketing.blades.promotion-detail.labels.start-date",
-                valueType: "DateTime"
-            },
-            {
-                name: 'endDate',
-                title: "marketing.blades.promotion-detail.labels.expiration-date",
-                valueType: "DateTime"
+            //}, {
+            //    name: 'startDate',
+            //    title: "marketing.blades.promotion-detail.labels.start-date",
+            //    valueType: "DateTime"
+            //}, {
+            //    name: 'endDate',
+            //    title: "marketing.blades.promotion-detail.labels.expiration-date",
+            //    valueType: "DateTime"
             }
         ];
-        
+
         $scope.saveChanges = function () {
             angular.copy(blade.currentEntity, blade.origEntity);
             if (blade.isNew) {
@@ -42,7 +44,7 @@
             initializeBlade(blade.origEntity);
             blade.parentBlade.filter.criteriaChanged();
         };
-        
+
         var formScope;
         $scope.setForm = function (form) { formScope = form; };
 

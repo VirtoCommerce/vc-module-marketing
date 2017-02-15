@@ -1,62 +1,70 @@
 ﻿angular.module('virtoCommerce.marketingModule')
-.controller('virtoCommerce.marketingModule.addPublishingPlaceholdersStepController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.search', 'virtoCommerce.marketingModule.dynamicContent.contentPlaces', 'platformWebApp.bladeNavigationService', function ($scope, marketing_dynamicContents_res_search, marketing_dynamicContents_res_contentPlaces, bladeNavigationService) {
+.controller('virtoCommerce.marketingModule.addPublishingPlaceholdersStepController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.contentPlaces', 'platformWebApp.bladeNavigationService', 'platformWebApp.bladeUtils', 'platformWebApp.uiGridHelper', function ($scope, contentPlacesApi, bladeNavigationService, bladeUtils, uiGridHelper) {
     var blade = $scope.blade;
     blade.chosenFolder = 'ContentPlace';
     blade.currentEntity = {};
 
-    function refresh() {
-        marketing_dynamicContents_res_search.search({ folderId: blade.chosenFolder, responseGroup: '20' }, function (data) {
-            blade.currentEntity.childrenFolders = data.contentFolders;
-            blade.currentEntity.placeholders = data.contentPlaces;
+    blade.refresh = function () {
+        blade.isLoading = true;
+        contentPlacesApi.search({
+            folderId: blade.chosenFolder,
+            skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
+            take: $scope.pageSettings.itemsPerPageCount,
+            sort: uiGridHelper.getSortExpression($scope),
+            responseGroup: '20'
+        }, function (data) {
+            _.each(data.results, function (entry) {
+                entry.isFolder = entry.objectType === 'DynamicContentFolder';
+            });
+
+            blade.currentEntity.listEntries = data.results;
+            $scope.pageSettings.totalItems = data.totalCount;
             setBreadcrumbs();
             blade.isLoading = false;
         });
-    }
-
-    blade.initialize = function () {
-        refresh();
-
-        blade.entity.contentPlaces.forEach(function (el) {
-            marketing_dynamicContents_res_contentPlaces.get({ id: el.id }, function (data) {
-                var orEl = _.find(blade.parentBlade.originalEntity.contentPlaces, function (contentPlace) { return contentPlace.id === el.id });
-                if (!angular.isUndefined(orEl)) {
-                    orEl.path = data.path;
-                    orEl.outline = data.outline;
-                }
-                el.path = data.path;
-                el.outline = data.outline;
-            });
-        });
-    }
-
-    blade.addPlaceholder = function (placeholder) {
-        blade.entity.contentPlaces.push(placeholder);
-    }
-
-    blade.folderClick = function (placeholderFolder) {
-        if (angular.isUndefined(blade.chosenFolder) || !angular.equals(blade.chosenFolder, placeholderFolder.id)) {
-            blade.isLoading = true;
-            blade.chosenFolder = placeholderFolder.id;
-            blade.currentEntity = placeholderFolder;
-            refresh();
-        }
-        else {
-            blade.chosenFolder = placeholderFolder.parentFolderId;
-            blade.currentEntity = undefined;
-        }
     };
 
+    _.each(blade.publication.contentPlaces, function (el) {
+        contentPlacesApi.get({ id: el.id }, function (data) {
+            var orEl = _.find(blade.parentBlade.origEntity.contentPlaces, function (contentPlace) { return contentPlace.id === el.id });
+            if (!angular.isUndefined(orEl)) {
+                orEl.path = data.path;
+                orEl.outline = data.outline;
+            }
+            el.path = data.path;
+            el.outline = data.outline;
+        });
+    });
+
     blade.deleteAllPlaceholder = function () {
-        blade.entity.contentPlaces = [];
+        blade.publication.contentPlaces = [];
+        $scope.gridApi.grid.queueGridRefresh();
     };
 
     blade.deletePlaceholder = function (data) {
-        blade.entity.contentPlaces = _.filter(blade.entity.contentPlaces, function (place) { return !angular.equals(data.id, place.id); });
+        blade.publication.contentPlaces = _.filter(blade.publication.contentPlaces, function (place) { return !angular.equals(data.id, place.id); });
+        $scope.gridApi.grid.queueGridRefresh();
     };
 
-    blade.checkPlaceholder = function (data) {
-        return _.filter(blade.entity.contentPlaces, function (ci) { return angular.equals(ci.id, data.id); }).length === 0;
+    blade.selectNode = function (node) {
+        if (node.isFolder) {
+            browseFolder(node);
+        } else {
+            blade.publication.contentPlaces.push(node);
+            $scope.gridApi.grid.queueGridRefresh();
+        }
     };
+
+    function browseFolder(node) {
+        if (!blade.chosenFolder || !angular.equals(blade.chosenFolder, node.id)) {
+            blade.chosenFolder = node.id;
+            blade.currentEntity = node;
+            blade.refresh();
+        } else {
+            blade.chosenFolder = node.parentFolderId;
+            blade.currentEntity = undefined;
+        }
+    }
 
     function setBreadcrumbs() {
         if (blade.breadcrumbs) {
@@ -80,13 +88,31 @@
         return {
             id: node.id,
             name: node.name,
-            navigate: function () {
-                blade.folderClick(node);
-            }
-        }
+            navigate: function () { browseFolder(node); }
+        };
     }
 
-    blade.headIcon = 'fa-paperclip';
+    // ui-grid
+    $scope.setGridOptions = function (gridOptions) {
+        $scope.gridOptions = gridOptions;
 
-    blade.initialize();
+        gridOptions.onRegisterApi = function (gridApi) {
+            gridApi.grid.registerRowsProcessor(function (renderableRows) {
+                var visibleCount = 0;
+                renderableRows.forEach(function (row) {
+                    row.visible = row.entity.isFolder || _.all(blade.publication.contentPlaces, function (ci) { return ci.id !== row.entity.id; });
+                    if (row.visible) visibleCount++;
+                });
+
+                $scope.filteredEntitiesCount = visibleCount;
+                return renderableRows;
+            }, 90);
+
+            gridApi.core.on.sortChanged($scope, function () {
+                if (!blade.isLoading) blade.refresh();
+            });
+        };
+
+        bladeUtils.initializePagination($scope);
+    };
 }]);

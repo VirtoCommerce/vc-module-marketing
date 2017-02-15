@@ -7,9 +7,7 @@
     };
 
     promotions.search({ responseGroup: 'withPromotions', count: 1000 }, function (data) {
-        var selection = _.where(data.promotions, { isActive: true });
+        var selection = _.where(data.results, { isActive: true });
         $scope.data.count = selection.length;
-    },
-    function (error) { });
-}])
-;
+    });
+}]);

@@ -1,10 +1,10 @@
 ﻿angular.module('virtoCommerce.marketingModule')
-.controller('virtoCommerce.marketingModule.addPlaceholderController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.contentPlaces', 'platformWebApp.bladeNavigationService', 'FileUploader', 'platformWebApp.dialogService', function ($scope, marketing_dynamicContents_res_contentPlaces, bladeNavigationService, FileUploader, dialogService) {
-    $scope.setForm = function (form) { $scope.formScope = form; }
-
+.controller('virtoCommerce.marketingModule.placeholderDetailController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.contentPlaces', 'platformWebApp.bladeNavigationService', 'FileUploader', 'platformWebApp.dialogService', function ($scope, contentPlacesApi, bladeNavigationService, FileUploader, dialogService) {
     var blade = $scope.blade;
     blade.updatePermission = 'marketing:update';
-    blade.originalEntity = angular.copy(blade.entity);
+
+    blade.origEntity = blade.entity;
+    blade.currentEntity = angular.copy(blade.origEntity);
 
     blade.initialize = function () {
         if (!$scope.uploader && blade.hasUpdatePermission()) {
@@ -18,7 +18,7 @@
             });
 
             uploader.onSuccessItem = function (fileItem, images, status, headers) {
-                blade.entity.imageUrl = images[0].url;
+                blade.currentEntity.imageUrl = images[0].url;
             };
 
             uploader.onAfterAddingAll = function (addedItems) {
@@ -36,17 +36,17 @@
 				    name: "platform.commands.save", icon: 'fa fa-save',
 				    executeMethod: blade.saveChanges,
 				    canExecuteMethod: function () {
-				        return !angular.equals(blade.originalEntity, blade.entity) && !$scope.formScope.$invalid;
+				        return !angular.equals(blade.origEntity, blade.currentEntity) && !$scope.formScope.$invalid;
 				    },
 				    permission: blade.updatePermission
 				},
                 {
                     name: "platform.commands.reset", icon: 'fa fa-undo',
                     executeMethod: function () {
-                        blade.entity = angular.copy(blade.originalEntity);
+                        angular.copy(blade.origEntity, blade.currentEntity);
                     },
                     canExecuteMethod: function () {
-                        return !angular.equals(blade.originalEntity, blade.entity);
+                        return !angular.equals(blade.origEntity, blade.currentEntity);
                     },
                     permission: blade.updatePermission
                 },
@@ -59,11 +59,14 @@
 				            message: "marketing.dialogs.content-placeholder-delete.message",
 				            callback: function (remove) {
 				                if (remove) {
-				                    blade.delete();
+				                    blade.isLoading = true;
+				                    contentPlacesApi.delete({ ids: [blade.currentEntity.id] }, function () {
+				                        blade.parentBlade.initialize();
+				                        bladeNavigationService.closeBlade(blade);
+				                    });
 				                }
 				            }
 				        };
-
 				        dialogService.showConfirmationDialog(dialog);
 				    },
 				    canExecuteMethod: function () { return true; },
@@ -75,31 +78,25 @@
         blade.isLoading = false;
     }
 
-    blade.delete = function () {
-        blade.isLoading = true;
-        marketing_dynamicContents_res_contentPlaces.delete({ ids: [blade.entity.id] }, function () {
-            blade.parentBlade.initialize();
-            bladeNavigationService.closeBlade(blade);
-        });
-    }
-
     blade.saveChanges = function () {
         blade.isLoading = true;
 
         if (blade.isNew) {
-            marketing_dynamicContents_res_contentPlaces.save({}, blade.entity, function (data) {
+            contentPlacesApi.save({}, blade.currentEntity, function (data) {
                 blade.parentBlade.initialize();
                 bladeNavigationService.closeBlade(blade);
             });
         }
         else {
-            marketing_dynamicContents_res_contentPlaces.update({}, blade.entity, function (data) {
+            contentPlacesApi.update({}, blade.currentEntity, function (data) {
                 blade.parentBlade.initialize();
-                blade.originalEntity = angular.copy(blade.entity);
+                blade.origEntity = angular.copy(blade.currentEntity);
                 blade.isLoading = false;
             });
         }
-    }
+    };
+
+    $scope.setForm = function (form) { $scope.formScope = form; };
 
     $scope.blade.headIcon = 'fa-location-arrow';
 

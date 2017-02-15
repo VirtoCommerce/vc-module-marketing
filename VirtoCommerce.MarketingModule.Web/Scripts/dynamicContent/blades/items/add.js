@@ -4,7 +4,7 @@
 
 	blade.addFolder = function () {
 		var data = { name: '', description: '', parentFolderId: blade.chosenFolder, items: [], childrenFolders: [] };
-		blade.parentBlade.addNewFolder(data);
+		blade.addNewFolder(data);
 	};
 
 	blade.addContentItem = function () {
@@ -14,7 +14,7 @@
 	        	item.displayNames = [];
 	        });
 	        var contentItem = { name: '', description: '', folderId: blade.chosenFolder, dynamicProperties: data };
-	        blade.parentBlade.addNewContentItem(contentItem);
+	        blade.addNewContentItem(contentItem);
 	    });
 	};
 
