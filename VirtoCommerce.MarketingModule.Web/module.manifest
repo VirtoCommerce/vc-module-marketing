@@ -4,7 +4,7 @@
     <version>2.14.0</version>
     <platformVersion>2.12.4</platformVersion>
     <dependencies>
-        <dependency id="VirtoCommerce.Core" version="2.20.1" />
+        <dependency id="VirtoCommerce.Core" version="2.21.0" />
     </dependencies>
 
     <title>Marketing module</title>
