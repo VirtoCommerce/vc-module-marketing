@@ -18,7 +18,7 @@
     <projectUrl>https://virtocommerce.com/virto-marketing-module</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/VirtoCommerce/vc-module-marketing/master/VirtoCommerce.MarketingModule.Web/Content/logo.png</iconUrl>
     <releaseNotes>First version.</releaseNotes>
-    <copyright>Copyright © 2011-2016 Virto Commerce. All rights reserved</copyright>
+    <copyright>Copyright © 2011-2017 Virto Commerce. All rights reserved</copyright>
     <tags>marketing promotion</tags>
 
     <assemblyFile>VirtoCommerce.MarketingModule.Web.dll</assemblyFile>
