@@ -48,13 +48,17 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         {
             var retVal = new GenericSearchResult<webModel.DynamicContentListEntry>();
             retVal.Results = new List<webModel.DynamicContentListEntry>();
+
             var foldersSearchResult = _dynamicConentSearchService.SearchFolders(new DynamicContentFolderSearchCriteria { FolderId = criteria.FolderId, Keyword = criteria.Keyword, Take = criteria.Take, Skip = criteria.Skip, Sort = criteria.Sort });
-            retVal.Results.AddRange(foldersSearchResult.Results.Select(x => x.ToWebModel()));
-            retVal.TotalCount = foldersSearchResult.TotalCount;
+            var folderSkip = Math.Min(foldersSearchResult.TotalCount, criteria.Skip);
+            var folderTake = Math.Min(criteria.Take, Math.Max(0, foldersSearchResult.TotalCount - criteria.Skip));
+            var folders = foldersSearchResult.Results.Skip(folderSkip).Take(folderTake).Select(x=>x.ToWebModel());
+            retVal.TotalCount += foldersSearchResult.TotalCount;
+            retVal.Results.AddRange(folders);
 
-            criteria.Skip = Math.Max(0, criteria.Skip - retVal.TotalCount);
-            criteria.Take = Math.Max(0, criteria.Take - retVal.Results.Count());
-
+            criteria.Skip = criteria.Skip - folderSkip;
+            criteria.Take = criteria.Take - folderTake;
+          
             var placesSearchResult = _dynamicConentSearchService.SearchContentPlaces(criteria);
             retVal.TotalCount += placesSearchResult.TotalCount;
             retVal.Results.AddRange(placesSearchResult.Results.Select(x=>x.ToWebModel()));
@@ -89,12 +93,16 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         {
             var retVal = new GenericSearchResult<webModel.DynamicContentListEntry>();
             retVal.Results = new List<webModel.DynamicContentListEntry>();
-            var foldersSearchResult = _dynamicConentSearchService.SearchFolders(new DynamicContentFolderSearchCriteria { FolderId = criteria.FolderId, Keyword = criteria.Keyword, Take = criteria.Take, Skip = criteria.Skip, Sort = criteria.Sort });
-            retVal.Results.AddRange(foldersSearchResult.Results.Select(x => x.ToWebModel()));
-            retVal.TotalCount = foldersSearchResult.TotalCount;
 
-            criteria.Skip = Math.Max(0, criteria.Skip - retVal.TotalCount);
-            criteria.Take = Math.Max(0, criteria.Take - retVal.Results.Count());
+            var foldersSearchResult = _dynamicConentSearchService.SearchFolders(new DynamicContentFolderSearchCriteria { FolderId = criteria.FolderId, Keyword = criteria.Keyword, Take = criteria.Take, Skip = criteria.Skip, Sort = criteria.Sort });
+            var folderSkip = Math.Min(foldersSearchResult.TotalCount, criteria.Skip);
+            var folderTake = Math.Min(criteria.Take, Math.Max(0, foldersSearchResult.TotalCount - criteria.Skip));
+            var folders = foldersSearchResult.Results.Skip(folderSkip).Take(folderTake).Select(x => x.ToWebModel());
+            retVal.TotalCount += foldersSearchResult.TotalCount;
+            retVal.Results.AddRange(folders);
+
+            criteria.Skip = criteria.Skip - folderSkip;
+            criteria.Take = criteria.Take - folderTake;
 
             var itemsSearchResult = _dynamicConentSearchService.SearchContentItems(criteria);
             retVal.TotalCount += itemsSearchResult.TotalCount;

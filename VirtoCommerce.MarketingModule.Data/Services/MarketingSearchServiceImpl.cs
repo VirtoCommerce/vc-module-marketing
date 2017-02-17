@@ -35,6 +35,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             using (var repository = _repositoryFactory())
             {      
                 var query = repository.Promotions;
+                //Second query for custom coded promotions
                 var query2 = _customPromotionManager.Promotions;
                 if (!string.IsNullOrEmpty(criteria.Store))
                 {
@@ -60,13 +61,13 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
                 retVal.TotalCount = query.Count();
 
-                retVal.Results = query.Skip(criteria.Skip)
-                                      .Take(criteria.Take)
-                                      .ToArray()
-                                      .Select(x => x.ToCoreModel(_expressionSerializer))
+                var skip = Math.Min(retVal.TotalCount, criteria.Skip);
+                var take = Math.Min(criteria.Take, Math.Max(0, retVal.TotalCount - criteria.Skip));
+                retVal.Results = query.Skip(skip).Take(take).ToArray().Select(x => x.ToCoreModel(_expressionSerializer))
                                       .ToList();
-                criteria.Skip = Math.Max(0, criteria.Skip - retVal.TotalCount);
-                criteria.Take = Math.Max(0, criteria.Take - retVal.Results.Count());
+
+                criteria.Skip = criteria.Skip - skip;
+                criteria.Take = criteria.Take - take;
 
                 retVal.TotalCount += query2.Count();
 
