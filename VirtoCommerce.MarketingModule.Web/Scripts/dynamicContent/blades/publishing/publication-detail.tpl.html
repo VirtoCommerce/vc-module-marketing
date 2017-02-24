@@ -57,7 +57,7 @@
                                 <div class="form-group">
                                     <label class="form-label">{{ 'marketing.blades.publishing.publishing-main-step.labels.start-date' | translate }}</label>
                                     <div class="form-input __calendar">
-                                        <input type="text" class="form-control" ng-model="blade.currentEntity.startDate" datepicker-popup="{{format}}" name="startDate" is-open="datepickers.startDate" datepicker-options="dateOptions" close-text="Close" placeholder="{{ 'marketing.blades.publishing.publishing-main-step.placeholders.start-date' | translate }}" />
+                                        <input type="text" class="form-control" ng-model="blade.currentEntity.startDate"  datepicker-popup="" name="startDate" is-open="datepickers.startDate" datepicker-options="dateOptions" close-text="Close" placeholder="{{ 'marketing.blades.publishing.publishing-main-step.placeholders.start-date' | translate }}" />
                                         <button class="btn" type="button" ng-click="open($event,'startDate')">
                                             <i class="btn-ico fa fa-calendar"></i>
                                         </button>
@@ -68,7 +68,7 @@
                                 <div class="form-group">
                                     <label class="form-label">{{ 'marketing.blades.publishing.publishing-main-step.labels.end-date' | translate }}</label>
                                     <div class="form-input __calendar">
-                                        <input type="text" class="form-control" ng-model="blade.currentEntity.endDate" datepicker-popup="{{format}}" name="endDate" is-open="datepickers.endDate" min-date="blade.currentEntity.startDate" datepicker-options="dateOptions" close-text="Close" placeholder="{{ 'marketing.blades.publishing.publishing-main-step.placeholders.end-date' | translate }}" />
+                                        <input type="text" class="form-control" ng-model="blade.currentEntity.endDate" datepicker-popup="" name="endDate" is-open="datepickers.endDate" min-date="blade.currentEntity.startDate" datepicker-options="dateOptions" close-text="Close" placeholder="{{ 'marketing.blades.publishing.publishing-main-step.placeholders.end-date' | translate }}" />
                                         <button class="btn" type="button" ng-click="open($event,'endDate')">
                                             <i class="btn-ico fa fa-calendar"></i>
                                         </button>

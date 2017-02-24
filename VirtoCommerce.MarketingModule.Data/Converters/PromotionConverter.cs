@@ -24,6 +24,8 @@ namespace VirtoCommerce.MarketingModule.Data.Converters
 
             var result = DynamicPromotion.CreateInstance(expressionSerializer);
             result.InjectFrom(dbEntity);
+            result.StartDate = dbEntity.StartDate;
+            result.EndDate = dbEntity.EndDate;
 
             if (!string.IsNullOrEmpty(result.PredicateVisualTreeSerialized))
             {
@@ -82,6 +84,8 @@ namespace VirtoCommerce.MarketingModule.Data.Converters
                                                                          x => x.PredicateSerialized, x => x.PredicateVisualTreeSerialized, x => x.RewardsSerialized);
 
             target.InjectFrom(patchInjection, source);
+            target.StartDate = source.StartDate;
+            target.EndDate = source.EndDate;
 
             if (!source.Coupons.IsNullCollection())
             {

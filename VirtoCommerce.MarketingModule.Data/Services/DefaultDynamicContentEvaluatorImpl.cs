@@ -32,11 +32,14 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         public DynamicContentItem[] EvaluateItems(IEvaluationContext context)
         {
             var dynamicContext = context as DynamicContentEvaluationContext;
-            if (context == null)
+            if (dynamicContext == null)
             {
                 throw new ArgumentException("The context must be a DynamicContentEvaluationContext.");
             }
-
+            if(dynamicContext.ToDate == default(DateTime))
+            {
+                dynamicContext.ToDate = DateTime.UtcNow;
+            }
             var retVal = new List<DynamicContentItem>();
             using (var repository = _repositoryFactory())
             {
