@@ -131,10 +131,6 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 {
                     query = query.Where(c => c.Code.Contains(criteria.Keyword));
                 }
-                if (criteria.IsActive.HasValue)
-                {
-                    query = criteria.IsActive.Value ? query.Where(c => c.IsActive) : query.Where(c => !c.IsActive);
-                }
 
                 var sortInfos = criteria.SortInfos;
                 if (sortInfos.IsNullOrEmpty())
