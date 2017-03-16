@@ -10,7 +10,7 @@ using VirtoCommerce.Domain.Marketing.Model.Promotions.Search;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.MarketingModule.Web.Converters;
-using VirtoCommerce.MarketingModule.Web.Import;
+using VirtoCommerce.MarketingModule.Web.ExportImport;
 using VirtoCommerce.MarketingModule.Web.Model.PushNotifications;
 using VirtoCommerce.MarketingModule.Web.Security;
 using VirtoCommerce.Platform.Core.Assets;

@@ -157,7 +157,7 @@
     </Compile>
     <Compile Include="Controllers\Api\MarketingModulePromotionController.cs" />
     <Compile Include="Converters\PromotionRewardConverter.cs" />
-    <Compile Include="Import\CsvCouponImporter.cs" />
+    <Compile Include="ExportImport\CsvCouponImporter.cs" />
     <Compile Include="JsonConverters\PolymorphicPromoEvalContextJsonConverter.cs" />
     <Compile Include="Model\CouponCsvImportInfo.cs" />
     <Compile Include="Model\DynamicContentListEntry.cs" />

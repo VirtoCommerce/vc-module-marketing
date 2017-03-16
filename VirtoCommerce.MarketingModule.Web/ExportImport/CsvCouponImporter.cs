@@ -8,7 +8,7 @@ using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.ExportImport;
 
-namespace VirtoCommerce.MarketingModule.Web.Import
+namespace VirtoCommerce.MarketingModule.Web.ExportImport
 {
     public sealed class CsvCouponImporter
     {
@@ -29,7 +29,7 @@ namespace VirtoCommerce.MarketingModule.Web.Import
 
             var progressInfo = new ExportImportProgressInfo
             {
-                Description = "Reading products from CSV..."
+                Description = "Reading coupons from CSV..."
             };
             progressCallback(progressInfo);
 
