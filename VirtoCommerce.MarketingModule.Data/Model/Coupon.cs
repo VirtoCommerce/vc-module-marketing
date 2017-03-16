@@ -11,8 +11,6 @@ namespace VirtoCommerce.MarketingModule.Data.Model
 
         public int MaxUsesNumber { get; set; }
 
-        public bool IsActive { get; set; }
-
         #region Navigation Properties
 
         [StringLength(128)]
