@@ -1,13 +1,22 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Hangfire;
+using Omu.ValueInjecter;
 using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Marketing.Model.Promotions.Search;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.MarketingModule.Web.Converters;
+using VirtoCommerce.MarketingModule.Web.Import;
+using VirtoCommerce.MarketingModule.Web.Model.PushNotifications;
 using VirtoCommerce.MarketingModule.Web.Security;
+using VirtoCommerce.Platform.Core.Assets;
+using VirtoCommerce.Platform.Core.ExportImport;
+using VirtoCommerce.Platform.Core.PushNotifications;
+using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Serialization;
 using VirtoCommerce.Platform.Core.Web.Security;
 using coreModel = VirtoCommerce.Domain.Marketing.Model;
@@ -24,14 +33,31 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         private readonly IMarketingPromoEvaluator _promoEvaluator;
         private readonly IExpressionSerializer _expressionSerializer;
         private readonly IPromotionSearchService _promoSearchService;
+        private readonly IUserNameResolver _userNameResolver;
+        private readonly IPushNotificationManager _notifier;
+        private readonly IBlobStorageProvider _blobStorageProvider;
+        private readonly CsvCouponImporter _csvCouponImporter;
 
-        public MarketingModulePromotionController(IPromotionService promotionService, IMarketingExtensionManager promotionManager, IMarketingPromoEvaluator promoEvaluator, IExpressionSerializer expressionSerializer, IPromotionSearchService promoSearchService)
+        public MarketingModulePromotionController(
+            IPromotionService promotionService,
+            IMarketingExtensionManager promotionManager,
+            IMarketingPromoEvaluator promoEvaluator,
+            IExpressionSerializer expressionSerializer,
+            IPromotionSearchService promoSearchService,
+            IUserNameResolver userNameResolver,
+            IPushNotificationManager notifier,
+            IBlobStorageProvider blobStorageProvider,
+            CsvCouponImporter csvCouponImporter)
         {
             _marketingExtensionManager = promotionManager;
             _promotionService = promotionService;
             _promoEvaluator = promoEvaluator;
             _expressionSerializer = expressionSerializer;
             _promoSearchService = promoSearchService;
+            _userNameResolver = userNameResolver;
+            _notifier = notifier;
+            _blobStorageProvider = blobStorageProvider;
+            _csvCouponImporter = csvCouponImporter;
         }
 
         /// <summary>
@@ -141,6 +167,84 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         {
             _promotionService.DeletePromotions(ids);
             return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        [HttpPost]
+        [Route("coupons/search")]
+        [ResponseType(typeof(GenericSearchResult<coreModel.Coupon>))]
+        public IHttpActionResult SearchCoupons(coreModel.Promotions.Search.CouponSearchCriteria criteria)
+        {
+            var searchResult = _promotionService.SearchCoupons(criteria);
+
+            return Ok(searchResult);
+        }
+
+        [HttpDelete]
+        [Route("coupons/delete")]
+        [ResponseType(typeof(void))]
+        public IHttpActionResult DeleteCoupons([FromUri] string[] ids)
+        {
+            _promotionService.DeleteCoupons(ids);
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        [HttpDelete]
+        [Route("coupons/clear")]
+        [ResponseType(typeof(void))]
+        public IHttpActionResult ClearCoupons([FromUri] string promotionId)
+        {
+            _promotionService.ClearCoupons(promotionId);
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        [HttpGet]
+        [Route("coupons/import")]
+        [ResponseType(typeof(ImportNotification))]
+        public IHttpActionResult ImportCoupons(string fileUrl, string delimiter, string promotionId)
+        {
+            var notification = new ImportNotification(_userNameResolver.GetCurrentUserName())
+            {
+                Title = "Import coupons from CSV",
+                Description = "Starting import..."
+            };
+
+            _notifier.Upsert(notification);
+
+            BackgroundJob.Enqueue(() => BackgroundImport(fileUrl, delimiter, promotionId, notification));
+
+            return Ok(notification);
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public void BackgroundImport(string fileUrl, string delimiter, string promotionId, ImportNotification notification)
+        {
+            Action<ExportImportProgressInfo> progressCallback = c =>
+            {
+                notification.InjectFrom(c);
+                _notifier.Upsert(notification);
+            };
+
+            using (var stream = _blobStorageProvider.OpenRead(fileUrl))
+            {
+                try
+                {
+                    _csvCouponImporter.DoImport(stream, delimiter, promotionId, progressCallback);
+                }
+                catch (Exception exception)
+                {
+                    notification.Description = "Import error";
+                    notification.ErrorCount++;
+                    notification.Errors.Add(exception.ToString());
+                }
+                finally
+                {
+                    notification.Finished = DateTime.UtcNow;
+                    notification.Description = "Import finished" + (notification.Errors.Any() ? " with errors" : " successfully");
+                    _notifier.Upsert(notification);
+                }
+            }
         }
     }
 }

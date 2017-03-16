@@ -92,6 +92,7 @@
     <Compile Include="Converters\ContentFolderConverter.cs" />
     <Compile Include="Converters\ContentItemConverter.cs" />
     <Compile Include="Converters\ContentPlaceConverter.cs" />
+    <Compile Include="Converters\CouponConverter.cs" />
     <Compile Include="Converters\PromotionConverter.cs" />
     <Compile Include="Migrations\201504301503151_Initial.cs" />
     <Compile Include="Migrations\201504301503151_Initial.Designer.cs">
@@ -108,6 +109,10 @@
     <Compile Include="Migrations\201508201236497_AddStoreToPublication.cs" />
     <Compile Include="Migrations\201508201236497_AddStoreToPublication.Designer.cs">
       <DependentUpon>201508201236497_AddStoreToPublication.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703131453416_CouponUpdate.cs" />
+    <Compile Include="Migrations\201703131453416_CouponUpdate.Designer.cs">
+      <DependentUpon>201703131453416_CouponUpdate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Coupon.cs" />
@@ -148,6 +153,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201508201236497_AddStoreToPublication.resx">
       <DependentUpon>201508201236497_AddStoreToPublication.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703131453416_CouponUpdate.resx">
+      <DependentUpon>201703131453416_CouponUpdate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

@@ -39,7 +39,7 @@ namespace VirtoCommerce.MarketingModule.Data.Converters
                 result.PredicateSerialized = result.PredicateSerialized.Replace("VirtoCommerce.DynamicExpressionModule.", "VirtoCommerce.DynamicExpressionsModule.");
             }
 
-            result.Coupons = dbEntity.Coupons.Select(x => x.Code).ToArray();
+            result.Coupons = dbEntity.Coupons.Select(x => x.ToCoreModel()).ToList();
             result.Store = dbEntity.StoreId;
             result.MaxUsageCount = dbEntity.TotalLimit;
             result.MaxPersonalUsageCount = dbEntity.PerCustomerLimit;
@@ -60,7 +60,7 @@ namespace VirtoCommerce.MarketingModule.Data.Converters
 
             if (promotion.Coupons != null)
             {
-                result.Coupons = new ObservableCollection<dataModel.Coupon>(promotion.Coupons.Select(x => new dataModel.Coupon { Code = x }));
+                result.Coupons = new ObservableCollection<dataModel.Coupon>(promotion.Coupons.Select(x => x.ToDataModel()));
             }
 
             result.TotalLimit = promotion.MaxUsageCount;

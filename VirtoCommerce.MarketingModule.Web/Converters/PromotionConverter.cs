@@ -17,7 +17,7 @@ namespace VirtoCommerce.MarketingModule.Web.Converters
             var result = new webModel.Promotion();
             result.InjectFrom(promotion);
 
-            result.Coupons = promotion.Coupons;
+            result.Coupons = promotion.Coupons.Select(c => c.Code).ToArray();
 
             // Workaround for UI: DynamicPromotion type is hardcoded in HTML template
             var dynamicPromotionType = typeof(DynamicPromotion);
@@ -59,7 +59,7 @@ namespace VirtoCommerce.MarketingModule.Web.Converters
             var result = DynamicPromotion.CreateInstance(expressionSerializer);
             result.InjectFrom(promotion);
 
-            result.Coupons = promotion.Coupons;
+            //result.Coupons = promotion.Coupons;
 
             if (promotion.DynamicExpression?.Children != null)
             {

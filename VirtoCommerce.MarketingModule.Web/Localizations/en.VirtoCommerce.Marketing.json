@@ -19,15 +19,18 @@
                     "per-customer-limit": "Per customer limit",
                     "promotion-conditions": "Promotion conditions"
                 },
-                "placeholders": {
-                    "promotion-name": "Please enter name...",
-                    "description": "Enter description...",
-                    "store": "Select...",
-                    "start-date": "Please choose date...",
-                    "coupons": "Enter coupon codes...",
-                    "expiration-date": "Please choose date..."
+              "placeholders": {
+                "promotion-name": "Please enter name...",
+                "description": "Enter description...",
+                "store": "Select...",
+                "start-date": "Please choose date...",
+                "coupons": "Enter coupon codes...",
+                "expiration-date": "Please choose date..."
 
-                }
+              },
+              "toolbar": {
+                "coupons": "Coupons"
+              }
             },
             "promotion-list": {
                 "labels": {
@@ -187,75 +190,105 @@
                     }
                 }
             },
-            "publishing": {
-                "add-content-items": {
-                    "title": "Add content items elements",
-                    "subtitle": "Add content items elements",
-                    "labels": {
-                        "chosen-content-items": "Chosen content items",
-                        "content-items": "Content items",
-                        "picture": "Pic",
-                        "name": "Name",
-                        "description": "Description",
-                        "no-data": "No data"
-                    }
+          "publishing": {
+            "add-content-items": {
+              "title": "Add content items elements",
+              "subtitle": "Add content items elements",
+              "labels": {
+                "chosen-content-items": "Chosen content items",
+                "content-items": "Content items",
+                "picture": "Pic",
+                "name": "Name",
+                "description": "Description",
+                "no-data": "No data"
+              }
+            },
+            "add-placeholders": {
+              "title": "Add placeholders elements",
+              "subtitle": "Add placeholders elements",
+              "labels": {
+                "chosen-placeholders": "Chosen placeholders",
+                "content-placeholders": "Content placeholders",
+                "picture": "Pic",
+                "name": "Name",
+                "description": "Description",
+                "no-data": "No data"
+              }
+            },
+            "publishing-main-step": {
+              "title": "Edit publishing element",
+              "subtitle": "Edit publishing element",
+              "title-new": "New publishing element",
+              "subtitle-new": "New publishing element",
+              "labels": {
+                "name": "Name",
+                "description": "Description",
+                "store": "Store",
+                "is-active": "Is active",
+                "start-date": "Start date",
+                "end-date": "End date",
+                "publishing-conditions": "Publishing conditions"
+              },
+              "placeholders": {
+                "name": "Enter publishing name",
+                "description": "Enter publishing description",
+                "store": "Select...",
+                "start-date": "Enter value",
+                "end-date": "Enter value"
+              },
+              "menu": {
+                "placeholders": {
+                  "title": "Placeholders",
+                  "description": "Chosen {{quantity}} placeholders"
                 },
-                "add-placeholders": {
-                    "title": "Add placeholders elements",
-                    "subtitle": "Add placeholders elements",
-                    "labels": {
-                        "chosen-placeholders": "Chosen placeholders",
-                        "content-placeholders": "Content placeholders",
-                        "picture": "Pic",
-                        "name": "Name",
-                        "description": "Description",
-                        "no-data": "No data"
-                    }
-                },
-                "publishing-main-step": {
-                    "title": "Edit publishing element",
-                    "subtitle": "Edit publishing element",
-                    "title-new": "New publishing element",
-                    "subtitle-new": "New publishing element",
-                    "labels": {
-                        "name": "Name",
-                        "description": "Description",
-                        "store": "Store",
-                        "is-active": "Is active",
-                        "start-date": "Start date",
-                        "end-date": "End date",
-                        "publishing-conditions": "Publishing conditions"
-                    },
-                    "placeholders": {
-                        "name": "Enter publishing name",
-                        "description": "Enter publishing description",
-                        "store": "Select...",
-                        "start-date": "Enter value",
-                        "end-date": "Enter value"
-                    },
-                    "menu": {
-                        "placeholders": {
-                            "title": "Placeholders",
-                            "description": "Chosen {{quantity}} placeholders"
-                        },
-                        "content-items": {
-                            "title": "Content items",
-                            "description": "Chosen {{quantity}} content items"
-                        }
-                    }
-                },
-                "list": {
-                    "title": "Content publishing",
-                    "subtitle": "Content publishing list",
-                    "noItemsMessage": "There are no content publishings yet",
-                    "labels": {
-                        "picture": "Icon",
-                        "name": "Name",
-                        "description": "Description",
-                        "no-data": "No Publishings yet"
-                    }
+                "content-items": {
+                  "title": "Content items",
+                  "description": "Chosen {{quantity}} content items"
                 }
+              }
+            },
+            "list": {
+              "title": "Content publishing",
+              "subtitle": "Content publishing list",
+              "noItemsMessage": "There are no content publishings yet",
+              "labels": {
+                "picture": "Icon",
+                "name": "Name",
+                "description": "Description",
+                "no-data": "No Publishings yet"
+              }
             }
+          },
+          "coupons": {
+            "code": "Code",
+            "max-uses-number": "Max uses number",
+            "toolbar": {
+              "add": "Add",
+              "import": "Import",
+              "refresh": "Refresh",
+              "delete": "Delete",
+              "delete-all": "Delete all"
+            },
+            "no-coupons-message": "There are no coupons yet"
+          },
+          "coupons-import": {
+            "title": "Import coupons",
+            "labels": {
+              "delimiter": "CSV column delimiter",
+              "upload": "Upload CSV file",
+              "upload-progress": "Upload progress",
+              "space": "Space",
+              "comma": "Comma",
+              "semicolon": "Semicolon",
+              "tab": "Tab"
+            },
+            "placeholders": {
+              "delimiter": "Select..."
+            }
+          },
+          "coupons-import-processing": {
+            "title": "Coupon import processing"
+          }
         },
         "dialogs": {
             "content-item-delete": {
@@ -286,14 +319,20 @@
                 "title": "Delete confirmation",
                 "message": "Are you sure you want to delete selected Promotions?"
             },
-            "promotion-save": {
-                "title": "Save changes",
-                "message": "The promotion has been modified. Do you want to save changes?"
-            }
+          "promotion-save": {
+            "title": "Save changes",
+            "message": "The promotion has been modified. Do you want to save changes?"
+          },
+          "coupon-delete": {
+            "title": "Delete confirmation",
+            "message": "Are you sure you want to delete selected coupons?",
+            "message-all": "Are you sure you want to delete all of the coupons?"
+          }
         },
         "commands": {
             "manage-type-properties": "Manage type properties",
-            "edit-folder": "Edit folder"
+          "edit-folder": "Edit folder",
+          "start-import": "Start import"
         }
     }
 }

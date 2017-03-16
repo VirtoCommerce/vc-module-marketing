@@ -3,6 +3,10 @@
     return $resource('api/marketing/promotions/:id', null, {
         search: { url: 'api/marketing/promotions/search', method: 'POST' },
         getNew: { url: 'api/marketing/promotions/new' },
-        update: { method: 'PUT' }
+        update: { method: 'PUT' },
+        searchCoupons: { url: 'api/marketing/promotions/coupons/search', method: 'POST' },
+        deleteCoupons: { url: 'api/marketing/promotions/coupons/delete', method: 'DELETE' },
+        clearCoupons: { url: 'api/marketing/promotions/coupons/clear', method: 'DELETE' },
+        importCoupons: { url: 'api/marketing/promotions/coupons/import' }
     });
 }]);

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
 using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Model.DynamicContent.Search;
 using VirtoCommerce.Domain.Marketing.Services;
@@ -39,41 +38,41 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
 
         public void DoExport(Stream backupStream, Action<ExportImportProgressInfo> progressCallback)
         {
-			var backupObject = GetBackupObject(progressCallback);
+            var backupObject = GetBackupObject(progressCallback);
             backupObject.SerializeJson(backupStream);
         }
 
         public void DoImport(Stream backupStream, Action<ExportImportProgressInfo> progressCallback)
         {
             var backupObject = backupStream.DeserializeJson<BackupObject>();
-			var originalObject = GetBackupObject(progressCallback);
+            var originalObject = GetBackupObject(progressCallback);
 
-			var progressInfo = new ExportImportProgressInfo();
+            var progressInfo = new ExportImportProgressInfo();
 
-			progressInfo.Description = String.Format("{0} promotions importing...", backupObject.Promotions.Count());
-			progressCallback(progressInfo);
-			UpdatePromotions(originalObject.Promotions, backupObject.Promotions);
+            progressInfo.Description = String.Format("{0} promotions importing...", backupObject.Promotions.Count());
+            progressCallback(progressInfo);
+            UpdatePromotions(originalObject.Promotions, backupObject.Promotions);
 
-			progressInfo.Description = String.Format("{0} folders importing...", backupObject.ContentFolders.Count());
-			progressCallback(progressInfo);
+            progressInfo.Description = String.Format("{0} folders importing...", backupObject.ContentFolders.Count());
+            progressCallback(progressInfo);
             UpdateContentFolders(originalObject.ContentFolders, backupObject.ContentFolders);
 
-			progressInfo.Description = String.Format("{0} places importing...", backupObject.ContentPlaces.Count());
-			progressCallback(progressInfo);
+            progressInfo.Description = String.Format("{0} places importing...", backupObject.ContentPlaces.Count());
+            progressCallback(progressInfo);
             UpdateContentPlaces(originalObject.ContentPlaces, backupObject.ContentPlaces);
 
-			progressInfo.Description = String.Format("{0} contents importing...", backupObject.ContentItems.Count());
-			progressCallback(progressInfo);
+            progressInfo.Description = String.Format("{0} contents importing...", backupObject.ContentItems.Count());
+            progressCallback(progressInfo);
             UpdateContentItems(originalObject.ContentItems, backupObject.ContentItems);
 
-			progressInfo.Description = String.Format("{0} publications importing...", backupObject.ContentPublications.Count());
-			progressCallback(progressInfo);
+            progressInfo.Description = String.Format("{0} publications importing...", backupObject.ContentPublications.Count());
+            progressCallback(progressInfo);
             UpdateContentPublications(originalObject.ContentPublications, backupObject.ContentPublications);
 
         }
 
         #region Import updates
-        
+
         private void UpdatePromotions(ICollection<Promotion> original, ICollection<Promotion> backup)
         {
             var toUpdate = new List<Promotion>();
@@ -97,19 +96,19 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
         {
             var toUpdate = new List<Coupon>();
 
-            backup.CompareTo(original, EqualityComparer<Coupon>.Default, (state, x, y) =>
-            {
-                switch (state)
-                {
-                    case EntryState.Modified:
-                        toUpdate.Add(x);
-                        break;
-                    case EntryState.Added:
-                        _promotionService.CreateCoupon(x);
-                        break;
-                }
-            });
-            _promotionService.UpdateCoupons(toUpdate.ToArray());
+            //backup.CompareTo(original, EqualityComparer<Coupon>.Default, (state, x, y) =>
+            //{
+            //    switch (state)
+            //    {
+            //        case EntryState.Modified:
+            //            toUpdate.Add(x);
+            //            break;
+            //        case EntryState.Added:
+            //            _promotionService.CreateCoupon(x);
+            //            break;
+            //    }
+            //});
+            _promotionService.SaveCoupons(toUpdate.ToArray());
         }
 
         private void UpdateContentPlaces(ICollection<DynamicContentPlace> original, ICollection<DynamicContentPlace> backup)
@@ -186,19 +185,19 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
 
         #region BackupObject
 
-		private BackupObject GetBackupObject(Action<ExportImportProgressInfo> progressCallback)
+        private BackupObject GetBackupObject(Action<ExportImportProgressInfo> progressCallback)
         {
-	        var result = new BackupObject();
+            var result = new BackupObject();
             var progressInfo = new ExportImportProgressInfo { Description = "Search promotions..." };
             progressCallback(progressInfo);
-			var allPromotions = _promotionSearchService.SearchPromotions(new Domain.Marketing.Model.Promotions.Search.PromotionSearchCriteria
+            var allPromotions = _promotionSearchService.SearchPromotions(new Domain.Marketing.Model.Promotions.Search.PromotionSearchCriteria
             {
                 Take = int.MaxValue
             }).Results;
 
-			progressInfo.Description = String.Format("{0} promotions loading...", allPromotions.Count());
+            progressInfo.Description = String.Format("{0} promotions loading...", allPromotions.Count());
             progressCallback(progressInfo);
-			result.Promotions = allPromotions.Select(x=> _promotionService.GetPromotionById(x.Id)).ToList();
+            result.Promotions = allPromotions.Select(x => _promotionService.GetPromotionById(x.Id)).ToList();
 
             progressInfo.Description = "Search dynamic content objects...";
             progressCallback(progressInfo);

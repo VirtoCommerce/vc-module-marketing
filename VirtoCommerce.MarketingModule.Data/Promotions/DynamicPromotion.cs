@@ -41,7 +41,9 @@ namespace VirtoCommerce.MarketingModule.Data.Promotions
             }
 
             //Check coupon
-            var couponIsValid = Coupons == null || !Coupons.Any() || Coupons.Any(x => string.Equals(x, promoContext.Coupon, StringComparison.InvariantCultureIgnoreCase));
+            var couponIsValid = Coupons == null ||
+                                !Coupons.Any() ||
+                                Coupons.Any(x => string.Equals(x.Code, promoContext.Coupon, StringComparison.InvariantCultureIgnoreCase));
 
             //Evaluate reward for all promoEntry in context
             foreach (var promoEntry in promoContext.PromoEntries)

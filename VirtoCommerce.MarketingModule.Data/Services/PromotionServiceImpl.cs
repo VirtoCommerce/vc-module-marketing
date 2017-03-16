@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using CacheManager.Core;
 using Omu.ValueInjecter;
+using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Marketing.Model;
+using VirtoCommerce.Domain.Marketing.Model.Promotions.Search;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Converters;
 using VirtoCommerce.MarketingModule.Data.Repositories;
@@ -110,29 +112,111 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             }
         }
 
-        public Coupon GetCouponById(string id)
+        public GenericSearchResult<Coupon> SearchCoupons(CouponSearchCriteria criteria)
         {
-            throw new NotImplementedException();
+            if (criteria == null)
+            {
+                throw new ArgumentNullException("criteria");
+            }
+
+            using (var repository = _repositoryFactory())
+            {
+                var query = repository.Coupons;
+
+                if (!string.IsNullOrEmpty(criteria.PromotionId))
+                {
+                    query = query.Where(c => c.PromotionId == criteria.PromotionId);
+                }
+                if (!string.IsNullOrEmpty(criteria.Keyword))
+                {
+                    query = query.Where(c => c.Code.Contains(criteria.Keyword));
+                }
+                if (criteria.IsActive.HasValue)
+                {
+                    query = criteria.IsActive.Value ? query.Where(c => c.IsActive) : query.Where(c => !c.IsActive);
+                }
+
+                var sortInfos = criteria.SortInfos;
+                if (sortInfos.IsNullOrEmpty())
+                {
+                    sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<Coupon>(x => x.ModifiedDate), SortDirection = SortDirection.Descending } };
+                }
+                query = query.OrderBySortInfos(sortInfos);
+
+                var searchResult = new GenericSearchResult<Coupon> { TotalCount = query.Count() };
+
+                var coupons = query.Skip(criteria.Skip).Take(criteria.Take).ToList();
+                searchResult.Results = coupons.Select(c => c.ToCoreModel()).ToList();
+
+                return searchResult;
+            }
         }
 
-        public Coupon[] GetPersonalCoupons(string customerId)
+        public void SaveCoupons(Coupon[] coupons)
         {
-            throw new NotImplementedException();
-        }
+            if (coupons == null)
+            {
+                throw new ArgumentNullException("coupons");
+            }
 
-        public Promotion CreateCoupon(Coupon coupon)
-        {
-            throw new NotImplementedException();
-        }
+            using (var repository = _repositoryFactory())
+            {
+                foreach (var coupon in coupons)
+                {
+                    var entity = coupon.ToDataModel();
+                    if (coupon.IsTransient())
+                    {
+                        repository.Add(entity);
+                    }
+                    else
+                    {
+                        repository.Update(entity);
+                    }
+                }
 
-        public void UpdateCoupons(Coupon[] coupons)
-        {
-            throw new NotImplementedException();
+                CommitChanges(repository);
+            }
         }
 
         public void DeleteCoupons(string[] ids)
         {
-            throw new NotImplementedException();
+            if (ids == null)
+            {
+                throw new ArgumentNullException("ids");
+            }
+
+            using (var repository = _repositoryFactory())
+            {
+                foreach (var id in ids)
+                {
+                    var coupon = repository.Coupons.FirstOrDefault(c => c.Id == id);
+                    if (coupon != null)
+                    {
+                        repository.Remove(coupon);
+                    }
+                }
+
+                CommitChanges(repository);
+            }
+        }
+
+        public void ClearCoupons(string promotionId)
+        {
+            using (var repository = _repositoryFactory())
+            {
+                var coupons = repository.Coupons;
+                if (!string.IsNullOrEmpty(promotionId))
+                {
+                    coupons = coupons.Where(c => c.PromotionId == promotionId);
+                }
+
+                foreach (var coupon in coupons)
+                {
+                    repository.Remove(coupon);
+                }
+
+                CommitChanges(repository);
+            }
         }
 
         #endregion
