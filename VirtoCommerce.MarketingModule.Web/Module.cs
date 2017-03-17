@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Web.Http;
 using Microsoft.Practices.Unity;
+using VirtoCommerce.Domain.Cart.Events;
 using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Services;
+using VirtoCommerce.Domain.Order.Events;
+using VirtoCommerce.MarketingModule.Data.Observers;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.MarketingModule.Data.Services;
 using VirtoCommerce.MarketingModule.Web.ExportImport;
@@ -50,6 +53,8 @@ namespace VirtoCommerce.MarketingModule.Web
             _container.RegisterType<IMarketingPromoEvaluator, DefaultPromotionEvaluatorImpl>();
             _container.RegisterType<IPromotionSearchService, MarketingSearchServiceImpl>();
             _container.RegisterType<IDynamicContentSearchService, MarketingSearchServiceImpl>();
+            _container.RegisterType<IObserver<CartChangeEvent>, CartChangeObserver>("CartChangeObserver");
+            _container.RegisterType<IObserver<OrderChangeEvent>, OrderChangeObserver>("OrderChangeObserver");
         }
 
         public override void PostInitialize()

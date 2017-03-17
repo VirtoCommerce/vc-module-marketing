@@ -128,6 +128,8 @@
     <Compile Include="Model\PromotionUsage.cs" />
     <Compile Include="Model\PublishingGroupContentItem.cs" />
     <Compile Include="Model\PublishingGroupContentPlace.cs" />
+    <Compile Include="Observers\CartChangeObserver.cs" />
+    <Compile Include="Observers\OrderChangeObserver.cs" />
     <Compile Include="Promotions\DynamicPromotion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IMarketingRepository.cs" />

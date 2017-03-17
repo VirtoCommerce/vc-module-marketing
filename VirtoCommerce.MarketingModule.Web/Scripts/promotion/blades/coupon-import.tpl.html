@@ -34,8 +34,8 @@
                     <div class="form-group">
                         <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.expiration-date' | translate }}</label>
                         <div class="form-input __calendar">
-                            <input placeholder="{{ 'marketing.blades.promotion-detail.placeholders.expiration-date' | translate }}" ng-model="blade.currentEntity.endDate" datepicker-popup="" is-open="datepickers.end" datepicker-options="dateOptions" close-text="Close" />
-                            <button class="btn" type="button" ng-click="open($event,'end')">
+                            <input placeholder="{{ 'marketing.blades.promotion-detail.placeholders.expiration-date' | translate }}" ng-model="blade.currentEntity.expirationDate" datepicker-popup="" is-open="datepickers.expirationDate" datepicker-options="dateOptions" close-text="Close" />
+                            <button class="btn" type="button" ng-click="open($event,'expirationDate')">
                                 <i class="btn-ico fa fa-calendar"></i>
                             </button>
                         </div>

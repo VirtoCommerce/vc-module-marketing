@@ -58,6 +58,16 @@
         'year-format': "'yyyy'"
     };
 
+    $scope.datepickers = {
+        expirationDate: false
+    };
+
+    $scope.open = function ($event, which) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.datepickers[which] = true;
+    };
+
     $scope.startImport = function () {
         var request = {
             fileUrl: blade.csvFileUrl,
