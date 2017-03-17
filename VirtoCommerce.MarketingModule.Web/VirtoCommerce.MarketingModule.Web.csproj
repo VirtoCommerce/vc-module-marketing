@@ -161,6 +161,7 @@
     <Compile Include="JsonConverters\PolymorphicPromoEvalContextJsonConverter.cs" />
     <Compile Include="Model\CouponCsvImportInfo.cs" />
     <Compile Include="Model\DynamicContentListEntry.cs" />
+    <Compile Include="Model\ImportRequest.cs" />
     <Compile Include="Model\PromotionReward.cs" />
     <Compile Include="Model\PushNotifications\ImportNotification.cs" />
     <Compile Include="Security\MarketingPredefinedPermissions.cs" />

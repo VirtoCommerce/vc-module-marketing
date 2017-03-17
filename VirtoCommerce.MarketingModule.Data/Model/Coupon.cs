@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using VirtoCommerce.Platform.Core.Common;
 
@@ -10,6 +11,8 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public string Code { get; set; }
 
         public int MaxUsesNumber { get; set; }
+
+        public DateTime? ExpirationDate { get; set; }
 
         #region Navigation Properties
 

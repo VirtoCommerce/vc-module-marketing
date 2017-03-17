@@ -23,7 +23,7 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
         private readonly Func<IMarketingRepository> _marketingRepositoryFactory;
         private readonly IPromotionService _promotionService;
 
-        public void DoImport(Stream inputStream, string delimiter, string promotionId, Action<ExportImportProgressInfo> progressCallback)
+        public void DoImport(Stream inputStream, string delimiter, string promotionId, DateTime? expirationDate, Action<ExportImportProgressInfo> progressCallback)
         {
             var coupons = new List<Coupon>();
 
@@ -43,7 +43,8 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
                     {
                         Code = reader.GetField<string>(0),
                         MaxUsesNumber = reader.GetField<int>(1),
-                        PromotionId = promotionId
+                        PromotionId = promotionId,
+                        ExpirationDate = expirationDate
                     });
                 }
             }
@@ -64,6 +65,7 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
                         progressInfo.Errors.Add(string.Format("Coupon with code \"{0}\" is already exists", coupon.Code));
                         progressCallback(progressInfo);
                     }
+                    progressCallback(progressInfo);
                 }
 
                 _promotionService.SaveCoupons(uniqueCoupons.ToArray());

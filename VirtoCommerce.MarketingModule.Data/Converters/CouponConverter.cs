@@ -22,7 +22,8 @@ namespace VirtoCommerce.MarketingModule.Data.Converters
                 MaxUsesNumber = dataModel.MaxUsesNumber,
                 ModifiedBy = dataModel.ModifiedBy,
                 ModifiedDate = dataModel.ModifiedDate,
-                PromotionId = dataModel.PromotionId
+                PromotionId = dataModel.PromotionId,
+                ExpirationDate = dataModel.ExpirationDate
             };
 
             coreModel.Code = dataModel.Code;
@@ -47,7 +48,8 @@ namespace VirtoCommerce.MarketingModule.Data.Converters
                 MaxUsesNumber = coreModel.MaxUsesNumber,
                 ModifiedBy = coreModel.ModifiedBy,
                 ModifiedDate = coreModel.ModifiedDate,
-                PromotionId = coreModel.PromotionId
+                PromotionId = coreModel.PromotionId,
+                ExpirationDate = coreModel.ExpirationDate
             };
 
             return dataModel;

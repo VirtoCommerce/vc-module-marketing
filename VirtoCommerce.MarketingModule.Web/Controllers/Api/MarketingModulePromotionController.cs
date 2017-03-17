@@ -11,6 +11,7 @@ using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.MarketingModule.Web.Converters;
 using VirtoCommerce.MarketingModule.Web.ExportImport;
+using VirtoCommerce.MarketingModule.Web.Model;
 using VirtoCommerce.MarketingModule.Web.Model.PushNotifications;
 using VirtoCommerce.MarketingModule.Web.Security;
 using VirtoCommerce.Platform.Core.Assets;
@@ -199,10 +200,10 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("coupons/import")]
         [ResponseType(typeof(ImportNotification))]
-        public IHttpActionResult ImportCoupons(string fileUrl, string delimiter, string promotionId)
+        public IHttpActionResult ImportCoupons(ImportRequest request)
         {
             var notification = new ImportNotification(_userNameResolver.GetCurrentUserName())
             {
@@ -212,13 +213,13 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
 
             _notifier.Upsert(notification);
 
-            BackgroundJob.Enqueue(() => BackgroundImport(fileUrl, delimiter, promotionId, notification));
+            BackgroundJob.Enqueue(() => BackgroundImport(request, notification));
 
             return Ok(notification);
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
-        public void BackgroundImport(string fileUrl, string delimiter, string promotionId, ImportNotification notification)
+        public void BackgroundImport(ImportRequest request, ImportNotification notification)
         {
             Action<ExportImportProgressInfo> progressCallback = c =>
             {
@@ -226,11 +227,11 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
                 _notifier.Upsert(notification);
             };
 
-            using (var stream = _blobStorageProvider.OpenRead(fileUrl))
+            using (var stream = _blobStorageProvider.OpenRead(request.FileUrl))
             {
                 try
                 {
-                    _csvCouponImporter.DoImport(stream, delimiter, promotionId, progressCallback);
+                    _csvCouponImporter.DoImport(stream, request.Delimiter, request.PromotionId, request.ExpirationDate, progressCallback);
                 }
                 catch (Exception exception)
                 {

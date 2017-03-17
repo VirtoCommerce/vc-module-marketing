@@ -114,6 +114,10 @@
     <Compile Include="Migrations\201703131453416_CouponUpdate.Designer.cs">
       <DependentUpon>201703131453416_CouponUpdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703170957248_CouponExpirationDate.cs" />
+    <Compile Include="Migrations\201703170957248_CouponExpirationDate.Designer.cs">
+      <DependentUpon>201703170957248_CouponExpirationDate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Coupon.cs" />
     <Compile Include="Model\DynamicContentFolder.cs" />
@@ -156,6 +160,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703131453416_CouponUpdate.resx">
       <DependentUpon>201703131453416_CouponUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703170957248_CouponExpirationDate.resx">
+      <DependentUpon>201703170957248_CouponExpirationDate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

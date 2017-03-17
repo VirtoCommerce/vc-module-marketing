@@ -54,11 +54,16 @@
         value: '\t'
     }];
 
+    $scope.dateOptions = {
+        'year-format': "'yyyy'"
+    };
+
     $scope.startImport = function () {
         var request = {
             fileUrl: blade.csvFileUrl,
             delimiter: blade.columnDelimiter,
-            promotionId: blade.promotionId
+            promotionId: blade.promotionId,
+            expirationDate: blade.expirationDate
         };
         promotionsApi.importCoupons(request, function (response) {
             var newBlade = {
