@@ -76,7 +76,7 @@ namespace VirtoCommerce.MarketingModule.Test
             }
 
             var cacheManager = new Moq.Mock<ICacheManager<object>>();
-            var marketingEval = new DefaultPromotionEvaluatorImpl(GetMarketingService(), cacheManager.Object, null);
+            var marketingEval = new DefaultPromotionEvaluatorImpl(GetMarketingService(), GetCouponService(), cacheManager.Object);
             var context = GetPromotionEvaluationContext();
             var result = marketingEval.EvaluatePromotion(context);
         }
@@ -124,7 +124,7 @@ namespace VirtoCommerce.MarketingModule.Test
             }
 
             var cacheManager = new Moq.Mock<ICacheManager<object>>();
-            var marketingEval = new DefaultPromotionEvaluatorImpl(GetMarketingService(), cacheManager.Object, null);
+            var marketingEval = new DefaultPromotionEvaluatorImpl(GetMarketingService(), GetCouponService(), cacheManager.Object);
             var context = GetPromotionEvaluationContext();
             context.PromoEntries.First().Attributes["tag"] = "#FOOTBAL";
             var result = marketingEval.EvaluatePromotion(context);
@@ -181,13 +181,20 @@ namespace VirtoCommerce.MarketingModule.Test
         {
             var promotionExtensionManager = new DefaultMarketingExtensionManagerImpl();
             var cacheManager = new Moq.Mock<ICacheManager<object>>();
-            var retVal = new PromotionServiceImpl(GetRepository, promotionExtensionManager, GetExpressionSerializer(), cacheManager.Object);
+            var retVal = new PromotionServiceImpl(GetRepository, promotionExtensionManager, GetExpressionSerializer(), cacheManager.Object, GetCouponService());
+            return retVal;
+        }
+
+        private ICouponService GetCouponService()
+        {
+            var cacheManager = new Moq.Mock<ICacheManager<object>>();
+            var retVal = new CouponService(GetRepository);
             return retVal;
         }
 
         private MarketingModulePromotionController GetMarketingController(IMarketingExtensionManager extensionManager)
         {
-            var retVal = new MarketingModulePromotionController(GetMarketingService(), extensionManager, null, GetExpressionSerializer(), null, null, null, null, null);
+            var retVal = new MarketingModulePromotionController(GetMarketingService(), GetCouponService(), extensionManager, null, GetExpressionSerializer(), null, null, null, null, null);
             return retVal;
         }
 

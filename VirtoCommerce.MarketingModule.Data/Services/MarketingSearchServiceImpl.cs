@@ -19,13 +19,15 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         private readonly IMarketingExtensionManager _customPromotionManager;
         private readonly IDynamicContentService _dynamicContentService;
         private readonly IExpressionSerializer _expressionSerializer;
+        private readonly ICouponService _couponService;
 
-        public MarketingSearchServiceImpl(Func<IMarketingRepository> repositoryFactory, IMarketingExtensionManager customPromotionManager, IDynamicContentService dynamicContentService, IExpressionSerializer expressionSerializer)
+        public MarketingSearchServiceImpl(Func<IMarketingRepository> repositoryFactory, IMarketingExtensionManager customPromotionManager, IDynamicContentService dynamicContentService, IExpressionSerializer expressionSerializer, ICouponService couponService)
         {
             _repositoryFactory = repositoryFactory;
             _customPromotionManager = customPromotionManager;
             _dynamicContentService = dynamicContentService;
             _expressionSerializer = expressionSerializer;
+            _couponService = couponService;
         }
 
         #region IPromotionSearchService Members
@@ -33,7 +35,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         {
             var retVal = new GenericSearchResult<coreModel.Promotion>();
             using (var repository = _repositoryFactory())
-            {      
+            {
                 var query = repository.Promotions;
                 //Second query for custom coded promotions
                 var query2 = _customPromotionManager.Promotions;
@@ -42,7 +44,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                     query = query.Where(x => x.StoreId == criteria.Store);
                     query2 = query2.Where(x => x.Store == criteria.Store);
                 }
-                if(criteria.OnlyActive)
+                if (criteria.OnlyActive)
                 {
                     query = query.Where(x => x.IsActive == true);
                 }
@@ -63,7 +65,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
                 var skip = Math.Min(retVal.TotalCount, criteria.Skip);
                 var take = Math.Min(criteria.Take, Math.Max(0, retVal.TotalCount - criteria.Skip));
-                retVal.Results = query.Skip(skip).Take(take).ToArray().Select(x => x.ToCoreModel(_expressionSerializer))
+                retVal.Results = query.Skip(skip).Take(take).ToArray().Select(x => x.ToCoreModel(_expressionSerializer, _couponService))
                                       .ToList();
 
                 criteria.Skip = criteria.Skip - skip;
@@ -72,10 +74,10 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 retVal.TotalCount += query2.Count();
 
                 retVal.Results.AddRange(_customPromotionManager.Promotions.Skip(criteria.Skip).Take(criteria.Take));
-      
+
             }
             return retVal;
-        } 
+        }
         #endregion
 
         #region IDynamicContentSearchService Members
@@ -83,7 +85,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         {
             var retVal = new GenericSearchResult<coreModel.DynamicContentItem>();
             using (var repository = _repositoryFactory())
-            {             
+            {
                 var query = repository.Items;
                 if (!string.IsNullOrEmpty(criteria.FolderId))
                 {
@@ -117,7 +119,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             using (var repository = _repositoryFactory())
             {
                 var query = repository.Places;
-                if(!string.IsNullOrEmpty(criteria.FolderId))
+                if (!string.IsNullOrEmpty(criteria.FolderId))
                 {
                     query = query.Where(x => x.FolderId == criteria.FolderId);
                 }
@@ -145,20 +147,20 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         {
             var retVal = new GenericSearchResult<coreModel.DynamicContentPublication>();
             using (var repository = _repositoryFactory())
-            {             
+            {
                 var query = repository.PublishingGroups;
-                if(!string.IsNullOrEmpty(criteria.Store))
+                if (!string.IsNullOrEmpty(criteria.Store))
                 {
                     query = query.Where(x => x.StoreId == criteria.Store);
                 }
-                if(criteria.OnlyActive)
+                if (criteria.OnlyActive)
                 {
                     query = query.Where(x => x.IsActive == true);
                 }
                 if (!string.IsNullOrEmpty(criteria.Keyword))
                 {
                     query = query.Where(q => q.Name.Contains(criteria.Keyword));
-                }                
+                }
                 var sortInfos = criteria.SortInfos;
                 if (sortInfos.IsNullOrEmpty())
                 {
@@ -180,7 +182,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         {
             var retVal = new GenericSearchResult<coreModel.DynamicContentFolder>();
             using (var repository = _repositoryFactory())
-            {        
+            {
                 var query = repository.Folders.Where(x => x.ParentFolderId == criteria.FolderId);
                 if (!string.IsNullOrEmpty(criteria.Keyword))
                 {
@@ -195,7 +197,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 retVal.TotalCount = query.Count();
 
                 var folderIds = query.Select(x => x.Id).ToArray();
-                retVal.Results = new List<coreModel.DynamicContentFolder>();                
+                retVal.Results = new List<coreModel.DynamicContentFolder>();
                 foreach (var folderId in folderIds)
                 {
                     var folder = repository.GetContentFolderById(folderId);
@@ -203,8 +205,8 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 }
             }
             return retVal;
-        } 
-        #endregion        
-     
+        }
+        #endregion
+
     }
 }

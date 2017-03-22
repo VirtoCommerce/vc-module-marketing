@@ -132,7 +132,6 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
             return retVal;
         }
 
-
         public DynamicContentFolder GetContentFolderById(string id)
         {
             var retVal = Folders.FirstOrDefault(x => x.Id == id);

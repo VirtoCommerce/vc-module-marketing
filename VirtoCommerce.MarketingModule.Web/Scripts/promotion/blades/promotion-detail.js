@@ -101,15 +101,6 @@
                     },
                     canExecuteMethod: isDirty,
                     permission: blade.updatePermission
-                },
-                {
-                    name: 'marketing.blades.promotion-detail.toolbar.coupons',
-                    icon: 'fa fa-ticket',
-                    canExecuteMethod: function () {
-                        return true;
-                    },
-                    executeMethod: showCouponsBlade,
-                    permission: blade.updatePermission
                 }
             ];
         }
@@ -174,17 +165,6 @@
         expressionElement.children = _.difference(expressionElement.children, selectedProducts);
 
         _.each(expressionElement.children, stripOffUiInformation);
-    }
-
-    function showCouponsBlade() {
-        var newBlade = {
-            id: 'coupons',
-            title: 'marketing.blades.promotion-detail.toolbar.coupons',
-            promotionId: blade.currentEntity.id,
-            controller: 'virtoCommerce.marketingModule.couponListController',
-            template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/promotion/blades/coupon-list.tpl.html'
-        }
-        bladeNavigationService.showBlade(newBlade, blade);
     }
 
     initializeToolbar();

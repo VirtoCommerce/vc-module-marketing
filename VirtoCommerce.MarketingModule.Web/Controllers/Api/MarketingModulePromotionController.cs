@@ -31,6 +31,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
     {
         private readonly IMarketingExtensionManager _marketingExtensionManager;
         private readonly IPromotionService _promotionService;
+        private readonly ICouponService _couponService;
         private readonly IMarketingPromoEvaluator _promoEvaluator;
         private readonly IExpressionSerializer _expressionSerializer;
         private readonly IPromotionSearchService _promoSearchService;
@@ -41,6 +42,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
 
         public MarketingModulePromotionController(
             IPromotionService promotionService,
+            ICouponService couponService,
             IMarketingExtensionManager promotionManager,
             IMarketingPromoEvaluator promoEvaluator,
             IExpressionSerializer expressionSerializer,
@@ -52,6 +54,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         {
             _marketingExtensionManager = promotionManager;
             _promotionService = promotionService;
+            _couponService = couponService;
             _promoEvaluator = promoEvaluator;
             _expressionSerializer = expressionSerializer;
             _promoSearchService = promoSearchService;
@@ -137,7 +140,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [CheckPermission(Permission = MarketingPredefinedPermissions.Create)]
         public IHttpActionResult CreatePromotion(webModel.Promotion promotion)
         {
-            var retVal = _promotionService.CreatePromotion(promotion.ToCoreModel(_expressionSerializer));
+            var retVal = _promotionService.CreatePromotion(promotion.ToCoreModel(_expressionSerializer, _couponService));
             return GetPromotionById(retVal.Id);
         }
 
@@ -152,7 +155,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [CheckPermission(Permission = MarketingPredefinedPermissions.Update)]
         public IHttpActionResult UpdatePromotions(webModel.Promotion promotion)
         {
-            _promotionService.UpdatePromotions(new[] { promotion.ToCoreModel(_expressionSerializer) });
+            _promotionService.UpdatePromotions(new[] { promotion.ToCoreModel(_expressionSerializer, _couponService) });
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -173,9 +176,9 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [HttpPost]
         [Route("coupons/search")]
         [ResponseType(typeof(GenericSearchResult<coreModel.Coupon>))]
-        public IHttpActionResult SearchCoupons(coreModel.Promotions.Search.CouponSearchCriteria criteria)
+        public IHttpActionResult SearchCoupons(CouponSearchCriteria criteria)
         {
-            var searchResult = _promotionService.SearchCoupons(criteria);
+            var searchResult = _couponService.SearchCoupons(criteria);
 
             return Ok(searchResult);
         }
@@ -185,7 +188,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [ResponseType(typeof(void))]
         public IHttpActionResult DeleteCoupons([FromUri] string[] ids)
         {
-            _promotionService.DeleteCoupons(ids);
+            _couponService.DeleteCoupons(ids);
 
             return StatusCode(HttpStatusCode.NoContent);
         }
@@ -195,7 +198,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [ResponseType(typeof(void))]
         public IHttpActionResult ClearCoupons([FromUri] string promotionId)
         {
-            _promotionService.ClearCoupons(promotionId);
+            _couponService.ClearCoupons(promotionId);
 
             return StatusCode(HttpStatusCode.NoContent);
         }

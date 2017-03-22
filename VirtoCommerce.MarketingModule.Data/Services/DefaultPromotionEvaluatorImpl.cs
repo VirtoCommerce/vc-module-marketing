@@ -5,7 +5,6 @@ using CacheManager.Core;
 using VirtoCommerce.Domain.Common;
 using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Services;
-using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Data.Common;
 
@@ -14,17 +13,17 @@ namespace VirtoCommerce.MarketingModule.Data.Services
     public class DefaultPromotionEvaluatorImpl : IMarketingPromoEvaluator
     {
         private readonly IPromotionService _promotionService;
+        private readonly ICouponService _couponService;
         private readonly ICacheManager<object> _cacheManager;
-        private readonly Func<IMarketingRepository> _marketingRepositoryFactory;
 
         public DefaultPromotionEvaluatorImpl(
             IPromotionService promotionService,
-            ICacheManager<object> cacheManager,
-            Func<IMarketingRepository> marketingRepositoryFactory)
+            ICouponService couponService,
+            ICacheManager<object> cacheManager)
         {
             _promotionService = promotionService;
+            _couponService = couponService;
             _cacheManager = cacheManager;
-            _marketingRepositoryFactory = marketingRepositoryFactory;
         }
 
         #region IMarketingEvaluator Members
@@ -102,30 +101,6 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
             //Special offer
             rewards.OfType<SpecialOfferReward>().ToList().ForEach(x => retVal.Rewards.Add(x));
-
-            using (var repository = _marketingRepositoryFactory())
-            {
-                var couponReward = rewards.FirstOrDefault(r => r.Coupon != null);
-                var coupon = repository.Coupons.FirstOrDefault(c => c.Code == couponReward.Coupon);
-                var usesCount = repository.PromotionUsages.Where(pu => pu.CouponCode == coupon.Code && pu.PromotionId == couponReward.Promotion.Id).Count();
-                if (coupon.ExpirationDate.HasValue)
-                {
-                    if (coupon.ExpirationDate.Value < DateTime.UtcNow)
-                    {
-                        var promoReservation = repository.PromotionUsages.FirstOrDefault(pu =>
-                            pu.CouponCode == coupon.Code && pu.PromotionId == couponReward.Promotion.Id && string.IsNullOrEmpty(pu.OrderId));
-                        if (promoReservation != null)
-                        {
-                            repository.Remove(promoReservation);
-                            repository.UnitOfWork.Commit();
-                        }
-                    }
-                }
-                if (coupon.MaxUsesNumber < usesCount)
-                {
-                    couponReward.IsValid = false;
-                }
-            }
 
             return retVal;
         }

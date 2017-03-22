@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
 using Omu.ValueInjecter;
+using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Serialization;
@@ -17,12 +16,12 @@ namespace VirtoCommerce.MarketingModule.Data.Converters
         /// Converting to model type
         /// </summary>
         /// <returns></returns>
-        public static coreModel.Promotion ToCoreModel(this dataModel.Promotion dbEntity, IExpressionSerializer expressionSerializer)
+        public static coreModel.Promotion ToCoreModel(this dataModel.Promotion dbEntity, IExpressionSerializer expressionSerializer, ICouponService couponService)
         {
             if (dbEntity == null)
                 throw new ArgumentNullException(nameof(dbEntity));
 
-            var result = DynamicPromotion.CreateInstance(expressionSerializer);
+            var result = DynamicPromotion.CreateInstance(expressionSerializer, couponService);
             result.InjectFrom(dbEntity);
             result.StartDate = dbEntity.StartDate;
             result.EndDate = dbEntity.EndDate;
@@ -39,7 +38,6 @@ namespace VirtoCommerce.MarketingModule.Data.Converters
                 result.PredicateSerialized = result.PredicateSerialized.Replace("VirtoCommerce.DynamicExpressionModule.", "VirtoCommerce.DynamicExpressionsModule.");
             }
 
-            result.Coupons = dbEntity.Coupons.Select(x => x.ToCoreModel()).ToList();
             result.Store = dbEntity.StoreId;
             result.MaxUsageCount = dbEntity.TotalLimit;
             result.MaxPersonalUsageCount = dbEntity.PerCustomerLimit;
@@ -57,11 +55,6 @@ namespace VirtoCommerce.MarketingModule.Data.Converters
 
             result.StartDate = promotion.StartDate ?? DateTime.UtcNow;
             result.StoreId = promotion.Store;
-
-            if (promotion.Coupons != null)
-            {
-                result.Coupons = new ObservableCollection<dataModel.Coupon>(promotion.Coupons.Select(x => x.ToDataModel()));
-            }
 
             result.TotalLimit = promotion.MaxUsageCount;
             result.PerCustomerLimit = promotion.MaxPersonalUsageCount;

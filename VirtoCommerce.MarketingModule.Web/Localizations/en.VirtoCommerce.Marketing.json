@@ -1,6 +1,11 @@
 ﻿{
     "marketing": {
-        "main-menu-title": "Marketing",
+      "main-menu-title": "Marketing",
+      "widgets": {
+        "couponsWidget": {
+          "title": "Coupons"
+        }
+      },
         "blades": {
             "marketing-main": {
                 "title": "Marketing"

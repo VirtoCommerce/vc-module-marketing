@@ -7,13 +7,13 @@ namespace VirtoCommerce.MarketingModule.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class CouponExpirationDate : IMigrationMetadata
+    public sealed partial class CouponUpdate : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(CouponExpirationDate));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(CouponUpdate));
         
         string IMigrationMetadata.Id
         {
-            get { return "201703170957248_CouponExpirationDate"; }
+            get { return "201703211322020_CouponUpdate"; }
         }
         
         string IMigrationMetadata.Source

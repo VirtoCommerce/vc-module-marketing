@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Omu.ValueInjecter;
 using VirtoCommerce.Domain.Common;
 using VirtoCommerce.Domain.Marketing.Model;
+using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Serialization;
@@ -16,8 +17,6 @@ namespace VirtoCommerce.MarketingModule.Web.Converters
         {
             var result = new webModel.Promotion();
             result.InjectFrom(promotion);
-
-            result.Coupons = promotion.Coupons.Select(c => c.Code).ToArray();
 
             // Workaround for UI: DynamicPromotion type is hardcoded in HTML template
             var dynamicPromotionType = typeof(DynamicPromotion);
@@ -54,9 +53,9 @@ namespace VirtoCommerce.MarketingModule.Web.Converters
             return result;
         }
 
-        public static Promotion ToCoreModel(this webModel.Promotion promotion, IExpressionSerializer expressionSerializer)
+        public static Promotion ToCoreModel(this webModel.Promotion promotion, IExpressionSerializer expressionSerializer, ICouponService couponService)
         {
-            var result = DynamicPromotion.CreateInstance(expressionSerializer);
+            var result = DynamicPromotion.CreateInstance(expressionSerializer, couponService);
             result.InjectFrom(promotion);
 
             //result.Coupons = promotion.Coupons;

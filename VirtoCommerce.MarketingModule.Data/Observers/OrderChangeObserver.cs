@@ -1,54 +1,36 @@
 ﻿using System;
 using System.Linq;
+using VirtoCommerce.Domain.Marketing.Model.Promotions;
+using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.Domain.Order.Events;
-using VirtoCommerce.MarketingModule.Data.Model;
-using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.MarketingModule.Data.Observers
 {
     public class OrderChangeObserver : IObserver<OrderChangeEvent>
     {
-        public OrderChangeObserver(Func<IMarketingRepository> marketingRepositoryFactory)
-        {
-            _marketingRepositoryFactory = marketingRepositoryFactory;
-        }
+        private readonly ICouponService _couponService;
 
-        private readonly Func<IMarketingRepository> _marketingRepositoryFactory;
+        public OrderChangeObserver(ICouponService couponService)
+        {
+            _couponService = couponService;
+        }
 
         public void OnNext(OrderChangeEvent value)
         {
-            using (var repository = _marketingRepositoryFactory())
+            if (value.ChangeState == EntryState.Added)
             {
-                var order = value.ModifiedOrder;
-                if (value.ChangeState == EntryState.Added && order != null)
+                var couponDiscount = value.ModifiedOrder.Discounts.FirstOrDefault(d => d.Coupon != null);
+                if (couponDiscount != null)
                 {
-                    var couponPromotion = order.Discounts.FirstOrDefault();
-                    if (couponPromotion != null)
+                    _couponService.ApplyCouponUsage(new ApplyCouponRequest
                     {
-                        repository.Add(new PromotionUsage
-                        {
-                            CouponCode = couponPromotion.Coupon.Code,
-                            MemberId = order.CustomerId,
-                            MemberName = order.CustomerName,
-                            OrderId = order.Id,
-                            OrderNumber = order.Number,
-                            PromotionId = couponPromotion.PromotionId,
-                            UsageDate = DateTime.UtcNow
-                        });
-
-                        var reservedUsage = repository.PromotionUsages.FirstOrDefault(pu =>
-                            pu.CouponCode == couponPromotion.Coupon.Code &&
-                            pu.PromotionId == couponPromotion.PromotionId &&
-                            pu.MemberId == order.CustomerId &&
-                            string.IsNullOrEmpty(pu.OrderId));
-                        if (reservedUsage != null)
-                        {
-                            repository.Remove(reservedUsage);
-                        }
-
-                        repository.UnitOfWork.Commit();
-                    }
+                        CouponCode = couponDiscount.Coupon.Code,
+                        MemberId = value.ModifiedOrder.CustomerId,
+                        OrderId = value.ModifiedOrder.Id,
+                        OrderNumber = value.ModifiedOrder.Number,
+                        PromotionId = couponDiscount.PromotionId
+                    });
                 }
             }
         }

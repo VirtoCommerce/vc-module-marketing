@@ -5,23 +5,19 @@ using System.Linq;
 using CsvHelper;
 using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Services;
-using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.ExportImport;
 
 namespace VirtoCommerce.MarketingModule.Web.ExportImport
 {
     public sealed class CsvCouponImporter
     {
-        public CsvCouponImporter(
-            Func<IMarketingRepository> marketingRepositoryFactory,
-            IPromotionService promotionService)
+        public CsvCouponImporter(ICouponService couponService)
         {
-            _marketingRepositoryFactory = marketingRepositoryFactory;
-            _promotionService = promotionService;
+            _couponService = couponService;
         }
 
-        private readonly Func<IMarketingRepository> _marketingRepositoryFactory;
-        private readonly IPromotionService _promotionService;
+        private readonly ICouponService _couponService;
+        private const int ChunkSize = 500;
 
         public void DoImport(Stream inputStream, string delimiter, string promotionId, DateTime? expirationDate, Action<ExportImportProgressInfo> progressCallback)
         {
@@ -49,26 +45,35 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
                 }
             }
 
-            using (var repository = _marketingRepositoryFactory())
+            var uniqueCoupons = new List<Coupon>();
+            foreach (var coupon in coupons)
             {
-                var uniqueCoupons = new List<Coupon>();
-                foreach (var coupon in coupons)
+                progressInfo.Description = string.Format("Creating coupons: {0} created", ++progressInfo.ProcessedCount);
+                var existingCoupon = _couponService.GetByCode(promotionId, coupon.Code);
+                if (existingCoupon == null)
                 {
-                    progressInfo.Description = string.Format("Creating coupons: {0} created", ++progressInfo.ProcessedCount);
-                    var existingCoupon = repository.Coupons.FirstOrDefault(c => c.Code == coupon.Code);
-                    if (existingCoupon == null)
-                    {
-                        uniqueCoupons.Add(coupon);
-                    }
-                    else
-                    {
-                        progressInfo.Errors.Add(string.Format("Coupon with code \"{0}\" is already exists", coupon.Code));
-                        progressCallback(progressInfo);
-                    }
-                    progressCallback(progressInfo);
+                    uniqueCoupons.Add(coupon);
                 }
+                else
+                {
+                    progressInfo.Errors.Add(string.Format("Coupon with code \"{0}\" is already exists", coupon.Code));
+                }
+                progressCallback(progressInfo);
+            }
 
-                _promotionService.SaveCoupons(uniqueCoupons.ToArray());
+            if (uniqueCoupons.Any())
+            {
+                progressInfo.Description = "Saving coupons...";
+                progressCallback(progressInfo);
+
+                var chunksCount = (int)Math.Ceiling((double)uniqueCoupons.Count / ChunkSize);
+                for (var i = 0; i < chunksCount; i++)
+                {
+                    var chunk = uniqueCoupons.Skip(i * ChunkSize).Take(ChunkSize);
+                    _couponService.SaveCoupons(chunk.ToArray());
+                }
+                progressInfo.Description = "Coupons import is finished.";
+                progressCallback(progressInfo);
             }
         }
     }

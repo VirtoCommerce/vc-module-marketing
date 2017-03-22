@@ -234,6 +234,8 @@
     <Content Include="Scripts\promotion\blades\promotion-list.tpl.html" />
     <Content Include="Scripts\marketing.js" />
     <Content Include="Scripts\promotion\resources\promotions.js" />
+    <Content Include="Scripts\promotion\widgets\couponsWidget.js" />
+    <Content Include="Scripts\promotion\widgets\couponsWidget.tpl.html" />
     <Content Include="Scripts\promotion\widgets\dashboard.js" />
     <None Include="web.config" />
     <None Include="app.config" />

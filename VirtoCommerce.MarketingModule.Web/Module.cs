@@ -52,6 +52,7 @@ namespace VirtoCommerce.MarketingModule.Web
             _container.RegisterType<IDynamicContentService, DynamicContentServiceImpl>();
             _container.RegisterType<IMarketingPromoEvaluator, DefaultPromotionEvaluatorImpl>();
             _container.RegisterType<IPromotionSearchService, MarketingSearchServiceImpl>();
+            _container.RegisterType<ICouponService, CouponService>();
             _container.RegisterType<IDynamicContentSearchService, MarketingSearchServiceImpl>();
             _container.RegisterType<IObserver<CartChangeEvent>, CartChangeObserver>("CartChangeObserver");
             _container.RegisterType<IObserver<OrderChangeEvent>, OrderChangeObserver>("OrderChangeObserver");

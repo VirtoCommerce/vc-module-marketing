@@ -26,13 +26,15 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
         private readonly IPromotionSearchService _promotionSearchService;
         private readonly IDynamicContentSearchService _dynamicContentSearchService;
         private readonly IPromotionService _promotionService;
+        private readonly ICouponService _couponService;
         private readonly IDynamicContentService _dynamicContentService;
 
-        public MarketingExportImport(IPromotionSearchService promotionSearchService, IPromotionService promotionService, IDynamicContentService dynamicContentService, IDynamicContentSearchService dynamicContentSearchService)
+        public MarketingExportImport(IPromotionSearchService promotionSearchService, IPromotionService promotionService, IDynamicContentService dynamicContentService, ICouponService couponService, IDynamicContentSearchService dynamicContentSearchService)
         {
             _promotionSearchService = promotionSearchService;
             _promotionService = promotionService;
             _dynamicContentService = dynamicContentService;
+            _couponService = couponService;
             _dynamicContentSearchService = dynamicContentSearchService;
         }
 
@@ -96,19 +98,19 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
         {
             var toUpdate = new List<Coupon>();
 
-            //backup.CompareTo(original, EqualityComparer<Coupon>.Default, (state, x, y) =>
-            //{
-            //    switch (state)
-            //    {
-            //        case EntryState.Modified:
-            //            toUpdate.Add(x);
-            //            break;
-            //        case EntryState.Added:
-            //            _promotionService.CreateCoupon(x);
-            //            break;
-            //    }
-            //});
-            _promotionService.SaveCoupons(toUpdate.ToArray());
+            backup.CompareTo(original, EqualityComparer<Coupon>.Default, (state, x, y) =>
+            {
+                switch (state)
+                {
+                    case EntryState.Modified:
+                        toUpdate.Add(x);
+                        break;
+                    case EntryState.Added:
+                        _couponService.SaveCoupons(new[] { x });
+                        break;
+                }
+            });
+            _couponService.SaveCoupons(toUpdate.ToArray());
         }
 
         private void UpdateContentPlaces(ICollection<DynamicContentPlace> original, ICollection<DynamicContentPlace> backup)

@@ -1,61 +1,45 @@
 ﻿using System;
 using System.Linq;
 using VirtoCommerce.Domain.Cart.Events;
-using VirtoCommerce.MarketingModule.Data.Model;
-using VirtoCommerce.MarketingModule.Data.Repositories;
+using VirtoCommerce.Domain.Marketing.Model.Promotions;
+using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.MarketingModule.Data.Observers
 {
     public class CartChangeObserver : IObserver<CartChangeEvent>
     {
-        public CartChangeObserver(Func<IMarketingRepository> marketingRepositoryFactory)
-        {
-            _marketingRepositoryFactory = marketingRepositoryFactory;
-        }
+        private readonly ICouponService _couponService;
 
-        private readonly Func<IMarketingRepository> _marketingRepositoryFactory;
+        public CartChangeObserver(ICouponService couponService)
+        {
+            _couponService = couponService;
+        }
 
         public void OnNext(CartChangeEvent value)
         {
-            using (var repository = _marketingRepositoryFactory())
+            if (value.ChangeState == EntryState.Modified)
             {
-                if (value.ChangeState == EntryState.Modified && value.OrigCart != null && value.ModifiedCart != null)
+                var couponDiscount = value.ModifiedCart.Discounts.FirstOrDefault(p => !string.IsNullOrEmpty(p.Coupon));
+                if (couponDiscount != null)
                 {
-                    // A coupon for a cart was applied
-                    if (value.OrigCart.Coupon == null && value.ModifiedCart.Coupon != null)
+                    var applyCouponRequest = new ApplyCouponRequest
                     {
-                        var discount = value.ModifiedCart.Discounts.FirstOrDefault();
-                        if (discount != null)
-                        {
-                            repository.Add(new PromotionUsage
-                            {
-                                CouponCode = value.ModifiedCart.Coupon.Code,
-                                MemberId = value.ModifiedCart.CustomerId,
-                                MemberName = value.ModifiedCart.CustomerName,
-                                PromotionId = discount.PromotionId,
-                                UsageDate = DateTime.UtcNow
-                            });
-                            repository.UnitOfWork.Commit();
-                        }
+                        CouponCode = value.ModifiedCart.Coupon.Code,
+                        MemberId = value.ModifiedCart.CustomerId,
+                        PromotionId = couponDiscount.PromotionId
+                    };
+
+                    // A coupon was applied to a shopping cart
+                    if (value.ModifiedCart.Coupon != null && value.ModifiedCart.Coupon.IsValid)
+                    {
+                        _couponService.ApplyCouponUsage(applyCouponRequest);
                     }
 
-                    // A coupon from a cart was removed
+                    // A coupon was removed from a shopping cart
                     if (value.OrigCart.Coupon != null && value.ModifiedCart.Coupon == null)
                     {
-                        var discount = value.OrigCart.Discounts.FirstOrDefault();
-                        if (discount != null)
-                        {
-                            var promotionUsage = repository.PromotionUsages.FirstOrDefault(pu =>
-                                pu.CouponCode == value.OrigCart.Coupon.Code &&
-                                pu.MemberId == value.OrigCart.CustomerId &&
-                                pu.PromotionId == discount.PromotionId);
-                            if (promotionUsage != null)
-                            {
-                                repository.Remove(promotionUsage);
-                                repository.UnitOfWork.Commit();
-                            }
-                        }
+                        _couponService.RemoveCouponUsage(applyCouponRequest);
                     }
                 }
             }

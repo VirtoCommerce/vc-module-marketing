@@ -28,7 +28,7 @@ angular.module(moduleName, [])
   }]
 )
 .run(
-  ['platformWebApp.mainMenuService', 'platformWebApp.widgetService', 'platformWebApp.toolbarService', '$state', 'platformWebApp.authService', function (mainMenuService, widgetService, toolbarService, $state, authService) {
+    ['platformWebApp.mainMenuService', 'platformWebApp.widgetService', 'platformWebApp.toolbarService', '$state', 'platformWebApp.authService', function (mainMenuService, widgetService, toolbarService, $state, authService) {
       // // test toolbar commands and content
       //toolbarService.register({
       //    name: "ADDITIONAL COMMAND", icon: 'fa fa-cloud',
@@ -57,6 +57,11 @@ angular.module(moduleName, [])
           permission: 'marketing:access'
       };
       mainMenuService.addMenuItem(menuItem);
+
+      widgetService.registerWidget({
+          controller: 'virtoCommerce.marketingModule.couponsWidgetController',
+          template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/promotion/widgets/couponsWidget.tpl.html'
+      }, 'coupons');
 
       //Register dashboard widgets
       //widgetService.registerWidget({
