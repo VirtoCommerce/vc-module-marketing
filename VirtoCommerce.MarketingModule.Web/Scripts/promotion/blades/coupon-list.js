@@ -11,6 +11,7 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
         var criteria = {
             promotionId: blade.promotionId,
             sort: uiGridHelper.getSortExpression($scope),
+            keyword: filter.keyword,
             skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
             take: $scope.pageSettings.itemsPerPageCount
         };
@@ -25,6 +26,13 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
     }
 
     blade.toolbarCommands = [{
+        name: 'marketing.blades.coupons.toolbar.add',
+        icon: 'fa fa-plus',
+        canExecuteMethod: function () {
+            return true;
+        },
+        executeMethod: showAddCouponBlade
+    }, {
         name: 'marketing.blades.coupons.toolbar.import',
         icon: 'fa fa-download',
         canExecuteMethod: function () {
@@ -80,6 +88,17 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
         }
     };
 
+    $scope.selectNode = function (node) {
+        var newBlade = {
+            id: 'couponDetail',
+            currentEntity: node,
+            title: 'Coupon "' + node.code + '"',
+            controller: 'virtoCommerce.marketingModule.couponDetailController',
+            template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/promotion/blades/coupon-detail.tpl.html'
+        };
+        bladeNavigationService.showBlade(newBlade, blade);
+    };
+
     $scope.setGridOptions = function (gridOptions) {
         uiGridHelper.initialize($scope, gridOptions, function (gridApi) {
             uiGridHelper.bindRefreshOnSortChanged($scope);
@@ -87,6 +106,21 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
 
         bladeUtils.initializePagination($scope);
     };
+
+    function showAddCouponBlade() {
+        var newBlade = {
+            id: 'couponImport',
+            title: 'marketing.blades.coupon-detail.new-title',
+            promotionId: blade.promotionId,
+            currentEntity: {
+                promotionId: blade.promotionId,
+                isNew: true
+            },
+            controller: 'virtoCommerce.marketingModule.couponDetailController',
+            template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/promotion/blades/coupon-detail.tpl.html'
+        }
+        bladeNavigationService.showBlade(newBlade, blade);
+    }
 
     function showCouponImportBlade() {
         var newBlade = {

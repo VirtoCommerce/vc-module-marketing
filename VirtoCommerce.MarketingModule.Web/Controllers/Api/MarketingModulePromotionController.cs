@@ -6,6 +6,7 @@ using System.Web.Http.Description;
 using Hangfire;
 using Omu.ValueInjecter;
 using VirtoCommerce.Domain.Commerce.Model.Search;
+using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Model.Promotions.Search;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Promotions;
@@ -183,6 +184,26 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
             var searchResult = _couponService.SearchCoupons(criteria);
 
             return Ok(searchResult);
+        }
+
+        [HttpGet]
+        [Route("coupons/{id}")]
+        [ResponseType(typeof(Coupon))]
+        public IHttpActionResult GetCoupon(string id)
+        {
+            var coupon = _couponService.GetById(id);
+
+            return Ok(coupon);
+        }
+
+        [HttpPost]
+        [Route("coupons/add")]
+        [ResponseType(typeof(void))]
+        public IHttpActionResult AddCoupons(Coupon[] coupons)
+        {
+            _couponService.SaveCoupons(coupons);
+
+            return Ok();
         }
 
         [HttpDelete]

@@ -13,6 +13,7 @@
                             <span ng-bind-html="delimiter.name | translate | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
+                    <div class="list-descr" ng-bind="'marketing.blades.coupon-detail.labels.delimiter-description' | translate"></div>
                 </fieldset>
                 <fieldset ng-disabled="!blade.columnDelimiter">
                     <div class="form-group">
@@ -23,6 +24,7 @@
                             <button class="btn __file" onclick="$('input[type=file]').trigger('click')" type="button">
                                 <i class="btn-ico fa fa-image"></i>
                             </button>
+                            <div class="list-descr" ng-bind="'marketing.blades.coupon-detail.labels.upload-description' | translate"></div>
                         </div>
                     </div>
                     <div ng-show="uploader.isUploading">
@@ -38,6 +40,7 @@
                             <button class="btn" type="button" ng-click="open($event,'expirationDate')">
                                 <i class="btn-ico fa fa-calendar"></i>
                             </button>
+                            <div class="list-descr" ng-bind="'marketing.blades.coupon-detail.labels.reservation-expiration-date-description' | translate"></div>
                         </div>
                     </div>
                 </fieldset>
