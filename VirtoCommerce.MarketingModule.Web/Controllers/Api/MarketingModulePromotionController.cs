@@ -191,7 +191,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [ResponseType(typeof(Coupon))]
         public IHttpActionResult GetCoupon(string id)
         {
-            var coupon = _couponService.GetById(id);
+            var coupon = _couponService.GetByIds(new[] { id }).FirstOrDefault();
 
             return Ok(coupon);
         }
