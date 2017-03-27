@@ -4,8 +4,8 @@ using System.Linq;
 using CacheManager.Core;
 using VirtoCommerce.Domain.Common;
 using VirtoCommerce.Domain.Marketing.Model;
+using VirtoCommerce.Domain.Marketing.Model.Promotions.Search;
 using VirtoCommerce.Domain.Marketing.Services;
-using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Data.Common;
 
 namespace VirtoCommerce.MarketingModule.Data.Services
@@ -13,17 +13,12 @@ namespace VirtoCommerce.MarketingModule.Data.Services
     public class DefaultPromotionEvaluatorImpl : IMarketingPromoEvaluator
     {
         private readonly IPromotionService _promotionService;
-        private readonly ICouponService _couponService;
-        private readonly ICacheManager<object> _cacheManager;
+        private readonly IPromotionSearchService _promotionSearchService;
 
-        public DefaultPromotionEvaluatorImpl(
-            IPromotionService promotionService,
-            ICouponService couponService,
-            ICacheManager<object> cacheManager)
+        public DefaultPromotionEvaluatorImpl(IPromotionService promotionService, IPromotionSearchService promotionSearchService)
         {
             _promotionService = promotionService;
-            _couponService = couponService;
-            _cacheManager = cacheManager;
+            _promotionSearchService = promotionSearchService;
         }
 
         #region IMarketingEvaluator Members
@@ -32,13 +27,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         {
             var promoContext = (PromotionEvaluationContext)context;
 
-            var promotions = _cacheManager.Get("IPromotionService.GetActivePromotions", "MarketingModuleRegion", () => _promotionService.GetActivePromotions());
-
-            //filter by store
-            if (!string.IsNullOrEmpty(promoContext.StoreId))
-            {
-                promotions = promotions.Where(x => string.Equals(x.Store, promoContext.StoreId, StringComparison.InvariantCultureIgnoreCase)).ToArray();
-            }
+            var promotions = _promotionSearchService.SearchPromotions(new PromotionSearchCriteria { OnlyActive = true, Store = promoContext.StoreId, Take = int.MaxValue }).Results;
 
             var retVal = new PromotionResult();
 
@@ -96,6 +85,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 retVal.Rewards.Add(potentialCartSubtotalReward);
             }
 
+
             //Gifts
             rewards.OfType<GiftReward>().ToList().ForEach(x => retVal.Rewards.Add(x));
 
@@ -103,23 +93,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             rewards.OfType<SpecialOfferReward>().ToList().ForEach(x => retVal.Rewards.Add(x));
 
             return retVal;
-        }
-
-        public PromotionResult ProcessEvent(IMarketingEvent markertingEvent)
-        {
-            var retVal = new PromotionResult();
-            var promotions = _promotionService.GetActivePromotions();
-            foreach (var promotion in promotions)
-            {
-                var rewards = promotion.ProcessEvent(markertingEvent).Where(x => x != null);
-                foreach (var promotionReward in rewards)
-                {
-                    retVal.Rewards.Add(promotionReward);
-                }
-            }
-
-            return retVal;
-        }
+        }     
 
         #endregion
 

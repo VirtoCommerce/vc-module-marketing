@@ -9,18 +9,14 @@ using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.MarketingModule.Data.Model
 {
-	public class PublishingGroupContentPlace : AuditableEntity
+	public class PublishingGroupContentItemEntity : AuditableEntity
 	{
 		#region Navigation Properties
-		[StringLength(128)]
 		public string DynamicContentPublishingGroupId { get; set; }
+		public virtual DynamicContentPublishingGroupEntity PublishingGroup { get; set; }
 
-		public virtual DynamicContentPublishingGroup PublishingGroup { get; set; }
-
-		[StringLength(128)]
-		public string DynamicContentPlaceId { get; set; }
-		public virtual DynamicContentPlace ContentPlace { get; set; }
-				
+        public string DynamicContentItemId { get; set; }
+		public virtual DynamicContentItemEntity ContentItem { get; set; }				
 		#endregion
 	}
 }

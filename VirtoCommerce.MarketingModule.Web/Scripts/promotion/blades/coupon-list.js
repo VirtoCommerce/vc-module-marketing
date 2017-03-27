@@ -47,15 +47,6 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
         executeMethod: function () {
             removeCoupons(false);
         }
-    }, {
-        name: 'marketing.blades.coupons.toolbar.delete-all',
-        icon: 'fa fa-trash-o',
-        canExecuteMethod: function () {
-            return _.any(blade.currentEntities);
-        },
-        executeMethod: function () {
-            removeCoupons(true, blade.promotionId);
-        }
     }];
 
     var filter = blade.filter = $scope.filter = {};

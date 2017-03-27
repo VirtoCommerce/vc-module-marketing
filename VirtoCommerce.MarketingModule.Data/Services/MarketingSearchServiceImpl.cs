@@ -5,7 +5,7 @@ using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Marketing.Model.DynamicContent.Search;
 using VirtoCommerce.Domain.Marketing.Model.Promotions.Search;
 using VirtoCommerce.Domain.Marketing.Services;
-using VirtoCommerce.MarketingModule.Data.Converters;
+using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Serialization;
@@ -16,18 +16,14 @@ namespace VirtoCommerce.MarketingModule.Data.Services
     public class MarketingSearchServiceImpl : IDynamicContentSearchService, IPromotionSearchService
     {
         private readonly Func<IMarketingRepository> _repositoryFactory;
-        private readonly IMarketingExtensionManager _customPromotionManager;
         private readonly IDynamicContentService _dynamicContentService;
-        private readonly IExpressionSerializer _expressionSerializer;
-        private readonly ICouponService _couponService;
+        private readonly IPromotionService _promotionSrevice;
 
-        public MarketingSearchServiceImpl(Func<IMarketingRepository> repositoryFactory, IMarketingExtensionManager customPromotionManager, IDynamicContentService dynamicContentService, IExpressionSerializer expressionSerializer, ICouponService couponService)
+        public MarketingSearchServiceImpl(Func<IMarketingRepository> repositoryFactory, IDynamicContentService dynamicContentService, IPromotionService promotionSrevice)
         {
             _repositoryFactory = repositoryFactory;
-            _customPromotionManager = customPromotionManager;
             _dynamicContentService = dynamicContentService;
-            _expressionSerializer = expressionSerializer;
-            _couponService = couponService;
+            _promotionSrevice = promotionSrevice;
         }
 
         #region IPromotionSearchService Members
@@ -37,43 +33,33 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             using (var repository = _repositoryFactory())
             {
                 var query = repository.Promotions;
-                //Second query for custom coded promotions
-                var query2 = _customPromotionManager.Promotions;
                 if (!string.IsNullOrEmpty(criteria.Store))
                 {
                     query = query.Where(x => x.StoreId == criteria.Store);
-                    query2 = query2.Where(x => x.Store == criteria.Store);
                 }
                 if (criteria.OnlyActive)
                 {
-                    query = query.Where(x => x.IsActive == true);
+                    var now = DateTime.UtcNow;
+                    query = query.Where(x => x.IsActive && (x.StartDate == null || now >= x.StartDate) && (x.EndDate == null || x.EndDate >= now));                                                    
                 }
                 if (!string.IsNullOrEmpty(criteria.Keyword))
                 {
                     query = query.Where(x => x.Name.Contains(criteria.Keyword) || x.Description.Contains(criteria.Keyword));
-                    query2 = query2.Where(x => x.Name.Contains(criteria.Keyword) || x.Description.Contains(criteria.Keyword));
                 }
 
                 var sortInfos = criteria.SortInfos;
                 if (sortInfos.IsNullOrEmpty())
                 {
-                    sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<coreModel.Promotion>(x => x.ModifiedDate), SortDirection = SortDirection.Descending } };
+                    sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<coreModel.Promotion>(x => x.Priority), SortDirection = SortDirection.Descending } };
                 }
                 query = query.OrderBySortInfos(sortInfos);
 
                 retVal.TotalCount = query.Count();
 
-                var skip = Math.Min(retVal.TotalCount, criteria.Skip);
-                var take = Math.Min(criteria.Take, Math.Max(0, retVal.TotalCount - criteria.Skip));
-                retVal.Results = query.Skip(skip).Take(take).ToArray().Select(x => x.ToCoreModel(_expressionSerializer, _couponService))
-                                      .ToList();
-
-                criteria.Skip = criteria.Skip - skip;
-                criteria.Take = criteria.Take - take;
-
-                retVal.TotalCount += query2.Count();
-
-                retVal.Results.AddRange(_customPromotionManager.Promotions.Skip(criteria.Skip).Take(criteria.Take));
+                var ids = query.Select(x => x.Id)
+                               .Skip(criteria.Skip)
+                               .Take(criteria.Take).ToArray();
+                retVal.Results = _promotionSrevice.GetPromotionsByIds(ids);
 
             }
             return retVal;
@@ -108,7 +94,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 var ids = query.Select(x => x.Id)
                                .Skip(criteria.Skip)
                                .Take(criteria.Take).ToArray();
-                retVal.Results = ids.Select(x => _dynamicContentService.GetContentItemById(x)).ToList();
+                retVal.Results = _dynamicContentService.GetContentItemsByIds(ids);
             }
             return retVal;
         }
@@ -138,7 +124,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 var ids = query.Select(x => x.Id)
                                .Skip(criteria.Skip)
                                .Take(criteria.Take).ToArray();
-                retVal.Results = ids.Select(x => _dynamicContentService.GetPlaceById(x)).ToList();
+                retVal.Results = _dynamicContentService.GetPlacesByIds(ids);
             }
             return retVal;
         }
@@ -173,7 +159,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 var ids = query.Select(x => x.Id)
                            .Skip(criteria.Skip)
                            .Take(criteria.Take).ToArray();
-                retVal.Results = ids.Select(x => _dynamicContentService.GetPublicationById(x)).ToList();
+                retVal.Results = _dynamicContentService.GetPublicationsByIds(ids);
             }
             return retVal;
         }
@@ -197,12 +183,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 retVal.TotalCount = query.Count();
 
                 var folderIds = query.Select(x => x.Id).ToArray();
-                retVal.Results = new List<coreModel.DynamicContentFolder>();
-                foreach (var folderId in folderIds)
-                {
-                    var folder = repository.GetContentFolderById(folderId);
-                    retVal.Results.Add(folder.ToCoreModel());
-                }
+                retVal.Results = _dynamicContentService.GetFoldersByIds(folderIds);               
             }
             return retVal;
         }

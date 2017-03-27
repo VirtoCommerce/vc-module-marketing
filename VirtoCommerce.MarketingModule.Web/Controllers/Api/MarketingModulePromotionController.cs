@@ -103,7 +103,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Route("{id}")]
         public IHttpActionResult GetPromotionById(string id)
         {
-            var retVal = _promotionService.GetPromotionById(id);
+            var retVal = _promotionService.GetPromotionsByIds(new[] { id }).FirstOrDefault();
             if (retVal != null)
             {
                 return Ok(retVal.ToWebModel(_marketingExtensionManager.PromotionDynamicExpressionTree));
@@ -140,8 +140,9 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [CheckPermission(Permission = MarketingPredefinedPermissions.Create)]
         public IHttpActionResult CreatePromotion(webModel.Promotion promotion)
         {
-            var retVal = _promotionService.CreatePromotion(promotion.ToCoreModel(_expressionSerializer, _couponService));
-            return GetPromotionById(retVal.Id);
+            var corePromotion = promotion.ToCoreModel(_expressionSerializer);
+            _promotionService.SavePromotions(new[] { corePromotion });
+            return GetPromotionById(corePromotion.Id);
         }
 
 
@@ -155,7 +156,8 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [CheckPermission(Permission = MarketingPredefinedPermissions.Update)]
         public IHttpActionResult UpdatePromotions(webModel.Promotion promotion)
         {
-            _promotionService.UpdatePromotions(new[] { promotion.ToCoreModel(_expressionSerializer, _couponService) });
+            var corePromotion = promotion.ToCoreModel(_expressionSerializer);
+            _promotionService.SavePromotions(new[] { corePromotion });
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -189,16 +191,6 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         public IHttpActionResult DeleteCoupons([FromUri] string[] ids)
         {
             _couponService.DeleteCoupons(ids);
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        [HttpDelete]
-        [Route("coupons/clear")]
-        [ResponseType(typeof(void))]
-        public IHttpActionResult ClearCoupons([FromUri] string promotionId)
-        {
-            _couponService.ClearCoupons(promotionId);
 
             return StatusCode(HttpStatusCode.NoContent);
         }

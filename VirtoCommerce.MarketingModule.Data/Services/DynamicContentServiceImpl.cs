@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Linq;
+using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Services;
-using VirtoCommerce.MarketingModule.Data.Converters;
+using VirtoCommerce.MarketingModule.Data.Model;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Data.Infrastructure;
-using coreModel = VirtoCommerce.Domain.Marketing.Model;
 
 namespace VirtoCommerce.MarketingModule.Data.Services
 {
@@ -22,16 +23,13 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
         #region IDynamicContentService Members
 
-        public coreModel.DynamicContentItem GetContentItemById(string id)
+        #region DynamicContentItem methods
+        public DynamicContentItem[] GetContentItemsByIds(string[] ids)
         {
-            coreModel.DynamicContentItem retVal = null;
+            DynamicContentItem[] retVal = null;
             using (var repository = _repositoryFactory())
             {
-                var entity = repository.GetContentItemById(id);
-                if (entity != null)
-                {
-                    retVal = entity.ToCoreModel();
-                }
+                retVal = repository.GetContentItemsByIds(ids).Select(x => x.ToModel(AbstractTypeFactory<DynamicContentItem>.TryCreateInstance())).ToArray();
             }
 
             if (retVal != null)
@@ -42,115 +40,92 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             return retVal;
         }
 
-
-        public coreModel.DynamicContentItem CreateContent(coreModel.DynamicContentItem content)
-        {
-            var pkMap = new PrimaryKeyResolvingMap();
-            var entity = content.ToDataModel(pkMap);
-
-            using (var repository = _repositoryFactory())
-            {
-                repository.Add(entity);
-                CommitChanges(repository);
-                pkMap.ResolvePrimaryKeys();
-            }
-
-            _dynamicPropertyService.SaveDynamicPropertyValues(content);
-
-            var retVal = GetContentItemById(entity.Id);
-            return retVal;
-        }
-
-        public void UpdateContents(coreModel.DynamicContentItem[] contents)
+        public void SaveContentItems(DynamicContentItem[] items)
         {
             var pkMap = new PrimaryKeyResolvingMap();
             using (var repository = _repositoryFactory())
             using (var changeTracker = GetChangeTracker(repository))
             {
-                foreach (var content in contents)
+                var existEntities = repository.GetContentItemsByIds(items.Where(x => !x.IsTransient()).Select(x => x.Id).ToArray());
+                foreach (var item in items)
                 {
-                    var sourceEntity = content.ToDataModel(pkMap);
-                    var targetEntity = repository.GetContentItemById(content.Id);
-                    if (targetEntity == null)
+                    var sourceEntity = AbstractTypeFactory<DynamicContentItemEntity>.TryCreateInstance();
+                    if (sourceEntity != null)
                     {
-                        repository.Add(sourceEntity);
-                    }
-                    else
-                    {
-                        changeTracker.Attach(targetEntity);
-                        sourceEntity.Patch(targetEntity);
+                        sourceEntity = sourceEntity.FromModel(item, pkMap);
+                        var targetEntity = existEntities.FirstOrDefault(x => x.Id == item.Id);
+                        if (targetEntity != null)
+                        {
+                            changeTracker.Attach(targetEntity);
+                            sourceEntity.Patch(targetEntity);
+                        }
+                        else
+                        {
+                            repository.Add(sourceEntity);
+                        }
                     }
                 }
                 CommitChanges(repository);
                 pkMap.ResolvePrimaryKeys();
             }
-            foreach (var content in contents)
+
+            foreach (var item in items)
             {
-                _dynamicPropertyService.SaveDynamicPropertyValues(content);
+                _dynamicPropertyService.SaveDynamicPropertyValues(item);
             }
         }
 
-        public void DeleteContents(string[] ids)
+        public void DeleteContentItems(string[] ids)
+        {
+            var items = GetContentItemsByIds(ids);
+            foreach (var item in items)
+            {
+                _dynamicPropertyService.DeleteDynamicPropertyValues(item);
+            }
+            using (var repository = _repositoryFactory())
+            {
+                repository.RemoveContentItems(ids);
+                repository.UnitOfWork.Commit();
+            }
+        }
+        #endregion
+
+        #region DynamicContentPlace methods
+        public DynamicContentPlace[] GetPlacesByIds(string[] ids)
         {
             using (var repository = _repositoryFactory())
             {
-                foreach (var id in ids)
-                {
-                    var content = GetContentItemById(id);
-                    _dynamicPropertyService.DeleteDynamicPropertyValues(content);
-
-                    var entity = repository.GetContentItemById(id);
-                    repository.Remove(entity);
-                }
-                CommitChanges(repository);
+                return repository.GetContentPlacesByIds(ids).Select(x => x.ToModel(AbstractTypeFactory<DynamicContentPlace>.TryCreateInstance())).ToArray();
             }
         }
 
-        public coreModel.DynamicContentPlace GetPlaceById(string id)
+        public void SavePlaces(DynamicContentPlace[] places)
         {
-            coreModel.DynamicContentPlace retVal = null;
-            using (var repository = _repositoryFactory())
-            {
-                var entity = repository.GetContentPlaceById(id);
-                if (entity != null)
-                {
-                    retVal = entity.ToCoreModel();
-                }
-            }
-            return retVal;
-        }
-
-        public coreModel.DynamicContentPlace CreatePlace(coreModel.DynamicContentPlace place)
-        {
-            var entity = place.ToDataModel();
-
-            using (var repository = _repositoryFactory())
-            {
-                repository.Add(entity);
-                CommitChanges(repository);
-            }
-
-            var retVal = GetPlaceById(entity.Id);
-            return retVal;
-        }
-
-        public void UpdatePlace(coreModel.DynamicContentPlace place)
-        {
+            var pkMap = new PrimaryKeyResolvingMap();
             using (var repository = _repositoryFactory())
             using (var changeTracker = GetChangeTracker(repository))
             {
-                var sourceEntity = place.ToDataModel();
-                var targetEntity = repository.GetContentPlaceById(place.Id);
-                if (targetEntity == null)
+                var existEntities = repository.GetContentPlacesByIds(places.Where(x => !x.IsTransient()).Select(x => x.Id).ToArray());
+                foreach (var place in places)
                 {
-                    repository.Add(sourceEntity);
-                }
-                else
-                {
-                    changeTracker.Attach(targetEntity);
-                    sourceEntity.Patch(targetEntity);
+                    var sourceEntity = AbstractTypeFactory<DynamicContentPlaceEntity>.TryCreateInstance();
+                    if (sourceEntity != null)
+                    {
+                        sourceEntity = sourceEntity.FromModel(place, pkMap);
+                        var targetEntity = existEntities.FirstOrDefault(x => x.Id == place.Id);
+                        if (targetEntity != null)
+                        {
+                            changeTracker.Attach(targetEntity);
+                            sourceEntity.Patch(targetEntity);
+                        }
+                        else
+                        {
+                            repository.Add(sourceEntity);
+                        }
+                    }
                 }
                 CommitChanges(repository);
+                pkMap.ResolvePrimaryKeys();
             }
         }
 
@@ -158,63 +133,48 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         {
             using (var repository = _repositoryFactory())
             {
-                foreach (var id in ids)
-                {
-                    var entity = repository.GetContentPlaceById(id);
-                    repository.Remove(entity);
-                }
+                repository.RemovePlaces(ids);
                 CommitChanges(repository);
             }
         }
+        #endregion
 
-        public coreModel.DynamicContentPublication GetPublicationById(string id)
+        #region DynamicContentPublication methods
+        public DynamicContentPublication[] GetPublicationsByIds(string[] ids)
         {
-            coreModel.DynamicContentPublication retVal = null;
             using (var repository = _repositoryFactory())
             {
-                var entity = repository.GetContentPublicationById(id);
-                if (entity != null)
-                {
-                    retVal = entity.ToCoreModel();
-                }
+                return repository.GetContentPublicationsByIds(ids).Select(x => x.ToModel(AbstractTypeFactory<DynamicContentPublication>.TryCreateInstance())).ToArray();
             }
-            return retVal;
         }
 
-        public coreModel.DynamicContentPublication CreatePublication(coreModel.DynamicContentPublication publication)
+        public void SavePublications(DynamicContentPublication[] publications)
         {
-            var entity = publication.ToDataModel();
-
-            using (var repository = _repositoryFactory())
-            {
-                repository.Add(entity);
-                CommitChanges(repository);
-            }
-
-            var retVal = GetPublicationById(entity.Id);
-            return retVal;
-        }
-
-        public void UpdatePublications(coreModel.DynamicContentPublication[] publications)
-        {
+            var pkMap = new PrimaryKeyResolvingMap();
             using (var repository = _repositoryFactory())
             using (var changeTracker = GetChangeTracker(repository))
             {
-                foreach (var content in publications)
+                var existEntities = repository.GetContentPublicationsByIds(publications.Where(x => !x.IsTransient()).Select(x => x.Id).ToArray());
+                foreach (var publication in publications)
                 {
-                    var sourceEntity = content.ToDataModel();
-                    var targetEntity = repository.GetContentPublicationById(content.Id);
-                    if (targetEntity == null)
+                    var sourceEntity = AbstractTypeFactory<DynamicContentPublishingGroupEntity>.TryCreateInstance();
+                    if (sourceEntity != null)
                     {
-                        repository.Add(sourceEntity);
-                    }
-                    else
-                    {
-                        changeTracker.Attach(targetEntity);
-                        sourceEntity.Patch(targetEntity);
+                        sourceEntity = sourceEntity.FromModel(publication, pkMap);
+                        var targetEntity = existEntities.FirstOrDefault(x => x.Id == publication.Id);
+                        if (targetEntity != null)
+                        {
+                            changeTracker.Attach(targetEntity);
+                            sourceEntity.Patch(targetEntity);
+                        }
+                        else
+                        {
+                            repository.Add(sourceEntity);
+                        }
                     }
                 }
                 CommitChanges(repository);
+                pkMap.ResolvePrimaryKeys();
             }
         }
 
@@ -222,76 +182,62 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         {
             using (var repository = _repositoryFactory())
             {
-                foreach (var id in ids)
-                {
-                    var entity = repository.GetContentPublicationById(id);
-                    repository.Remove(entity);
-                }
+                repository.RemoveContentPublications(ids);
                 CommitChanges(repository);
             }
         }
+        #endregion
 
 
-        public coreModel.DynamicContentFolder GetFolderById(string id)
+        #region DynamicContentFolder methods
+        public DynamicContentFolder[] GetFoldersByIds(string[] ids)
         {
-            coreModel.DynamicContentFolder retVal = null;
             using (var repository = _repositoryFactory())
             {
-                var entity = repository.GetContentFolderById(id);
-                if (entity != null)
-                {
-                    retVal = entity.ToCoreModel();
-                }
+                return repository.GetContentFoldersByIds(ids).Select(x => x.ToModel(AbstractTypeFactory<DynamicContentFolder>.TryCreateInstance())).ToArray();
             }
-            return retVal;
         }
 
-        public coreModel.DynamicContentFolder CreateFolder(coreModel.DynamicContentFolder folder)
+        public void SaveFolders(DynamicContentFolder[] folders)
         {
-            var entity = folder.ToDataModel();
-
-            using (var repository = _repositoryFactory())
-            {
-                repository.Add(entity);
-                CommitChanges(repository);
-            }
-
-            var retVal = GetFolderById(entity.Id);
-            return retVal;
-        }
-
-        public void UpdateFolder(coreModel.DynamicContentFolder folder)
-        {
+            var pkMap = new PrimaryKeyResolvingMap();
             using (var repository = _repositoryFactory())
             using (var changeTracker = GetChangeTracker(repository))
             {
-                var sourceEntity = folder.ToDataModel();
-                var targetEntity = repository.GetContentFolderById(folder.Id);
-                if (targetEntity == null)
+                var existEntities = repository.GetContentFoldersByIds(folders.Where(x => !x.IsTransient()).Select(x => x.Id).ToArray());
+                foreach (var folder in folders)
                 {
-                    repository.Add(sourceEntity);
-                }
-                else
-                {
-                    changeTracker.Attach(targetEntity);
-                    sourceEntity.Patch(targetEntity);
+                    var sourceEntity = AbstractTypeFactory<DynamicContentFolderEntity>.TryCreateInstance();
+                    if (sourceEntity != null)
+                    {
+                        sourceEntity = sourceEntity.FromModel(folder, pkMap);
+                        var targetEntity = existEntities.FirstOrDefault(x => x.Id == folder.Id);
+                        if (targetEntity != null)
+                        {
+                            changeTracker.Attach(targetEntity);
+                            sourceEntity.Patch(targetEntity);
+                        }
+                        else
+                        {
+                            repository.Add(sourceEntity);
+                        }
+                    }
                 }
                 CommitChanges(repository);
+                pkMap.ResolvePrimaryKeys();
             }
         }
 
-        public void DeleteFolder(string[] ids)
+        public void DeleteFolders(string[] ids)
         {
             using (var repository = _repositoryFactory())
             {
-                foreach (var id in ids)
-                {
-                    var entity = repository.GetContentFolderById(id);
-                    repository.Remove(entity);
-                }
+                repository.RemoveFolders(ids);
                 CommitChanges(repository);
             }
-        }
+        } 
+        #endregion
+
 
         #endregion
     }

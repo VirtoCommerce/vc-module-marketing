@@ -6,7 +6,6 @@
         update: { method: 'PUT' },
         searchCoupons: { url: 'api/marketing/promotions/coupons/search', method: 'POST' },
         deleteCoupons: { url: 'api/marketing/promotions/coupons/delete', method: 'DELETE' },
-        clearCoupons: { url: 'api/marketing/promotions/coupons/clear', method: 'DELETE' },
         importCoupons: { url: 'api/marketing/promotions/coupons/import', method: 'POST' }
     });
 }]);
