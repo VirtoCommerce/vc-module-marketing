@@ -7,7 +7,7 @@
         skip: 0,
         take: 1
     };
-    promotionsApi.searchCoupons({ promotionId: blade.promotionId, skip: 0, take: 1 }, function (response) {
+    promotionsApi.searchCoupons({ promotionId: blade.currentEntityId, skip: 0, take: 0 }, function (response) {
         blade.totalCouponsCount = response.totalCount;
     });
 
