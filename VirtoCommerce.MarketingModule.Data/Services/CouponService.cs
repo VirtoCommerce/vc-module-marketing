@@ -52,9 +52,11 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
                 var searchResult = new GenericSearchResult<Coupon> { TotalCount = query.Count() };
 
-                var coupons = query.Skip(criteria.Skip).Take(criteria.Take).ToList();
-                searchResult.Results = coupons.Select(x => x.ToModel(AbstractTypeFactory<Coupon>.TryCreateInstance())).ToList();
+                var ids = query.Select(x => x.Id)
+                               .Skip(criteria.Skip)
+                               .Take(criteria.Take).ToArray();
 
+                searchResult.Results = GetByIds(ids);
                 return searchResult;
             }
         }
@@ -101,7 +103,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         {
             using (var repository = _repositoryFactory())
             {
-                repository.RemoveMarketingUsages(ids);
+                repository.RemoveCoupons(ids);
                 CommitChanges(repository);
             }
         }
