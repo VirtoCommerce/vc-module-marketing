@@ -166,7 +166,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Route("contentitems/{id}")]
         public IHttpActionResult GetDynamicContentById(string id)
         {
-            var retVal = _dynamicContentService.GetContentItemById(id);
+            var retVal = _dynamicContentService.GetContentItemsByIds(new[] { id }).FirstOrDefault();
             if (retVal != null)
             {
                 return Ok(retVal.ToWebModel());
@@ -185,8 +185,9 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [CheckPermission(Permission = MarketingPredefinedPermissions.Create)]
         public IHttpActionResult CreateDynamicContent(webModel.DynamicContentItem contentItem)
         {
-            var retVal = _dynamicContentService.CreateContent(contentItem.ToCoreModel());
-            return GetDynamicContentById(retVal.Id);
+            var coreItem = contentItem.ToCoreModel();
+            _dynamicContentService.SaveContentItems(new[] { coreItem });
+            return GetDynamicContentById(coreItem.Id);
         }
 
 
@@ -200,7 +201,8 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [CheckPermission(Permission = MarketingPredefinedPermissions.Update)]
         public IHttpActionResult UpdateDynamicContent(webModel.DynamicContentItem contentItem)
         {
-            _dynamicContentService.UpdateContents(new[] { contentItem.ToCoreModel() });
+            var coreItem = contentItem.ToCoreModel();
+            _dynamicContentService.SaveContentItems(new[] { coreItem });
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -214,7 +216,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [CheckPermission(Permission = MarketingPredefinedPermissions.Delete)]
         public IHttpActionResult DeleteDynamicContents([FromUri] string[] ids)
         {
-            _dynamicContentService.DeleteContents(ids);
+            _dynamicContentService.DeleteContentItems(ids);
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -229,7 +231,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Route("contentplaces/{id}")]
         public IHttpActionResult GetDynamicContentPlaceById(string id)
         {
-            var retVal = _dynamicContentService.GetPlaceById(id);
+            var retVal = _dynamicContentService.GetPlacesByIds(new[] { id }).FirstOrDefault();
             if (retVal != null)
             {
                 return Ok(retVal.ToWebModel());
@@ -248,8 +250,9 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [CheckPermission(Permission = MarketingPredefinedPermissions.Create)]
         public IHttpActionResult CreateDynamicContentPlace(webModel.DynamicContentPlace contentPlace)
         {
-            var retVal = _dynamicContentService.CreatePlace(contentPlace.ToCoreModel());
-            return GetDynamicContentPlaceById(retVal.Id);
+            var corePlace = contentPlace.ToCoreModel();
+            _dynamicContentService.SavePlaces(new[] { corePlace });
+            return GetDynamicContentPlaceById(corePlace.Id);
         }
 
 
@@ -263,7 +266,8 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [CheckPermission(Permission = MarketingPredefinedPermissions.Update)]
         public IHttpActionResult UpdateDynamicContentPlace(webModel.DynamicContentPlace contentPlace)
         {
-            _dynamicContentService.UpdatePlace(contentPlace.ToCoreModel());
+            var corePlace = contentPlace.ToCoreModel();
+            _dynamicContentService.SavePlaces(new[] { corePlace });
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -310,7 +314,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Route("contentpublications/{id}")]
         public IHttpActionResult GetDynamicContentPublicationById(string id)
         {
-            var retVal = _dynamicContentService.GetPublicationById(id);
+            var retVal = _dynamicContentService.GetPublicationsByIds(new[] { id }).FirstOrDefault();
             if (retVal != null)
             {
                 return Ok(retVal.ToWebModel(_marketingExtensionManager.DynamicContentExpressionTree));
@@ -329,8 +333,9 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [CheckPermission(Permission = MarketingPredefinedPermissions.Create)]
         public IHttpActionResult CreateDynamicContentPublication(webModel.DynamicContentPublication publication)
         {
-            var retVal = _dynamicContentService.CreatePublication(publication.ToCoreModel(_expressionSerializer));
-            return GetDynamicContentPublicationById(retVal.Id);
+            var corePublication = publication.ToCoreModel(_expressionSerializer);
+            _dynamicContentService.SavePublications(new[] { corePublication });
+            return GetDynamicContentPublicationById(corePublication.Id);
         }
 
 
@@ -344,7 +349,8 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [CheckPermission(Permission = MarketingPredefinedPermissions.Update)]
         public IHttpActionResult UpdateDynamicContentPublication(webModel.DynamicContentPublication publication)
         {
-            _dynamicContentService.UpdatePublications(new[] { publication.ToCoreModel(_expressionSerializer) });
+            var corePublication = publication.ToCoreModel(_expressionSerializer);
+            _dynamicContentService.SavePublications(new[] { corePublication });
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -372,7 +378,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Route("contentfolders/{id}")]
         public IHttpActionResult GetDynamicContentFolderById(string id)
         {
-            var retVal = _dynamicContentService.GetFolderById(id);
+            var retVal = _dynamicContentService.GetFoldersByIds(new[] { id }).FirstOrDefault();
             if (retVal != null)
             {
                 return Ok(retVal.ToWebModel());
@@ -391,8 +397,9 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [CheckPermission(Permission = MarketingPredefinedPermissions.Create)]
         public IHttpActionResult CreateDynamicContentFolder(webModel.DynamicContentFolder folder)
         {
-            var retVal = _dynamicContentService.CreateFolder(folder.ToCoreModel());
-            return GetDynamicContentFolderById(retVal.Id);
+            var coreFolder = folder.ToCoreModel();
+            _dynamicContentService.SaveFolders(new[] { coreFolder });
+            return GetDynamicContentFolderById(coreFolder.Id);
         }
 
         /// <summary>
@@ -405,7 +412,8 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [CheckPermission(Permission = MarketingPredefinedPermissions.Update)]
         public IHttpActionResult UpdateDynamicContentFolder(webModel.DynamicContentFolder folder)
         {
-            _dynamicContentService.UpdateFolder(folder.ToCoreModel());
+            var coreFolder = folder.ToCoreModel();
+            _dynamicContentService.SaveFolders(new[] { coreFolder });
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -419,7 +427,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [CheckPermission(Permission = MarketingPredefinedPermissions.Delete)]
         public IHttpActionResult DeleteDynamicContentFolders([FromUri] string[] ids)
         {
-            _dynamicContentService.DeleteFolder(ids);
+            _dynamicContentService.DeleteFolders(ids);
             return StatusCode(HttpStatusCode.NoContent);
         }
 

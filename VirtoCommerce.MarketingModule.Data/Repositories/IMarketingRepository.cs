@@ -6,21 +6,32 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
 {
     public interface IMarketingRepository : IRepository
     {
-        IQueryable<Promotion> Promotions { get; }
-        IQueryable<Coupon> Coupons { get; }
-        IQueryable<PromotionUsage> PromotionUsages { get; }
-        IQueryable<DynamicContentFolder> Folders { get; }
-        IQueryable<DynamicContentItem> Items { get; }
-        IQueryable<DynamicContentPlace> Places { get; }
-        IQueryable<DynamicContentPublishingGroup> PublishingGroups { get; }
-        IQueryable<PublishingGroupContentItem> PublishingGroupContentItems { get; }
-        IQueryable<PublishingGroupContentPlace> PublishingGroupContentPlaces { get; }
+        IQueryable<PromotionEntity> Promotions { get; }
+        IQueryable<CouponEntity> Coupons { get; }
+        IQueryable<PromotionUsageEntity> MarketingUsages { get; }
+        IQueryable<DynamicContentFolderEntity> Folders { get; }
+        IQueryable<DynamicContentItemEntity> Items { get; }
+        IQueryable<DynamicContentPlaceEntity> Places { get; }
+        IQueryable<DynamicContentPublishingGroupEntity> PublishingGroups { get; }
+        IQueryable<PublishingGroupContentItemEntity> PublishingGroupContentItems { get; }
+        IQueryable<PublishingGroupContentPlaceEntity> PublishingGroupContentPlaces { get; }
 
-        Promotion GetPromotionById(string id);
-        Promotion[] GetActivePromotions();
-        DynamicContentFolder GetContentFolderById(string id);
-        DynamicContentItem GetContentItemById(string id);
-        DynamicContentPlace GetContentPlaceById(string id);
-        DynamicContentPublishingGroup GetContentPublicationById(string id);
+        PromotionEntity[] GetPromotionsByIds(string[] ids);       
+        DynamicContentFolderEntity[] GetContentFoldersByIds(string[] ids);
+        DynamicContentItemEntity[] GetContentItemsByIds(string[] ids);
+        DynamicContentPlaceEntity[] GetContentPlacesByIds(string[] ids);
+        DynamicContentPublishingGroupEntity[] GetContentPublicationsByIds(string[] ids);
+
+        void RemoveFolders(string[] ids);
+        void RemoveContentPublications(string[] ids);
+        void RemovePlaces(string[] ids);
+        void RemoveContentItems(string[] ids);
+        void RemovePromotions(string[] ids);
+
+        CouponEntity[] GetCouponsByIds(string[] ids);
+        void RemoveCoupons(string[] ids);
+
+        PromotionUsageEntity[] GetMarketingUsagesByIds(string[] ids);
+        void RemoveMarketingUsages(string[] ids);
     }
 }

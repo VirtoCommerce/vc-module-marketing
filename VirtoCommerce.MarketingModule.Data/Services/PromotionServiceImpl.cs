@@ -5,7 +5,8 @@ using CacheManager.Core;
 using Omu.ValueInjecter;
 using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Services;
-using VirtoCommerce.MarketingModule.Data.Converters;
+using VirtoCommerce.MarketingModule.Data.Model;
+using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Serialization;
@@ -16,99 +17,58 @@ namespace VirtoCommerce.MarketingModule.Data.Services
     public class PromotionServiceImpl : ServiceBase, IPromotionService
     {
         private readonly Func<IMarketingRepository> _repositoryFactory;
-        private readonly IMarketingExtensionManager _customPromotionManager;
-        private readonly IExpressionSerializer _expressionSerializer;
-        private readonly ICacheManager<object> _cacheManager;
-        private readonly ICouponService _couponService;
 
-        public PromotionServiceImpl(Func<IMarketingRepository> repositoryFactory, IMarketingExtensionManager customPromotionManager, IExpressionSerializer expressionSerializer, ICacheManager<object> cacheManager, ICouponService couponService)
+        public PromotionServiceImpl(Func<IMarketingRepository> repositoryFactory)
         {
             _repositoryFactory = repositoryFactory;
-            _customPromotionManager = customPromotionManager;
-            _expressionSerializer = expressionSerializer;
-            _cacheManager = cacheManager;
-            _couponService = couponService;
         }
 
-        #region IMarketingService Members
+        #region IMarketingService Members       
 
-        public Promotion[] GetActivePromotions()
+        public Promotion[] GetPromotionsByIds(string[] ids)
         {
-            var retVal = new List<Promotion>(_customPromotionManager.Promotions);
             using (var repository = _repositoryFactory())
             {
-                var dbStoredPromotions = repository.GetActivePromotions().Select(x => x.ToCoreModel(_expressionSerializer, _couponService)).ToList();
-                var promoComparer = AnonymousComparer.Create((Promotion x) => x.Id);
-                dbStoredPromotions.Patch(retVal, promoComparer, (source, target) => target.InjectFrom(source));
+                return repository.GetPromotionsByIds(ids).Select(x => x.ToModel(AbstractTypeFactory<DynamicPromotion>.TryCreateInstance())).ToArray();
             }
-            return retVal.OrderBy(x => x.Priority).ToArray();
         }
 
-        public Promotion GetPromotionById(string id)
+        public  void SavePromotions(Promotion[] promotions)
         {
-            Promotion retVal = null;
-            using (var repository = _repositoryFactory())
-            {
-                var entity = repository.GetPromotionById(id);
-
-                if (entity != null)
-                {
-                    retVal = entity.ToCoreModel(_expressionSerializer, _couponService);
-                }
-            }
-
-            return retVal ?? _customPromotionManager.Promotions.FirstOrDefault(x => x.Id == id);
-        }
-
-        public Promotion CreatePromotion(Promotion promotion)
-        {
-            var entity = promotion.ToDataModel();
-            using (var repository = _repositoryFactory())
-            {
-                repository.Add(entity);
-                CommitChanges(repository);
-            }
-            var retVal = GetPromotionById(entity.Id);
-            _cacheManager.ClearRegion("MarketingModuleRegion");
-            return retVal;
-        }
-
-        public void UpdatePromotions(Promotion[] promotions)
-        {
+            var pkMap = new PrimaryKeyResolvingMap();
             using (var repository = _repositoryFactory())
             using (var changeTracker = GetChangeTracker(repository))
             {
-                foreach (var promotion in promotions)
+                var existEntities = repository.GetPromotionsByIds(promotions.Where(x => !x.IsTransient()).Select(x => x.Id).ToArray());
+                foreach (var promotion in promotions.OfType<DynamicPromotion>())
                 {
-                    var sourceEntity = promotion.ToDataModel();
-                    var targetEntity = repository.GetPromotionById(promotion.Id);
-                    if (targetEntity == null)
+                    var sourceEntity = AbstractTypeFactory<PromotionEntity>.TryCreateInstance();
+                    if (sourceEntity != null)
                     {
-                        repository.Add(sourceEntity);
-                    }
-                    else
-                    {
-                        changeTracker.Attach(targetEntity);
-                        sourceEntity.Patch(targetEntity);
+                        sourceEntity = sourceEntity.FromModel(promotion, pkMap);
+                        var targetEntity = existEntities.FirstOrDefault(x => x.Id == promotion.Id);
+                        if (targetEntity != null)
+                        {
+                            changeTracker.Attach(targetEntity);
+                            sourceEntity.Patch(targetEntity);
+                        }
+                        else
+                        {
+                            repository.Add(sourceEntity);
+                        }
                     }
                 }
                 CommitChanges(repository);
-                _cacheManager.ClearRegion("MarketingModuleRegion");
-
+                pkMap.ResolvePrimaryKeys();
             }
-        }
+        }     
 
         public void DeletePromotions(string[] ids)
         {
             using (var repository = _repositoryFactory())
             {
-                foreach (var id in ids)
-                {
-                    var entity = repository.GetPromotionById(id);
-                    repository.Remove(entity);
-                }
+                repository.RemovePromotions(ids);
                 CommitChanges(repository);
-                _cacheManager.ClearRegion("MarketingModuleRegion");
             }
         }
 

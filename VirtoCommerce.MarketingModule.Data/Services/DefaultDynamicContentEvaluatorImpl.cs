@@ -73,7 +73,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                     }
                 }
 
-                retVal.AddRange(contentItemIds.Select(contentItemId => _dynamicContentService.GetContentItemById(contentItemId)));
+                retVal.AddRange(_dynamicContentService.GetContentItemsByIds(contentItemIds.ToArray()));
             }
 
             return retVal.ToArray();

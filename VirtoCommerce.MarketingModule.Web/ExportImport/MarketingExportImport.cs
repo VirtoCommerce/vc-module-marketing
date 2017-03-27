@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Model.DynamicContent.Search;
+using VirtoCommerce.Domain.Marketing.Model.Promotions.Search;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
@@ -19,6 +20,7 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
         public ICollection<DynamicContentItem> ContentItems { get; set; }
         public ICollection<DynamicContentPublication> ContentPublications { get; set; }
         public ICollection<DynamicContentFolder> ContentFolders { get; set; }
+        public ICollection<PromotionUsage> Usages { get; set; }
     }
 
     public sealed class MarketingExportImport
@@ -28,14 +30,16 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
         private readonly IPromotionService _promotionService;
         private readonly ICouponService _couponService;
         private readonly IDynamicContentService _dynamicContentService;
+        private readonly IPromotionUsageService _usageService;
 
-        public MarketingExportImport(IPromotionSearchService promotionSearchService, IPromotionService promotionService, IDynamicContentService dynamicContentService, ICouponService couponService, IDynamicContentSearchService dynamicContentSearchService)
+        public MarketingExportImport(IPromotionSearchService promotionSearchService, IPromotionService promotionService, IDynamicContentService dynamicContentService, ICouponService couponService, IDynamicContentSearchService dynamicContentSearchService, IPromotionUsageService marketingUsageService)
         {
             _promotionSearchService = promotionSearchService;
             _promotionService = promotionService;
             _dynamicContentService = dynamicContentService;
             _couponService = couponService;
             _dynamicContentSearchService = dynamicContentSearchService;
+            _usageService = marketingUsageService;
         }
 
         public void DoExport(Stream backupStream, Action<ExportImportProgressInfo> progressCallback)
@@ -53,138 +57,33 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
 
             progressInfo.Description = String.Format("{0} promotions importing...", backupObject.Promotions.Count());
             progressCallback(progressInfo);
-            UpdatePromotions(originalObject.Promotions, backupObject.Promotions);
+            _promotionService.SavePromotions(backupObject.Promotions.ToArray());
 
             progressInfo.Description = String.Format("{0} folders importing...", backupObject.ContentFolders.Count());
             progressCallback(progressInfo);
-            UpdateContentFolders(originalObject.ContentFolders, backupObject.ContentFolders);
+            _dynamicContentService.SaveFolders(backupObject.ContentFolders.ToArray());
 
             progressInfo.Description = String.Format("{0} places importing...", backupObject.ContentPlaces.Count());
             progressCallback(progressInfo);
-            UpdateContentPlaces(originalObject.ContentPlaces, backupObject.ContentPlaces);
+            _dynamicContentService.SavePlaces(backupObject.ContentPlaces.ToArray());
 
             progressInfo.Description = String.Format("{0} contents importing...", backupObject.ContentItems.Count());
             progressCallback(progressInfo);
-            UpdateContentItems(originalObject.ContentItems, backupObject.ContentItems);
+            _dynamicContentService.SaveContentItems(backupObject.ContentItems.ToArray());
 
             progressInfo.Description = String.Format("{0} publications importing...", backupObject.ContentPublications.Count());
             progressCallback(progressInfo);
-            UpdateContentPublications(originalObject.ContentPublications, backupObject.ContentPublications);
+            _dynamicContentService.SavePublications(backupObject.ContentPublications.ToArray());
+
+            progressInfo.Description = String.Format("{0} coupons importing...", backupObject.Coupons.Count());
+            progressCallback(progressInfo);
+            _couponService.SaveCoupons(backupObject.Coupons.ToArray());
+
+            progressInfo.Description = String.Format("{0} marketing usages importing...", backupObject.Usages.Count());
+            progressCallback(progressInfo);
+            _usageService.SaveUsages(backupObject.Usages.ToArray());
 
         }
-
-        #region Import updates
-
-        private void UpdatePromotions(ICollection<Promotion> original, ICollection<Promotion> backup)
-        {
-            var toUpdate = new List<Promotion>();
-
-            backup.CompareTo(original, EqualityComparer<Promotion>.Default, (state, x, y) =>
-            {
-                switch (state)
-                {
-                    case EntryState.Modified:
-                        toUpdate.Add(x);
-                        break;
-                    case EntryState.Added:
-                        _promotionService.CreatePromotion(x);
-                        break;
-                }
-            });
-            _promotionService.UpdatePromotions(toUpdate.ToArray());
-        }
-
-        private void UpdateCoupons(ICollection<Coupon> original, ICollection<Coupon> backup)
-        {
-            var toUpdate = new List<Coupon>();
-
-            backup.CompareTo(original, EqualityComparer<Coupon>.Default, (state, x, y) =>
-            {
-                switch (state)
-                {
-                    case EntryState.Modified:
-                        toUpdate.Add(x);
-                        break;
-                    case EntryState.Added:
-                        _couponService.SaveCoupons(new[] { x });
-                        break;
-                }
-            });
-            _couponService.SaveCoupons(toUpdate.ToArray());
-        }
-
-        private void UpdateContentPlaces(ICollection<DynamicContentPlace> original, ICollection<DynamicContentPlace> backup)
-        {
-            backup.CompareTo(original, EqualityComparer<DynamicContentPlace>.Default, (state, x, y) =>
-            {
-                switch (state)
-                {
-                    case EntryState.Modified:
-                        _dynamicContentService.UpdatePlace(x);
-                        break;
-                    case EntryState.Added:
-                        _dynamicContentService.CreatePlace(x);
-                        break;
-                }
-            });
-        }
-
-        private void UpdateContentItems(ICollection<DynamicContentItem> original, ICollection<DynamicContentItem> backup)
-        {
-            var toUpdate = new List<DynamicContentItem>();
-
-            backup.CompareTo(original, EqualityComparer<DynamicContentItem>.Default, (state, x, y) =>
-            {
-                switch (state)
-                {
-                    case EntryState.Modified:
-                        toUpdate.Add(x);
-                        break;
-                    case EntryState.Added:
-                        _dynamicContentService.CreateContent(x);
-                        break;
-                }
-            });
-            _dynamicContentService.UpdateContents(toUpdate.ToArray());
-        }
-
-        private void UpdateContentPublications(ICollection<DynamicContentPublication> original, ICollection<DynamicContentPublication> backup)
-        {
-            var toUpdate = new List<DynamicContentPublication>();
-
-            backup.CompareTo(original, EqualityComparer<DynamicContentPublication>.Default, (state, x, y) =>
-            {
-                switch (state)
-                {
-                    case EntryState.Modified:
-                        toUpdate.Add(x);
-                        break;
-                    case EntryState.Added:
-                        _dynamicContentService.CreatePublication(x);
-                        break;
-                }
-            });
-            _dynamicContentService.UpdatePublications(toUpdate.ToArray());
-        }
-
-        private void UpdateContentFolders(ICollection<DynamicContentFolder> original, ICollection<DynamicContentFolder> backup)
-        {
-            backup.CompareTo(original, EqualityComparer<DynamicContentFolder>.Default, (state, x, y) =>
-            {
-                switch (state)
-                {
-                    case EntryState.Modified:
-                        _dynamicContentService.UpdateFolder(x);
-                        break;
-                    case EntryState.Added:
-                        _dynamicContentService.CreateFolder(x);
-                        break;
-                }
-            });
-        }
-
-        #endregion
-
         #region BackupObject
 
         private BackupObject GetBackupObject(Action<ExportImportProgressInfo> progressCallback)
@@ -199,7 +98,7 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
 
             progressInfo.Description = String.Format("{0} promotions loading...", allPromotions.Count());
             progressCallback(progressInfo);
-            result.Promotions = allPromotions.Select(x => _promotionService.GetPromotionById(x.Id)).ToList();
+            result.Promotions = _promotionService.GetPromotionsByIds(allPromotions.Select(x=>x.Id).ToArray());
 
             progressInfo.Description = "Search dynamic content objects...";
             progressCallback(progressInfo);
@@ -219,6 +118,14 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
             progressInfo.Description = String.Format("Loading publications...");
             progressCallback(progressInfo);
             result.ContentPublications = _dynamicContentSearchService.SearchContentPublications(new DynamicContentPublicationSearchCriteria { Take = int.MaxValue }).Results.ToList();
+
+            progressInfo.Description = String.Format("{0} coupons loading...");
+            progressCallback(progressInfo);
+            result.Coupons =  _couponService.SearchCoupons(new CouponSearchCriteria { Take = int.MaxValue }).Results;
+
+            progressInfo.Description = String.Format("{0} marketing usages loading...");
+            progressCallback(progressInfo);
+            result.Usages = _usageService.SearchUsages(new PromotionUsageSearchCriteria { Take = int.MaxValue }).Results;
 
             return result;
         }

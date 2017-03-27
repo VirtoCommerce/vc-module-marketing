@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using CsvHelper;
 using VirtoCommerce.Domain.Marketing.Model;
+using VirtoCommerce.Domain.Marketing.Model.Promotions.Search;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.Platform.Core.ExportImport;
 
@@ -45,36 +46,18 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
                 }
             }
 
-            var uniqueCoupons = new List<Coupon>();
-            foreach (var coupon in coupons)
-            {
-                progressInfo.Description = string.Format("Creating coupons: {0} created", ++progressInfo.ProcessedCount);
-                var existingCoupon = _couponService.GetByCode(promotionId, coupon.Code);
-                if (existingCoupon == null)
-                {
-                    uniqueCoupons.Add(coupon);
-                }
-                else
-                {
-                    progressInfo.Errors.Add(string.Format("Coupon with code \"{0}\" is already exists", coupon.Code));
-                }
-                progressCallback(progressInfo);
-            }
+            progressInfo.Description = "Saving coupons...";
+            progressCallback(progressInfo);
 
-            if (uniqueCoupons.Any())
+            var chunksCount = (int)Math.Ceiling((double)coupons.Count / ChunkSize);
+            for (var i = 0; i < chunksCount; i++)
             {
-                progressInfo.Description = "Saving coupons...";
-                progressCallback(progressInfo);
-
-                var chunksCount = (int)Math.Ceiling((double)uniqueCoupons.Count / ChunkSize);
-                for (var i = 0; i < chunksCount; i++)
-                {
-                    var chunk = uniqueCoupons.Skip(i * ChunkSize).Take(ChunkSize);
-                    _couponService.SaveCoupons(chunk.ToArray());
-                }
-                progressInfo.Description = "Coupons import is finished.";
-                progressCallback(progressInfo);
+                var chunk = coupons.Skip(i * ChunkSize).Take(ChunkSize);
+                _couponService.SaveCoupons(chunk.ToArray());
             }
+            progressInfo.Description = "Coupons import is finished.";
+            progressCallback(progressInfo);
+
         }
     }
 }

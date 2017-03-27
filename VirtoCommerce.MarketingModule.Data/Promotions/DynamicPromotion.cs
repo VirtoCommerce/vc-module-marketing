@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using VirtoCommerce.Domain.Common;
 using VirtoCommerce.Domain.Marketing.Model;
+using VirtoCommerce.Domain.Marketing.Model.Promotions.Search;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Serialization;
@@ -11,20 +13,18 @@ namespace VirtoCommerce.MarketingModule.Data.Promotions
 {
     public class DynamicPromotion : Promotion
     {
-        public static DynamicPromotion CreateInstance(IExpressionSerializer expressionSerializer, ICouponService couponservice)
+        private readonly ICouponService _couponService;
+        private readonly IPromotionUsageService _usageService;
+        public DynamicPromotion(IExpressionSerializer expressionSerializer, ICouponService couponService, IPromotionUsageService usageService)
         {
-            var result = AbstractTypeFactory<DynamicPromotion>.TryCreateInstance();
-            result.ExpressionSerializer = expressionSerializer;
-            result.CouponService = couponservice;
-            return result;
-        }
-
+            this.ExpressionSerializer = expressionSerializer;
+            _couponService  = couponService;
+            _usageService = usageService;
+        }      
         private Func<IEvaluationContext, bool> _condition;
         private PromotionReward[] _rewards;
-        //private ICouponService _couponService;
 
         protected IExpressionSerializer ExpressionSerializer { get; set; }
-        protected ICouponService CouponService { get; set; }
 
         public string PredicateSerialized { get; set; }
         public string PredicateVisualTreeSerialized { get; set; }
@@ -44,9 +44,7 @@ namespace VirtoCommerce.MarketingModule.Data.Promotions
             }
 
             //Check coupon
-            //var couponIsValid = Coupons == null ||
-            //                    !Coupons.Any() ||
-            //                    Coupons.Any(x => string.Equals(x.Code, promoContext.Coupon, StringComparison.InvariantCultureIgnoreCase));
+            var couponIsValid = !HasCoupons || CheckCouponIsValid(promoContext.Coupon);
 
             //Evaluate reward for all promoEntry in context
             foreach (var promoEntry in promoContext.PromoEntries)
@@ -57,7 +55,7 @@ namespace VirtoCommerce.MarketingModule.Data.Promotions
                 foreach (var reward in Rewards)
                 {
                     var promoReward = reward.Clone();
-                    EvaluateReward(promoContext, promoReward);
+                    EvaluateReward(promoContext, couponIsValid, promoReward);
                     result.Add(promoReward);
                 }
             }
@@ -65,28 +63,42 @@ namespace VirtoCommerce.MarketingModule.Data.Promotions
             return result.ToArray();
         }
 
-        public override PromotionReward[] ProcessEvent(IMarketingEvent marketingEvent)
-        {
-            return null;
-        }
-
-
-        protected virtual void EvaluateReward(PromotionEvaluationContext promoContext, PromotionReward reward)
+        protected virtual void EvaluateReward(PromotionEvaluationContext promoContext, bool couponIsValid, PromotionReward reward)
         {
             reward.Promotion = this;
-            reward.IsValid = Condition(promoContext);
-
-            if (!string.IsNullOrEmpty(promoContext.Coupon))
+            reward.IsValid = couponIsValid && Condition(promoContext);
+            //Add coupon to reward only for case when promotion contains associated coupons
+            if (HasCoupons)
             {
-                reward.IsValid = CouponService.CheckCoupon(promoContext.Coupon, this.Id);
+                reward.Coupon = promoContext.Coupon;
             }
-
             //Set productId for catalog item reward
             var catalogItemReward = reward as CatalogItemAmountReward;
             if (catalogItemReward != null && catalogItemReward.ProductId == null)
             {
                 catalogItemReward.ProductId = promoContext.PromoEntry.ProductId;
             }
-        }
+        }  
+        
+        protected virtual bool CheckCouponIsValid(string couponCode)
+        {
+            Coupon coupon = null;
+            var retVal = !string.IsNullOrEmpty(couponCode);
+            if (retVal)
+            {
+                coupon = _couponService.SearchCoupons(new CouponSearchCriteria { Code = couponCode, PromotionId = Id }).Results.FirstOrDefault();
+                retVal = coupon != null;
+            }
+            if (retVal && coupon.ExpirationDate != null)
+            {
+                retVal = coupon.ExpirationDate <= DateTime.UtcNow;
+            }
+            if (retVal && coupon.MaxUsesNumber > 0)
+            {
+                retVal = _usageService.SearchUsages(new PromotionUsageSearchCriteria { PromotionId = Id, CouponCode = couponCode, Take = 0 }).TotalCount <= coupon.MaxUsesNumber;
+            }
+            return retVal;
+        } 
+     
     }
 }

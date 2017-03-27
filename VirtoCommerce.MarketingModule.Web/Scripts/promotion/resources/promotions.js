@@ -8,7 +8,6 @@
         getCoupon: { url: 'api/marketing/promotions/coupons/:id' },
         saveCoupon: { url: 'api/marketing/promotions/coupons/add', method: 'POST' },
         deleteCoupons: { url: 'api/marketing/promotions/coupons/delete', method: 'DELETE' },
-        clearCoupons: { url: 'api/marketing/promotions/coupons/clear', method: 'DELETE' },
         importCoupons: { url: 'api/marketing/promotions/coupons/import', method: 'POST' }
     });
 }]);

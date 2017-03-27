@@ -29,7 +29,7 @@ namespace VirtoCommerce.MarketingModule.Test
         public void Can_create_marketing_contentitem()
         {
             var repository = GetRepository();
-            var contentItem = new dataModel.DynamicContentItem()
+            var contentItem = new dataModel.DynamicContentItemEntity()
             {
                 Name = "ss",
             };
@@ -76,7 +76,7 @@ namespace VirtoCommerce.MarketingModule.Test
             }
 
             var cacheManager = new Moq.Mock<ICacheManager<object>>();
-            var marketingEval = new DefaultPromotionEvaluatorImpl(GetMarketingService(), GetCouponService(), cacheManager.Object);
+            var marketingEval = new DefaultPromotionEvaluatorImpl(GetMarketingService(), null);
             var context = GetPromotionEvaluationContext();
             var result = marketingEval.EvaluatePromotion(context);
         }
@@ -124,7 +124,7 @@ namespace VirtoCommerce.MarketingModule.Test
             }
 
             var cacheManager = new Moq.Mock<ICacheManager<object>>();
-            var marketingEval = new DefaultPromotionEvaluatorImpl(GetMarketingService(), GetCouponService(), cacheManager.Object);
+            var marketingEval = new DefaultPromotionEvaluatorImpl(GetMarketingService(), null);
             var context = GetPromotionEvaluationContext();
             context.PromoEntries.First().Attributes["tag"] = "#FOOTBAL";
             var result = marketingEval.EvaluatePromotion(context);
@@ -181,7 +181,7 @@ namespace VirtoCommerce.MarketingModule.Test
         {
             var promotionExtensionManager = new DefaultMarketingExtensionManagerImpl();
             var cacheManager = new Moq.Mock<ICacheManager<object>>();
-            var retVal = new PromotionServiceImpl(GetRepository, promotionExtensionManager, GetExpressionSerializer(), cacheManager.Object, GetCouponService());
+            var retVal = new PromotionServiceImpl(GetRepository);
             return retVal;
         }
 

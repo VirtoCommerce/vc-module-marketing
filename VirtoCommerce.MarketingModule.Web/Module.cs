@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Http;
 using Microsoft.Practices.Unity;
 using VirtoCommerce.Domain.Cart.Events;
@@ -6,10 +7,12 @@ using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.Domain.Order.Events;
 using VirtoCommerce.MarketingModule.Data.Observers;
+using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.MarketingModule.Data.Services;
 using VirtoCommerce.MarketingModule.Web.ExportImport;
 using VirtoCommerce.MarketingModule.Web.JsonConverters;
+using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
@@ -48,14 +51,22 @@ namespace VirtoCommerce.MarketingModule.Web
 
             _container.RegisterInstance<IMarketingExtensionManager>(promotionExtensionManager);
             _container.RegisterType<IPromotionService, PromotionServiceImpl>();
+            _container.RegisterType<ICouponService, CouponService>();
+            _container.RegisterType<IPromotionUsageService, PromotionUsageService>();
             _container.RegisterType<IMarketingDynamicContentEvaluator, DefaultDynamicContentEvaluatorImpl>();
             _container.RegisterType<IDynamicContentService, DynamicContentServiceImpl>();
             _container.RegisterType<IMarketingPromoEvaluator, DefaultPromotionEvaluatorImpl>();
             _container.RegisterType<IPromotionSearchService, MarketingSearchServiceImpl>();
             _container.RegisterType<ICouponService, CouponService>();
             _container.RegisterType<IDynamicContentSearchService, MarketingSearchServiceImpl>();
-            _container.RegisterType<IObserver<CartChangeEvent>, CartChangeObserver>("CartChangeObserver");
-            _container.RegisterType<IObserver<OrderChangeEvent>, OrderChangeObserver>("OrderChangeObserver");
+
+            //Create order observer. record order coupon usage
+            _container.RegisterType<IObserver<OrderChangedEvent>, CouponUsageRecordObserver>("OrderCouponUsageRecordObserver");
+            //Create cart observer. record cart coupon usage
+            _container.RegisterType<IObserver<CartChangedEvent>, CouponUsageRecordObserver>("CartCouponUsageRecordObserver");
+
+            AbstractTypeFactory<DynamicPromotion>.RegisterType<DynamicPromotion>().WithFactory(() => _container.Resolve<DynamicPromotion>());
+
         }
 
         public override void PostInitialize()
@@ -79,7 +90,6 @@ namespace VirtoCommerce.MarketingModule.Web
             //Next lines allow to use polymorph types in API controller methods
             var httpConfiguration = _container.Resolve<HttpConfiguration>();
             httpConfiguration.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new PolymorphicPromoEvalContextJsonConverter());
-
         }
 
         #endregion
@@ -114,7 +124,7 @@ namespace VirtoCommerce.MarketingModule.Web
             var dynamicContentService = _container.Resolve<IDynamicContentService>();
             foreach (var id in ids)
             {
-                var rootFolder = dynamicContentService.GetFolderById(id);
+                var rootFolder = dynamicContentService.GetFoldersByIds(new[] { id }).FirstOrDefault();
                 if (rootFolder == null)
                 {
                     rootFolder = new Domain.Marketing.Model.DynamicContentFolder
@@ -122,7 +132,7 @@ namespace VirtoCommerce.MarketingModule.Web
                         Id = id,
                         Name = id
                     };
-                    dynamicContentService.CreateFolder(rootFolder);
+                    dynamicContentService.SaveFolders(new[] { rootFolder });
                 }
             }
         }
