@@ -67,6 +67,16 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             }
         }
 
+        public Coupon GetById(string id)
+        {
+            using (var repository = _repositoryFactory())
+            {
+                var coupon = repository.Coupons.FirstOrDefault(c => c.Id == id);
+
+                return coupon?.ToCoreModel();
+            }
+        }
+
         public void SaveCoupons(Coupon[] coupons)
         {
             if (coupons == null)

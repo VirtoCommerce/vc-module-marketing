@@ -1,16 +1,20 @@
-﻿<div class="blade-static">
+﻿<style>
+    .list-descr {
+        color: #999;
+        font-size: 12px;
+        margin: 5px 0 0;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+</style>
+<div class="blade-static">
     <div class="form-group">
         <div class="form-input __search">
-            <ui-select ng-model="filter.current" ng-change="filter.change()">
-                <ui-select-match allow-clear="true" placeholder="{{ 'marketing.blades.promotion-list.placeholders.select-filter' | translate }}">{{$select.selected.name | translate}}</ui-select-match>
-                <ui-select-choices repeat="f in $localStorage.couponSearchFilters | filter: $select.search">
-                    <span ng-bind-html="f.name | translate | highlight: $select.search"></span>
-                </ui-select-choices>
-            </ui-select>
+            <input placeholder="{{'platform.placeholders.search-keyword' | translate}}" ng-model="filter.keyword" ng-keyup="$event.which === 13 && filter.criteriaChanged()" style="width: 380px;">
+            <button class="btn __other" style="position: relative; right: 45px;">
+                <i class="btn-ico fa fa-remove" title="Clear" ng-click="filter.keyword = null; filter.criteriaChanged()"></i>
+            </button>
         </div>
-        <a class="form-edit" href="" style="left: 416px; top:25px; position:absolute;" ng-click="filter.edit()">
-            <i class="form-ico fa fa-pencil"></i>
-        </a>
         <p class="form-count">{{ 'platform.list.count' | translate }}: <span class="count" ng-bind="pageSettings.totalItems"></span></p>
     </div>
 </div>
