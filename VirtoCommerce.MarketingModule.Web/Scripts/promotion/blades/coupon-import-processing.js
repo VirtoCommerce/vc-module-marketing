@@ -1,5 +1,5 @@
 ﻿angular.module('virtoCommerce.marketingModule')
-.controller('virtoCommerce.marketingModule.couponImportProcessingController', ['$rootscope', '$scope', function ($rootscope, $scope) {
+.controller('virtoCommerce.marketingModule.couponImportProcessingController', ['$scope', function ($scope) {
     var blade = $scope.blade;
     blade.isLoading = false;
 

@@ -21,7 +21,7 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
         promotionsApi.searchCoupons(criteria, function (response) {
             blade.isLoading = false;
             blade.currentEntities = response.results;
-            blade.parentBlade.refresh();
+            blade.parentBlade.countCoupons();
             $scope.pageSettings.totalItems = response.totalCount;
         });
     }
@@ -151,11 +151,13 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
                         if (removeAll && promotionId) {
                             promotionsApi.clearCoupons({ promotionId: promotionId }, function () {
                                 blade.refresh();
+                                blade.parentBlade.refresh();
                             });
                         } else if (!removeAll) {
                             var itemIds = _.pluck($scope.gridApi.selection.getSelectedRows(), 'id');
                             promotionsApi.deleteCoupons({ ids: itemIds, all: removeAll }, function () {
                                 blade.refresh();
+                                blade.parentBlade.refresh();
                             });
                         }
                     });

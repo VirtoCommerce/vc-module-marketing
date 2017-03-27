@@ -9,6 +9,7 @@
                 id: blade.currentEntity.id
             }, function (response) {
                 blade.currentEntity = response;
+                blade.parentBlade.refresh();
             }, function (error) {
                 bladeNavigationService.setError('Error ' + error.status, blade);
             });
