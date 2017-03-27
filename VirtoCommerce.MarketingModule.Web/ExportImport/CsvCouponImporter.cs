@@ -46,12 +46,11 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
                 }
             }
 
-            progressInfo.Description = "Saving coupons...";
-            progressCallback(progressInfo);
-
             var chunksCount = (int)Math.Ceiling((double)coupons.Count / ChunkSize);
             for (var i = 0; i < chunksCount; i++)
             {
+                progressInfo.Description = string.Format("Importing {0} of {1} coupons...", (i + 1) * ChunkSize, coupons.Count);
+                progressCallback(progressInfo);
                 var chunk = coupons.Skip(i * ChunkSize).Take(ChunkSize);
                 _couponService.SaveCoupons(chunk.ToArray());
             }

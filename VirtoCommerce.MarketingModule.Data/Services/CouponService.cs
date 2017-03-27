@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Marketing.Model;
@@ -15,7 +16,6 @@ namespace VirtoCommerce.MarketingModule.Data.Services
     public class CouponService : ServiceBase, ICouponService
     {
         private readonly Func<IMarketingRepository> _repositoryFactory;
-
         public CouponService(Func<IMarketingRepository> repositoryFactory)
         {
             _repositoryFactory = repositoryFactory;
@@ -44,17 +44,20 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 }
 
                 var sortInfos = criteria.SortInfos;
-                if (sortInfos.IsNullOrEmpty())
+                //TODO: Sort by TotalUsesCount 
+                if (sortInfos.IsNullOrEmpty() || sortInfos.Any(x => x.SortColumn.EqualsInvariant(ReflectionUtility.GetPropertyName<Coupon>(p => p.TotalUsesCount))))
                 {
                     sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<Coupon>(x => x.Code), SortDirection = SortDirection.Descending } };
                 }
                 query = query.OrderBySortInfos(sortInfos);
-
+                
                 var searchResult = new GenericSearchResult<Coupon> { TotalCount = query.Count() };
 
-                var coupons = query.Skip(criteria.Skip).Take(criteria.Take).ToList();
-                searchResult.Results = coupons.Select(x => x.ToModel(AbstractTypeFactory<Coupon>.TryCreateInstance())).ToList();
+                var ids = query.Select(x => x.Id)
+                               .Skip(criteria.Skip)
+                               .Take(criteria.Take).ToArray();
 
+                searchResult.Results = GetByIds(ids);
                 return searchResult;
             }
         }
@@ -64,16 +67,6 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             using (var repository = _repositoryFactory())
             {
                 return repository.GetCouponsByIds(ids).Select(x => x.ToModel(AbstractTypeFactory<Coupon>.TryCreateInstance())).ToArray();
-            }
-        }
-
-        public Coupon GetById(string id)
-        {
-            using (var repository = _repositoryFactory())
-            {
-                var coupon = repository.Coupons.FirstOrDefault(c => c.Id == id);
-
-                return coupon?.ToCoreModel();
             }
         }
 
@@ -111,7 +104,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         {
             using (var repository = _repositoryFactory())
             {
-                repository.RemoveMarketingUsages(ids);
+                repository.RemoveCoupons(ids);
                 CommitChanges(repository);
             }
         }

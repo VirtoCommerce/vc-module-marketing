@@ -91,7 +91,7 @@ namespace VirtoCommerce.MarketingModule.Data.Promotions
             }
             if (retVal && coupon.ExpirationDate != null)
             {
-                retVal = coupon.ExpirationDate <= DateTime.UtcNow;
+                retVal = coupon.ExpirationDate > DateTime.UtcNow;
             }
             if (retVal && coupon.MaxUsesNumber > 0)
             {

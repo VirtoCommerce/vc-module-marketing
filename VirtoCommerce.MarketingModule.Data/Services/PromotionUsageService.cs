@@ -34,7 +34,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
             using (var repository = _repositoryFactory())
             {
-                var query = repository.MarketingUsages;
+                var query = repository.PromotionUsages;
 
                 if (!string.IsNullOrEmpty(criteria.PromotionId))
                 {

@@ -282,18 +282,19 @@
               }
             }
           },
-          "coupons": {
-            "code": "Code",
-            "max-uses-number": "Max uses number",
-            "toolbar": {
-              "add": "Add",
-              "import": "Import",
-              "refresh": "Refresh",
-              "delete": "Delete",
-              "delete-all": "Delete all"
+            "coupons": {
+                "code": "Code",
+                "total-uses-count": "Total uses count",
+                "max-uses-number": "Max uses number",
+                "toolbar": {
+                    "add": "Add",
+                    "import": "Import",
+                    "refresh": "Refresh",
+                    "delete": "Delete",
+                    "delete-all": "Delete all"
+                },
+                "no-coupons-message": "There are no coupons yet"
             },
-            "no-coupons-message": "There are no coupons yet"
-          },
           "coupons-import": {
             "title": "Import coupons",
             "labels": {

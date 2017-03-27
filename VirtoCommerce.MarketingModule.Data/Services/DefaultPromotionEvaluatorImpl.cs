@@ -12,12 +12,10 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 {
     public class DefaultPromotionEvaluatorImpl : IMarketingPromoEvaluator
     {
-        private readonly IPromotionService _promotionService;
         private readonly IPromotionSearchService _promotionSearchService;
 
-        public DefaultPromotionEvaluatorImpl(IPromotionService promotionService, IPromotionSearchService promotionSearchService)
+        public DefaultPromotionEvaluatorImpl(IPromotionSearchService promotionSearchService)
         {
-            _promotionService = promotionService;
             _promotionSearchService = promotionSearchService;
         }
 

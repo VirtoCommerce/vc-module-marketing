@@ -8,7 +8,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
     {
         IQueryable<PromotionEntity> Promotions { get; }
         IQueryable<CouponEntity> Coupons { get; }
-        IQueryable<PromotionUsageEntity> MarketingUsages { get; }
+        IQueryable<PromotionUsageEntity> PromotionUsages { get; }
         IQueryable<DynamicContentFolderEntity> Folders { get; }
         IQueryable<DynamicContentItemEntity> Items { get; }
         IQueryable<DynamicContentPlaceEntity> Places { get; }

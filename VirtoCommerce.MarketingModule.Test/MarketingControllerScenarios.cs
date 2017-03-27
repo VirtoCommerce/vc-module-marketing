@@ -76,7 +76,7 @@ namespace VirtoCommerce.MarketingModule.Test
             }
 
             var cacheManager = new Moq.Mock<ICacheManager<object>>();
-            var marketingEval = new DefaultPromotionEvaluatorImpl(GetMarketingService(), null);
+            var marketingEval = new DefaultPromotionEvaluatorImpl(null);
             var context = GetPromotionEvaluationContext();
             var result = marketingEval.EvaluatePromotion(context);
         }
@@ -124,7 +124,7 @@ namespace VirtoCommerce.MarketingModule.Test
             }
 
             var cacheManager = new Moq.Mock<ICacheManager<object>>();
-            var marketingEval = new DefaultPromotionEvaluatorImpl(GetMarketingService(), null);
+            var marketingEval = new DefaultPromotionEvaluatorImpl(null);
             var context = GetPromotionEvaluationContext();
             context.PromoEntries.First().Attributes["tag"] = "#FOOTBAL";
             var result = marketingEval.EvaluatePromotion(context);

@@ -23,6 +23,9 @@ namespace VirtoCommerce.MarketingModule.Data.Model
 
         public DateTime? ExpirationDate { get; set; }
 
+        [NotMapped]
+        public long TotalUsesCount { get; set; }
+
         #region Navigation Properties
         [Index("IX_CodeAndPromotionId", IsUnique = true, Order = 2)]
         public string PromotionId { get; set; }
@@ -45,6 +48,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             coupon.ModifiedDate = this.ModifiedDate;
             coupon.MaxUsesNumber = this.MaxUsesNumber;
             coupon.PromotionId = this.PromotionId;
+            coupon.TotalUsesCount = this.TotalUsesCount;
     
             return coupon;
         }
@@ -66,7 +70,8 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             this.ModifiedDate = coupon.ModifiedDate;
             this.MaxUsesNumber = coupon.MaxUsesNumber;
             this.PromotionId = coupon.PromotionId;
-        
+            this.TotalUsesCount = coupon.TotalUsesCount;
+
             return this;
         }
 

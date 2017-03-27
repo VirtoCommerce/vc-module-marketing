@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Linq;
 using VirtoCommerce.MarketingModule.Data.Model;
+using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Data.Infrastructure;
 using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
 
@@ -97,7 +98,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
         {
             get { return GetAsQueryable<CouponEntity>(); }
         }
-        public IQueryable<PromotionUsageEntity> MarketingUsages
+        public IQueryable<PromotionUsageEntity> PromotionUsages
         {
             get { return GetAsQueryable<PromotionUsageEntity>(); }
         }
@@ -234,6 +235,17 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
         public CouponEntity[] GetCouponsByIds(string[] ids)
         {
             var retVal = Coupons.Where(x => ids.Contains(x.Id)).ToArray();
+            var couponCodes = retVal.Select(x => x.Code).ToArray();
+            var couponUsagesTotals = PromotionUsages.Where(x => couponCodes.Contains(x.CouponCode)).GroupBy(x => x.CouponCode)
+                   .Select(x => new { CouponCode = x.Key, TotalUsesCount = x.Count() }).ToArray();
+            foreach(var totalsUses in couponUsagesTotals)
+            {
+                var coupon = retVal.FirstOrDefault(x => x.Code.EqualsInvariant(totalsUses.CouponCode));
+                if (coupon != null)
+                {
+                    coupon.TotalUsesCount = totalsUses.TotalUsesCount;
+                }
+            }
             return retVal;
         }
 
@@ -246,7 +258,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
 
         public PromotionUsageEntity[] GetMarketingUsagesByIds(string[] ids)
         {
-            var retVal = MarketingUsages.Where(x => ids.Contains(x.Id)).ToArray();
+            var retVal = PromotionUsages.Where(x => ids.Contains(x.Id)).ToArray();
             return retVal;
         }
 
