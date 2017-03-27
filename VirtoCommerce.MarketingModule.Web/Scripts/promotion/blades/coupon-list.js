@@ -21,9 +21,14 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
         promotionsApi.searchCoupons(criteria, function (response) {
             blade.isLoading = false;
             blade.currentEntities = response.results;
+            blade.parentBlade.refresh();
             $scope.pageSettings.totalItems = response.totalCount;
         });
     }
+
+    $scope.$on("new-notification-event", function (event, notification) {
+        blade.refresh();
+    });
 
     blade.toolbarCommands = [{
         name: 'marketing.blades.coupons.toolbar.add',
@@ -91,6 +96,7 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
     $scope.selectNode = function (node) {
         var newBlade = {
             id: 'couponDetail',
+            originalEntity: angular.copy(node),
             currentEntity: node,
             title: 'Coupon "' + node.code + '"',
             controller: 'virtoCommerce.marketingModule.couponDetailController',

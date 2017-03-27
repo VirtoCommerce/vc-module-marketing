@@ -23,7 +23,7 @@
               "coupons": "Coupons",
               "expiration-date": "Expiration date",
               "per-customer-limit": "Per customer limit",
-              "promotion-conditions": "Promotion conditions"
+              "promotion-conditions": "Promotion conditions",
             },
             "placeholders": {
               "promotion-name": "Please enter name...",
@@ -49,7 +49,10 @@
               "reservation-expiration-date": "Reservation expiration date",
               "reservation-expiration-date-description": "An expiration date of applied to shopping cart coupon (not to an order!)",
               "delimiter-description": "CSV record delimiter",
-              "upload-description": "A CSV file with coupon records in next format: [coupon_code][delimiter][max_uses_number] (without square brackets)"
+              "upload-description": "A CSV file with coupon records in next format: [coupon_code][delimiter][max_uses_number] (without square brackets). MaxUsesNumber 0 value means a coupon can be applied an infinite number of times",
+              "enter-value": "Enter a value",
+              "select-date": "Select a date"
+
             }
           },
             "promotion-list": {

@@ -16,7 +16,7 @@
     }
 
     function isDirty() {
-        return !angular.equals(blade.currentEntity, blade.origEntity);
+        return !angular.equals(blade.currentEntity, blade.originalEntity);
     }
 
     $scope.setForm = function (form) {

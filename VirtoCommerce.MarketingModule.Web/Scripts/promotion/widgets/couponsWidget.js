@@ -11,6 +11,10 @@
         blade.totalCouponsCount = response.totalCount;
     });
 
+    $scope.$on("new-notification-event", function (event, notification) {
+        blade.refresh();
+    });
+
     $scope.openBlade = function () {
         var newBlade = {
             id: 'coupons',
