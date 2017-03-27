@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Marketing.Model;
@@ -15,7 +16,6 @@ namespace VirtoCommerce.MarketingModule.Data.Services
     public class CouponService : ServiceBase, ICouponService
     {
         private readonly Func<IMarketingRepository> _repositoryFactory;
-
         public CouponService(Func<IMarketingRepository> repositoryFactory)
         {
             _repositoryFactory = repositoryFactory;
@@ -44,12 +44,13 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 }
 
                 var sortInfos = criteria.SortInfos;
-                if (sortInfos.IsNullOrEmpty())
+                //TODO: Sort by TotalUsesCount 
+                if (sortInfos.IsNullOrEmpty() || sortInfos.Any(x => x.SortColumn.EqualsInvariant(ReflectionUtility.GetPropertyName<Coupon>(p => p.TotalUsesCount))))
                 {
                     sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<Coupon>(x => x.Code), SortDirection = SortDirection.Descending } };
                 }
                 query = query.OrderBySortInfos(sortInfos);
-
+                
                 var searchResult = new GenericSearchResult<Coupon> { TotalCount = query.Count() };
 
                 var ids = query.Select(x => x.Id)

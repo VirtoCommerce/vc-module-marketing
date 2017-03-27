@@ -14,6 +14,16 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
 
     public sealed class BackupObject
     {
+        public BackupObject()
+        {
+            Promotions = new List<Promotion>();
+            Coupons = new List<Coupon>();
+            ContentPlaces = new List<DynamicContentPlace>();
+            ContentItems = new List<DynamicContentItem>();
+            ContentPublications = new List<DynamicContentPublication>();
+            ContentFolders = new List<DynamicContentFolder>();
+            Usages = new List<PromotionUsage>();
+        }
         public ICollection<Promotion> Promotions { get; set; }
         public ICollection<Coupon> Coupons { get; set; }
         public ICollection<DynamicContentPlace> ContentPlaces { get; set; }
@@ -71,9 +81,9 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
             progressCallback(progressInfo);
             _dynamicContentService.SaveContentItems(backupObject.ContentItems.ToArray());
 
-            progressInfo.Description = String.Format("{0} publications importing...", backupObject.ContentPublications.Count());
+            progressInfo.Description = String.Format("{0} publications importing...", backupObject.ContentPublications.Distinct().Count());
             progressCallback(progressInfo);
-            _dynamicContentService.SavePublications(backupObject.ContentPublications.ToArray());
+            _dynamicContentService.SavePublications(backupObject.ContentPublications.Distinct().ToArray());
 
             progressInfo.Description = String.Format("{0} coupons importing...", backupObject.Coupons.Count());
             progressCallback(progressInfo);
@@ -119,11 +129,11 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
             progressCallback(progressInfo);
             result.ContentPublications = _dynamicContentSearchService.SearchContentPublications(new DynamicContentPublicationSearchCriteria { Take = int.MaxValue }).Results.ToList();
 
-            progressInfo.Description = String.Format("{0} coupons loading...");
+            progressInfo.Description = String.Format("Loading coupons...");
             progressCallback(progressInfo);
             result.Coupons =  _couponService.SearchCoupons(new CouponSearchCriteria { Take = int.MaxValue }).Results;
 
-            progressInfo.Description = String.Format("{0} marketing usages loading...");
+            progressInfo.Description = String.Format("Loading usages...");
             progressCallback(progressInfo);
             result.Usages = _usageService.SearchUsages(new PromotionUsageSearchCriteria { Take = int.MaxValue }).Results;
 
