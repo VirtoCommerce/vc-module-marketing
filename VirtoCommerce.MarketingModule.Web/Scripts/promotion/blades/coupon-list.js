@@ -21,12 +21,16 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
         promotionsApi.searchCoupons(criteria, function (response) {
             blade.isLoading = false;
             blade.currentEntities = response.results;
-            blade.parentBlade.countCoupons();
+            blade.parentBlade.couponCount();
             $scope.pageSettings.totalItems = response.totalCount;
         });
     }
 
-    $scope.$on("new-notification-event", function (event, notification) {
+    $scope.$on('new-notification-event', function (event, notification) {
+        blade.refresh();
+    });
+
+    $scope.$on('coupon-import-finished', function (event) {
         blade.refresh();
     });
 

@@ -1,5 +1,5 @@
 ﻿angular.module('virtoCommerce.marketingModule')
-.controller('virtoCommerce.marketingModule.couponImportProcessingController', ['$scope', function ($scope) {
+.controller('virtoCommerce.marketingModule.couponImportProcessingController', ['$rootScope', '$scope', function ($rootScope, $scope) {
     var blade = $scope.blade;
     blade.isLoading = false;
 
@@ -7,7 +7,7 @@
         if (blade.notification && notification.id == blade.notification.id) {
             angular.copy(notification, blade.notification);
             if (notification.finished) {
-                blade.parentBlade.refresh();
+                $rootScope.$broadcast('coupon-import-finished');
             }
         }
     });
