@@ -26,10 +26,6 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
         });
     }
 
-    $scope.$on('new-notification-event', function (event, notification) {
-        blade.refresh();
-    });
-
     $scope.$on('coupon-import-finished', function (event) {
         blade.refresh();
     });
@@ -101,7 +97,7 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
         var newBlade = {
             id: 'couponDetail',
             originalEntity: angular.copy(node),
-            currentEntity: node,
+            currentEntity: angular.copy(node),
             title: 'Coupon "' + node.code + '"',
             controller: 'virtoCommerce.marketingModule.couponDetailController',
             template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/promotion/blades/coupon-detail.tpl.html'
