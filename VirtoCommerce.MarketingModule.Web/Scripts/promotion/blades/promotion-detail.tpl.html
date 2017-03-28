@@ -5,16 +5,7 @@
     <div class="blade-inner">
         <div class="inner-block">
             <form class="form" name="formScope">
-                <fieldset ng-init="setForm(formScope)">
-                    <div ng-if="!blade.isNew">
-                        <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.is-active' | translate }}</label>
-                        <div class="form-input">
-                            <label class="form-label __switch">
-                                <input type="checkbox" ng-model="blade.currentEntity.isActive" />
-                                <span class="switch"></span>
-                            </label>
-                        </div>
-                    </div>
+                <fieldset ng-init="setForm(formScope)">                 
                     <div class="form-group">
                         <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.promotion-name' | translate }}</label>
                         <div class="form-input">
@@ -31,7 +22,6 @@
                         <div class="columns clearfix">
                             <div class="column">
                                 <div class="form-group">
-
                                     <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.store' | translate }}</label>
                                     <div class="form-input">
                                         <ui-select ng-model="blade.currentEntity.store" ng-disabled="!blade.isNew" required>
@@ -42,6 +32,21 @@
                                         </ui-select>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="column">
+                                <div class="form-group">
+                                    <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.is-active' | translate }}</label>
+                                    <div class="form-input">
+                                        <label class="form-label __switch">
+                                            <input type="checkbox" ng-model="blade.currentEntity.isActive" />
+                                            <span class="switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="columns clearfix">
+                            <div class="column">                             
                                 <div class="form-group">
                                     <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.start-date' | translate }}</label>
                                     <div class="form-input __calendar">
@@ -51,6 +56,8 @@
                                         </button>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="column">
                                 <div class="form-group">
                                     <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.expiration-date' | translate }}</label>
                                     <div class="form-input __calendar">
@@ -61,25 +68,20 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="column">
-                                <div class="form-group">
-                                    <va-widget-container group="coupons" blade="blade" data="blade.currentEntity" gridster-opts="{width: 526}"></va-widget-container>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </fieldset>
 
-                <!--ui-validate=" 'promotionExpressionValidator(blade.isExpresionValid)' " ng-model="blade.isExpresionValid"-->
-                <fieldset ng-if="blade.currentEntity.dynamicExpression && blade.currentEntity.type==='DynamicPromotion'">
-                    <legend>{{ 'marketing.blades.promotion-detail.labels.promotion-conditions' | translate }}</legend>
-                    <div class="dynamic-expression">
-                        <va-dynamic-expression-tree ng-controller="virtoCommerce.marketingModule.promotionExpressionsController" source="blade.currentEntity.dynamicExpression"></va-dynamic-expression-tree>
-                    </div>
-                </fieldset>
             </form>
 
-            <va-widget-container group="promotionDetail" blade="blade" gridster-opts="{width: 526}"></va-widget-container>
+            <va-widget-container group="promotionDetail" blade="blade" data="blade.currentEntity" gridster-opts="{width: 526}"></va-widget-container>
+            <!--ui-validate=" 'promotionExpressionValidator(blade.isExpresionValid)' " ng-model="blade.isExpresionValid"-->
+            <fieldset ng-if="blade.currentEntity.dynamicExpression && blade.currentEntity.type==='DynamicPromotion'">
+                <legend>{{ 'marketing.blades.promotion-detail.labels.promotion-conditions' | translate }}</legend>
+                <div class="dynamic-expression">
+                    <va-dynamic-expression-tree ng-controller="virtoCommerce.marketingModule.promotionExpressionsController" source="blade.currentEntity.dynamicExpression"></va-dynamic-expression-tree>
+                </div>
+            </fieldset>
         </div>
     </div>
 </div>
