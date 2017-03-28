@@ -61,7 +61,7 @@ angular.module(moduleName, [])
       widgetService.registerWidget({
           controller: 'virtoCommerce.marketingModule.couponsWidgetController',
           template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/promotion/widgets/couponsWidget.tpl.html'
-      }, 'coupons');
+      }, 'promotionDetail');
 
       //Register dashboard widgets
       //widgetService.registerWidget({
