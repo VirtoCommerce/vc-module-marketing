@@ -11,7 +11,7 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
         var criteria = {
             promotionId: blade.promotionId,
             sort: uiGridHelper.getSortExpression($scope),
-            keyword: filter.keyword,
+            code: filter.keyword,
             skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
             take: $scope.pageSettings.itemsPerPageCount
         };
