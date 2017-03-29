@@ -3,9 +3,11 @@
     var blade = $scope.blade;
 
     blade.couponCount = function () {
-        promotionsApi.searchCoupons({ promotionId: blade.currentEntityId, skip: 0, take: 1 }, function (response) {
-            blade.totalCouponsCount = response.totalCount;
-        });
+        if (!blade.isNew) {
+            promotionsApi.searchCoupons({ promotionId: blade.currentEntityId, skip: 0, take: 1 }, function (response) {
+                blade.totalCouponsCount = response.totalCount;
+            });
+        }
     }
 
     blade.couponCount();
