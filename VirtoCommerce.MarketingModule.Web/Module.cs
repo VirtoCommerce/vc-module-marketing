@@ -12,10 +12,12 @@ using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.MarketingModule.Data.Services;
 using VirtoCommerce.MarketingModule.Web.ExportImport;
 using VirtoCommerce.MarketingModule.Web.JsonConverters;
+using VirtoCommerce.MarketingModule.Web.Security;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
+using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.Infrastructure;
 using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
@@ -86,6 +88,10 @@ namespace VirtoCommerce.MarketingModule.Web
             };
 
             dynamicPropertyService.SaveProperties(new[] { contentItemTypeProperty });
+
+            var securityScopeService = _container.Resolve<IPermissionScopeService>();
+            securityScopeService.RegisterSope(() => new MarketingSelectedStoreScope());
+
 
             //Next lines allow to use polymorph types in API controller methods
             var httpConfiguration = _container.Resolve<HttpConfiguration>();

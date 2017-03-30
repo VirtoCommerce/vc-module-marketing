@@ -28,7 +28,7 @@ angular.module(moduleName, [])
   }]
 )
 .run(
-    ['platformWebApp.mainMenuService', 'platformWebApp.widgetService', 'platformWebApp.toolbarService', '$state', 'platformWebApp.authService', function (mainMenuService, widgetService, toolbarService, $state, authService) {
+    ['platformWebApp.mainMenuService', 'platformWebApp.widgetService', 'platformWebApp.toolbarService', '$state', 'platformWebApp.authService', 'virtoCommerce.storeModule.stores', 'platformWebApp.permissionScopeResolver', 'platformWebApp.bladeNavigationService', function (mainMenuService, widgetService, toolbarService, $state, authService, stores, permissionScopeResolver, bladeNavigationService) {
       // // test toolbar commands and content
       //toolbarService.register({
       //    name: "ADDITIONAL COMMAND", icon: 'fa fa-cloud',
@@ -62,6 +62,26 @@ angular.module(moduleName, [])
           controller: 'virtoCommerce.marketingModule.couponsWidgetController',
           template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/promotion/widgets/couponsWidget.tpl.html'
       }, 'promotionDetail');
+
+        //Register permission scopes templates used for scope bounded definition in role management ui
+      var marketingStoreScope = {
+          type: 'MarketingSelectedStoreScope',
+          title: 'Only for promotions in selected stores',
+          selectFn: function (blade, callback) {
+              var newBlade = {
+                  id: 'store-pick',
+                  title: this.title,
+                  subtitle: 'Select stores',
+                  currentEntity: this,
+                  onChangesConfirmedFn: callback,
+                  dataPromise: stores.query().$promise,
+                  controller: 'platformWebApp.security.scopeValuePickFromSimpleListController',
+                  template: '$(Platform)/Scripts/app/security/blades/common/scope-value-pick-from-simple-list.tpl.html'
+              };
+              bladeNavigationService.showBlade(newBlade, blade);
+          }
+      };
+      permissionScopeResolver.register(marketingStoreScope);
 
       //Register dashboard widgets
       //widgetService.registerWidget({

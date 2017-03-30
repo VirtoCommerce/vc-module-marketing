@@ -27,7 +27,7 @@ using webModel = VirtoCommerce.MarketingModule.Web.Model;
 namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
 {
     [RoutePrefix("api/marketing/promotions")]
-    [CheckPermission(Permission = MarketingPredefinedPermissions.Read)]
+    [CheckPermission(Permission = MarketingPredefinedPermissions.Access)]
     public class MarketingModulePromotionController : ApiController
     {
         private readonly IMarketingExtensionManager _marketingExtensionManager;
@@ -40,6 +40,8 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         private readonly IPushNotificationManager _notifier;
         private readonly IBlobStorageProvider _blobStorageProvider;
         private readonly CsvCouponImporter _csvCouponImporter;
+        private readonly ISecurityService _securityService;
+        private readonly IPermissionScopeService _permissionScopeService;
 
         public MarketingModulePromotionController(
             IPromotionService promotionService,
@@ -51,8 +53,11 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
             IUserNameResolver userNameResolver,
             IPushNotificationManager notifier,
             IBlobStorageProvider blobStorageProvider,
-            CsvCouponImporter csvCouponImporter)
+            CsvCouponImporter csvCouponImporter,
+            ISecurityService securityService,
+            IPermissionScopeService permissionScopeService)
         {
+            _securityService = securityService;
             _marketingExtensionManager = promotionManager;
             _promotionService = promotionService;
             _couponService = couponService;
@@ -63,6 +68,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
             _notifier = notifier;
             _blobStorageProvider = blobStorageProvider;
             _csvCouponImporter = csvCouponImporter;
+            _permissionScopeService = permissionScopeService;
         }
 
         /// <summary>
@@ -75,6 +81,9 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         public IHttpActionResult PromotionsSearch(PromotionSearchCriteria criteria)
         {
             var retVal = new GenericSearchResult<webModel.Promotion>();
+            //Scope bound ACL filtration
+            criteria = FilterPromotionSearchCriteria(User.Identity.Name, criteria);
+
             var promoSearchResult = _promoSearchService.SearchPromotions(criteria);
             retVal.TotalCount = promoSearchResult.TotalCount;
             retVal.Results = promoSearchResult.Results.Select(x => x.ToWebModel()).ToList();
@@ -107,6 +116,12 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
             var retVal = _promotionService.GetPromotionsByIds(new[] { id }).FirstOrDefault();
             if (retVal != null)
             {
+                var scopes = _permissionScopeService.GetObjectPermissionScopeStrings(retVal).ToArray();
+                if (!_securityService.UserHasAnyPermission(User.Identity.Name, scopes, MarketingPredefinedPermissions.Read))
+                {
+                    throw new HttpResponseException(HttpStatusCode.Unauthorized);
+                }
+
                 return Ok(retVal.ToWebModel(_marketingExtensionManager.PromotionDynamicExpressionTree));
             }
             return NotFound();
@@ -142,6 +157,11 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         public IHttpActionResult CreatePromotion(webModel.Promotion promotion)
         {
             var corePromotion = promotion.ToCoreModel(_expressionSerializer);
+            var scopes = _permissionScopeService.GetObjectPermissionScopeStrings(corePromotion).ToArray();
+            if (!_securityService.UserHasAnyPermission(User.Identity.Name, scopes, MarketingPredefinedPermissions.Create))
+            {
+                throw new HttpResponseException(HttpStatusCode.Unauthorized);
+            }
             _promotionService.SavePromotions(new[] { corePromotion });
             return GetPromotionById(corePromotion.Id);
         }
@@ -158,6 +178,11 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         public IHttpActionResult UpdatePromotions(webModel.Promotion promotion)
         {
             var corePromotion = promotion.ToCoreModel(_expressionSerializer);
+            var scopes = _permissionScopeService.GetObjectPermissionScopeStrings(corePromotion).ToArray();
+            if (!_securityService.UserHasAnyPermission(User.Identity.Name, scopes, MarketingPredefinedPermissions.Update))
+            {
+                throw new HttpResponseException(HttpStatusCode.Unauthorized);
+            }
             _promotionService.SavePromotions(new[] { corePromotion });
             return StatusCode(HttpStatusCode.NoContent);
         }
@@ -171,7 +196,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Route("")]
         [CheckPermission(Permission = MarketingPredefinedPermissions.Delete)]
         public IHttpActionResult DeletePromotions([FromUri] string[] ids)
-        {
+        {       
             _promotionService.DeletePromotions(ids);
             return StatusCode(HttpStatusCode.NoContent);
         }
@@ -262,6 +287,27 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
                     _notifier.Upsert(notification);
                 }
             }
+        }
+
+
+        private PromotionSearchCriteria FilterPromotionSearchCriteria(string userName, PromotionSearchCriteria criteria)
+        {
+            if (!_securityService.UserHasAnyPermission(userName, null, MarketingPredefinedPermissions.Read))
+            {
+                //Get defined user 'read' permission scopes
+                var readPermissionScopes = _securityService.GetUserPermissions(userName)
+                                                      .Where(x => x.Id.StartsWith(MarketingPredefinedPermissions.Read))
+                                                      .SelectMany(x => x.AssignedScopes)
+                                                      .ToList();
+
+                //Check user has a scopes
+                //Store
+                criteria.Store = readPermissionScopes.OfType<MarketingSelectedStoreScope>()
+                                                         .Select(x => x.Scope)
+                                                         .Where(x => !String.IsNullOrEmpty(x))
+                                                         .FirstOrDefault();
+            }
+            return criteria;
         }
     }
 }

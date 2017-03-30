@@ -194,7 +194,7 @@ namespace VirtoCommerce.MarketingModule.Test
 
         private MarketingModulePromotionController GetMarketingController(IMarketingExtensionManager extensionManager)
         {
-            var retVal = new MarketingModulePromotionController(GetMarketingService(), GetCouponService(), extensionManager, null, GetExpressionSerializer(), null, null, null, null, null);
+            var retVal = new MarketingModulePromotionController(GetMarketingService(), GetCouponService(), extensionManager, null, GetExpressionSerializer(), null, null, null, null, null, null, null);
             return retVal;
         }
 
