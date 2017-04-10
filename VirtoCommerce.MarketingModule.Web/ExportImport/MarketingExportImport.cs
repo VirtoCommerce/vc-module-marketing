@@ -85,14 +85,22 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
             progressCallback(progressInfo);
             _dynamicContentService.SavePublications(backupObject.ContentPublications.Distinct().ToArray());
 
-            progressInfo.Description = String.Format("{0} coupons importing...", backupObject.Coupons.Count());
-            progressCallback(progressInfo);
-            _couponService.SaveCoupons(backupObject.Coupons.ToArray());
+            var pageSize = 500;
+            var couponsTotal = backupObject.Coupons.Count();
+            Paginate(couponsTotal, pageSize, (x) =>
+            {
+                progressInfo.Description = String.Format($"{Math.Min(x * pageSize, couponsTotal)} of {couponsTotal} coupons imported");
+                progressCallback(progressInfo);
+                _couponService.SaveCoupons(backupObject.Coupons.Skip((x - 1) * pageSize).Take(pageSize).ToArray());
+            });
 
-            progressInfo.Description = String.Format("{0} marketing usages importing...", backupObject.Usages.Count());
-            progressCallback(progressInfo);
-            _usageService.SaveUsages(backupObject.Usages.ToArray());
-
+            var usagesTotal = backupObject.Usages.Count();
+            Paginate(usagesTotal, pageSize, (x) =>
+            {
+                progressInfo.Description = String.Format($"{Math.Min(x * pageSize, usagesTotal)} of {usagesTotal} usages imported");
+                progressCallback(progressInfo);
+                _usageService.SaveUsages(backupObject.Usages.Skip((x - 1) * pageSize).Take(pageSize).ToArray());
+            });
         }
         #region BackupObject
 
@@ -131,15 +139,38 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
 
             progressInfo.Description = String.Format("Loading coupons...");
             progressCallback(progressInfo);
-            result.Coupons =  _couponService.SearchCoupons(new CouponSearchCriteria { Take = int.MaxValue }).Results;
+            var couponsTotal = _couponService.SearchCoupons(new CouponSearchCriteria { Take = 0 }).TotalCount;
+            var pageSize = 500;
+            Paginate(couponsTotal, pageSize, (x) => 
+            {
+                progressInfo.Description = String.Format($"Loading coupons: {Math.Min(x * pageSize, couponsTotal)} of {couponsTotal} loaded");
+                progressCallback(progressInfo);
+                result.Coupons.AddRange(_couponService.SearchCoupons(new CouponSearchCriteria { Skip = (x - 1) * pageSize, Take = pageSize }).Results);
+            });
 
             progressInfo.Description = String.Format("Loading usages...");
             progressCallback(progressInfo);
-            result.Usages = _usageService.SearchUsages(new PromotionUsageSearchCriteria { Take = int.MaxValue }).Results;
+            var usagesTotal = _usageService.SearchUsages(new PromotionUsageSearchCriteria { Take = 0 }).TotalCount;
+            Paginate(usagesTotal, pageSize, (x) =>
+            {
+                progressInfo.Description = String.Format($"Loading usages: {Math.Min(x * pageSize, usagesTotal)} of {usagesTotal} loaded");
+                progressCallback(progressInfo);
+                result.Usages.AddRange(_usageService.SearchUsages(new PromotionUsageSearchCriteria { Skip = (x - 1) * pageSize, Take = pageSize }).Results);
+            });
 
             return result;
         }
-        #endregion     
+        #endregion
+
+
+        private static void Paginate(int totalCount, int batchSize, Action<int> callback = null)
+        {
+            var pagesCount = totalCount > 0 ? (int)Math.Ceiling(totalCount / (double)batchSize) : 0;
+            for (var i = 1; i <= pagesCount; i++)
+            {
+                callback(i);
+            }
+        }
 
     }
 }
