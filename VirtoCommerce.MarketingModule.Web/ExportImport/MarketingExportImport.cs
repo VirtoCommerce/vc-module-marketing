@@ -123,7 +123,7 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
 
             progressInfo.Description = String.Format("Loading folders...");
             progressCallback(progressInfo);
-            result.ContentFolders = _dynamicContentSearchService.SearchFolders(new DynamicContentFolderSearchCriteria { Take = int.MaxValue }).Results.ToList();
+            result.ContentFolders = LoadFoldersRecursive(null);
 
             progressInfo.Description = String.Format("Loading places...");
             progressCallback(progressInfo);
@@ -162,6 +162,17 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
         }
         #endregion
 
+        private List<DynamicContentFolder> LoadFoldersRecursive(DynamicContentFolder folder)
+        {
+            var retVal = new List<DynamicContentFolder>();
+            var childrenFolders = _dynamicContentSearchService.SearchFolders(new DynamicContentFolderSearchCriteria { FolderId = folder?.Id, Take = int.MaxValue }).Results.ToList();
+            foreach (var childFolder in childrenFolders)
+            {
+                retVal.Add(childFolder);
+                retVal.AddRange(LoadFoldersRecursive(childFolder));
+            }
+            return retVal;
+        }
 
         private static void Paginate(int totalCount, int batchSize, Action<int> callback = null)
         {
