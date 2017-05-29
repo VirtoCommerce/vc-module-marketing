@@ -54,10 +54,6 @@
         value: '\t'
     }];
 
-    $scope.dateOptions = {
-        'year-format': "'yyyy'"
-    };
-
     $scope.datepickers = {
         expirationDate: false
     };
