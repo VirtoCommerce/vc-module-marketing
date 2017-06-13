@@ -5,7 +5,13 @@
 
     blade.refresh = function (parentRefresh) {
         if (blade.isNew) {
-            marketing_res_promotions.getNew(initializeBlade);
+            if (blade.isCloning) {
+                blade.data.id = null;
+                blade.data.name = null;
+                initializeBlade(blade.data);
+            } else {
+                marketing_res_promotions.getNew(initializeBlade);
+            }
         } else {
             marketing_res_promotions.get({ id: blade.currentEntityId }, function (data) {
                 initializeBlade(data);
@@ -101,6 +107,23 @@
                     },
                     canExecuteMethod: isDirty,
                     permission: blade.updatePermission
+                },
+                {
+                    name: "platform.commands.clone", icon: 'fa fa-files-o',
+                    executeMethod: function () {
+                        var newBlade = {
+                            id: 'promotionClone',
+                            title: 'marketing.blades.promotion-detail.title-new',
+                            isNew: true,
+                            isCloning: true,
+                            data: blade.currentEntity,
+                            controller: 'virtoCommerce.marketingModule.promotionDetailController',
+                            template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/promotion/blades/promotion-detail.tpl.html'
+                        };
+                        bladeNavigationService.showBlade(newBlade, blade.parentBlade);
+                    },
+                    canExecuteMethod: function () { return !isDirty(); },
+                    permission: 'marketing:create'
                 }
             ];
         }
