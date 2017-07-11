@@ -15,7 +15,7 @@
                 <i class="btn-ico fa fa-remove" title="Clear" ng-click="filter.keyword = null; filter.criteriaChanged()"></i>
             </button>
         </div>
-        <p class="form-count">{{ 'platform.list.count' | translate }}: <span class="count" ng-bind="pageSettings.totalItems"></span></p>
+        <p class="form-count">{{ 'platform.list.count' | translate }}: <span class="count" ng-bind="pageSettings.totalItems | number:0"></span></p>
     </div>
 </div>
 <div class="blade-static __bottom" ng-if="pageSettings.itemsPerPageCount < pageSettings.totalItems" ng-include="'pagerTemplate.html'"></div>
@@ -28,16 +28,13 @@
                 rowTemplate: 'coupon-list.row.html',
                 columnDefs: [{
                     name: 'code',
-                    displayName: 'marketing.blades.coupons.code',
-                    cellTemplate: 'coupon-list-code.cell.html'
+                    displayName: 'marketing.blades.coupons.code'
                 }, {
                     name: 'totalUsesCount',
-                    displayName: 'marketing.blades.coupons.total-uses-count',
-                    cellTemplate: 'coupon-list-code.cell.html'
+                    displayName: 'marketing.blades.coupons.total-uses-count'
                 }, {
                     name: 'maxUsesNumber',
                     displayName: 'marketing.blades.coupons.max-uses-number',
-                    cellTemplate: 'coupon-list-code.cell.html'
                 }]
             })">
                 <div ui-grid="gridOptions" ui-grid-auto-resize ui-grid-save-state ui-grid-selection ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-height></div>
@@ -54,10 +51,4 @@
          ng-class="{'ui-grid-row-header-cell': col.isRowHeader, '__hovered': grid.appScope.contextMenuEntity === row.entity, '__selected': row.entity.id===grid.appScope.selectedNodeId }"
          role="{{col.isRowHeader ? 'rowheader' : 'gridcell' }}"
          ui-grid-cell></div>
-</script>
-
-<script id="coupon-list-code.cell.html" type="text/ng-template">
-    <div class="ui-grid-cell-contents">
-        <span class="table-t" ng-bind="COL_FIELD"></span>
-    </div>
 </script>

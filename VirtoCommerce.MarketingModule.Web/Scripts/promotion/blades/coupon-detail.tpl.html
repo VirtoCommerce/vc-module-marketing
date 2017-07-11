@@ -27,7 +27,7 @@
                             <div class="form-group">
                                 <label class="form-label" ng-bind="'marketing.blades.coupon-detail.labels.reservation-expiration-date' | translate"></label>
                                 <div class="form-input __calendar">
-                                    <input placeholder="{{ 'marketing.blades.coupon-detail.labels.select-date' | translate }}" ng-model="blade.currentEntity.expirationDate" datepicker-popup="" is-open="datepickers.expirationDate" datepicker-options="dateOptions" close-text="Close" />
+                                    <input placeholder="{{ 'marketing.blades.coupon-detail.labels.select-date' | translate }}" ng-model="blade.currentEntity.expirationDate" datepicker-popup="" is-open="datepickers.expirationDate" />
                                     <button class="btn" type="button" ng-click="openCalendar($event, 'expirationDate')">
                                         <i class="btn-ico fa fa-calendar"></i>
                                     </button>
@@ -37,7 +37,7 @@
                             <div class="form-group" ng-if="!blade.isNew">
                                 <label class="form-label" ng-bind="'marketing.blades.coupons.total-uses-count' | translate"></label>
                                 <div class="form-input">
-                                    <input type="number" disabled="disabled" ng-model="blade.currentEntity.totalUsesCount" />
+                                    <input smart-float num-type="integer" disabled="disabled" ng-model="blade.currentEntity.totalUsesCount" />
                                 </div>
                             </div>
                         </div>

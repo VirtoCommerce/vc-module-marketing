@@ -5,7 +5,7 @@
 </div>
 <div class="gridster-cnt" ng-click="openBlade()" ng-if="!blade.isNew">
     <div class="cnt-inner">
-        <div class="list-count" ng-bind="blade.totalCouponsCount"></div>
+        <div class="list-count" ng-bind="blade.totalCouponsCount | number:0"></div>
         <div class="list-t" ng-bind="'marketing.widgets.couponsWidget.title' | translate"></div>
     </div>
 </div>

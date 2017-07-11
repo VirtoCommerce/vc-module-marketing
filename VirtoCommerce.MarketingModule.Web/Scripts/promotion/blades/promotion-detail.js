@@ -142,12 +142,6 @@
         $scope.datepickers[which] = true;
     };
 
-    $scope.dateOptions = {
-        'year-format': "'yyyy'"
-    };
-
-    $scope.format = 'shortDate';
-
     // Dynamic ExpressionBlock
     function extendElementBlock(expressionBlock) {
         var retVal = dynamicExpressionService.expressions[expressionBlock.id];

@@ -34,10 +34,6 @@
         $scope.datepickers[calendar] = true;
     }
 
-    $scope.dateOptions = {
-        'year-romat': "'yyyy'"
-    }
-
     $scope.format = 'shortDate';
 
     $scope.isValid = function () {
