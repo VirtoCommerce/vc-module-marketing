@@ -9,7 +9,7 @@
                     <div class="form-group">
                         <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.promotion-name' | translate }}</label>
                         <div class="form-input">
-                            <input ng-model="blade.currentEntity.name" focus-on="" required placeholder="{{ 'marketing.blades.promotion-detail.placeholders.promotion-name' | translate }}">
+                            <input ng-model="blade.currentEntity.name" focus-on="" required ng-maxlength="128" placeholder="{{ 'marketing.blades.promotion-detail.placeholders.promotion-name' | translate }}">
                         </div>
                     </div>
                     <div class="form-group">
