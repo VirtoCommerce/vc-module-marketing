@@ -250,6 +250,8 @@
     blade.focusNameInput = false;
     blade.autogenerateName = function () {
         if (!blade.focusNameInput) {
+
+
             var placeholderPublicationNamePart = '';
             var contentItemPublicationNamePart = '';
 
@@ -265,13 +267,16 @@
 
             var newName = (placeholderPublicationNamePart + '_' + contentItemPublicationNamePart).trimLeft('_').trimRight('_');
 
-            if (!angular.isUndefined(blade.currentEntity.name) && blade.currentEntity.name !== null && blade.currentEntity.name !== '' && newName !== '_') {
-                if (blade.currentEntity.name.indexOf(placeholderPublicationNamePart) >= 0 || blade.currentEntity.name.indexOf(contentItemPublicationNamePart) >= 0) {
+            //Here we disable replacing of entered text
+            if (!angular.isUndefined(blade.currentEntity.name) && blade.currentEntity.name === '') {
+                if (!angular.isUndefined(blade.currentEntity.name) && blade.currentEntity.name !== null && blade.currentEntity.name !== '' && newName !== '_') {
+                    if (blade.currentEntity.name.indexOf(placeholderPublicationNamePart) >= 0 || blade.currentEntity.name.indexOf(contentItemPublicationNamePart) >= 0) {
+                        blade.currentEntity.name = newName;
+                    }
+                }
+                else if (newName !== '_') {
                     blade.currentEntity.name = newName;
                 }
-            }
-            else if (newName !== '_') {
-                blade.currentEntity.name = newName;
             }
         }
     }
