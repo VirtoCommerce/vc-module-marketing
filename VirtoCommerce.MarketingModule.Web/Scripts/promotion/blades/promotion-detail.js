@@ -184,6 +184,15 @@
         _.each(expressionElement.children, stripOffUiInformation);
     }
 
+    //Here we need to set hours untill midnight for endDate to let expiration date include last promotion date
+    $scope.$watch('blade.currentEntity.endDate',
+        function (newValue, oldValue, scope) {
+            if (newValue != undefined && (newValue instanceof Date)) {
+                newValue.setHours(23, 59, 59);
+            }
+        }
+    );
+
     initializeToolbar();
     blade.refresh(false);
     $scope.stores = stores.query();
