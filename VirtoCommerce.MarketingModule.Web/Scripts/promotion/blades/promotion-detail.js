@@ -54,9 +54,11 @@
 
         blade.currentEntity.coupons = _.pluck(blade.currentEntity.coupons, 'text');
 
-        //Here we need to set hours untill midnight for endDate to let expiration date include last promotion date
-        //Promotion endDate now depends on time zone that set in user profile
-        blade.currentEntity.endDate = moment(blade.currentEntity.endDate).set({ hours: 23, minutes: 59, seconds: 59 }).toDate();
+        if (blade.currentEntity.endDate != undefined) {
+            //Here we need to set hours untill midnight for endDate to let expiration date include last promotion date
+            //Promotion endDate now depends on time zone that set in user profile
+            blade.currentEntity.endDate = moment(blade.currentEntity.endDate).set({ hours: 23, minutes: 59, seconds: 59 }).toDate();
+        }
 
         if (blade.currentEntity.dynamicExpression) {
             _.each(blade.currentEntity.dynamicExpression.children, stripOffUiInformation);
