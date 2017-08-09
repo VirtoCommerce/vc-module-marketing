@@ -127,6 +127,8 @@
                     blade.isNew = false;
                     blade.initializeBlade();
                     blade.parentBlade.initialize();
+                }, function (error) {
+                    bladeNavigationService.setError(error.statusText, blade);
                 });
             }
         });
