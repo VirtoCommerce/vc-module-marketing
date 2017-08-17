@@ -134,12 +134,6 @@
     <Compile Include="CustomPromotionExpressions\ConditionItemWithTag.cs" />
     <Compile Include="CustomPromotionExpressions\CustomPromotionEvaluationContextExtension.cs" />
     <Compile Include="CustomPromotion\BuyProductWithTagPromotion.cs" />
-    <Compile Include="DynamicPromotionEvaluations\BlockCatalogCondition\ConditionCategoryIsTests.cs" />
-    <Compile Include="DynamicPromotionEvaluations\BlockCatalogCondition\ConditionCurrencyIsTests.cs" />
-    <Compile Include="DynamicPromotionEvaluations\BlockCatalogCondition\ConditionCodeContainsTests.cs" />
-    <Compile Include="DynamicPromotionEvaluations\BlockCatalogCondition\ConditionEntryIsTests.cs" />
-    <Compile Include="DynamicPromotionEvaluations\BlockCatalogCondition\InStockQuantityConditionTests.cs" />
-    <Compile Include="DynamicPromotionEvaluations\EvaluationBase.cs" />
     <Compile Include="MarketingControllerScenarios.cs" />
     <Compile Include="MigrationScenarios.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
