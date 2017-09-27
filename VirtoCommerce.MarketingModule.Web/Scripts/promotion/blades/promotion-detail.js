@@ -1,5 +1,5 @@
 ﻿angular.module('virtoCommerce.marketingModule')
-.controller('virtoCommerce.marketingModule.promotionDetailController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.marketingModule.promotions', 'virtoCommerce.catalogModule.catalogs', 'virtoCommerce.storeModule.stores', 'platformWebApp.settings', 'virtoCommerce.coreModule.common.dynamicExpressionService', function ($scope, bladeNavigationService, marketing_res_promotions, catalogs, stores, settings, dynamicExpressionService) {
+.controller('virtoCommerce.marketingModule.promotionDetailController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.marketingModule.promotions', 'virtoCommerce.catalogModule.catalogs', 'virtoCommerce.storeModule.stores', 'platformWebApp.settings', 'virtoCommerce.coreModule.common.dynamicExpressionService', 'virtoCommerce.catalogModule.categories', 'virtoCommerce.catalogModule.items', '$q', function ($scope, bladeNavigationService, marketing_res_promotions, catalogs, stores, settings, dynamicExpressionService, categories, items, $q) {
     var blade = $scope.blade;
     blade.updatePermission = 'marketing:update';
 
@@ -30,13 +30,17 @@
         // transform simple string to complex object. Simple string isn't editable.
         data.coupons = _.map(data.coupons, function (x) { return { text: x } });
 
+        blade.expressionPromises = [];
         if (data.dynamicExpression) {
             _.each(data.dynamicExpression.children, extendElementBlock);
         }
 
-        blade.currentEntity = angular.copy(data);
-        blade.origEntity = data;
-        blade.isLoading = false;
+        $q.all(blade.expressionPromises).then(function (allData) {
+            blade.currentEntity = angular.copy(data);
+            blade.origEntity = data;
+        }).finally(function () {
+            blade.isLoading = false;
+        });
     }
 
     function isDirty() {
@@ -161,15 +165,29 @@
             expressionBlock.children = [];
         }
         _.each(expressionBlock.excludingCategoryIds, function (id) {
-            expressionBlock.children.push({ id: 'ExcludingCategoryCondition', categoryId: id });
+            // load each category to display its name in UI
+            var excludingItem = { id: 'ExcludingCategoryCondition', categoryId: id };
+            expressionBlock.children.push(excludingItem);
+            var promise = categories.query({ ids: [id], respGroup: 'Info' }, function (data) {
+                if (_.any(data))
+                    excludingItem.categoryName = data[0].name;
+            }).$promise;
+            blade.expressionPromises.push(promise);
         });
+
         _.each(expressionBlock.excludingProductIds, function (id) {
-            expressionBlock.children.push({ id: 'ExcludingProductCondition', productId: id });
+            // load each product to display its name in UI
+            var excludingItem = { id: 'ExcludingProductCondition', productId: id };
+            expressionBlock.children.push(excludingItem); // categoryName
+            var promise = items.query({ ids: [id], respGroup: 'ItemInfo' }, function (data) {
+                if (_.any(data))
+                    excludingItem.productName = data[0].name;
+            }).$promise;
+            blade.expressionPromises.push(promise);
         });
 
         _.each(expressionBlock.children, extendElementBlock);
         _.each(expressionBlock.availableChildren, extendElementBlock);
-        return expressionBlock;
     }
 
     function stripOffUiInformation(expressionElement) {
@@ -190,7 +208,7 @@
         _.each(expressionElement.children, stripOffUiInformation);
     }
 
-    
+
     //$scope.$watch('blade.currentEntity.endDate',
     //    function (newValue, oldValue, scope) {
     //        if (newValue != undefined && (newValue instanceof Date)) {
