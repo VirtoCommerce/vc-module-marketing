@@ -43,7 +43,7 @@
         <valueType>string</valueType>
         <defaultValue>BestReward</defaultValue>
         <title>Selected policy of combine active promotions (requires restart)</title>
-        <description>BestReward - select the promotion rewards that benefits the customer the most. CombineStackable - This promotion can be combined with all other promotions in an order. In addition, this promotion can be stacked on top of other promotions in the same group, which overrides certain promotion policies. The priority of promotions determines whether a stackable promotion applies to an order.</description>
+        <description>BestReward - select the promotion rewards that benefits the shoppers the most. CombineStackable - If your store has multiple active promotions, shoppers can qualify for multiple promotions at a time. </description>
         <allowedValues>
           <value>BestReward</value>
           <value>CombineStackable</value>
