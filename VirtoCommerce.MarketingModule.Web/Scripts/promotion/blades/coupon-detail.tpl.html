@@ -8,14 +8,14 @@
                 <fiedset ng-init="setForm(formCoupon)">
                     <div class="columns clearfix">
                         <div class="column">
-                            <div class="form-group">
+                            <div class="form-group __info list">
                                 <label class="form-label" ng-bind="'marketing.blades.coupon-detail.labels.coupon-code' | translate"></label>
                                 <div class="form-input">
                                     <input placeholder="{{ 'marketing.blades.coupon-detail.labels.enter-value' | translate }}" required="required" type="text" ng-model="blade.currentEntity.code" />
                                     <div class="list-descr" ng-bind="'marketing.blades.coupon-detail.labels.code-description' | translate"></div>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group __info list">
                                 <label class="form-label" ng-bind="'marketing.blades.coupon-detail.labels.max-uses-number' | translate"></label>
                                 <div class="form-input __number">
                                     <input placeholder="{{ 'marketing.blades.coupon-detail.labels.enter-value' | translate }}" required="required" smart-float num-type="integer" ng-model="blade.currentEntity.maxUsesNumber" />
@@ -24,7 +24,7 @@
                             </div>
                         </div>
                         <div class="column">
-                            <div class="form-group">
+                            <div class="form-group __info list">
                                 <label class="form-label" ng-bind="'marketing.blades.coupon-detail.labels.reservation-expiration-date' | translate"></label>
                                 <div class="form-input __calendar">
                                     <input placeholder="{{ 'marketing.blades.coupon-detail.labels.select-date' | translate }}" ng-model="blade.currentEntity.expirationDate" datepicker-popup="" is-open="datepickers.expirationDate" />
@@ -34,7 +34,7 @@
                                     <div class="list-descr" ng-bind="'marketing.blades.coupon-detail.labels.reservation-expiration-date-description' | translate"></div>
                                 </div>
                             </div>
-                            <div class="form-group" ng-if="!blade.isNew">
+                            <div class="form-group __info list" ng-if="!blade.isNew">
                                 <label class="form-label" ng-bind="'marketing.blades.coupons.total-uses-count' | translate"></label>
                                 <div class="form-input">
                                     <input smart-float num-type="integer" disabled="disabled" ng-model="blade.currentEntity.totalUsesCount" />

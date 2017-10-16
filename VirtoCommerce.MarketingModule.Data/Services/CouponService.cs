@@ -42,6 +42,10 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 {
                     query = query.Where(c => c.Code == criteria.Code);
                 }
+                if (!criteria.Codes.IsNullOrEmpty())
+                {                    
+                    query = query.Where(c => criteria.Codes.Contains(c.Code));
+                }
 
                 var sortInfos = criteria.SortInfos;
                 //TODO: Sort by TotalUsesCount 

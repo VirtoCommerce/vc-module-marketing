@@ -24,6 +24,12 @@ namespace VirtoCommerce.MarketingModule.Data.Promotions
         private Func<IEvaluationContext, bool> _condition;
         private PromotionReward[] _rewards;
 
+        /// <summary>
+        /// If this flag is set to true, it allows this promotion to combine with itself.
+        /// Special for case when need to return same promotion rewards for multiple coupons  
+        /// </summary>
+        public bool IsAllowCombiningWithSelf { get; set; }
+
         protected IExpressionSerializer ExpressionSerializer { get; set; }
 
         public string PredicateSerialized { get; set; }
@@ -43,23 +49,42 @@ namespace VirtoCommerce.MarketingModule.Data.Promotions
                 throw new ArgumentException("context should be PromotionEvaluationContext");
             }
 
+            IEnumerable<Coupon> validCoupons = null;
+            if(HasCoupons)
+            {
+                validCoupons = FindValidCoupons(promoContext.Coupons);
+            }
             //Check coupon
-            var couponIsValid = !HasCoupons || CheckCouponIsValid(promoContext.Coupon);
+            var couponIsValid = !HasCoupons || validCoupons.Any();
 
             //Evaluate reward for all promoEntry in context
             foreach (var promoEntry in promoContext.PromoEntries)
             {
                 //Set current context promo entry for evaluation
                 promoContext.PromoEntry = promoEntry;
-
                 foreach (var reward in Rewards)
                 {
-                    var promoReward = reward.Clone();
-                    EvaluateReward(promoContext, couponIsValid, promoReward);
-                    result.Add(promoReward);
+                    var clonedReward = reward.Clone();
+                    EvaluateReward(promoContext, couponIsValid, clonedReward);
+                    //Add coupon to reward only for case when promotion contains associated coupons
+                    if (!validCoupons.IsNullOrEmpty())
+                    {
+                        //Need to return promotion rewards for each valid coupon if promotion IsAllowCombiningWithSelf flag set
+                        foreach (var validCoupon in IsAllowCombiningWithSelf ? validCoupons : validCoupons.Take(1))
+                        {
+                            clonedReward.Promotion = this;
+                            clonedReward.Coupon = validCoupon.Code;
+                            result.Add(clonedReward);
+                            //Clone reward for next iteration
+                            clonedReward = clonedReward.Clone();
+                        }
+                    }
+                    else
+                    {
+                        result.Add(clonedReward);
+                    }
                 }
             }
-
             return result.ToArray();
         }
 
@@ -67,38 +92,50 @@ namespace VirtoCommerce.MarketingModule.Data.Promotions
         {
             reward.Promotion = this;
             reward.IsValid = couponIsValid && Condition(promoContext);
-            //Add coupon to reward only for case when promotion contains associated coupons
-            if (HasCoupons)
-            {
-                reward.Coupon = promoContext.Coupon;
-            }
+
             //Set productId for catalog item reward
-            var catalogItemReward = reward as CatalogItemAmountReward;
-            if (catalogItemReward != null && catalogItemReward.ProductId == null)
+            if (reward is CatalogItemAmountReward catalogItemReward && catalogItemReward.ProductId == null)
             {
                 catalogItemReward.ProductId = promoContext.PromoEntry.ProductId;
             }
-        }  
-        
+        }
+     
+        //Leave this method for back compatibility
+        [Obsolete]
         protected virtual bool CheckCouponIsValid(string couponCode)
         {
-            Coupon coupon = null;
-            var retVal = !string.IsNullOrEmpty(couponCode);
-            if (retVal)
+            return FindValidCoupons(new[] { couponCode }).Any();
+        }
+
+        protected virtual IEnumerable<Coupon> FindValidCoupons(ICollection<string> couponCodes)
+        {
+            var result = new List<Coupon>();
+            if (!couponCodes.IsNullOrEmpty())
             {
-                coupon = _couponService.SearchCoupons(new CouponSearchCriteria { Code = couponCode, PromotionId = Id }).Results.FirstOrDefault();
-                retVal = coupon != null;
+                //Remove empty codes from input list
+                couponCodes = couponCodes.Where(x => !string.IsNullOrEmpty(x)).ToList();
+                if (!couponCodes.IsNullOrEmpty())
+                {
+                    var coupons = _couponService.SearchCoupons(new CouponSearchCriteria { Codes = couponCodes, PromotionId = Id }).Results.OrderBy(x => x.TotalUsesCount);
+                    foreach (var coupon in coupons)
+                    {
+                        var couponIsValid = true;
+                        if (coupon.ExpirationDate != null)
+                        {
+                            couponIsValid = coupon.ExpirationDate > DateTime.UtcNow;
+                        }
+                        if (couponIsValid && coupon.MaxUsesNumber > 0)
+                        {
+                            couponIsValid = _usageService.SearchUsages(new PromotionUsageSearchCriteria { PromotionId = Id, CouponCode = coupon.Code, Take = 0 }).TotalCount <= coupon.MaxUsesNumber;
+                        }
+                        if (couponIsValid)
+                        {
+                            result.Add(coupon);
+                        }
+                    }
+                }
             }
-            if (retVal && coupon.ExpirationDate != null)
-            {
-                retVal = coupon.ExpirationDate > DateTime.UtcNow;
-            }
-            if (retVal && coupon.MaxUsesNumber > 0)
-            {
-                retVal = _usageService.SearchUsages(new PromotionUsageSearchCriteria { PromotionId = Id, CouponCode = couponCode, Take = 0 }).TotalCount <= coupon.MaxUsesNumber;
-            }
-            return retVal;
-        } 
-     
+            return result;
+        }
     }
 }

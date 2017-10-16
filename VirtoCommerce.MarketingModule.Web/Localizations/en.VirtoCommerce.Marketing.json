@@ -15,6 +15,9 @@
             "title-new": "New Promotion",
             "labels": {
               "is-active": "Is active",
+              "exclusivity": "Exclusivity",
+              "is-combine-with-self": "Combine with self",
+              "priority": "Priority",
               "promotion-name": "Promotion name",
               "description": "Description",
               "store": "Store",
@@ -24,6 +27,18 @@
               "expiration-date": "Expiration date",
               "per-customer-limit": "Per customer limit",
               "promotion-conditions": "Promotion conditions",
+              "combined-with-others": "Can be combined with others",
+              "exclusive": "Globally exclusive"
+            },
+            "descr": {
+              "promotion-name": "Type a name that uniquely identifies the promotion. This name is displayed in the promotions list to identify the promotion.",
+              "store": "Store in which this promotion will be active",
+              "is-active": "Flag controls Active/Inactive the promotion",
+              "start-date": "If you do not specify a start date, the promotion is will active immediately after saving.",
+              "expiration-date": "If you do not specify an end date, the promotion is in effect until you deactivate it.",
+              "priority": "The priority of promotions determines whether a stackable promotion applies to an order. The promotion with the highest priority is applied first.",
+              "exclusivity": "If a 'Globally exclusive' is selected, no other promotions with less priority can be applied to the order.",
+              "is-combine-with-self": "Especially for the case when several coupons are defined for a promotion and their simultaneous action is required."
             },
             "placeholders": {
               "promotion-name": "Please enter name...",

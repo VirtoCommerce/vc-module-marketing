@@ -46,8 +46,18 @@ namespace VirtoCommerce.MarketingModule.Web.Model
 		/// Used for choosing in combination 
 		/// </summary>
 		public int Priority { get; set; }
+        /// <summary>
+        /// If a promotion with this setting is applied, no other promotions can be applied to the order.
+        /// </summary>
+        public bool IsExclusive { get; set; }
 
-		public DateTime? StartDate { get; set; }
+        /// <summary>
+        /// If this flag is set to true, it allow of this promotion combining with self.
+        /// Special for case when evaluate rewards for multiple coupons from same promotion.  
+        /// </summary>
+        public bool IsAllowCombiningWithSelf { get; set; }
+
+        public DateTime? StartDate { get; set; }
 		public DateTime? EndDate { get; set; }
 		/// <summary>
 		/// Dynamic conditions tree determine the applicability of this promotion and reward definition

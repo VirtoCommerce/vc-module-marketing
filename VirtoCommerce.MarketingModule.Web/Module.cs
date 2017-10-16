@@ -57,10 +57,22 @@ namespace VirtoCommerce.MarketingModule.Web
             _container.RegisterType<IPromotionUsageService, PromotionUsageService>();
             _container.RegisterType<IMarketingDynamicContentEvaluator, DefaultDynamicContentEvaluatorImpl>();
             _container.RegisterType<IDynamicContentService, DynamicContentServiceImpl>();
-            _container.RegisterType<IMarketingPromoEvaluator, DefaultPromotionEvaluatorImpl>();
+          
             _container.RegisterType<IPromotionSearchService, MarketingSearchServiceImpl>();
             _container.RegisterType<ICouponService, CouponService>();
             _container.RegisterType<IDynamicContentSearchService, MarketingSearchServiceImpl>();
+
+
+            var settingsManager = _container.Resolve<ISettingsManager>();
+            var promotionCombinePolicy = settingsManager.GetValue("Marketing.Promotion.CombinePolicy", "BestReward");
+            if(promotionCombinePolicy.EqualsInvariant("CombineStackable"))
+            {
+                _container.RegisterType<IMarketingPromoEvaluator, CombineStackablePromotionPolicy>();
+            }
+            else
+            {
+                _container.RegisterType<IMarketingPromoEvaluator, BestRewardPromotionPolicy>();
+            }
 
             //Create order observer. record order coupon usage
             _container.RegisterType<IObserver<OrderChangedEvent>, CouponUsageRecordObserver>("OrderCouponUsageRecordObserver");

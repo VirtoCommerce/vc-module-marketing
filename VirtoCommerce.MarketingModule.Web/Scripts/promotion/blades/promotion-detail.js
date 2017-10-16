@@ -1,8 +1,13 @@
 ﻿angular.module('virtoCommerce.marketingModule')
-.controller('virtoCommerce.marketingModule.promotionDetailController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.marketingModule.promotions', 'virtoCommerce.catalogModule.catalogs', 'virtoCommerce.storeModule.stores', 'platformWebApp.settings', 'virtoCommerce.coreModule.common.dynamicExpressionService', 'virtoCommerce.catalogModule.categories', 'virtoCommerce.catalogModule.items', '$q', function ($scope, bladeNavigationService, marketing_res_promotions, catalogs, stores, settings, dynamicExpressionService, categories, items, $q) {
+    .controller('virtoCommerce.marketingModule.promotionDetailController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.marketingModule.promotions', 'virtoCommerce.catalogModule.catalogs', 'virtoCommerce.storeModule.stores', 'platformWebApp.settings', 'virtoCommerce.coreModule.common.dynamicExpressionService', 'virtoCommerce.catalogModule.categories', 'virtoCommerce.catalogModule.items', '$q', 'platformWebApp.settings', function ($scope, bladeNavigationService, marketing_res_promotions, catalogs, stores, settings, dynamicExpressionService, categories, items, $q, settings) {
     var blade = $scope.blade;
     blade.updatePermission = 'marketing:update';
 
+
+    blade.allowCombination = false;
+    settings.getValues({ id: 'Marketing.Promotion.CombinePolicy' }, function (data) {
+        blade.allowCombination = _.contains(data, 'CombineStackable');
+    });
     blade.refresh = function (parentRefresh) {
         if (blade.isNew) {
             if (blade.isCloning) {
@@ -28,7 +33,7 @@
         }
 
         // transform simple string to complex object. Simple string isn't editable.
-        data.coupons = _.map(data.coupons, function (x) { return { text: x } });
+        data.coupons = _.map(data.coupons, function (x) { return { text: x }; });
 
         blade.expressionPromises = [];
         if (data.dynamicExpression) {
@@ -58,7 +63,7 @@
 
         blade.currentEntity.coupons = _.pluck(blade.currentEntity.coupons, 'text');
 
-        if (blade.currentEntity.endDate != undefined) {
+        if (blade.currentEntity.endDate !== undefined) {
             //Here we need to set hours untill midnight for endDate to let expiration date include last promotion date
             //Promotion endDate now depends on time zone that set in user profile
             blade.currentEntity.endDate = moment(blade.currentEntity.endDate).set({ hours: 23, minutes: 59, seconds: 59 }).toDate();
@@ -225,4 +230,5 @@
     initializeToolbar();
     blade.refresh(false);
     $scope.stores = stores.query();
+    $scope.exclusivityTypes = [{ name: 'marketing.blades.promotion-detail.labels.combined-with-others', value: false }, { name: 'marketing.blades.promotion-detail.labels.exclusive', value: true }];
 }]);

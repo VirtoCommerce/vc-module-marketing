@@ -21,6 +21,7 @@
             id: 'coupons',
             title: 'marketing.blades.promotion-detail.toolbar.coupons',
             promotionId: blade.currentEntity.id,
+            promotion: blade.currentEntity,
             controller: 'virtoCommerce.marketingModule.couponListController',
             template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/promotion/blades/coupon-list.tpl.html'
         }

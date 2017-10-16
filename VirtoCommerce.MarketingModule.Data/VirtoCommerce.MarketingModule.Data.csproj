@@ -71,17 +71,14 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="VirtoCommerce.Domain, Version=2.24.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.Domain.2.24.6\lib\net461\VirtoCommerce.Domain.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="VirtoCommerce.Domain, Version=2.24.14.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.Domain.2.24.14\lib\net461\VirtoCommerce.Domain.dll</HintPath>
     </Reference>
-    <Reference Include="VirtoCommerce.Platform.Core, Version=2.13.14.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.Platform.Core.2.13.14\lib\net461\VirtoCommerce.Platform.Core.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="VirtoCommerce.Platform.Core, Version=2.13.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.Platform.Core.2.13.15\lib\net461\VirtoCommerce.Platform.Core.dll</HintPath>
     </Reference>
-    <Reference Include="VirtoCommerce.Platform.Data, Version=2.13.14.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.Platform.Data.2.13.14\lib\net461\VirtoCommerce.Platform.Data.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="VirtoCommerce.Platform.Data, Version=2.13.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.Platform.Data.2.13.15\lib\net461\VirtoCommerce.Platform.Data.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +105,10 @@
     <Compile Include="Migrations\201703240955526_BigListOfCoupons.Designer.cs">
       <DependentUpon>201703240955526_BigListOfCoupons.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710131123253_IsAllowCombiningWithSelf.cs" />
+    <Compile Include="Migrations\201710131123253_IsAllowCombiningWithSelf.Designer.cs">
+      <DependentUpon>201710131123253_IsAllowCombiningWithSelf.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\CouponEntity.cs" />
     <Compile Include="Model\DynamicContentFolderEntity.cs" />
@@ -125,8 +126,9 @@
     <Compile Include="Repositories\MarketingRepositoryImpl.cs" />
     <Compile Include="Services\CouponService.cs" />
     <Compile Include="Services\DefaultDynamicContentEvaluatorImpl.cs" />
-    <Compile Include="Services\DefaultPromotionEvaluatorImpl.cs" />
     <Compile Include="Services\DynamicContentServiceImpl.cs" />
+    <Compile Include="Services\EvaluationPolicies\BestRewardPromotionPolicy.cs" />
+    <Compile Include="Services\EvaluationPolicies\CombineStackablePromotionPolicy.cs" />
     <Compile Include="Services\MarketingSearchServiceImpl.cs" />
     <Compile Include="Services\PromotionUsageService.cs" />
     <Compile Include="Services\PromotionServiceImpl.cs" />
@@ -153,6 +155,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703240955526_BigListOfCoupons.resx">
       <DependentUpon>201703240955526_BigListOfCoupons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710131123253_IsAllowCombiningWithSelf.resx">
+      <DependentUpon>201710131123253_IsAllowCombiningWithSelf.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

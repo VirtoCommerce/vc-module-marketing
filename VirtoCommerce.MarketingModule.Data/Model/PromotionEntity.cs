@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Runtime.Serialization;
 using System.ComponentModel.DataAnnotations;
-using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations.Schema;
-using VirtoCommerce.Platform.Core.Common;
-using System.Collections.Generic;
 using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.MarketingModule.Data.Promotions;
-using System.Linq;
+using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.MarketingModule.Data.Model
 {
@@ -38,7 +34,9 @@ namespace VirtoCommerce.MarketingModule.Data.Model
 		public DateTime? EndDate { get; set; }
 
 		public int Priority { get; set; }
+
 		public bool IsExclusive { get; set; }
+        public bool IsAllowCombiningWithSelf { get; set; }
 
         [NotMapped]
         public bool HasCoupons { get; set; }
@@ -71,6 +69,8 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             promotion.IsActive = this.IsActive;
             promotion.EndDate = this.EndDate;
             promotion.Priority = this.Priority;
+            promotion.IsExclusive = this.IsExclusive;
+            promotion.IsAllowCombiningWithSelf = this.IsAllowCombiningWithSelf;
             promotion.PredicateVisualTreeSerialized = this.PredicateVisualTreeSerialized;
             promotion.PredicateSerialized = this.PredicateSerialized;
             promotion.RewardsSerialized = this.RewardsSerialized;
@@ -114,6 +114,8 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             this.IsActive = promotion.IsActive;
             this.EndDate = promotion.EndDate;
             this.Priority = promotion.Priority;
+            this.IsExclusive = promotion.IsExclusive;
+            this.IsAllowCombiningWithSelf = promotion.IsAllowCombiningWithSelf;
             this.PredicateVisualTreeSerialized = promotion.PredicateVisualTreeSerialized;
             this.PredicateSerialized = promotion.PredicateSerialized;
             this.RewardsSerialized = promotion.RewardsSerialized;
@@ -134,6 +136,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             target.Name = this.Name;
             target.Description = this.Description;
             target.IsActive = this.IsActive;
+            target.IsExclusive = this.IsExclusive;
             target.EndDate = this.EndDate;
             target.Priority = this.Priority;
             target.PredicateVisualTreeSerialized = this.PredicateVisualTreeSerialized;
@@ -142,6 +145,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             target.PerCustomerLimit = this.PerCustomerLimit;
             target.TotalLimit = this.TotalLimit;
             target.PerCustomerLimit = this.PerCustomerLimit;
+            target.IsAllowCombiningWithSelf = this.IsAllowCombiningWithSelf;
         }
     }
 }
