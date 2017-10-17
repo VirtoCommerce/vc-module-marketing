@@ -17,9 +17,6 @@ Installing the module:
 * Automatically: in VC Manager go to Configuration -> Modules -> Marketing module -> Install
 * Manually: download module zip package from https://github.com/VirtoCommerce/vc-module-marketing/releases. In VC Manager go to Configuration -> Modules -> Advanced -> upload module package -> Install.
 
-# Documentation
-https://virtocommerce.com/docs/vc2devguide/working-with-platform-manager/extending-functionality/composing-dynamic-conditions
-
 # Available resources
 * Module related service implementations as a <a href="https://www.nuget.org/packages/VirtoCommerce.MarketingModule.Data" target="_blank">NuGet package</a>
 * API client as a <a href="https://www.nuget.org/packages/VirtoCommerce.MarketingModule.Client" target="_blank">NuGet package</a>
