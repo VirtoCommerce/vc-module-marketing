@@ -39,8 +39,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                                     .ThenByDescending(x => x.Promotion.Priority)
                                     .Where(x => x.IsValid)
                                     .ToList();
-            var skippedRewards = new List<PromotionReward>();
-            EvalAndCombineRewardsRecursively(promoContext, evalFunc, result.Rewards, skippedRewards);
+            EvalAndCombineRewardsRecursively(promoContext, evalFunc, result.Rewards, new List<PromotionReward>());
             return result;
         }
 
@@ -62,8 +61,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 var newRewards = new List<PromotionReward>();
                 //shipment rewards
                 var groupedByShipmentMethodRewards = rewards.OfType<ShipmentReward>()
-                                                             .GroupBy(x => x.ShippingMethod)
-                                                             .Where(x => x.Key != null);
+                                                            .GroupBy(x => x.ShippingMethod);
                 foreach (var shipmentMethodRewards in groupedByShipmentMethodRewards)
                 {
                     //Need to take one reward from first prioritized promotion for each shipment method group
@@ -77,8 +75,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
                 //catalog item rewards
                 var groupedByProductRewards = rewards.OfType<CatalogItemAmountReward>()
-                                                     .GroupBy(x => x.ProductId)
-                                                     .Where(x => x.Key != null);
+                                                     .GroupBy(x => x.ProductId);
                 foreach (var productRewards in groupedByProductRewards)
                 {
                     //Need to take one reward from first prioritized promotion for each product rewards group
@@ -117,7 +114,8 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
         protected virtual void ApplyRewardsToContext(PromotionEvaluationContext context, IEnumerable<PromotionReward> rewards, ICollection<PromotionReward> skippedRewards)
         {
-            var activeShipmentReward = rewards.OfType<ShipmentReward>().FirstOrDefault(x => x.ShippingMethod.EqualsInvariant(context.ShipmentMethodCode) && x.ShippingMethodOption.EqualsInvariant(context.ShipmentMethodOption));
+            var activeShipmentReward = rewards.OfType<ShipmentReward>().Where(x => string.IsNullOrEmpty(x.ShippingMethod) || x.ShippingMethod.EqualsInvariant(context.ShipmentMethodCode))
+                                                                       .FirstOrDefault(x => string.IsNullOrEmpty(x.ShippingMethodOption) || x.ShippingMethodOption.EqualsInvariant(context.ShipmentMethodOption));
             if (activeShipmentReward != null)
             {
                 var discountAmount = activeShipmentReward.GetRewardAmount(context.ShipmentMethodPrice, 1);
@@ -133,7 +131,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
             foreach (var productReward in rewards.OfType<CatalogItemAmountReward>())
             {
-                var promoEntry = context.PromoEntries.FirstOrDefault(x => x.ProductId.EqualsInvariant(productReward.ProductId));             
+                var promoEntry = context.PromoEntries.FirstOrDefault(x => string.IsNullOrEmpty(x.ProductId) || x.ProductId.EqualsInvariant(productReward.ProductId));             
                 if (promoEntry != null)
                 {
                     var perUnitDiscountAmount = productReward.GetRewardAmount(promoEntry.Price, Math.Min(1, promoEntry.Quantity));

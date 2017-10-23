@@ -38,7 +38,7 @@
               "expiration-date": "If you do not specify an end date, the promotion is in effect until you deactivate it.",
               "priority": "The priority of promotions determines whether a stackable promotion applies to an order. The promotion with the highest priority is applied first.",
               "exclusivity": "If a 'Globally exclusive' is selected, no other promotions with less priority can be applied to the order.",
-              "is-combine-with-self": "Especially for the case when several coupons are defined for a promotion and their simultaneous action is required."
+              "is-combine-with-self": "Specialty for the case when several coupons are defined for a promotion and their simultaneous action is required."
             },
             "placeholders": {
               "promotion-name": "Please enter name...",
