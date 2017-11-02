@@ -1,4 +1,4 @@
-﻿<div class="blade-static __bottom" ng-if="blade.isNew">
+<div class="blade-static __bottom" ng-if="blade.isNew">
     <button class="btn" ng-click="saveChanges()" ng-disabled="!isValid()">{{ 'platform.commands.create' | translate }}</button>
 </div>
 <div class="blade-content __medium-wide">
@@ -123,7 +123,7 @@
             <fieldset ng-if="blade.currentEntity.dynamicExpression && blade.currentEntity.type==='DynamicPromotion'">
                 <legend>{{ 'marketing.blades.promotion-detail.labels.promotion-conditions' | translate }}</legend>
                 <div class="dynamic-expression">
-                    <va-dynamic-expression-tree ng-controller="virtoCommerce.marketingModule.promotionExpressionsController" source="blade.currentEntity.dynamicExpression"></va-dynamic-expression-tree>
+                    <va-dynamic-expression-tree ng-controller="virtoCommerce.marketingModule.promotionExpressionsController" template-url="blade.expressionTreeTemplateUrl" source="blade.currentEntity.dynamicExpression"></va-dynamic-expression-tree>
                 </div>
             </fieldset>
         </div>
