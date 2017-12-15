@@ -319,6 +319,12 @@
               "space": "Space",
               "comma": "Comma",
               "semicolon": "Semicolon",
+              "start": "Start",
+              "end": "End",
+              "total": "Total count",
+              "processed": "Processed count",
+              "errors-count": "Errors count",
+              "errors": "Errors",
               "tab": "Tab"
             },
             "placeholders": {
