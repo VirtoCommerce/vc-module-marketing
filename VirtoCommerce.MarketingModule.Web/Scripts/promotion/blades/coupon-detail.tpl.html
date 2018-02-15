@@ -18,7 +18,7 @@
                             <div class="form-group __info list">
                                 <label class="form-label" ng-bind="'marketing.blades.coupon-detail.labels.max-uses-number' | translate"></label>
                                 <div class="form-input __number">
-                                    <input placeholder="{{ 'marketing.blades.coupon-detail.labels.enter-value' | translate }}" required="required" smart-float num-type="integer" ng-model="blade.currentEntity.maxUsesNumber" />
+                                    <input placeholder="{{ 'marketing.blades.coupon-detail.labels.enter-value' | translate }}" required="required" num-type="integer" ng-pattern="/^\d+$/" smart-float ng-model="blade.currentEntity.maxUsesNumber" />
                                     <div class="list-descr" ng-bind="'marketing.blades.coupon-detail.labels.max-uses-number-description' | translate"></div>
                                 </div>
                             </div>
