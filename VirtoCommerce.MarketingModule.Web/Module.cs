@@ -26,8 +26,8 @@ namespace VirtoCommerce.MarketingModule.Web
 {
     public class Module : ModuleBase, ISupportExportImportModule
     {
-    private readonly string _connectionString = ConfigurationHelper.GetConnectionStringValue("VirtoCommerce.Marketing") ?? ConfigurationHelper.GetConnectionStringValue("VirtoCommerce");
-    private readonly IUnityContainer _container;
+        private readonly string _connectionString = ConfigurationHelper.GetConnectionStringValue("VirtoCommerce.Marketing") ?? ConfigurationHelper.GetConnectionStringValue("VirtoCommerce");
+        private readonly IUnityContainer _container;
 
         public Module(IUnityContainer container)
         {
