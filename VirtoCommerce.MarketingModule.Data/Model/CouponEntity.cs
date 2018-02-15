@@ -16,7 +16,6 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         [Index("IX_CodeAndPromotionId", IsUnique = true, Order = 1)]
         public string Code { get; set; }
 
-        [Range(0, Int32.MaxValue)]
         public int MaxUsesNumber { get; set; }
 
         public DateTime? ExpirationDate { get; set; }
