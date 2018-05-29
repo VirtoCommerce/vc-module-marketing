@@ -26,7 +26,7 @@ namespace VirtoCommerce.MarketingModule.Web
 {
     public class Module : ModuleBase, ISupportExportImportModule
     {
-        private const string _connectionStringName = "VirtoCommerce";
+        private readonly string _connectionString = ConfigurationHelper.GetConnectionStringValue("VirtoCommerce.Marketing") ?? ConfigurationHelper.GetConnectionStringValue("VirtoCommerce");
         private readonly IUnityContainer _container;
 
         public Module(IUnityContainer container)
@@ -38,7 +38,7 @@ namespace VirtoCommerce.MarketingModule.Web
 
         public override void SetupDatabase()
         {
-            using (var context = new MarketingRepositoryImpl(_connectionStringName, _container.Resolve<AuditableInterceptor>()))
+            using (var context = new MarketingRepositoryImpl(_connectionString, _container.Resolve<AuditableInterceptor>()))
             {
                 var initializer = new SetupDatabaseInitializer<MarketingRepositoryImpl, VirtoCommerce.MarketingModule.Data.Migrations.Configuration>();
                 initializer.InitializeDatabase(context);
@@ -47,7 +47,7 @@ namespace VirtoCommerce.MarketingModule.Web
 
         public override void Initialize()
         {
-            _container.RegisterType<IMarketingRepository>(new InjectionFactory(c => new MarketingRepositoryImpl(_connectionStringName, new EntityPrimaryKeyGeneratorInterceptor(), _container.Resolve<AuditableInterceptor>())));
+            _container.RegisterType<IMarketingRepository>(new InjectionFactory(c => new MarketingRepositoryImpl(_connectionString, new EntityPrimaryKeyGeneratorInterceptor(), _container.Resolve<AuditableInterceptor>())));
 
             var promotionExtensionManager = new DefaultMarketingExtensionManagerImpl();
 
