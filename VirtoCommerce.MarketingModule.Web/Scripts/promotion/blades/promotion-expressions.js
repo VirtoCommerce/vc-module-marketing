@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.marketingModule')
+angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.promotionConditionCurrencyIsController', ['$scope', 'virtoCommerce.coreModule.currency.currencyUtils', function ($scope, currencyUtils) {
     $scope.currencyUtils = currencyUtils;
 }])
@@ -24,6 +24,7 @@
                     //parentElement.selectedListEntry = selectedListEntries[0];
                     parentElement.productId = selectedListEntries[0].id;
                     parentElement.productName = selectedListEntries[0].name;
+                    parentElement.productCode = selectedListEntries[0].code;
                     bladeNavigationService.closeBlade(blade);
                 },
                 canExecuteMethod: function () {
