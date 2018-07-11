@@ -10,7 +10,7 @@
                         <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.promotion-name' | translate }}</label>
                         <div class="form-input">
                             <input ng-model="blade.currentEntity.name" focus-on="" required ng-maxlength="128" placeholder="{{ 'marketing.blades.promotion-detail.placeholders.promotion-name' | translate }}">
-                         
+
                         </div>
                         <div class="list-descr">{{ 'marketing.blades.promotion-detail.descr.promotion-name' | translate }}</div>
                     </div>
@@ -21,21 +21,7 @@
                         </div>
                     </div>
 
-                    <div class="columns clearfix">
-                        <div class="column">
-                            <div class="form-group __info list">
-                                <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.store' | translate }}</label>
-                                <div class="form-input">
-                                    <ui-select ng-model="blade.currentEntity.store" ng-disabled="!blade.isNew" required>
-                                        <ui-select-match placeholder="{{ 'marketing.blades.promotion-detail.placeholders.store' | translate }}">{{$select.selected.name}}</ui-select-match>
-                                        <ui-select-choices repeat="store.id as store in stores | filter: { name: $select.search }">
-                                            <span ng-bind-html="store.name | highlight: $select.search"></span>
-                                        </ui-select-choices>
-                                    </ui-select>                                    
-                                </div>
-                                <div class="list-descr">{{ 'marketing.blades.promotion-detail.descr.store' | translate }}</div>
-                            </div>
-                        </div>
+                    <div class="form-group clearfix">
                         <div class="column">
                             <div class="form-group __info list">
                                 <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.is-active' | translate }}</label>
@@ -43,13 +29,23 @@
                                     <label class="form-label __switch">
                                         <input type="checkbox" ng-model="blade.currentEntity.isActive" />
                                         <span class="switch"></span>
-                                    </label>                                  
+                                    </label>
                                 </div>
                                 <div class="list-descr">{{ 'marketing.blades.promotion-detail.descr.is-active' | translate }}</div>
                             </div>
                         </div>
+                        <div class="column" ng-if="blade.allowCombination">
+                            <div class="form-group __info list">
+                                <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.priority' | translate }}</label>
+                                <div class="form-input __number">
+                                    <input smart-float num-type="integer" ng-disabled="blade.currentEntity.isExclusive" required ng-model="blade.currentEntity.priority" type="text" />
+                                </div>
+                                <div class="list-descr">{{ 'marketing.blades.promotion-detail.descr.priority' | translate }}</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="columns clearfix">
+
+                    <div class="form-group clearfix">
                         <div class="column">
                             <div class="form-group __info list">
                                 <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.start-date' | translate }}</label>
@@ -57,7 +53,7 @@
                                     <input placeholder="{{ 'marketing.blades.promotion-detail.placeholders.start-date' | translate }}" ng-model="blade.currentEntity.startDate" datepicker-popup="" is-open="datepickers.str" />
                                     <button class="btn" type="button" ng-click="open($event,'str')">
                                         <i class="btn-ico fa fa-calendar"></i>
-                                    </button>                                    
+                                    </button>
                                 </div>
                                 <div class="list-descr">{{ 'marketing.blades.promotion-detail.descr.start-date' | translate }}</div>
                             </div>
@@ -69,20 +65,24 @@
                                     <input placeholder="{{ 'marketing.blades.promotion-detail.placeholders.expiration-date' | translate }}" ng-model="blade.currentEntity.endDate" datepicker-popup="" is-open="datepickers.end" />
                                     <button class="btn" type="button" ng-click="open($event,'end')">
                                         <i class="btn-ico fa fa-calendar"></i>
-                                    </button>                                  
+                                    </button>
                                 </div>
                                 <div class="list-descr">{{ 'marketing.blades.promotion-detail.descr.expiration-date' | translate }}</div>
                             </div>
                         </div>
-                    </div>                  
-                    <div class="columns clearfix" ng-if="blade.allowCombination">
+                    </div>
+
+                    <div class="form-group clearfix" ng-if="blade.allowCombination">
                         <div class="column">
                             <div class="form-group __info list">
-                                <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.priority' | translate }}</label>
-                                <div class="form-input __number">
-                                    <input smart-float num-type="integer" ng-disabled="blade.currentEntity.isExclusive" required ng-model="blade.currentEntity.priority" type="text" />
+                                <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.is-combine-with-self' | translate }}</label>
+                                <div class="form-input">
+                                    <label class="form-label __switch">
+                                        <input type="checkbox" ng-model="blade.currentEntity.isAllowCombiningWithSelf" />
+                                        <span class="switch"></span>
+                                    </label>
                                 </div>
-                                <div class="list-descr">{{ 'marketing.blades.promotion-detail.descr.priority' | translate }}</div>
+                                <div class="list-descr">{{ 'marketing.blades.promotion-detail.descr.is-combine-with-self' | translate }}</div>
                             </div>
                         </div>
                         <div class="column">
@@ -94,27 +94,31 @@
                                         <ui-select-choices repeat="exclusivityType.value as exclusivityType in exclusivityTypes | filter: { name: $select.search }">
                                             <span ng-bind-html="exclusivityType.name | translate | highlight: $select.search"></span>
                                         </ui-select-choices>
-                                    </ui-select>                           
+                                    </ui-select>
                                 </div>
                                 <div class="list-descr">{{ 'marketing.blades.promotion-detail.descr.exclusivity' | translate }}</div>
                             </div>
                         </div>
-                    </div> 
-                    <div class="columns clearfix" ng-if="blade.allowCombination">
+                    </div>
+
+                    <div class="form-group clearfix">
                         <div class="column">
                             <div class="form-group __info list">
-                                <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.is-combine-with-self' | translate }}</label>
+                                <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.store' | translate }}</label>
                                 <div class="form-input">
-                                    <label class="form-label __switch">
-                                        <input type="checkbox" ng-model="blade.currentEntity.isAllowCombiningWithSelf" />
-                                        <span class="switch"></span>
-                                    </label>                                 
+                                    <ui-select ng-model="blade.currentEntity.store" ng-disabled="!blade.isNew" required>
+                                        <ui-select-match placeholder="{{ 'marketing.blades.promotion-detail.placeholders.store' | translate }}">{{$select.selected.name}}</ui-select-match>
+                                        <ui-select-choices repeat="store.id as store in stores | filter: { name: $select.search }">
+                                            <span ng-bind-html="store.name | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
                                 </div>
-                                <div class="list-descr">{{ 'marketing.blades.promotion-detail.descr.is-combine-with-self' | translate }}</div>
+                                <div class="list-descr">{{ 'marketing.blades.promotion-detail.descr.store' | translate }}</div>
                             </div>
                         </div>
-                        <div class="column"></div>
                     </div>
+
+                    <va-metaform registered-inputs="blade.metaFields" blade="blade" column-count="1" ng-if="blade.currentEntity"></va-metaform>
                 </fieldset>
             </form>
 

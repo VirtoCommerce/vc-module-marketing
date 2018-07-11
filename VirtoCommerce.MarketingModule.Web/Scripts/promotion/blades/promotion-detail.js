@@ -1,7 +1,9 @@
 angular.module('virtoCommerce.marketingModule')
-    .controller('virtoCommerce.marketingModule.promotionDetailController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.marketingModule.promotions', 'virtoCommerce.catalogModule.catalogs', 'virtoCommerce.storeModule.stores', 'platformWebApp.settings', 'virtoCommerce.coreModule.common.dynamicExpressionService', 'virtoCommerce.catalogModule.categories', 'virtoCommerce.catalogModule.items', '$q', 'platformWebApp.settings', function ($scope, bladeNavigationService, marketing_res_promotions, catalogs, stores, settings, dynamicExpressionService, categories, items, $q, settings) {
+    .controller('virtoCommerce.marketingModule.promotionDetailController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.marketingModule.promotions', 'virtoCommerce.catalogModule.catalogs', 'virtoCommerce.storeModule.stores', 'virtoCommerce.coreModule.common.dynamicExpressionService', 'virtoCommerce.catalogModule.categories', 'virtoCommerce.catalogModule.items', '$q', 'platformWebApp.settings', 'platformWebApp.metaFormsService', function ($scope, bladeNavigationService, marketing_res_promotions, catalogs, stores, dynamicExpressionService, categories, items, $q, settings, metaFormsService) {
         var blade = $scope.blade;
         blade.updatePermission = 'marketing:update';
+
+        blade.metaFields = metaFormsService.getMetaFields("promotionDetail");
 
         blade.expressionTreeTemplateUrl = dynamicExpressionService.expressionTreeTemplateUrl;
 
