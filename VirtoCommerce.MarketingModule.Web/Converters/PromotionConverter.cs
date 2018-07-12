@@ -51,8 +51,6 @@ namespace VirtoCommerce.MarketingModule.Web.Converters
                 }
             }
 
-            result.Store = promotion.StoreIds?.FirstOrDefault();
-
             return result;
         }
 
@@ -82,7 +80,6 @@ namespace VirtoCommerce.MarketingModule.Web.Converters
                 result.PredicateVisualTreeSerialized = JsonConvert.SerializeObject(promotion.DynamicExpression);
             }
 
-            result.StoreIds = new List<string> { promotion.Store };
             return result;
         }
     }

@@ -26,10 +26,12 @@ namespace VirtoCommerce.MarketingModule.Web.Model
 		/// Store id that is covered by this promotion
 		/// </summary>
 		public string Store { get; set; }
-		/// <summary>
-		/// Catalog id that is covered by this promotion
-		/// </summary>
-		public string Catalog { get; set; }
+	    public IList<string> StoreIds { get; set; }
+
+        /// <summary>
+        /// Catalog id that is covered by this promotion
+        /// </summary>
+        public string Catalog { get; set; }
 
 		public string Description { get; set; }
 		public bool IsActive { get; set; }

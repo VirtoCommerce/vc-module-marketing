@@ -105,15 +105,15 @@
                             <div class="form-group __info list">
                                 <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.store' | translate }}</label>
                                 <div class="form-input">
-                                    <ui-select ng-model="blade.currentEntity.store" ng-disabled="!blade.isNew" required>
-                                        <ui-select-match placeholder="{{ 'marketing.blades.promotion-detail.placeholders.store' | translate }}">{{$select.selected.name}}</ui-select-match>
-                                        <ui-select-choices repeat="store.id as store in stores | filter: { name: $select.search }">
-                                            <span ng-bind-html="store.name | highlight: $select.search"></span>
+                                    <ui-select multiple ng-model="blade.currentEntity.storeIds">
+                                        <ui-select-match placeholder="{{'marketing.blades.promotion-detail.placeholders.store' | translate}}">{{$item.name}}</ui-select-match>
+                                        <ui-select-choices repeat="x.id as x in stores">
+                                            <span ng-bind-html="x.name | highlight: $select.search"></span>
                                         </ui-select-choices>
                                     </ui-select>
+                                    </div>
+                                    <div class="list-descr">{{ 'marketing.blades.promotion-detail.descr.store' | translate }}</div>
                                 </div>
-                                <div class="list-descr">{{ 'marketing.blades.promotion-detail.descr.store' | translate }}</div>
-                            </div>
                         </div>
                     </div>
 
