@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using Omu.ValueInjecter;
 using VirtoCommerce.Domain.Common;
@@ -50,6 +51,8 @@ namespace VirtoCommerce.MarketingModule.Web.Converters
                 }
             }
 
+            result.Store = promotion.StoreIds?.FirstOrDefault();
+
             return result;
         }
 
@@ -79,6 +82,7 @@ namespace VirtoCommerce.MarketingModule.Web.Converters
                 result.PredicateVisualTreeSerialized = JsonConvert.SerializeObject(promotion.DynamicExpression);
             }
 
+            result.StoreIds = new List<string> { promotion.Store };
             return result;
         }
     }

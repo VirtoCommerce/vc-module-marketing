@@ -27,28 +27,28 @@ namespace VirtoCommerce.MarketingModule.Data.Observers
 
         public void OnNext(OrderChangedEvent changedEvent)
         {
-            if (changedEvent.ChangeState == EntryState.Added)
-            {
-                var oldUsages = new List<PromotionUsage>();
-                var newUsages = GetCouponUsages(changedEvent.ModifiedOrder.Id, changedEvent.ModifiedOrder);               
-                RecordUsages(changedEvent.ModifiedOrder.Id, oldUsages, newUsages);
-            }
+            //if (changedEvent.ChangeState == EntryState.Added)
+            //{
+            //    var oldUsages = new List<PromotionUsage>();
+            //    var newUsages = GetCouponUsages(changedEvent.ModifiedOrder.Id, changedEvent.ModifiedOrder);               
+            //    RecordUsages(changedEvent.ModifiedOrder.Id, oldUsages, newUsages);
+            //}
         }
 
         public void OnNext(CartChangedEvent changedEvent)
         {
-            var oldUsages = GetCouponUsages(changedEvent.OrigCart.Id, changedEvent.OrigCart);
-            var newUsages = GetCouponUsages(changedEvent.ModifiedCart.Id, changedEvent.ModifiedCart);
+            //var oldUsages = GetCouponUsages(changedEvent.OrigCart.Id, changedEvent.OrigCart);
+            //var newUsages = GetCouponUsages(changedEvent.ModifiedCart.Id, changedEvent.ModifiedCart);
 
-            if (changedEvent.ChangeState == EntryState.Added)
-            {
-                oldUsages.Clear();
-            }         
-            if (changedEvent.ChangeState == EntryState.Deleted)
-            {
-                newUsages.Clear();
-            }
-            RecordUsages(changedEvent.OrigCart.Id, oldUsages, newUsages);
+            //if (changedEvent.ChangeState == EntryState.Added)
+            //{
+            //    oldUsages.Clear();
+            //}         
+            //if (changedEvent.ChangeState == EntryState.Deleted)
+            //{
+            //    newUsages.Clear();
+            //}
+            //RecordUsages(changedEvent.OrigCart.Id, oldUsages, newUsages);
         }
 
         private void RecordUsages(string objectId, IEnumerable<PromotionUsage> oldUsages, IEnumerable<PromotionUsage> newUsages)

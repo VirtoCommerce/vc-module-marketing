@@ -33,10 +33,17 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             using (var repository = _repositoryFactory())
             {
                 var query = repository.Promotions;
+
                 if (!string.IsNullOrEmpty(criteria.Store))
                 {
                     query = query.Where(x => x.StoreId == criteria.Store);
                 }
+
+                if (!criteria.StoreIds.IsNullOrEmpty())
+                {
+                    query = query.Where(x => x.Stores.Any(s=> criteria.StoreIds.Contains(s.StoreId)));
+                }
+
                 if (criteria.OnlyActive)
                 {
                     var now = DateTime.UtcNow;

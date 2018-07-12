@@ -84,6 +84,10 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
             modelBuilder.Entity<DynamicContentFolderEntity>().HasKey(x => x.Id)
                 .Property(x => x.Id);
 
+            modelBuilder.Entity<PromotionStoreEntity>().ToTable("PromotionStore");
+            modelBuilder.Entity<PromotionStoreEntity>().HasKey(x => x.Id).Property(x => x.Id);
+            modelBuilder.Entity<PromotionStoreEntity>().HasRequired(x=>x.Promotion).WithMany(x=>x.Stores).HasForeignKey(x=>x.PromotionId);
+
 
             base.OnModelCreating(modelBuilder);
         }
@@ -133,9 +137,14 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
             get { return GetAsQueryable<PublishingGroupContentPlaceEntity>(); }
         }
 
+        public IQueryable<PromotionStoreEntity> PromotionStores
+        {
+            get { return GetAsQueryable<PromotionStoreEntity>(); }
+        }
+
         public PromotionEntity[] GetPromotionsByIds(string[] ids)
         {
-            var retVal = Promotions.Where(x => ids.Contains(x.Id)).ToArray();
+            var retVal = Promotions.Include(x=>x.Stores).Where(x => ids.Contains(x.Id)).ToArray();
             var promotionsIdsWithCoupons = Coupons.Where(x => ids.Contains(x.PromotionId)).Select(x => x.PromotionId).Distinct().ToArray();
             foreach(var promotion in retVal)
             {
