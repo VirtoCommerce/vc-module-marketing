@@ -86,7 +86,9 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
 
             modelBuilder.Entity<PromotionStoreEntity>().ToTable("PromotionStore");
             modelBuilder.Entity<PromotionStoreEntity>().HasKey(x => x.Id).Property(x => x.Id);
-            modelBuilder.Entity<PromotionStoreEntity>().HasRequired(x=>x.Promotion).WithMany(x=>x.Stores).HasForeignKey(x=>x.PromotionId);
+            modelBuilder.Entity<PromotionStoreEntity>().HasRequired(x => x.Promotion)
+                .WithMany(x => x.Stores).HasForeignKey(x => x.PromotionId)
+                .WillCascadeOnDelete(true);
 
 
             base.OnModelCreating(modelBuilder);
@@ -144,7 +146,8 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
 
         public PromotionEntity[] GetPromotionsByIds(string[] ids)
         {
-            var retVal = Promotions.Include(x=>x.Stores).Where(x => ids.Contains(x.Id)).ToArray();
+            var stores = PromotionStores.Where(x => ids.Contains(x.PromotionId)).ToArray();
+            var retVal = Promotions.Where(x => ids.Contains(x.Id)).ToArray();
             var promotionsIdsWithCoupons = Coupons.Where(x => ids.Contains(x.PromotionId)).Select(x => x.PromotionId).Distinct().ToArray();
             foreach(var promotion in retVal)
             {

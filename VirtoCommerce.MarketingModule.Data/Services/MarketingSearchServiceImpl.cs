@@ -36,7 +36,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
                 if (!string.IsNullOrEmpty(criteria.Store))
                 {
-                    query = query.Where(x => x.Stores.Any(s => s.StoreId == criteria.Store));
+                    query = query.Where(x => x.Stores.Any(s => !x.Stores.Any() || s.StoreId == criteria.Store));
                 }
 
                 if (!criteria.StoreIds.IsNullOrEmpty())

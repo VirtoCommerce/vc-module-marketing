@@ -11,11 +11,6 @@ namespace VirtoCommerce.MarketingModule.Data.Model
 {
     public class PromotionEntity : AuditableEntity
     {
-        public PromotionEntity()
-        {
-            Stores = new NullCollection<PromotionStoreEntity>();
-        }
-
         [StringLength(128)]
         public string StoreId { get; set; }
 
@@ -54,7 +49,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
 
         public int TotalLimit { get; set; }
 
-        public ObservableCollection<PromotionStoreEntity> Stores { get; set; }
+        public virtual ObservableCollection<PromotionStoreEntity> Stores { get; set; } = new NullCollection<PromotionStoreEntity>();
 
         public virtual Promotion ToModel(DynamicPromotion promotion)
         {
