@@ -11,10 +11,6 @@ namespace VirtoCommerce.MarketingModule.Web.Converters
 			var retVal = new webModel.PromotionReward();
 			retVal.InjectFrom(reward);
 			retVal.RewardType = reward.GetType().Name;
-			if (reward.Promotion != null)
-			{
-				retVal.Promotion = reward.Promotion.ToWebModel();
-			}
 			return retVal;
 		}
 	

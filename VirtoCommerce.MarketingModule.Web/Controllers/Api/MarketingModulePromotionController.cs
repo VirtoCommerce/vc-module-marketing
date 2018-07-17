@@ -16,10 +16,10 @@ using VirtoCommerce.MarketingModule.Web.Model;
 using VirtoCommerce.MarketingModule.Web.Model.PushNotifications;
 using VirtoCommerce.MarketingModule.Web.Security;
 using VirtoCommerce.Platform.Core.Assets;
+using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.PushNotifications;
 using VirtoCommerce.Platform.Core.Security;
-using VirtoCommerce.Platform.Core.Serialization;
 using VirtoCommerce.Platform.Core.Web.Security;
 using coreModel = VirtoCommerce.Domain.Marketing.Model;
 using webModel = VirtoCommerce.MarketingModule.Web.Model;
@@ -30,11 +30,9 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
     [CheckPermission(Permission = MarketingPredefinedPermissions.Access)]
     public class MarketingModulePromotionController : ApiController
     {
-        private readonly IMarketingExtensionManager _marketingExtensionManager;
         private readonly IPromotionService _promotionService;
         private readonly ICouponService _couponService;
         private readonly IMarketingPromoEvaluator _promoEvaluator;
-        private readonly IExpressionSerializer _expressionSerializer;
         private readonly IPromotionSearchService _promoSearchService;
         private readonly IUserNameResolver _userNameResolver;
         private readonly IPushNotificationManager _notifier;
@@ -46,9 +44,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         public MarketingModulePromotionController(
             IPromotionService promotionService,
             ICouponService couponService,
-            IMarketingExtensionManager promotionManager,
             IMarketingPromoEvaluator promoEvaluator,
-            IExpressionSerializer expressionSerializer,
             IPromotionSearchService promoSearchService,
             IUserNameResolver userNameResolver,
             IPushNotificationManager notifier,
@@ -58,11 +54,9 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
             IPermissionScopeService permissionScopeService)
         {
             _securityService = securityService;
-            _marketingExtensionManager = promotionManager;
             _promotionService = promotionService;
             _couponService = couponService;
             _promoEvaluator = promoEvaluator;
-            _expressionSerializer = expressionSerializer;
             _promoSearchService = promoSearchService;
             _userNameResolver = userNameResolver;
             _notifier = notifier;
@@ -77,16 +71,16 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         /// <param name="criteria">criteria</param>
         [HttpPost]
         [Route("search")]
-        [ResponseType(typeof(GenericSearchResult<webModel.Promotion>))]
+        [ResponseType(typeof(GenericSearchResult<coreModel.Promotion>))]
         public IHttpActionResult PromotionsSearch(PromotionSearchCriteria criteria)
         {
-            var retVal = new GenericSearchResult<webModel.Promotion>();
+            var retVal = new GenericSearchResult<coreModel.Promotion>();
             //Scope bound ACL filtration
             criteria = FilterPromotionSearchCriteria(User.Identity.Name, criteria);
 
             var promoSearchResult = _promoSearchService.SearchPromotions(criteria);
             retVal.TotalCount = promoSearchResult.TotalCount;
-            retVal.Results = promoSearchResult.Results.Select(x => x.ToWebModel()).ToList();
+            retVal.Results = promoSearchResult.Results.ToList();
             return Ok(retVal);
         }
 
@@ -109,7 +103,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         /// <remarks>Return a single promotion (dynamic or custom) object </remarks>
         /// <param name="id">promotion id</param>
         [HttpGet]
-        [ResponseType(typeof(webModel.Promotion))]
+        [ResponseType(typeof(coreModel.Promotion))]
         [Route("{id}")]
         public IHttpActionResult GetPromotionById(string id)
         {
@@ -122,7 +116,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
                     throw new HttpResponseException(HttpStatusCode.Unauthorized);
                 }
 
-                return Ok(retVal.ToWebModel(_marketingExtensionManager.PromotionDynamicExpressionTree));
+                return Ok(retVal);
             }
             return NotFound();
         }
@@ -132,17 +126,13 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         /// </summary>
         /// <remarks>Return a new dynamic promotion object with populated dynamic expression tree</remarks>
         [HttpGet]
-        [ResponseType(typeof(webModel.Promotion))]
+        [ResponseType(typeof(coreModel.Promotion))]
         [Route("new")]
         [CheckPermission(Permission = MarketingPredefinedPermissions.Create)]
         public IHttpActionResult GetNewDynamicPromotion()
         {
-            var retVal = new webModel.Promotion
-            {
-                Type = typeof(DynamicPromotion).Name,
-                DynamicExpression = _marketingExtensionManager.PromotionDynamicExpressionTree,
-                IsActive = true
-            };
+            var retVal = AbstractTypeFactory<DynamicPromotion>.TryCreateInstance();
+            retVal.IsActive = true;
             return Ok(retVal);
         }
 
@@ -151,19 +141,18 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         /// </summary>
         /// <param name="promotion">dynamic promotion object that needs to be added to the marketing system</param>
         [HttpPost]
-        [ResponseType(typeof(webModel.Promotion))]
+        [ResponseType(typeof(coreModel.Promotion))]
         [Route("")]
         [CheckPermission(Permission = MarketingPredefinedPermissions.Create)]
-        public IHttpActionResult CreatePromotion(webModel.Promotion promotion)
+        public IHttpActionResult CreatePromotion(coreModel.Promotion promotion)
         {
-            var corePromotion = promotion.ToCoreModel(_expressionSerializer);
-            var scopes = _permissionScopeService.GetObjectPermissionScopeStrings(corePromotion).ToArray();
+            var scopes = _permissionScopeService.GetObjectPermissionScopeStrings(promotion).ToArray();
             if (!_securityService.UserHasAnyPermission(User.Identity.Name, scopes, MarketingPredefinedPermissions.Create))
             {
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
-            _promotionService.SavePromotions(new[] { corePromotion });
-            return GetPromotionById(corePromotion.Id);
+            _promotionService.SavePromotions(new[] { promotion });
+            return GetPromotionById(promotion.Id);
         }
 
 
@@ -175,15 +164,14 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [ResponseType(typeof(void))]
         [Route("")]
         [CheckPermission(Permission = MarketingPredefinedPermissions.Update)]
-        public IHttpActionResult UpdatePromotions(webModel.Promotion promotion)
+        public IHttpActionResult UpdatePromotions(coreModel.Promotion promotion)
         {
-            var corePromotion = promotion.ToCoreModel(_expressionSerializer);
-            var scopes = _permissionScopeService.GetObjectPermissionScopeStrings(corePromotion).ToArray();
+            var scopes = _permissionScopeService.GetObjectPermissionScopeStrings(promotion).ToArray();
             if (!_securityService.UserHasAnyPermission(User.Identity.Name, scopes, MarketingPredefinedPermissions.Update))
             {
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
-            _promotionService.SavePromotions(new[] { corePromotion });
+            _promotionService.SavePromotions(new [] { promotion });
             return StatusCode(HttpStatusCode.NoContent);
         }
 

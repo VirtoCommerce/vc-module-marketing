@@ -32,8 +32,11 @@ namespace VirtoCommerce.MarketingModule.Data.Promotions
 
         protected IExpressionSerializer ExpressionSerializer { get; set; }
 
+        [JsonIgnore]
         public string PredicateSerialized { get; set; }
+        [JsonIgnore]
         public string PredicateVisualTreeSerialized { get; set; }
+        [JsonIgnore]
         public string RewardsSerialized { get; set; }
 
         protected Func<IEvaluationContext, bool> Condition => _condition ?? (_condition = ExpressionSerializer.DeserializeExpression<Func<IEvaluationContext, bool>>(PredicateSerialized));

@@ -39,96 +39,96 @@ namespace VirtoCommerce.MarketingModule.Test
         }
 
         //[Fact]
-        public void Can_create_marketing_dynamicpromotion_using_api()
-        {
-            var marketingController = GetMarketingController(GetPromotionExtensionManager());
+        //public void Can_create_marketing_dynamicpromotion_using_api()
+        //{
+        //    var marketingController = GetMarketingController(GetPromotionExtensionManager());
 
-            webModel.Promotion promotion = null;
-            var promoResult = (marketingController.GetPromotionById("CartFiveDiscount") as OkNegotiatedContentResult<webModel.Promotion>);
-            if (promoResult != null)
-            {
-                promotion = promoResult.Content;
-            }
-            if (promotion == null)
-            {
-                promotion = (marketingController.GetNewDynamicPromotion() as OkNegotiatedContentResult<webModel.Promotion>).Content;
+        //    webModel.Promotion promotion = null;
+        //    var promoResult = (marketingController.GetPromotionById("CartFiveDiscount") as OkNegotiatedContentResult<webModel.Promotion>);
+        //    if (promoResult != null)
+        //    {
+        //        promotion = promoResult.Content;
+        //    }
+        //    if (promotion == null)
+        //    {
+        //        promotion = (marketingController.GetNewDynamicPromotion() as OkNegotiatedContentResult<webModel.Promotion>).Content;
 
-                promotion.Description = "Buy at $100 and get a 5% discount";
-                promotion.Name = "CartFiveDiscount";
-                promotion.Id = "CartFiveDiscount";
+        //        promotion.Description = "Buy at $100 and get a 5% discount";
+        //        promotion.Name = "CartFiveDiscount";
+        //        promotion.Id = "CartFiveDiscount";
 
-                var expressionTree = promotion.DynamicExpression as DynamicExpression;
+        //        var expressionTree = promotion.DynamicExpression as DynamicExpression;
 
-                //Curreny is USD
-                var currencyExpression = expressionTree.FindAvailableExpression<ConditionCurrencyIs>();
-                currencyExpression.Currency = "USD";
-                expressionTree.Children.Add(currencyExpression);
-                //Condition: Cart subtotal great or equal that 100$
-                var subtotalExpression = expressionTree.FindAvailableExpression<ConditionCartSubtotalLeast>();
-                subtotalExpression.SubTotal = 100;
-                expressionTree.Children.Add(subtotalExpression);
-                //Reward: Get 5% whole cart discount
-                var rewardExpr = expressionTree.FindAvailableExpression<RewardItemGetOfRel>();
-                rewardExpr.Amount = 0.5m;
-                expressionTree.Children.Add(rewardExpr);
+        //        //Curreny is USD
+        //        var currencyExpression = expressionTree.FindAvailableExpression<ConditionCurrencyIs>();
+        //        currencyExpression.Currency = "USD";
+        //        expressionTree.Children.Add(currencyExpression);
+        //        //Condition: Cart subtotal great or equal that 100$
+        //        var subtotalExpression = expressionTree.FindAvailableExpression<ConditionCartSubtotalLeast>();
+        //        subtotalExpression.SubTotal = 100;
+        //        expressionTree.Children.Add(subtotalExpression);
+        //        //Reward: Get 5% whole cart discount
+        //        var rewardExpr = expressionTree.FindAvailableExpression<RewardItemGetOfRel>();
+        //        rewardExpr.Amount = 0.5m;
+        //        expressionTree.Children.Add(rewardExpr);
 
-                promotion = (marketingController.CreatePromotion(promotion) as OkNegotiatedContentResult<webModel.Promotion>).Content;
-            }
+        //        promotion = (marketingController.CreatePromotion(promotion) as OkNegotiatedContentResult<webModel.Promotion>).Content;
+        //    }
 
-            var cacheManager = new Moq.Mock<ICacheManager<object>>();
-            var marketingEval = new BestRewardPromotionPolicy(null);
-            var context = GetPromotionEvaluationContext();
-            var result = marketingEval.EvaluatePromotion(context);
-        }
+        //    var cacheManager = new Moq.Mock<ICacheManager<object>>();
+        //    var marketingEval = new BestRewardPromotionPolicy(null);
+        //    var context = GetPromotionEvaluationContext();
+        //    var result = marketingEval.EvaluatePromotion(context);
+        //}
 
-        //[Fact]
-        public void Can_extend_marketing_promotion_expressiontree_and_create_new_dynamicpromotion()
-        {
-            var extensionManager = GetPromotionExtensionManager();
+        ////[Fact]
+        //public void Can_extend_marketing_promotion_expressiontree_and_create_new_dynamicpromotion()
+        //{
+        //    var extensionManager = GetPromotionExtensionManager();
 
-            //Register custom dynamic expression in main expression tree now it should be availabe for ui in expression builder
-            var blockExpression = extensionManager.PromotionDynamicExpressionTree as DynamicExpression;
-            var blockCatalogCondition = blockExpression.FindChildrenExpression<BlockCatalogCondition>();
-            blockCatalogCondition.AvailableChildren.Add(new ConditionItemWithTag());
+        //    //Register custom dynamic expression in main expression tree now it should be availabe for ui in expression builder
+        //    var blockExpression = extensionManager.PromotionDynamicExpressionTree as DynamicExpression;
+        //    var blockCatalogCondition = blockExpression.FindChildrenExpression<BlockCatalogCondition>();
+        //    blockCatalogCondition.AvailableChildren.Add(new ConditionItemWithTag());
 
-            var marketingController = GetMarketingController(extensionManager);
+        //    var marketingController = GetMarketingController(extensionManager);
 
-            //Create custom promotion
-            webModel.Promotion promotion = null;
-            var promoResult = (marketingController.GetPromotionById("TaggedProductDiscount") as OkNegotiatedContentResult<webModel.Promotion>);
-            if (promoResult != null)
-            {
-                promotion = promoResult.Content;
-            }
-            if (promotion == null)
-            {
-                promotion = (marketingController.GetNewDynamicPromotion() as OkNegotiatedContentResult<webModel.Promotion>).Content;
+        //    //Create custom promotion
+        //    webModel.Promotion promotion = null;
+        //    var promoResult = (marketingController.GetPromotionById("TaggedProductDiscount") as OkNegotiatedContentResult<webModel.Promotion>);
+        //    if (promoResult != null)
+        //    {
+        //        promotion = promoResult.Content;
+        //    }
+        //    if (promotion == null)
+        //    {
+        //        promotion = (marketingController.GetNewDynamicPromotion() as OkNegotiatedContentResult<webModel.Promotion>).Content;
 
-                promotion.Description = "Buy all product with tag '#FOOTBAL' with 7% discount";
-                promotion.Name = "TaggedProductDiscount";
-                promotion.Id = "TaggedProductDiscount";
+        //        promotion.Description = "Buy all product with tag '#FOOTBAL' with 7% discount";
+        //        promotion.Name = "TaggedProductDiscount";
+        //        promotion.Id = "TaggedProductDiscount";
 
-                blockExpression = promotion.DynamicExpression;
-                blockCatalogCondition = blockExpression.FindChildrenExpression<BlockCatalogCondition>();
-                var blockReward = blockExpression.FindChildrenExpression<RewardBlock>();
+        //        blockExpression = promotion.DynamicExpression;
+        //        blockCatalogCondition = blockExpression.FindChildrenExpression<BlockCatalogCondition>();
+        //        var blockReward = blockExpression.FindChildrenExpression<RewardBlock>();
 
-                var conditionExpr = blockCatalogCondition.FindAvailableExpression<ConditionItemWithTag>();
-                conditionExpr.Tags = new[] { "#FOOTBAL" };
-                blockCatalogCondition.Children.Add(conditionExpr);
+        //        var conditionExpr = blockCatalogCondition.FindAvailableExpression<ConditionItemWithTag>();
+        //        conditionExpr.Tags = new[] { "#FOOTBAL" };
+        //        blockCatalogCondition.Children.Add(conditionExpr);
 
-                var rewardExpr = blockReward.FindAvailableExpression<RewardItemGetOfRel>();
-                rewardExpr.Amount = 0.7m;
-                blockReward.Children.Add(rewardExpr);
+        //        var rewardExpr = blockReward.FindAvailableExpression<RewardItemGetOfRel>();
+        //        rewardExpr.Amount = 0.7m;
+        //        blockReward.Children.Add(rewardExpr);
 
-                promotion = (marketingController.CreatePromotion(promotion) as OkNegotiatedContentResult<webModel.Promotion>).Content;
-            }
+        //        promotion = (marketingController.CreatePromotion(promotion) as OkNegotiatedContentResult<webModel.Promotion>).Content;
+        //    }
 
-            var cacheManager = new Moq.Mock<ICacheManager<object>>();
-            var marketingEval = new BestRewardPromotionPolicy(null);
-            var context = GetPromotionEvaluationContext();
-            context.PromoEntries.First().Attributes["tag"] = "#FOOTBAL";
-            var result = marketingEval.EvaluatePromotion(context);
-        }
+        //    var cacheManager = new Moq.Mock<ICacheManager<object>>();
+        //    var marketingEval = new BestRewardPromotionPolicy(null);
+        //    var context = GetPromotionEvaluationContext();
+        //    context.PromoEntries.First().Attributes["tag"] = "#FOOTBAL";
+        //    var result = marketingEval.EvaluatePromotion(context);
+        //}
 
         [Fact]
         public void EvaluatePromotionWhenCatalogBrowsing()
@@ -194,7 +194,7 @@ namespace VirtoCommerce.MarketingModule.Test
 
         private MarketingModulePromotionController GetMarketingController(IMarketingExtensionManager extensionManager)
         {
-            var retVal = new MarketingModulePromotionController(GetMarketingService(), GetCouponService(), extensionManager, null, GetExpressionSerializer(), null, null, null, null, null, null, null);
+            var retVal = new MarketingModulePromotionController(GetMarketingService(), GetCouponService(), null, null, null, null, null, null, null, null);
             return retVal;
         }
 

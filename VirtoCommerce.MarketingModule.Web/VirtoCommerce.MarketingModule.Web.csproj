@@ -156,6 +156,7 @@
     <Compile Include="Converters\PromotionRewardConverter.cs" />
     <Compile Include="ExportImport\CsvCouponImporter.cs" />
     <Compile Include="JsonConverters\PolymorphicPromoEvalContextJsonConverter.cs" />
+    <Compile Include="JsonConverters\PromotionDynamicExpressionJsonConverter.cs" />
     <Compile Include="Model\CouponCsvImportInfo.cs" />
     <Compile Include="Model\DynamicContentListEntry.cs" />
     <Compile Include="Model\ImportRequest.cs" />
@@ -165,7 +166,6 @@
     <Compile Include="Converters\ContentFolderConverter.cs" />
     <Compile Include="Converters\ContentPlaceConverter.cs" />
     <Compile Include="Converters\ContentPublicationConverter.cs" />
-    <Compile Include="Converters\PromotionConverter.cs" />
     <Compile Include="Converters\ContentItemConverter.cs" />
     <Compile Include="ExportImport\MarketingExportImport.cs" />
     <Compile Include="Model\MarketingConstants.cs" />
@@ -173,7 +173,6 @@
     <Compile Include="Model\DynamicContentItem.cs" />
     <Compile Include="Model\DynamicContentPlace.cs" />
     <Compile Include="Model\DynamicContentPublication.cs" />
-    <Compile Include="Model\Promotion.cs" />
     <Compile Include="Model\MarketingSearchResult.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
