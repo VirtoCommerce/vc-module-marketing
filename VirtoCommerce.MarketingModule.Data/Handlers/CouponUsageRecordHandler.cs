@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using VirtoCommerce.Domain.Cart.Events;
 using VirtoCommerce.Domain.Commerce.Model;
 using VirtoCommerce.Domain.Marketing.Model;
@@ -8,16 +8,17 @@ using VirtoCommerce.Domain.Marketing.Model.Promotions.Search;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.Domain.Order.Events;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Events;
 
-namespace VirtoCommerce.MarketingModule.Data.Observers
+namespace VirtoCommerce.MarketingModule.Data.Handlers
 {
     /// <summary>
     /// Represents the logic of recording the use of coupons on both levels (Cart and Order).
     /// </summary>
-    public class CouponUsageRecordObserver : IObserver<CartChangedEvent>, IObserver<OrderChangedEvent>
+    public class CouponUsageRecordHandler : IEventHandler<CartChangedEvent>, IEventHandler<OrderChangedEvent>
     {
         private readonly IPromotionUsageService _usageService;
-        public CouponUsageRecordObserver(IPromotionUsageService usageService)
+        public CouponUsageRecordHandler(IPromotionUsageService usageService)
         {
             _usageService = usageService;
             EqualityComparer = AnonymousComparer.Create((PromotionUsage x) => string.Join(":", x.PromotionId, x.CouponCode, x.ObjectId));
@@ -25,31 +26,47 @@ namespace VirtoCommerce.MarketingModule.Data.Observers
 
         private IEqualityComparer<PromotionUsage> EqualityComparer { get; set; }
 
-        public void OnNext(OrderChangedEvent changedEvent)
+        #region Implementation of IHandler<in CartChangedEvent>
+
+        public Task Handle(CartChangedEvent message)
         {
-            //if (changedEvent.ChangeState == EntryState.Added)
-            //{
-            //    var oldUsages = new List<PromotionUsage>();
-            //    var newUsages = GetCouponUsages(changedEvent.ModifiedOrder.Id, changedEvent.ModifiedOrder);               
-            //    RecordUsages(changedEvent.ModifiedOrder.Id, oldUsages, newUsages);
-            //}
+            foreach (var changedEntry in message.ChangedEntries)
+            {
+                var oldUsages = GetCouponUsages(changedEntry.OldEntry.Id, changedEntry.OldEntry);
+                var newUsages = GetCouponUsages(changedEntry.NewEntry.Id, changedEntry.NewEntry);
+
+                if (changedEntry.EntryState == EntryState.Added)
+                {
+                    oldUsages.Clear();
+                }
+                if (changedEntry.EntryState == EntryState.Deleted)
+                {
+                    newUsages.Clear();
+                }
+                RecordUsages(changedEntry.OldEntry.Id, oldUsages, newUsages);
+            }
+            return Task.CompletedTask;
         }
 
-        public void OnNext(CartChangedEvent changedEvent)
-        {
-            //var oldUsages = GetCouponUsages(changedEvent.OrigCart.Id, changedEvent.OrigCart);
-            //var newUsages = GetCouponUsages(changedEvent.ModifiedCart.Id, changedEvent.ModifiedCart);
+        #endregion
 
-            //if (changedEvent.ChangeState == EntryState.Added)
-            //{
-            //    oldUsages.Clear();
-            //}         
-            //if (changedEvent.ChangeState == EntryState.Deleted)
-            //{
-            //    newUsages.Clear();
-            //}
-            //RecordUsages(changedEvent.OrigCart.Id, oldUsages, newUsages);
+        #region Implementation of IHandler<in OrderChangedEvent>
+
+        public Task Handle(OrderChangedEvent message)
+        {
+            foreach (var changedEntry in message.ChangedEntries)
+            {
+                if (changedEntry.EntryState == EntryState.Added)
+                {
+                    var oldUsages = new List<PromotionUsage>();
+                    var newUsages = GetCouponUsages(changedEntry.NewEntry.Id, changedEntry.NewEntry);
+                    RecordUsages(changedEntry.NewEntry.Id, oldUsages, newUsages);
+                }
+            }
+            return Task.CompletedTask;
         }
+
+        #endregion
 
         private void RecordUsages(string objectId, IEnumerable<PromotionUsage> oldUsages, IEnumerable<PromotionUsage> newUsages)
         {
@@ -78,16 +95,5 @@ namespace VirtoCommerce.MarketingModule.Data.Observers
                                                  .ToList();
             return retVal;
         }
-
-        public void OnCompleted()
-        {
-        }
-
-        public void OnError(Exception error)
-        {
-        }
-
     }
-
-    
 }
