@@ -237,7 +237,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
             ObjectContext.ExecuteStoreCommand(query);
         }
 
-        public void RemovePromotions(string[] ids)
+        public virtual void RemovePromotions(string[] ids)
         {
             const string queryPattern = @"DELETE FROM Promotion WHERE Id IN ({0})";
             var query = string.Format(queryPattern, string.Join(", ", ids.Select(x => string.Format("'{0}'", x))));
