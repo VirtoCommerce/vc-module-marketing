@@ -21,7 +21,6 @@ using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.PushNotifications;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Web.Security;
-using coreModel = VirtoCommerce.Domain.Marketing.Model;
 using webModel = VirtoCommerce.MarketingModule.Web.Model;
 
 namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
@@ -71,10 +70,10 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         /// <param name="criteria">criteria</param>
         [HttpPost]
         [Route("search")]
-        [ResponseType(typeof(GenericSearchResult<coreModel.Promotion>))]
+        [ResponseType(typeof(GenericSearchResult<Promotion>))]
         public IHttpActionResult PromotionsSearch(PromotionSearchCriteria criteria)
         {
-            var retVal = new GenericSearchResult<coreModel.Promotion>();
+            var retVal = new GenericSearchResult<Promotion>();
             //Scope bound ACL filtration
             criteria = FilterPromotionSearchCriteria(User.Identity.Name, criteria);
 
@@ -91,7 +90,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [HttpPost]
         [ResponseType(typeof(webModel.PromotionReward[]))]
         [Route("evaluate")]
-        public IHttpActionResult EvaluatePromotions(coreModel.PromotionEvaluationContext context)
+        public IHttpActionResult EvaluatePromotions(PromotionEvaluationContext context)
         {
             var retVal = _promoEvaluator.EvaluatePromotion(context);
             return Ok(retVal.Rewards.Select(x => x.ToWebModel()).ToArray());
@@ -103,7 +102,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         /// <remarks>Return a single promotion (dynamic or custom) object </remarks>
         /// <param name="id">promotion id</param>
         [HttpGet]
-        [ResponseType(typeof(coreModel.Promotion))]
+        [ResponseType(typeof(Promotion))]
         [Route("{id}")]
         public IHttpActionResult GetPromotionById(string id)
         {
@@ -126,7 +125,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         /// </summary>
         /// <remarks>Return a new dynamic promotion object with populated dynamic expression tree</remarks>
         [HttpGet]
-        [ResponseType(typeof(coreModel.Promotion))]
+        [ResponseType(typeof(Promotion))]
         [Route("new")]
         [CheckPermission(Permission = MarketingPredefinedPermissions.Create)]
         public IHttpActionResult GetNewDynamicPromotion()
@@ -141,10 +140,10 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         /// </summary>
         /// <param name="promotion">dynamic promotion object that needs to be added to the marketing system</param>
         [HttpPost]
-        [ResponseType(typeof(coreModel.Promotion))]
+        [ResponseType(typeof(Promotion))]
         [Route("")]
         [CheckPermission(Permission = MarketingPredefinedPermissions.Create)]
-        public IHttpActionResult CreatePromotion(coreModel.Promotion promotion)
+        public IHttpActionResult CreatePromotion(Promotion promotion)
         {
             var scopes = _permissionScopeService.GetObjectPermissionScopeStrings(promotion).ToArray();
             if (!_securityService.UserHasAnyPermission(User.Identity.Name, scopes, MarketingPredefinedPermissions.Create))
@@ -164,7 +163,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [ResponseType(typeof(void))]
         [Route("")]
         [CheckPermission(Permission = MarketingPredefinedPermissions.Update)]
-        public IHttpActionResult UpdatePromotions(coreModel.Promotion promotion)
+        public IHttpActionResult UpdatePromotions(Promotion promotion)
         {
             var scopes = _permissionScopeService.GetObjectPermissionScopeStrings(promotion).ToArray();
             if (!_securityService.UserHasAnyPermission(User.Identity.Name, scopes, MarketingPredefinedPermissions.Update))
@@ -191,7 +190,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
 
         [HttpPost]
         [Route("coupons/search")]
-        [ResponseType(typeof(GenericSearchResult<coreModel.Coupon>))]
+        [ResponseType(typeof(GenericSearchResult<Coupon>))]
         public IHttpActionResult SearchCoupons(CouponSearchCriteria criteria)
         {
             var searchResult = _couponService.SearchCoupons(criteria);

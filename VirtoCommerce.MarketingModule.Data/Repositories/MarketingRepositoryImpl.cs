@@ -146,8 +146,8 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
 
         public virtual PromotionEntity[] GetPromotionsByIds(string[] ids)
         {
-            var stores = PromotionStores.Where(x => ids.Contains(x.PromotionId)).ToArray();
             var retVal = Promotions.Where(x => ids.Contains(x.Id)).ToArray();
+            var stores = PromotionStores.Where(x => ids.Contains(x.PromotionId)).ToArray();
             var promotionsIdsWithCoupons = Coupons.Where(x => ids.Contains(x.PromotionId)).Select(x => x.PromotionId).Distinct().ToArray();
             foreach(var promotion in retVal)
             {
