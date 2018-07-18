@@ -144,7 +144,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
             get { return GetAsQueryable<PromotionStoreEntity>(); }
         }
 
-        public PromotionEntity[] GetPromotionsByIds(string[] ids)
+        public virtual PromotionEntity[] GetPromotionsByIds(string[] ids)
         {
             var stores = PromotionStores.Where(x => ids.Contains(x.PromotionId)).ToArray();
             var retVal = Promotions.Where(x => ids.Contains(x.Id)).ToArray();
