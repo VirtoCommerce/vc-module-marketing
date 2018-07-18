@@ -5,7 +5,7 @@ using Microsoft.Practices.Unity;
 using VirtoCommerce.Domain.Cart.Events;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.Domain.Order.Events;
-using VirtoCommerce.MarketingModule.Data.Observers;
+using VirtoCommerce.MarketingModule.Data.Handlers;
 using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.MarketingModule.Data.Services;
@@ -13,6 +13,7 @@ using VirtoCommerce.MarketingModule.Web.ExportImport;
 using VirtoCommerce.MarketingModule.Web.JsonConverters;
 using VirtoCommerce.MarketingModule.Web.Model;
 using VirtoCommerce.MarketingModule.Web.Security;
+using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.ExportImport;
@@ -76,10 +77,11 @@ namespace VirtoCommerce.MarketingModule.Web
                 _container.RegisterType<IMarketingPromoEvaluator, BestRewardPromotionPolicy>();
             }
 
+            var eventHandlerRegistrar = _container.Resolve<IHandlerRegistrar>();
             //Create order observer. record order coupon usage
-            _container.RegisterType<IObserver<OrderChangedEvent>, CouponUsageRecordObserver>("OrderCouponUsageRecordObserver");
+            eventHandlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, token) => await _container.Resolve<CouponUsageRecordHandler>().Handle(message));
             //Create cart observer. record cart coupon usage
-            _container.RegisterType<IObserver<CartChangedEvent>, CouponUsageRecordObserver>("CartCouponUsageRecordObserver");
+            eventHandlerRegistrar.RegisterHandler<CartChangedEvent>(async (message, token) => await _container.Resolve<CouponUsageRecordHandler>().Handle(message));
 
             AbstractTypeFactory<DynamicPromotion>.RegisterType<DynamicPromotion>().WithFactory(() => _container.Resolve<DynamicPromotion>());
 
