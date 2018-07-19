@@ -14,7 +14,7 @@ namespace VirtoCommerce.MarketingModule.Web.JsonConverters
 {
     public class PromotionDynamicExpressionJsonConverter : JsonConverter
     {
-        private static Type[] _knowTypes = new[] {typeof(coreModel.Promotion), typeof(DynamicPromotion)};
+        private static Type[] _knownTypes = { typeof(coreModel.Promotion), typeof(DynamicPromotion) };
 
         private readonly IMarketingExtensionManager _marketingExtensionManager;
 
@@ -33,7 +33,7 @@ namespace VirtoCommerce.MarketingModule.Web.JsonConverters
 
         public override bool CanConvert(Type objectType)
         {
-            return _knowTypes.Any(x => x.IsAssignableFrom(objectType));
+            return _knownTypes.Any(x => x.IsAssignableFrom(objectType));
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
@@ -66,7 +66,7 @@ namespace VirtoCommerce.MarketingModule.Web.JsonConverters
             var promoType = jObj["type"].Value<string>();
             if (promoType.EqualsInvariant(typeof(DynamicPromotion).Name))
             {
-                result = AbstractTypeFactory<DynamicPromotion>.TryCreateInstance();                
+                result = AbstractTypeFactory<DynamicPromotion>.TryCreateInstance();
             }
             else
             {
@@ -116,37 +116,37 @@ namespace VirtoCommerce.MarketingModule.Web.JsonConverters
             coreModel.PromoDynamicExpressionTree result = null;
 
             var dynamicPromotion = value as DynamicPromotion;
-            if (dynamicPromotion != null && dynamicPromotion.PredicateVisualTreeSerialized == null && dynamicPromotion.PredicateSerialized == null 
-                && dynamicPromotion.RewardsSerialized == null && !dynamicPromotion.IsTransient())
+            if (dynamicPromotion?.IsTransient() == true ||
+                dynamicPromotion?.PredicateVisualTreeSerialized != null && dynamicPromotion?.PredicateSerialized != null && dynamicPromotion?.RewardsSerialized != null)
             {
-                return result;
-            }
-
-            var etalonEpressionTree = _marketingExtensionManager.PromotionDynamicExpressionTree;
-            if (etalonEpressionTree != null)
-            {
-                result = etalonEpressionTree;
-
-                if (!string.IsNullOrEmpty(dynamicPromotion?.PredicateVisualTreeSerialized))
+                var etalonEpressionTree = _marketingExtensionManager.PromotionDynamicExpressionTree;
+                if (etalonEpressionTree != null)
                 {
-                    result = JsonConvert.DeserializeObject<coreModel.PromoDynamicExpressionTree>(dynamicPromotion.PredicateVisualTreeSerialized);
+                    result = etalonEpressionTree;
 
-                    // Copy available elements from etalon because they not persisted
-                    var sourceBlocks = ((DynamicExpression)etalonEpressionTree).Traverse(x => x.Children);
-                    var targetBlocks = ((DynamicExpression)result).Traverse(x => x.Children).ToList();
-
-                    foreach (var sourceBlock in sourceBlocks)
+                    if (!string.IsNullOrEmpty(dynamicPromotion?.PredicateVisualTreeSerialized))
                     {
-                        foreach (var targetBlock in targetBlocks.Where(x => x.Id == sourceBlock.Id))
-                        {
-                            targetBlock.AvailableChildren = sourceBlock.AvailableChildren;
-                        }
-                    }
+                        result = JsonConvert.DeserializeObject<coreModel.PromoDynamicExpressionTree>(dynamicPromotion
+                            .PredicateVisualTreeSerialized);
 
-                    // Copy available elements from etalon
-                    result.AvailableChildren = etalonEpressionTree.AvailableChildren;
+                        // Copy available elements from etalon because they not persisted
+                        var sourceBlocks = ((DynamicExpression)etalonEpressionTree).Traverse(x => x.Children);
+                        var targetBlocks = ((DynamicExpression)result).Traverse(x => x.Children).ToList();
+
+                        foreach (var sourceBlock in sourceBlocks)
+                        {
+                            foreach (var targetBlock in targetBlocks.Where(x => x.Id == sourceBlock.Id))
+                            {
+                                targetBlock.AvailableChildren = sourceBlock.AvailableChildren;
+                            }
+                        }
+
+                        // Copy available elements from etalon
+                        result.AvailableChildren = etalonEpressionTree.AvailableChildren;
+                    }
                 }
             }
+
             return result;
         }
 
