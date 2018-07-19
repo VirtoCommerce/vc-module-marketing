@@ -114,13 +114,20 @@ namespace VirtoCommerce.MarketingModule.Web.JsonConverters
         private coreModel.PromoDynamicExpressionTree GetDynamicPromotion(object value)
         {
             coreModel.PromoDynamicExpressionTree result = null;
+
             var dynamicPromotion = value as DynamicPromotion;
+            if (dynamicPromotion != null && dynamicPromotion.PredicateVisualTreeSerialized == null && dynamicPromotion.PredicateSerialized == null 
+                && dynamicPromotion.RewardsSerialized == null && !dynamicPromotion.IsTransient())
+            {
+                return result;
+            }
+
             var etalonEpressionTree = _marketingExtensionManager.PromotionDynamicExpressionTree;
-            if (dynamicPromotion != null && etalonEpressionTree != null)
+            if (etalonEpressionTree != null)
             {
                 result = etalonEpressionTree;
 
-                if (!string.IsNullOrEmpty(dynamicPromotion.PredicateVisualTreeSerialized))
+                if (!string.IsNullOrEmpty(dynamicPromotion?.PredicateVisualTreeSerialized))
                 {
                     result = JsonConvert.DeserializeObject<coreModel.PromoDynamicExpressionTree>(dynamicPromotion.PredicateVisualTreeSerialized);
 

@@ -78,9 +78,15 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
             criteria = FilterPromotionSearchCriteria(User.Identity.Name, criteria);
 
             var promoSearchResult = _promoSearchService.SearchPromotions(criteria);
+            foreach (var promotion in promoSearchResult.Results.OfType<DynamicPromotion>())
+            {
+                promotion.PredicateVisualTreeSerialized = promotion.PredicateSerialized =
+                    promotion.RewardsSerialized = null;
+            }
+
             retVal.TotalCount = promoSearchResult.TotalCount;
             retVal.Results = promoSearchResult.Results.ToList();
-            return Ok(retVal);
+            return Ok(retVal); 
         }
 
         /// <summary>
