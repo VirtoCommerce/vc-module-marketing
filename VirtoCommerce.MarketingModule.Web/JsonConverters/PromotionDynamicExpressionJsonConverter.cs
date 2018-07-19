@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Linq;
 using VirtoCommerce.Domain.Common;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Promotions;
@@ -126,8 +126,7 @@ namespace VirtoCommerce.MarketingModule.Web.JsonConverters
 
                     if (!string.IsNullOrEmpty(dynamicPromotion?.PredicateVisualTreeSerialized))
                     {
-                        result = JsonConvert.DeserializeObject<coreModel.PromoDynamicExpressionTree>(dynamicPromotion
-                            .PredicateVisualTreeSerialized);
+                        result = JsonConvert.DeserializeObject<coreModel.PromoDynamicExpressionTree>(dynamicPromotion.PredicateVisualTreeSerialized);
 
                         // Copy available elements from etalon because they not persisted
                         var sourceBlocks = ((DynamicExpression)etalonEpressionTree).Traverse(x => x.Children);
