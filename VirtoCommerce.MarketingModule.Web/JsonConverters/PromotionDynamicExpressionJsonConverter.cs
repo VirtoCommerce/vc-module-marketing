@@ -3,6 +3,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using VirtoCommerce.Domain.Common;
+using VirtoCommerce.Domain.Marketing.Model.Promotions.Search;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.Platform.Core.Common;
@@ -14,7 +15,7 @@ namespace VirtoCommerce.MarketingModule.Web.JsonConverters
 {
     public class PromotionDynamicExpressionJsonConverter : JsonConverter
     {
-        private static Type[] _knownTypes = { typeof(coreModel.Promotion), typeof(DynamicPromotion) };
+        private static Type[] _knownTypes = { typeof(coreModel.Promotion), typeof(DynamicPromotion), typeof(PromotionSearchCriteria) };
 
         private readonly IMarketingExtensionManager _marketingExtensionManager;
 
@@ -63,7 +64,7 @@ namespace VirtoCommerce.MarketingModule.Web.JsonConverters
             object result;
             var jObj = JObject.Load(reader);
 
-            var promoType = jObj["type"].Value<string>();
+            var promoType = jObj["type"]?.Value<string>();
             if (promoType.EqualsInvariant(typeof(DynamicPromotion).Name))
             {
                 result = AbstractTypeFactory<DynamicPromotion>.TryCreateInstance();

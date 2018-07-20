@@ -70,7 +70,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         /// <param name="criteria">criteria</param>
         [HttpPost]
         [Route("search")]
-        [ResponseType(typeof(GenericSearchResult<Promotion>))]
+        [ResponseType(typeof(GenericSearchResult<DynamicPromotion>))]
         public IHttpActionResult PromotionsSearch(PromotionSearchCriteria criteria)
         {
             var retVal = new GenericSearchResult<Promotion>();
@@ -177,7 +177,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
             {
                 throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
-            _promotionService.SavePromotions(new [] { promotion });
+            _promotionService.SavePromotions(new[] { promotion });
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -190,7 +190,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Route("")]
         [CheckPermission(Permission = MarketingPredefinedPermissions.Delete)]
         public IHttpActionResult DeletePromotions([FromUri] string[] ids)
-        {       
+        {
             _promotionService.DeletePromotions(ids);
             return StatusCode(HttpStatusCode.NoContent);
         }
