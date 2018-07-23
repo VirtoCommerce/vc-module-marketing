@@ -18,9 +18,9 @@ namespace VirtoCommerce.MarketingModule.Data.Promotions
         public DynamicPromotion(IExpressionSerializer expressionSerializer, ICouponService couponService, IPromotionUsageService usageService)
         {
             this.ExpressionSerializer = expressionSerializer;
-            _couponService  = couponService;
+            _couponService = couponService;
             _usageService = usageService;
-        }      
+        }
         private Func<IEvaluationContext, bool> _condition;
         private PromotionReward[] _rewards;
 
@@ -32,11 +32,8 @@ namespace VirtoCommerce.MarketingModule.Data.Promotions
 
         protected IExpressionSerializer ExpressionSerializer { get; set; }
 
-        [JsonIgnore]
         public string PredicateSerialized { get; set; }
-        [JsonIgnore]
         public string PredicateVisualTreeSerialized { get; set; }
-        [JsonIgnore]
         public string RewardsSerialized { get; set; }
 
         protected Func<IEvaluationContext, bool> Condition => _condition ?? (_condition = ExpressionSerializer.DeserializeExpression<Func<IEvaluationContext, bool>>(PredicateSerialized));
@@ -53,7 +50,7 @@ namespace VirtoCommerce.MarketingModule.Data.Promotions
             }
 
             IEnumerable<Coupon> validCoupons = null;
-            if(HasCoupons)
+            if (HasCoupons)
             {
                 validCoupons = FindValidCoupons(promoContext.Coupons);
             }
@@ -102,7 +99,7 @@ namespace VirtoCommerce.MarketingModule.Data.Promotions
                 catalogItemReward.ProductId = promoContext.PromoEntry.ProductId;
             }
         }
-     
+
         //Leave this method for back compatibility
         [Obsolete]
         protected virtual bool CheckCouponIsValid(string couponCode)

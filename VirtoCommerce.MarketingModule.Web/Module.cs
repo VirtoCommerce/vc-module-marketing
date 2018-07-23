@@ -11,7 +11,6 @@ using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.MarketingModule.Data.Services;
 using VirtoCommerce.MarketingModule.Web.ExportImport;
 using VirtoCommerce.MarketingModule.Web.JsonConverters;
-using VirtoCommerce.MarketingModule.Web.Model;
 using VirtoCommerce.MarketingModule.Web.Security;
 using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
@@ -60,7 +59,7 @@ namespace VirtoCommerce.MarketingModule.Web
             _container.RegisterType<IPromotionUsageService, PromotionUsageService>();
             _container.RegisterType<IMarketingDynamicContentEvaluator, DefaultDynamicContentEvaluatorImpl>();
             _container.RegisterType<IDynamicContentService, DynamicContentServiceImpl>();
-          
+
             _container.RegisterType<IPromotionSearchService, MarketingSearchServiceImpl>();
             _container.RegisterType<ICouponService, CouponService>();
             _container.RegisterType<IDynamicContentSearchService, MarketingSearchServiceImpl>();
@@ -68,7 +67,7 @@ namespace VirtoCommerce.MarketingModule.Web
 
             var settingsManager = _container.Resolve<ISettingsManager>();
             var promotionCombinePolicy = settingsManager.GetValue("Marketing.Promotion.CombinePolicy", "BestReward");
-            if(promotionCombinePolicy.EqualsInvariant("CombineStackable"))
+            if (promotionCombinePolicy.EqualsInvariant("CombineStackable"))
             {
                 _container.RegisterType<IMarketingPromoEvaluator, CombineStackablePromotionPolicy>();
             }
@@ -111,7 +110,6 @@ namespace VirtoCommerce.MarketingModule.Web
 
             //Next lines allow to use polymorph types in API controller methods
             var httpConfiguration = _container.Resolve<HttpConfiguration>();
-            httpConfiguration.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new PolymorphicPromoEvalContextJsonConverter());
             httpConfiguration.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new PromotionDynamicExpressionJsonConverter(_container.Resolve<IMarketingExtensionManager>(),
                 _container.Resolve<IExpressionSerializer>()));
         }

@@ -3,19 +3,18 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using VirtoCommerce.Domain.Common;
+using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Model.Promotions.Search;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Serialization;
-using coreModel = VirtoCommerce.Domain.Marketing.Model;
-
 
 namespace VirtoCommerce.MarketingModule.Web.JsonConverters
 {
     public class PromotionDynamicExpressionJsonConverter : JsonConverter
     {
-        private static Type[] _knownTypes = { typeof(coreModel.Promotion), typeof(DynamicPromotion), typeof(PromotionSearchCriteria) };
+        private static Type[] _knownTypes = { typeof(Promotion), typeof(DynamicPromotion), typeof(PromotionSearchCriteria), typeof(PromotionEvaluationContext) };
 
         private readonly IMarketingExtensionManager _marketingExtensionManager;
 
@@ -44,16 +43,27 @@ namespace VirtoCommerce.MarketingModule.Web.JsonConverters
 
             // Workaround for UI: DynamicPromotion type is hardcoded in HTML template
             Type promotionType = value.GetType();
-            var dynamicPromotionType = typeof(DynamicPromotion);
-            var typeName = dynamicPromotionType.IsAssignableFrom(promotionType)
-                ? dynamicPromotionType.Name
-                : promotionType.Name;
-            jo.Add("type", typeName);
-
-            coreModel.PromoDynamicExpressionTree expressionTree = GetDynamicPromotion(value);
-            if (expressionTree != null)
+            if (typeof(Promotion).IsAssignableFrom(promotionType))
             {
-                jo.Add("dynamicExpression", JToken.FromObject(expressionTree, serializer));
+                var dynamicPromotionType = typeof(DynamicPromotion);
+                var typeName = dynamicPromotionType.IsAssignableFrom(promotionType)
+                    ? dynamicPromotionType.Name
+                    : promotionType.Name;
+                jo.Add("type", typeName);
+
+                PromoDynamicExpressionTree expressionTree = GetDynamicPromotion(value);
+                if (expressionTree != null)
+                {
+                    jo.Add("dynamicExpression", JToken.FromObject(expressionTree, serializer));
+                }
+
+                //manually remove these props because using JsonIgnore breaks import/export
+                var ignoredPropertysNames = new[] { "predicateSerialized", "predicateVisualTreeSerialized", "rewardsSerialized" };
+                var ignoredProperties = jo.Children<JProperty>().Where(x => ignoredPropertysNames.Contains(x.Name)).ToList();
+                foreach (var property in ignoredProperties)
+                {
+                    property.Remove();
+                }
             }
 
             jo.WriteTo(writer);
@@ -68,6 +78,10 @@ namespace VirtoCommerce.MarketingModule.Web.JsonConverters
             if (promoType.EqualsInvariant(typeof(DynamicPromotion).Name))
             {
                 result = AbstractTypeFactory<DynamicPromotion>.TryCreateInstance();
+            }
+            else if (typeof(PromotionEvaluationContext).IsAssignableFrom(objectType))
+            {
+                result = AbstractTypeFactory<PromotionEvaluationContext>.TryCreateInstance();
             }
             else
             {
@@ -91,7 +105,7 @@ namespace VirtoCommerce.MarketingModule.Web.JsonConverters
         private void PopulateDynamicExpression(DynamicPromotion dynamicPromotion, JObject jObj)
         {
             var dynamicExpressionToken = jObj["dynamicExpression"];
-            var dynamicExpression = dynamicExpressionToken?.ToObject<coreModel.PromoDynamicExpressionTree>();
+            var dynamicExpression = dynamicExpressionToken?.ToObject<PromoDynamicExpressionTree>();
             if (dynamicExpression?.Children != null)
             {
                 var conditionExpression = dynamicExpression.GetConditionExpression();
@@ -112,9 +126,9 @@ namespace VirtoCommerce.MarketingModule.Web.JsonConverters
             }
         }
 
-        private coreModel.PromoDynamicExpressionTree GetDynamicPromotion(object value)
+        private PromoDynamicExpressionTree GetDynamicPromotion(object value)
         {
-            coreModel.PromoDynamicExpressionTree result = null;
+            PromoDynamicExpressionTree result = null;
 
             var dynamicPromotion = value as DynamicPromotion;
             if (dynamicPromotion?.IsTransient() == true ||
@@ -127,7 +141,7 @@ namespace VirtoCommerce.MarketingModule.Web.JsonConverters
 
                     if (!string.IsNullOrEmpty(dynamicPromotion?.PredicateVisualTreeSerialized))
                     {
-                        result = JsonConvert.DeserializeObject<coreModel.PromoDynamicExpressionTree>(dynamicPromotion.PredicateVisualTreeSerialized);
+                        result = JsonConvert.DeserializeObject<PromoDynamicExpressionTree>(dynamicPromotion.PredicateVisualTreeSerialized);
 
                         // Copy available elements from etalon because they not persisted
                         var sourceBlocks = ((DynamicExpression)etalonEpressionTree).Traverse(x => x.Children);
