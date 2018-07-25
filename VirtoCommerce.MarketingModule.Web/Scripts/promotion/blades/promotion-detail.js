@@ -19,7 +19,7 @@ angular.module('virtoCommerce.marketingModule')
                     marketing_res_promotions.getNew(initializeBlade);
                 }
             } else {
-                marketing_res_promotions.get({ id: blade.currentEntityId }, function (data) {
+                marketing_res_promotions.get({ id: blade.currentEntityId, code: blade.currentEntityCode }, function (data) {
                     initializeBlade(data);
                     if (parentRefresh) {
                         blade.parentBlade.refresh();
@@ -176,12 +176,14 @@ angular.module('virtoCommerce.marketingModule')
             });
 
             _.each(expressionBlock.excludingProductIds, function (id) {
-                // load each product to display its name in UI
+                // load each product to display its name and code in UI
                 var excludingItem = { id: 'ExcludingProductCondition', productId: id };
                 expressionBlock.children.push(excludingItem); // categoryName
                 var promise = items.query({ ids: [id], respGroup: 'ItemInfo' }, function (data) {
-                    if (_.any(data))
+                    if (_.any(data)) {
                         excludingItem.productName = data[0].name;
+                        excludingItem.productCode = data[0].code;
+                    }
                 }).$promise;
                 blade.expressionPromises.push(promise);
             });
