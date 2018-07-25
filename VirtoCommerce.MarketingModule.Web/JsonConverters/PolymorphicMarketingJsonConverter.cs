@@ -12,7 +12,7 @@ using VirtoCommerce.Platform.Core.Serialization;
 
 namespace VirtoCommerce.MarketingModule.Web.JsonConverters
 {
-    public class PromotionDynamicExpressionJsonConverter : JsonConverter
+    public class PolymorphicMarketingJsonConverter : JsonConverter
     {
         private static Type[] _knownTypes = { typeof(Promotion), typeof(DynamicPromotion), typeof(PromotionSearchCriteria), typeof(PromotionEvaluationContext) };
 
@@ -20,7 +20,7 @@ namespace VirtoCommerce.MarketingModule.Web.JsonConverters
 
         private readonly IExpressionSerializer _expressionSerializer;
 
-        public PromotionDynamicExpressionJsonConverter(IMarketingExtensionManager marketingExtensionManager, IExpressionSerializer expressionSerializer)
+        public PolymorphicMarketingJsonConverter(IMarketingExtensionManager marketingExtensionManager, IExpressionSerializer expressionSerializer)
         {
             _marketingExtensionManager = marketingExtensionManager;
             _expressionSerializer = expressionSerializer;
@@ -78,10 +78,6 @@ namespace VirtoCommerce.MarketingModule.Web.JsonConverters
             if (promoType.EqualsInvariant(typeof(DynamicPromotion).Name))
             {
                 result = AbstractTypeFactory<DynamicPromotion>.TryCreateInstance();
-            }
-            else if (typeof(PromotionEvaluationContext).IsAssignableFrom(objectType))
-            {
-                result = AbstractTypeFactory<PromotionEvaluationContext>.TryCreateInstance();
             }
             else
             {

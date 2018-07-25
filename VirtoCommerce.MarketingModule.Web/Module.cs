@@ -110,7 +110,7 @@ namespace VirtoCommerce.MarketingModule.Web
 
             //Next lines allow to use polymorph types in API controller methods
             var httpConfiguration = _container.Resolve<HttpConfiguration>();
-            httpConfiguration.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new PromotionDynamicExpressionJsonConverter(_container.Resolve<IMarketingExtensionManager>(),
+            httpConfiguration.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new PolymorphicMarketingJsonConverter(_container.Resolve<IMarketingExtensionManager>(),
                 _container.Resolve<IExpressionSerializer>()));
         }
 
