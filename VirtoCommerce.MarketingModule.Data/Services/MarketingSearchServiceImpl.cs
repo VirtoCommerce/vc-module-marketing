@@ -29,27 +29,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             var retVal = new GenericSearchResult<coreModel.Promotion>();
             using (var repository = _repositoryFactory())
             {
-                var query = GetPromotionsQuery(repository);
-
-                if (!string.IsNullOrEmpty(criteria.Store))
-                {
-                    query = query.Where(x => !x.Stores.Any() || x.Stores.Any(s => s.StoreId == criteria.Store));
-                }
-
-                if (!criteria.StoreIds.IsNullOrEmpty())
-                {
-                    query = query.Where(x => !x.Stores.Any() || x.Stores.Any(s => criteria.StoreIds.Contains(s.StoreId)));
-                }
-
-                if (criteria.OnlyActive)
-                {
-                    var now = DateTime.UtcNow;
-                    query = query.Where(x => x.IsActive && (x.StartDate == null || now >= x.StartDate) && (x.EndDate == null || x.EndDate >= now));
-                }
-                if (!string.IsNullOrEmpty(criteria.Keyword))
-                {
-                    query = query.Where(x => x.Name.Contains(criteria.Keyword) || x.Description.Contains(criteria.Keyword));
-                }
+                var query = GetPromotionsQuery(repository, criteria);
 
                 var sortInfos = criteria.SortInfos;
                 if (sortInfos.IsNullOrEmpty())
@@ -68,9 +48,31 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             return retVal;
         }
 
-        protected virtual IQueryable<Model.PromotionEntity> GetPromotionsQuery(IMarketingRepository repository)
+        protected virtual IQueryable<Model.PromotionEntity> GetPromotionsQuery(IMarketingRepository repository, PromotionSearchCriteria criteria)
         {
-            return repository.Promotions;
+            var query = repository.Promotions;
+
+            if (!string.IsNullOrEmpty(criteria.Store))
+            {
+                query = query.Where(x => !x.Stores.Any() || x.Stores.Any(s => s.StoreId == criteria.Store));
+            }
+
+            if (!criteria.StoreIds.IsNullOrEmpty())
+            {
+                query = query.Where(x => !x.Stores.Any() || x.Stores.Any(s => criteria.StoreIds.Contains(s.StoreId)));
+            }
+
+            if (criteria.OnlyActive)
+            {
+                var now = DateTime.UtcNow;
+                query = query.Where(x => x.IsActive && (x.StartDate == null || now >= x.StartDate) && (x.EndDate == null || x.EndDate >= now));
+            }
+            if (!string.IsNullOrEmpty(criteria.Keyword))
+            {
+                query = query.Where(x => x.Name.Contains(criteria.Keyword) || x.Description.Contains(criteria.Keyword));
+            }
+
+            return query;
         }
 
         #endregion
