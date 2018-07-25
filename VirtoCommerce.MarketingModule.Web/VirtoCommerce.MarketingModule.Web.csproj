@@ -94,9 +94,8 @@
       <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Omu.ValueInjecter, Version=2.3.3.0, Culture=neutral, PublicKeyToken=c7694541b0ac80e4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -122,11 +121,11 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="VirtoCommerce.Domain, Version=2.24.14.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.Domain.2.24.14\lib\net461\VirtoCommerce.Domain.dll</HintPath>
+    <Reference Include="VirtoCommerce.Domain, Version=2.25.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.Domain.2.25.5\lib\net461\VirtoCommerce.Domain.dll</HintPath>
     </Reference>
-    <Reference Include="VirtoCommerce.Platform.Core, Version=2.13.15.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.Platform.Core.2.13.15\lib\net461\VirtoCommerce.Platform.Core.dll</HintPath>
+    <Reference Include="VirtoCommerce.Platform.Core, Version=2.13.26.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.Platform.Core.2.13.26\lib\net461\VirtoCommerce.Platform.Core.dll</HintPath>
     </Reference>
     <Reference Include="VirtoCommerce.Platform.Core.Web, Version=2.13.15.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VirtoCommerce.Platform.Core.Web.2.13.15\lib\net461\VirtoCommerce.Platform.Core.Web.dll</HintPath>
@@ -156,7 +155,7 @@
     <Compile Include="Controllers\Api\MarketingModulePromotionController.cs" />
     <Compile Include="Converters\PromotionRewardConverter.cs" />
     <Compile Include="ExportImport\CsvCouponImporter.cs" />
-    <Compile Include="JsonConverters\PolymorphicPromoEvalContextJsonConverter.cs" />
+    <Compile Include="JsonConverters\PolymorphicMarketingJsonConverter.cs" />
     <Compile Include="Model\CouponCsvImportInfo.cs" />
     <Compile Include="Model\DynamicContentListEntry.cs" />
     <Compile Include="Model\ImportRequest.cs" />
@@ -166,7 +165,6 @@
     <Compile Include="Converters\ContentFolderConverter.cs" />
     <Compile Include="Converters\ContentPlaceConverter.cs" />
     <Compile Include="Converters\ContentPublicationConverter.cs" />
-    <Compile Include="Converters\PromotionConverter.cs" />
     <Compile Include="Converters\ContentItemConverter.cs" />
     <Compile Include="ExportImport\MarketingExportImport.cs" />
     <Compile Include="Model\MarketingConstants.cs" />
@@ -174,7 +172,6 @@
     <Compile Include="Model\DynamicContentItem.cs" />
     <Compile Include="Model\DynamicContentPlace.cs" />
     <Compile Include="Model\DynamicContentPublication.cs" />
-    <Compile Include="Model\Promotion.cs" />
     <Compile Include="Model\MarketingSearchResult.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -238,7 +235,9 @@
     <Content Include="Scripts\promotion\widgets\couponsWidget.js" />
     <Content Include="Scripts\promotion\widgets\couponsWidget.tpl.html" />
     <Content Include="Scripts\promotion\widgets\dashboard.js" />
-    <None Include="web.config" />
+    <None Include="web.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="app.config" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>

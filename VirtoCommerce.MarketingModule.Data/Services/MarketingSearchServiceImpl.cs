@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Marketing.Model.DynamicContent.Search;
 using VirtoCommerce.Domain.Marketing.Model.Promotions.Search;
 using VirtoCommerce.Domain.Marketing.Services;
-using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.Serialization;
 using coreModel = VirtoCommerce.Domain.Marketing.Model;
 
 namespace VirtoCommerce.MarketingModule.Data.Services
@@ -27,25 +24,12 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         }
 
         #region IPromotionSearchService Members
-        public GenericSearchResult<coreModel.Promotion> SearchPromotions(PromotionSearchCriteria criteria)
+        public virtual GenericSearchResult<coreModel.Promotion> SearchPromotions(PromotionSearchCriteria criteria)
         {
             var retVal = new GenericSearchResult<coreModel.Promotion>();
             using (var repository = _repositoryFactory())
             {
-                var query = repository.Promotions;
-                if (!string.IsNullOrEmpty(criteria.Store))
-                {
-                    query = query.Where(x => x.StoreId == criteria.Store);
-                }
-                if (criteria.OnlyActive)
-                {
-                    var now = DateTime.UtcNow;
-                    query = query.Where(x => x.IsActive && (x.StartDate == null || now >= x.StartDate) && (x.EndDate == null || x.EndDate >= now));                                                    
-                }
-                if (!string.IsNullOrEmpty(criteria.Keyword))
-                {
-                    query = query.Where(x => x.Name.Contains(criteria.Keyword) || x.Description.Contains(criteria.Keyword));
-                }
+                var query = GetPromotionsQuery(repository, criteria);
 
                 var sortInfos = criteria.SortInfos;
                 if (sortInfos.IsNullOrEmpty())
@@ -63,6 +47,34 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             }
             return retVal;
         }
+
+        protected virtual IQueryable<Model.PromotionEntity> GetPromotionsQuery(IMarketingRepository repository, PromotionSearchCriteria criteria)
+        {
+            var query = repository.Promotions;
+
+            if (!string.IsNullOrEmpty(criteria.Store))
+            {
+                query = query.Where(x => !x.Stores.Any() || x.Stores.Any(s => s.StoreId == criteria.Store));
+            }
+
+            if (!criteria.StoreIds.IsNullOrEmpty())
+            {
+                query = query.Where(x => !x.Stores.Any() || x.Stores.Any(s => criteria.StoreIds.Contains(s.StoreId)));
+            }
+
+            if (criteria.OnlyActive)
+            {
+                var now = DateTime.UtcNow;
+                query = query.Where(x => x.IsActive && (x.StartDate == null || now >= x.StartDate) && (x.EndDate == null || x.EndDate >= now));
+            }
+            if (!string.IsNullOrEmpty(criteria.Keyword))
+            {
+                query = query.Where(x => x.Name.Contains(criteria.Keyword) || x.Description.Contains(criteria.Keyword));
+            }
+
+            return query;
+        }
+
         #endregion
 
         #region IDynamicContentSearchService Members
@@ -182,7 +194,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 retVal.TotalCount = query.Count();
 
                 var folderIds = query.Select(x => x.Id).ToArray();
-                retVal.Results = _dynamicContentService.GetFoldersByIds(folderIds);               
+                retVal.Results = _dynamicContentService.GetFoldersByIds(folderIds);
             }
             return retVal;
         }

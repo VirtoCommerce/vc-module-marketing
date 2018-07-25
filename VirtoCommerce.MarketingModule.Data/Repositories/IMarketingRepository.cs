@@ -15,6 +15,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
         IQueryable<DynamicContentPublishingGroupEntity> PublishingGroups { get; }
         IQueryable<PublishingGroupContentItemEntity> PublishingGroupContentItems { get; }
         IQueryable<PublishingGroupContentPlaceEntity> PublishingGroupContentPlaces { get; }
+        IQueryable<PromotionStoreEntity> PromotionStores { get; }
 
         PromotionEntity[] GetPromotionsByIds(string[] ids);       
         DynamicContentFolderEntity[] GetContentFoldersByIds(string[] ids);

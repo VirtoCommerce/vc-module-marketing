@@ -67,6 +67,21 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
 
             progressInfo.Description = String.Format("{0} promotions importing...", backupObject.Promotions.Count());
             progressCallback(progressInfo);
+
+            //legacy promotion compatability
+            foreach (var promotion in backupObject.Promotions)
+            {
+                if (promotion.StoreIds.IsNullOrEmpty())
+                {
+                    promotion.StoreIds = new List<string>();
+                }
+
+                if (!promotion.Store.IsNullOrEmpty() && !promotion.StoreIds.Contains(promotion.Store))
+                {
+                    promotion.StoreIds.Add(promotion.Store);
+                }
+            }
+
             _promotionService.SavePromotions(backupObject.Promotions.ToArray());
 
             progressInfo.Description = String.Format("{0} folders importing...", backupObject.ContentFolders.Count());
@@ -116,7 +131,7 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
 
             progressInfo.Description = String.Format("{0} promotions loading...", allPromotions.Count());
             progressCallback(progressInfo);
-            result.Promotions = _promotionService.GetPromotionsByIds(allPromotions.Select(x=>x.Id).ToArray());
+            result.Promotions = _promotionService.GetPromotionsByIds(allPromotions.Select(x => x.Id).ToArray());
 
             progressInfo.Description = "Search dynamic content objects...";
             progressCallback(progressInfo);
@@ -141,7 +156,7 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
             progressCallback(progressInfo);
             var couponsTotal = _couponService.SearchCoupons(new CouponSearchCriteria { Take = 0 }).TotalCount;
             var pageSize = 500;
-            Paginate(couponsTotal, pageSize, (x) => 
+            Paginate(couponsTotal, pageSize, (x) =>
             {
                 progressInfo.Description = String.Format($"Loading coupons: {Math.Min(x * pageSize, couponsTotal)} of {couponsTotal} loaded");
                 progressCallback(progressInfo);

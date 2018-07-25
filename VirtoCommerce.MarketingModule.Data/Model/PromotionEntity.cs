@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.Platform.Core.Common;
@@ -9,33 +11,29 @@ namespace VirtoCommerce.MarketingModule.Data.Model
 {
     public class PromotionEntity : AuditableEntity
     {
-		public PromotionEntity()
-		{
-        }
+        [StringLength(128)]
+        public string StoreId { get; set; }
 
-		[StringLength(128)]
-		public string StoreId { get; set; }
-
-		[StringLength(128)]
-		public string CatalogId { get; set; }
+        [StringLength(128)]
+        public string CatalogId { get; set; }
 
         [Required]
-		[StringLength(128)]
-		public string Name { get; set; }
+        [StringLength(128)]
+        public string Name { get; set; }
 
-     	[StringLength(1024)]
-		public string Description { get; set; }
+        [StringLength(1024)]
+        public string Description { get; set; }
 
-		public bool IsActive { get; set; }
+        public bool IsActive { get; set; }
 
-		[Required]
-		public DateTime StartDate { get; set; }
+        [Required]
+        public DateTime StartDate { get; set; }
 
-		public DateTime? EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
-		public int Priority { get; set; }
+        public int Priority { get; set; }
 
-		public bool IsExclusive { get; set; }
+        public bool IsExclusive { get; set; }
         public bool IsAllowCombiningWithSelf { get; set; }
 
         [NotMapped]
@@ -43,13 +41,15 @@ namespace VirtoCommerce.MarketingModule.Data.Model
 
         public string PredicateSerialized { get; set; }
 
-		public string PredicateVisualTreeSerialized { get; set; }
+        public string PredicateVisualTreeSerialized { get; set; }
 
-		public string RewardsSerialized { get; set; }
+        public string RewardsSerialized { get; set; }
 
-		public int PerCustomerLimit { get; set; }
+        public int PerCustomerLimit { get; set; }
 
-		public int TotalLimit { get; set; }
+        public int TotalLimit { get; set; }
+
+        public virtual ObservableCollection<PromotionStoreEntity> Stores { get; set; } = new NullCollection<PromotionStoreEntity>();
 
         public virtual Promotion ToModel(DynamicPromotion promotion)
         {
@@ -77,7 +77,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             promotion.MaxPersonalUsageCount = this.PerCustomerLimit;
             promotion.MaxUsageCount = this.TotalLimit;
             promotion.MaxPersonalUsageCount = this.PerCustomerLimit;
-            promotion.HasCoupons = this.HasCoupons;         
+            promotion.HasCoupons = this.HasCoupons;
 
 
             if (!string.IsNullOrEmpty(promotion.PredicateVisualTreeSerialized))
@@ -89,8 +89,13 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             {
                 //Temporary back data compatibility fix for serialized expressions
                 promotion.PredicateSerialized = promotion.PredicateSerialized.Replace("VirtoCommerce.DynamicExpressionModule.", "VirtoCommerce.DynamicExpressionsModule.");
-            }  
-                       
+            }
+
+            if (this.Stores != null)
+            {
+                promotion.StoreIds = this.Stores.Select(x => x.StoreId).ToList();
+            }
+
             return promotion;
         }
 
@@ -122,6 +127,12 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             this.PerCustomerLimit = promotion.MaxPersonalUsageCount;
             this.TotalLimit = promotion.MaxUsageCount;
             this.PerCustomerLimit = promotion.MaxPersonalUsageCount;
+
+            if (promotion.StoreIds != null)
+            {
+                this.Stores = new ObservableCollection<PromotionStoreEntity>(promotion.StoreIds.Select(x => new PromotionStoreEntity { StoreId = x, PromotionId = promotion.Id }));
+            }
+
             return this;
         }
 
@@ -146,6 +157,12 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             target.TotalLimit = this.TotalLimit;
             target.PerCustomerLimit = this.PerCustomerLimit;
             target.IsAllowCombiningWithSelf = this.IsAllowCombiningWithSelf;
+
+            if (!Stores.IsNullCollection())
+            {
+                var comparer = AnonymousComparer.Create((PromotionStoreEntity entity) => entity.StoreId);
+                Stores.Patch(target.Stores, comparer, (sourceEntity, targetEntity) => targetEntity.StoreId = sourceEntity.StoreId);
+            }
         }
     }
 }

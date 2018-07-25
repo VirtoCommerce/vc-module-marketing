@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using CacheManager.Core;
-using Omu.ValueInjecter;
 using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Model;
 using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.Serialization;
 using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.MarketingModule.Data.Services
@@ -25,7 +21,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
         #region IMarketingService Members       
 
-        public Promotion[] GetPromotionsByIds(string[] ids)
+        public virtual Promotion[] GetPromotionsByIds(string[] ids)
         {
             using (var repository = _repositoryFactory())
             {
@@ -33,7 +29,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             }
         }
 
-        public  void SavePromotions(Promotion[] promotions)
+        public virtual void SavePromotions(Promotion[] promotions)
         {
             var pkMap = new PrimaryKeyResolvingMap();
             using (var repository = _repositoryFactory())
@@ -61,9 +57,9 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 CommitChanges(repository);
                 pkMap.ResolvePrimaryKeys();
             }
-        }     
+        }
 
-        public void DeletePromotions(string[] ids)
+        public virtual void DeletePromotions(string[] ids)
         {
             using (var repository = _repositoryFactory())
             {

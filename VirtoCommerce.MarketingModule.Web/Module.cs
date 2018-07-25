@@ -3,24 +3,26 @@ using System.Linq;
 using System.Web.Http;
 using Microsoft.Practices.Unity;
 using VirtoCommerce.Domain.Cart.Events;
-using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.Domain.Order.Events;
-using VirtoCommerce.MarketingModule.Data.Observers;
+using VirtoCommerce.MarketingModule.Data.Handlers;
 using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.MarketingModule.Data.Services;
 using VirtoCommerce.MarketingModule.Web.ExportImport;
 using VirtoCommerce.MarketingModule.Web.JsonConverters;
 using VirtoCommerce.MarketingModule.Web.Security;
+using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
+using VirtoCommerce.Platform.Core.Serialization;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.Infrastructure;
 using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
+using DynamicContentItem = VirtoCommerce.Domain.Marketing.Model.DynamicContentItem;
 
 namespace VirtoCommerce.MarketingModule.Web
 {
@@ -57,7 +59,7 @@ namespace VirtoCommerce.MarketingModule.Web
             _container.RegisterType<IPromotionUsageService, PromotionUsageService>();
             _container.RegisterType<IMarketingDynamicContentEvaluator, DefaultDynamicContentEvaluatorImpl>();
             _container.RegisterType<IDynamicContentService, DynamicContentServiceImpl>();
-          
+
             _container.RegisterType<IPromotionSearchService, MarketingSearchServiceImpl>();
             _container.RegisterType<ICouponService, CouponService>();
             _container.RegisterType<IDynamicContentSearchService, MarketingSearchServiceImpl>();
@@ -65,7 +67,7 @@ namespace VirtoCommerce.MarketingModule.Web
 
             var settingsManager = _container.Resolve<ISettingsManager>();
             var promotionCombinePolicy = settingsManager.GetValue("Marketing.Promotion.CombinePolicy", "BestReward");
-            if(promotionCombinePolicy.EqualsInvariant("CombineStackable"))
+            if (promotionCombinePolicy.EqualsInvariant("CombineStackable"))
             {
                 _container.RegisterType<IMarketingPromoEvaluator, CombineStackablePromotionPolicy>();
             }
@@ -74,10 +76,11 @@ namespace VirtoCommerce.MarketingModule.Web
                 _container.RegisterType<IMarketingPromoEvaluator, BestRewardPromotionPolicy>();
             }
 
+            var eventHandlerRegistrar = _container.Resolve<IHandlerRegistrar>();
             //Create order observer. record order coupon usage
-            _container.RegisterType<IObserver<OrderChangedEvent>, CouponUsageRecordObserver>("OrderCouponUsageRecordObserver");
+            eventHandlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, token) => await _container.Resolve<CouponUsageRecordHandler>().Handle(message));
             //Create cart observer. record cart coupon usage
-            _container.RegisterType<IObserver<CartChangedEvent>, CouponUsageRecordObserver>("CartCouponUsageRecordObserver");
+            eventHandlerRegistrar.RegisterHandler<CartChangedEvent>(async (message, token) => await _container.Resolve<CouponUsageRecordHandler>().Handle(message));
 
             AbstractTypeFactory<DynamicPromotion>.RegisterType<DynamicPromotion>().WithFactory(() => _container.Resolve<DynamicPromotion>());
 
@@ -107,7 +110,8 @@ namespace VirtoCommerce.MarketingModule.Web
 
             //Next lines allow to use polymorph types in API controller methods
             var httpConfiguration = _container.Resolve<HttpConfiguration>();
-            httpConfiguration.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new PolymorphicPromoEvalContextJsonConverter());
+            httpConfiguration.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new PolymorphicMarketingJsonConverter(_container.Resolve<IMarketingExtensionManager>(),
+                _container.Resolve<IExpressionSerializer>()));
         }
 
         #endregion
