@@ -99,15 +99,15 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             AmountBasedReward retVal = null;
             var maxAbsoluteReward = reward
                 .Where(y => y.AmountType == RewardAmountType.Absolute)
-                .OrderByDescending(y => y.Amount).FirstOrDefault();
+                .OrderByDescending(y => y.CalculateDiscountAmount(currentAmount)).FirstOrDefault();
 
             var maxRelativeReward = reward
                 .Where(y => y.AmountType == RewardAmountType.Relative)
-                .OrderByDescending(y => y.Amount).FirstOrDefault();
+                .OrderByDescending(y => y.CalculateDiscountAmount(currentAmount)).FirstOrDefault();
 
 
-            var absDiscountAmount = maxAbsoluteReward != null ? maxAbsoluteReward.Amount : 0;
-            var relDiscountAmount = maxRelativeReward != null ? currentAmount * maxRelativeReward.Amount : 0;
+            var absDiscountAmount = maxAbsoluteReward != null ? maxAbsoluteReward.CalculateDiscountAmount(currentAmount) : 0;
+            var relDiscountAmount = maxRelativeReward != null ? currentAmount * maxRelativeReward.CalculateDiscountAmount(currentAmount) : 0;
 
             if (maxAbsoluteReward != null && maxRelativeReward != null)
             {
