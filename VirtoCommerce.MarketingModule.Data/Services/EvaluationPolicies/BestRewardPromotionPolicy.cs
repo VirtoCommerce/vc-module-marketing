@@ -78,7 +78,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 }
 
                 //best order promotion 
-                var cartSubtotalRewards = rewards.OfType<CartSubtotalReward>().Where(x => x.IsValid).OrderByDescending(x => x.Amount);
+                var cartSubtotalRewards = rewards.OfType<CartSubtotalReward>().Where(x => x.IsValid).OrderByDescending(x => x.CalculateDiscountAmount(promoContext.CartTotal));
                 var cartSubtotalReward = cartSubtotalRewards.FirstOrDefault(x => !string.IsNullOrEmpty(x.Coupon)) ?? cartSubtotalRewards.FirstOrDefault();
                 if (cartSubtotalReward != null)
                 {
