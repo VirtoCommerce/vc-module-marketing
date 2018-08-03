@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using VirtoCommerce.Domain.Commerce.Model.Search;
@@ -16,9 +16,11 @@ namespace VirtoCommerce.MarketingModule.Data.Services
     public class CouponService : ServiceBase, ICouponService
     {
         private readonly Func<IMarketingRepository> _repositoryFactory;
-        public CouponService(Func<IMarketingRepository> repositoryFactory)
+        private readonly IPromotionUsageService _usageService;
+        public CouponService(Func<IMarketingRepository> repositoryFactory, IPromotionUsageService usageService)
         {
             _repositoryFactory = repositoryFactory;
+            _usageService = usageService;
         }
 
         #region ICouponService members
@@ -111,6 +113,11 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 repository.RemoveCoupons(ids);
                 CommitChanges(repository);
             }
+        }
+        // count total usage without caching 
+        public long TotalUsage(Coupon coupon)
+        {
+            return _usageService.SearchUsages(new PromotionUsageSearchCriteria {CouponCode = coupon.Code,PromotionId = coupon.PromotionId}).TotalCount;
         }
 
         #endregion

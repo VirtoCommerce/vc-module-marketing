@@ -1,4 +1,4 @@
-﻿using System.Data.Entity;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Http.Results;
 using CacheManager.Core;
@@ -188,7 +188,8 @@ namespace VirtoCommerce.MarketingModule.Test
         private ICouponService GetCouponService()
         {
             var cacheManager = new Moq.Mock<ICacheManager<object>>();
-            var retVal = new CouponService(GetRepository);
+            var usageService = new Moq.Mock<IPromotionUsageService>();
+            var retVal = new CouponService(GetRepository, usageService.Object);
             return retVal;
         }
 

@@ -1,8 +1,9 @@
-﻿angular.module('virtoCommerce.marketingModule')
+angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.couponListController', ['$scope', '$localStorage', 'platformWebApp.dialogService', 'platformWebApp.bladeUtils', 'platformWebApp.uiGridHelper', 'virtoCommerce.marketingModule.promotions',
 function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promotionsApi) {
     var blade = $scope.blade;
     var bladeNavigationService = bladeUtils.bladeNavigationService;
+    var selectedEntity;
     blade.headIcon = 'fa-ticket';
     blade.isLoading = false;
 
@@ -18,12 +19,29 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
         if (filter.current) {
             angular.extend(criteria, filter.current);
         }
+
         promotionsApi.searchCoupons(criteria, function (response) {
             blade.isLoading = false;
+            let oldEntities = blade.currentEntities;
             blade.currentEntities = response.results;
+            _.each(oldEntities, function (old) {
+                let newEntity = _.findWhere(blade.currentEntities, { id: old.id });
+                if (newEntity) {
+                    promotionsApi.couponTotalUsege(newEntity, function (responce) {
+                        newEntity.totalUsesCount = responce.totalUsesCount;
+                    });            
+                }
+            }) 
             blade.parentBlade.couponCount();
             $scope.pageSettings.totalItems = response.totalCount;
         });
+
+        if (selectedEntity) {
+            let node = _.findWhere(blade.currentEntities, { id: selectedEntity.id });
+            if (node) {
+                $scope.selectNode(node);
+            }
+        }
     }
 
     $scope.$on('coupon-import-finished', function (event) {
@@ -103,6 +121,7 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
             template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/promotion/blades/coupon-detail.tpl.html'
         };
         bladeNavigationService.showBlade(newBlade, blade);
+        selectedEntity = node;
     };
 
     $scope.setGridOptions = function (gridOptions) {

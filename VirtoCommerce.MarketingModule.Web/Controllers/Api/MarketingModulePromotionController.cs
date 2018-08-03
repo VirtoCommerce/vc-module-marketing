@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
@@ -212,6 +212,15 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         {
             var coupon = _couponService.GetByIds(new[] { id }).FirstOrDefault();
 
+            return Ok(coupon);
+        }
+
+        [HttpPost]
+        [Route("coupons/couponTotalUsege/")]
+        [ResponseType(typeof(Coupon))]
+        public IHttpActionResult CouponTotalUsage(Coupon coupon)
+        {
+            coupon.TotalUsesCount = _couponService.TotalUsage(coupon);
             return Ok(coupon);
         }
 
