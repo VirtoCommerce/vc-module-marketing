@@ -207,7 +207,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         public IHttpActionResult SearchCoupons(CouponSearchCriteria criteria)
         {
             var searchResult = _couponService.SearchCoupons(criteria);
-            
+            // actualize coupon totalUsage field with out caching 
             using (var repository = _repositoryFactory())
             {
                 var ids = searchResult.Results.Select(x => x.Id).ToArray();
