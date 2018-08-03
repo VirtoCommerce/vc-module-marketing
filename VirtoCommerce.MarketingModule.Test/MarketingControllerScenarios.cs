@@ -188,8 +188,7 @@ namespace VirtoCommerce.MarketingModule.Test
         private ICouponService GetCouponService()
         {
             var cacheManager = new Moq.Mock<ICacheManager<object>>();
-            var usageService = new Moq.Mock<IPromotionUsageService>();
-            var retVal = new CouponService(GetRepository, usageService.Object);
+            var retVal = new CouponService(GetRepository);
             return retVal;
         }
 

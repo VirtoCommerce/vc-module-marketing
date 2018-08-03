@@ -3,7 +3,6 @@ angular.module('virtoCommerce.marketingModule')
 function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promotionsApi) {
     var blade = $scope.blade;
     var bladeNavigationService = bladeUtils.bladeNavigationService;
-    var selectedEntity;
     blade.headIcon = 'fa-ticket';
     blade.isLoading = false;
 

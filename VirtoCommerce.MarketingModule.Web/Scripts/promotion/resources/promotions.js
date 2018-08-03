@@ -6,7 +6,6 @@ angular.module('virtoCommerce.marketingModule')
         update: { method: 'PUT' },
         searchCoupons: { url: 'api/marketing/promotions/coupons/search', method: 'POST' },
         getCoupon: { url: 'api/marketing/promotions/coupons/:id' },
-        couponTotalUsege: { url: 'api/marketing/promotions/coupons/couponTotalUsege', method: 'POST' },
         saveCoupon: { url: 'api/marketing/promotions/coupons/add', method: 'POST' },
         deleteCoupons: { url: 'api/marketing/promotions/coupons/delete', method: 'DELETE' },
         importCoupons: { url: 'api/marketing/promotions/coupons/import', method: 'POST' }

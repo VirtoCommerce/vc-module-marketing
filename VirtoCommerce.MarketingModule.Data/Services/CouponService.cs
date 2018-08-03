@@ -1,9 +1,7 @@
 using System;
-using System.Data.Entity;
 using System.Linq;
 using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Marketing.Model;
-using VirtoCommerce.Domain.Marketing.Model.Promotions;
 using VirtoCommerce.Domain.Marketing.Model.Promotions.Search;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Model;
@@ -16,11 +14,9 @@ namespace VirtoCommerce.MarketingModule.Data.Services
     public class CouponService : ServiceBase, ICouponService
     {
         private readonly Func<IMarketingRepository> _repositoryFactory;
-        private readonly IPromotionUsageService _usageService;
-        public CouponService(Func<IMarketingRepository> repositoryFactory, IPromotionUsageService usageService)
+        public CouponService(Func<IMarketingRepository> repositoryFactory)
         {
             _repositoryFactory = repositoryFactory;
-            _usageService = usageService;
         }
 
         #region ICouponService members
