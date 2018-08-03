@@ -1,9 +1,7 @@
-﻿using System;
-using System.Data.Entity;
+using System;
 using System.Linq;
 using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Marketing.Model;
-using VirtoCommerce.Domain.Marketing.Model.Promotions;
 using VirtoCommerce.Domain.Marketing.Model.Promotions.Search;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Model;

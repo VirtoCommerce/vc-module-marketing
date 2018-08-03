@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.marketingModule')
+angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.couponListController', ['$scope', '$localStorage', 'platformWebApp.dialogService', 'platformWebApp.bladeUtils', 'platformWebApp.uiGridHelper', 'virtoCommerce.marketingModule.promotions',
 function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promotionsApi) {
     var blade = $scope.blade;
@@ -18,12 +18,14 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
         if (filter.current) {
             angular.extend(criteria, filter.current);
         }
+
         promotionsApi.searchCoupons(criteria, function (response) {
             blade.isLoading = false;
             blade.currentEntities = response.results;
             blade.parentBlade.couponCount();
             $scope.pageSettings.totalItems = response.totalCount;
         });
+
     }
 
     $scope.$on('coupon-import-finished', function (event) {
@@ -103,6 +105,7 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
             template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/promotion/blades/coupon-detail.tpl.html'
         };
         bladeNavigationService.showBlade(newBlade, blade);
+        selectedEntity = node;
     };
 
     $scope.setGridOptions = function (gridOptions) {

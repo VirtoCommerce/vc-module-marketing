@@ -1,15 +1,17 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Hangfire;
+using Microsoft.Practices.ObjectBuilder2;
 using Omu.ValueInjecter;
 using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Model.Promotions.Search;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Promotions;
+using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.MarketingModule.Web.Converters;
 using VirtoCommerce.MarketingModule.Web.ExportImport;
 using VirtoCommerce.MarketingModule.Web.Model;
@@ -39,6 +41,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         private readonly CsvCouponImporter _csvCouponImporter;
         private readonly ISecurityService _securityService;
         private readonly IPermissionScopeService _permissionScopeService;
+        private readonly Func<IMarketingRepository> _repositoryFactory;
 
         public MarketingModulePromotionController(
             IPromotionService promotionService,
@@ -50,7 +53,9 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
             IBlobStorageProvider blobStorageProvider,
             CsvCouponImporter csvCouponImporter,
             ISecurityService securityService,
-            IPermissionScopeService permissionScopeService)
+            IPermissionScopeService permissionScopeService,
+            Func<IMarketingRepository> repositoryFactory
+            )
         {
             _securityService = securityService;
             _promotionService = promotionService;
@@ -62,6 +67,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
             _blobStorageProvider = blobStorageProvider;
             _csvCouponImporter = csvCouponImporter;
             _permissionScopeService = permissionScopeService;
+            _repositoryFactory = repositoryFactory;
         }
 
         /// <summary>
@@ -201,7 +207,13 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         public IHttpActionResult SearchCoupons(CouponSearchCriteria criteria)
         {
             var searchResult = _couponService.SearchCoupons(criteria);
-
+            // actualize coupon totalUsage field 
+            using (var repository = _repositoryFactory())
+            {
+                var ids = searchResult.Results.Select(x => x.Id).ToArray();
+                var couponEntities = repository.GetCouponsByIds(ids);
+                searchResult.Results.ForEach(coupon => coupon.TotalUsesCount = couponEntities.First(c => c.Id == coupon.Id).TotalUsesCount);
+            }
             return Ok(searchResult);
         }
 
