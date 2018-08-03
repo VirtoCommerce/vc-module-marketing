@@ -114,11 +114,6 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 CommitChanges(repository);
             }
         }
-        // count total usage without caching 
-        public long TotalUsage(Coupon coupon)
-        {
-            return _usageService.SearchUsages(new PromotionUsageSearchCriteria {CouponCode = coupon.Code,PromotionId = coupon.PromotionId}).TotalCount;
-        }
 
         #endregion
 

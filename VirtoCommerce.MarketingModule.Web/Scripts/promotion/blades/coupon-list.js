@@ -22,26 +22,11 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
 
         promotionsApi.searchCoupons(criteria, function (response) {
             blade.isLoading = false;
-            let oldEntities = blade.currentEntities;
             blade.currentEntities = response.results;
-            _.each(oldEntities, function (old) {
-                let newEntity = _.findWhere(blade.currentEntities, { id: old.id });
-                if (newEntity) {
-                    promotionsApi.couponTotalUsege(newEntity, function (responce) {
-                        newEntity.totalUsesCount = responce.totalUsesCount;
-                    });            
-                }
-            }) 
             blade.parentBlade.couponCount();
             $scope.pageSettings.totalItems = response.totalCount;
         });
 
-        if (selectedEntity) {
-            let node = _.findWhere(blade.currentEntities, { id: selectedEntity.id });
-            if (node) {
-                $scope.selectNode(node);
-            }
-        }
     }
 
     $scope.$on('coupon-import-finished', function (event) {
