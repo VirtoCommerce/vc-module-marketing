@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +20,11 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         [StringLength(64)]
         public string CouponCode { get; set; }
 
+	    [StringLength(128)]
+        public string UserId { get; set; }
+	    [StringLength(128)]
+        public string UserName { get; set; }
+
         #region Navigation Properties
         public string PromotionId { get; set; }
         public virtual PromotionEntity Promotion { get; set; }
@@ -39,6 +44,8 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             usage.ObjectId = this.ObjectId;
             usage.ObjectType = this.ObjectType;
             usage.PromotionId = this.PromotionId;
+            usage.UserId = this.UserId;
+            usage.UserName = this.UserName;
 
             return usage;
         }
@@ -59,6 +66,8 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             this.PromotionId = usage.PromotionId;      
             this.ObjectId = usage.ObjectId;
             this.ObjectType = usage.ObjectType;
+            this.UserId = usage.UserId;
+            this.UserName = usage.UserName;
            
             return this;
         }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -52,6 +52,14 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 if (!string.IsNullOrEmpty(criteria.ObjectType))
                 {
                     query = query.Where(x => x.ObjectType == criteria.ObjectType);
+                }
+                if (!string.IsNullOrWhiteSpace(criteria.UserId))
+                {
+                    query = query.Where(x => x.UserId == criteria.UserId);
+                }
+                if (!string.IsNullOrWhiteSpace(criteria.UserName))
+                {
+                    query = query.Where(x => x.UserName == criteria.UserName);
                 }
 
                 var sortInfos = criteria.SortInfos;

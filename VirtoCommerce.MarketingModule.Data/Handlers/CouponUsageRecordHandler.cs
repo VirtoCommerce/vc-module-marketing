@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.Domain.Cart.Events;
@@ -32,8 +32,8 @@ namespace VirtoCommerce.MarketingModule.Data.Handlers
         {
             foreach (var changedEntry in message.ChangedEntries)
             {
-                var oldUsages = GetCouponUsages(changedEntry.OldEntry.Id, changedEntry.OldEntry);
-                var newUsages = GetCouponUsages(changedEntry.NewEntry.Id, changedEntry.NewEntry);
+                var oldUsages = GetCouponUsages(changedEntry.OldEntry.Id, changedEntry.OldEntry, changedEntry.OldEntry.CustomerId, changedEntry.OldEntry.CustomerName);
+                var newUsages = GetCouponUsages(changedEntry.NewEntry.Id, changedEntry.NewEntry, changedEntry.OldEntry.CustomerId, changedEntry.NewEntry.CustomerName);
 
                 if (changedEntry.EntryState == EntryState.Added)
                 {
@@ -59,7 +59,7 @@ namespace VirtoCommerce.MarketingModule.Data.Handlers
                 if (changedEntry.EntryState == EntryState.Added)
                 {
                     var oldUsages = new List<PromotionUsage>();
-                    var newUsages = GetCouponUsages(changedEntry.NewEntry.Id, changedEntry.NewEntry);
+                    var newUsages = GetCouponUsages(changedEntry.NewEntry.Id, changedEntry.NewEntry, changedEntry.NewEntry.CustomerId, changedEntry.NewEntry.CustomerName);
                     RecordUsages(changedEntry.NewEntry.Id, oldUsages, newUsages);
                 }
             }
@@ -83,14 +83,20 @@ namespace VirtoCommerce.MarketingModule.Data.Handlers
             }
         }
 
-        private List<PromotionUsage> GetCouponUsages(string objectId, IHasDiscounts hasDiscounts)
+        private List<PromotionUsage> GetCouponUsages(string objectId, IHasDiscounts hasDiscounts , string customerId, string customerName)
         {
             var usageComparer = AnonymousComparer.Create((PromotionUsage x) => string.Join(":", x.PromotionId, x.CouponCode, x.ObjectId));
             var retVal = hasDiscounts.GetFlatObjectsListWithInterface<IHasDiscounts>()
                                                  .Where(x => x.Discounts != null)
                                                  .SelectMany(x => x.Discounts)
                                                  .Where(x => !string.IsNullOrEmpty(x.Coupon))
-                                                 .Select(x => new PromotionUsage { CouponCode = x.Coupon, PromotionId = x.PromotionId, ObjectId = objectId, ObjectType = hasDiscounts.GetType().Name })
+                                                 .Select(x => new PromotionUsage { CouponCode = x.Coupon,
+                                                     PromotionId = x.PromotionId,
+                                                     ObjectId = objectId,
+                                                     ObjectType = hasDiscounts.GetType().Name,
+                                                     UserId = customerId,
+                                                     UserName = customerName
+                                                 })
                                                  .Distinct(usageComparer)
                                                  .ToList();
             return retVal;

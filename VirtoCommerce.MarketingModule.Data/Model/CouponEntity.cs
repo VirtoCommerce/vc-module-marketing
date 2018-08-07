@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using VirtoCommerce.Domain.Marketing.Model;
@@ -17,6 +17,8 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public string Code { get; set; }
 
         public int MaxUsesNumber { get; set; }
+
+        public int MaxUsesPerUser { get; set; }
 
         public DateTime? ExpirationDate { get; set; }
 
@@ -46,6 +48,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             coupon.MaxUsesNumber = this.MaxUsesNumber;
             coupon.PromotionId = this.PromotionId;
             coupon.TotalUsesCount = this.TotalUsesCount;
+            coupon.MaxUsesPerUser = this.MaxUsesPerUser;
     
             return coupon;
         }
@@ -63,12 +66,12 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             this.ExpirationDate = coupon.ExpirationDate;
             this.Id = coupon.Id;
             this.MaxUsesNumber = coupon.MaxUsesNumber;
+            this.MaxUsesPerUser = coupon.MaxUsesPerUser;
             this.ModifiedBy = coupon.ModifiedBy;
             this.ModifiedDate = coupon.ModifiedDate;
             this.MaxUsesNumber = coupon.MaxUsesNumber;
             this.PromotionId = coupon.PromotionId;
             this.TotalUsesCount = coupon.TotalUsesCount;
-
             return this;
         }
 
@@ -80,7 +83,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             target.Code = this.Code;
             target.ExpirationDate = this.ExpirationDate;
             target.MaxUsesNumber = this.MaxUsesNumber;
+            target.MaxUsesPerUser = this.MaxUsesPerUser;
         }
-
     }
 }
