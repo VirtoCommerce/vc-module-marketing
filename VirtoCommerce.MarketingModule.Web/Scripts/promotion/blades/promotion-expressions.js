@@ -10,6 +10,19 @@ angular.module('virtoCommerce.marketingModule')
             return;
         }
 
+        if (parentElement.productId) {
+            let itemDetailBlade = {
+                id: "listItemDetail",
+                itemId: parentElement.productId,
+                title: parentElement.productName,
+                controller: 'virtoCommerce.catalogModule.itemDetailController',
+                template: 'Modules/$(VirtoCommerce.Catalog)/Scripts/blades/item-detail.tpl.html'
+            };
+            bladeNavigationService.showBlade(itemDetailBlade, $scope.blade);
+            return;
+        }
+
+
         var selectedListEntries = [];
         var newBlade = {
             id: "CatalogEntrySelect",
