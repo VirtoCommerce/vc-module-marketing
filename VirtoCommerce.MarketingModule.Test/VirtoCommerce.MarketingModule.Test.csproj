@@ -85,8 +85,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="VirtoCommerce.Domain, Version=2.25.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.Domain.2.25.5\lib\net461\VirtoCommerce.Domain.dll</HintPath>
+    <Reference Include="VirtoCommerce.Domain, Version=2.25.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.Domain.2.25.9\lib\net461\VirtoCommerce.Domain.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="VirtoCommerce.DynamicExpressionsModule.Data, Version=2.12.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VirtoCommerce.DynamicExpressionsModule.Data.2.12.3\lib\net461\VirtoCommerce.DynamicExpressionsModule.Data.dll</HintPath>

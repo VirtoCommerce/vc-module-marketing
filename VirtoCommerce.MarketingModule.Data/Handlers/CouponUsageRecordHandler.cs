@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using VirtoCommerce.Domain.Cart.Events;
 using VirtoCommerce.Domain.Commerce.Model;
 using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Model.Promotions.Search;
@@ -15,7 +14,7 @@ namespace VirtoCommerce.MarketingModule.Data.Handlers
     /// <summary>
     /// Represents the logic of recording the use of coupons on both levels (Cart and Order).
     /// </summary>
-    public class CouponUsageRecordHandler : IEventHandler<CartChangedEvent>, IEventHandler<OrderChangedEvent>
+    public class CouponUsageRecordHandler : IEventHandler<OrderChangedEvent>
     {
         private readonly IPromotionUsageService _usageService;
         public CouponUsageRecordHandler(IPromotionUsageService usageService)
@@ -25,30 +24,6 @@ namespace VirtoCommerce.MarketingModule.Data.Handlers
         }
 
         private IEqualityComparer<PromotionUsage> EqualityComparer { get; set; }
-
-        #region Implementation of IHandler<in CartChangedEvent>
-
-        public Task Handle(CartChangedEvent message)
-        {
-            foreach (var changedEntry in message.ChangedEntries)
-            {
-                var oldUsages = GetCouponUsages(changedEntry.OldEntry.Id, changedEntry.OldEntry, changedEntry.OldEntry.CustomerId, changedEntry.OldEntry.CustomerName);
-                var newUsages = GetCouponUsages(changedEntry.NewEntry.Id, changedEntry.NewEntry, changedEntry.OldEntry.CustomerId, changedEntry.NewEntry.CustomerName);
-
-                if (changedEntry.EntryState == EntryState.Added)
-                {
-                    oldUsages.Clear();
-                }
-                if (changedEntry.EntryState == EntryState.Deleted)
-                {
-                    newUsages.Clear();
-                }
-                RecordUsages(changedEntry.OldEntry.Id, oldUsages, newUsages);
-            }
-            return Task.CompletedTask;
-        }
-
-        #endregion
 
         #region Implementation of IHandler<in OrderChangedEvent>
 
@@ -72,7 +47,7 @@ namespace VirtoCommerce.MarketingModule.Data.Handlers
         {
             var toAddUsages = newUsages.Except(oldUsages, EqualityComparer);
             var toRemoveUsages = oldUsages.Except(newUsages, EqualityComparer);
-            if(!toAddUsages.IsNullOrEmpty())
+            if (!toAddUsages.IsNullOrEmpty())
             {
                 _usageService.SaveUsages(toAddUsages.ToArray());
             }
@@ -83,14 +58,16 @@ namespace VirtoCommerce.MarketingModule.Data.Handlers
             }
         }
 
-        private List<PromotionUsage> GetCouponUsages(string objectId, IHasDiscounts hasDiscounts , string customerId, string customerName)
+        private List<PromotionUsage> GetCouponUsages(string objectId, IHasDiscounts hasDiscounts, string customerId, string customerName)
         {
             var usageComparer = AnonymousComparer.Create((PromotionUsage x) => string.Join(":", x.PromotionId, x.CouponCode, x.ObjectId));
             var retVal = hasDiscounts.GetFlatObjectsListWithInterface<IHasDiscounts>()
                                                  .Where(x => x.Discounts != null)
                                                  .SelectMany(x => x.Discounts)
                                                  .Where(x => !string.IsNullOrEmpty(x.Coupon))
-                                                 .Select(x => new PromotionUsage { CouponCode = x.Coupon,
+                                                 .Select(x => new PromotionUsage
+                                                 {
+                                                     CouponCode = x.Coupon,
                                                      PromotionId = x.PromotionId,
                                                      ObjectId = objectId,
                                                      ObjectType = hasDiscounts.GetType().Name,

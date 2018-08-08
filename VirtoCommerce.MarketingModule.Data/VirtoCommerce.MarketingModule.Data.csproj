@@ -70,8 +70,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="VirtoCommerce.Domain, Version=2.25.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.Domain.2.25.5\lib\net461\VirtoCommerce.Domain.dll</HintPath>
+    <Reference Include="VirtoCommerce.Domain, Version=2.25.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.Domain.2.25.9\lib\net461\VirtoCommerce.Domain.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="VirtoCommerce.Platform.Core, Version=2.13.26.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VirtoCommerce.Platform.Core.2.13.26\lib\net461\VirtoCommerce.Platform.Core.dll</HintPath>
@@ -111,6 +113,10 @@
     <Compile Include="Migrations\201807121223598_AddStoresToPromotion.cs" />
     <Compile Include="Migrations\201807121223598_AddStoresToPromotion.Designer.cs">
       <DependentUpon>201807121223598_AddStoresToPromotion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808061414322_AddMaxUsesPerUserToCoupon_AddUserIdToPromotionUsage.cs" />
+    <Compile Include="Migrations\201808061414322_AddMaxUsesPerUserToCoupon_AddUserIdToPromotionUsage.Designer.cs">
+      <DependentUpon>201808061414322_AddMaxUsesPerUserToCoupon_AddUserIdToPromotionUsage.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\CouponEntity.cs" />
@@ -165,6 +171,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201807121223598_AddStoresToPromotion.resx">
       <DependentUpon>201807121223598_AddStoresToPromotion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808061414322_AddMaxUsesPerUserToCoupon_AddUserIdToPromotionUsage.resx">
+      <DependentUpon>201808061414322_AddMaxUsesPerUserToCoupon_AddUserIdToPromotionUsage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

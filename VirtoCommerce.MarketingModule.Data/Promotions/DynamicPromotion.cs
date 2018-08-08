@@ -130,7 +130,7 @@ namespace VirtoCommerce.MarketingModule.Data.Promotions
                         }
                         if (couponIsValid && coupon.MaxUsesPerUser > 0 && !string.IsNullOrWhiteSpace(userId))
                         {
-                            couponIsValid = _usageService.SearchUsages(new PromotionUsageSearchCriteria { PromotionId = Id, CouponCode = coupon.Code, UserId = Id = userId, Take = 0 }).TotalCount <= coupon.MaxUsesPerUser;
+                            couponIsValid = _usageService.SearchUsages(new PromotionUsageSearchCriteria { PromotionId = Id, CouponCode = coupon.Code, UserId = userId, Take = int.MaxValue }).TotalCount < coupon.MaxUsesPerUser;
                         }
                         if (couponIsValid)
                         {
