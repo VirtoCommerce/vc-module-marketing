@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
@@ -52,7 +52,7 @@ namespace VirtoCommerce.MarketingModule.Data.Promotions
             IEnumerable<Coupon> validCoupons = null;
             if (HasCoupons)
             {
-                validCoupons = FindValidCoupons(promoContext.Coupons);
+                validCoupons = FindValidCoupons(promoContext.Coupons, promoContext.CustomerId);
             }
             //Check coupon
             var couponIsValid = !HasCoupons || validCoupons.Any();
@@ -104,10 +104,10 @@ namespace VirtoCommerce.MarketingModule.Data.Promotions
         [Obsolete]
         protected virtual bool CheckCouponIsValid(string couponCode)
         {
-            return FindValidCoupons(new[] { couponCode }).Any();
+            return FindValidCoupons(new[] { couponCode }, null).Any();
         }
 
-        protected virtual IEnumerable<Coupon> FindValidCoupons(ICollection<string> couponCodes)
+        protected virtual IEnumerable<Coupon> FindValidCoupons(ICollection<string> couponCodes, string userId)
         {
             var result = new List<Coupon>();
             if (!couponCodes.IsNullOrEmpty())
@@ -127,6 +127,10 @@ namespace VirtoCommerce.MarketingModule.Data.Promotions
                         if (couponIsValid && coupon.MaxUsesNumber > 0)
                         {
                             couponIsValid = _usageService.SearchUsages(new PromotionUsageSearchCriteria { PromotionId = Id, CouponCode = coupon.Code, Take = 0 }).TotalCount <= coupon.MaxUsesNumber;
+                        }
+                        if (couponIsValid && coupon.MaxUsesPerUser > 0 && !string.IsNullOrWhiteSpace(userId))
+                        {
+                            couponIsValid = _usageService.SearchUsages(new PromotionUsageSearchCriteria { PromotionId = Id, CouponCode = coupon.Code, UserId = userId, Take = int.MaxValue }).TotalCount < coupon.MaxUsesPerUser;
                         }
                         if (couponIsValid)
                         {

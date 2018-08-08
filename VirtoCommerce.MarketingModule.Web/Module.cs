@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Web.Http;
 using Microsoft.Practices.Unity;
@@ -79,8 +79,6 @@ namespace VirtoCommerce.MarketingModule.Web
             var eventHandlerRegistrar = _container.Resolve<IHandlerRegistrar>();
             //Create order observer. record order coupon usage
             eventHandlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, token) => await _container.Resolve<CouponUsageRecordHandler>().Handle(message));
-            //Create cart observer. record cart coupon usage
-            eventHandlerRegistrar.RegisterHandler<CartChangedEvent>(async (message, token) => await _container.Resolve<CouponUsageRecordHandler>().Handle(message));
 
             AbstractTypeFactory<DynamicPromotion>.RegisterType<DynamicPromotion>().WithFactory(() => _container.Resolve<DynamicPromotion>());
 
