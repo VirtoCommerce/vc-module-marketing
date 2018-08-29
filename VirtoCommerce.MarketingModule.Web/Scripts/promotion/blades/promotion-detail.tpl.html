@@ -119,16 +119,16 @@
 
                     <va-metaform registered-inputs="blade.metaFields" blade="blade" column-count="1" ng-if="blade.currentEntity"></va-metaform>
                 </fieldset>
-            </form>
 
-            <va-widget-container group="promotionDetail" blade="blade" data="blade.currentEntity" gridster-opts="{width: 526}"></va-widget-container>
-            <!--ui-validate=" 'promotionExpressionValidator(blade.isExpresionValid)' " ng-model="blade.isExpresionValid"-->
-            <fieldset ng-if="blade.currentEntity.dynamicExpression && blade.currentEntity.type==='DynamicPromotion'">
-                <legend>{{ 'marketing.blades.promotion-detail.labels.promotion-conditions' | translate }}</legend>
-                <div class="dynamic-expression">
-                    <va-dynamic-expression-tree ng-controller="virtoCommerce.marketingModule.promotionExpressionsController" template-url="blade.expressionTreeTemplateUrl" source="blade.currentEntity.dynamicExpression"></va-dynamic-expression-tree>
-                </div>
-            </fieldset>
+                <va-widget-container group="promotionDetail" blade="blade" data="blade.currentEntity" gridster-opts="{width: 526}"></va-widget-container>
+                <!--ui-validate=" 'promotionExpressionValidator(blade.isExpresionValid)' " ng-model="blade.isExpresionValid"-->
+                <fieldset ng-if="blade.currentEntity.dynamicExpression && blade.currentEntity.type==='DynamicPromotion'">
+                    <legend>{{ 'marketing.blades.promotion-detail.labels.promotion-conditions' | translate }}</legend>
+                    <div class="dynamic-expression">
+                        <va-dynamic-expression-tree ng-controller="virtoCommerce.marketingModule.promotionExpressionsController" template-url="blade.expressionTreeTemplateUrl" source="blade.currentEntity.dynamicExpression"></va-dynamic-expression-tree>
+                    </div>
+                </fieldset>
+            </form>
         </div>
     </div>
 </div>
