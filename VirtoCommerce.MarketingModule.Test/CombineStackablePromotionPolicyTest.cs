@@ -1,4 +1,4 @@
-﻿using Moq;
+using Moq;
 using System.Collections.Generic;
 using System.Linq;
 using VirtoCommerce.Domain.Commerce.Model.Search;
@@ -12,29 +12,29 @@ using Xunit;
 namespace VirtoCommerce.MarketingModule.Test
 {
     [Trait("Category", "CI")]
-    public class CombineStackablePromotionPolicyTest 
+    public class CombineStackablePromotionPolicyTest
     {
         [Fact]
         public void EvaluateRewards_CombineByPriorityOrder()
-        {     
+        {
             //Arrange            
             var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("FedEx Get 50% Off", "FedEx Get 30% Off", "ProductA and ProductB Get 2 With 50% Off", "Get ProductA With 25$ Off"));
             var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
             var productB = new ProductPromoEntry { ProductId = "ProductB", Price = 100, Quantity = 3 };
             var context = new PromotionEvaluationContext
             {
-                 ShipmentMethodCode = "FedEx",
-                 ShipmentMethodPrice = 100,
-                 PromoEntries = new [] { productA, productB }
+                ShipmentMethodCode = "FedEx",
+                ShipmentMethodPrice = 100,
+                PromoEntries = new[] { productA, productB }
             };
             //Act
             var rewards = evalPolicy.EvaluatePromotion(context).Rewards;
 
             //Assert
-            Assert.Equal(rewards.Count(), 5);
-            Assert.Equal(context.ShipmentMethodPrice, 35m);
-            Assert.Equal(productA.Price, 37.5m);
-            Assert.Equal(productB.Price, 50);
+            Assert.Equal(5, rewards.Count());
+            Assert.Equal(35m, context.ShipmentMethodPrice);
+            Assert.Equal(37.5m, productA.Price);
+            Assert.Equal(66.66m, productB.Price);
         }
 
         [Fact]
@@ -55,7 +55,7 @@ namespace VirtoCommerce.MarketingModule.Test
 
             //Assert
             Assert.Single(rewards);
-            Assert.Equal(rewards.Single().Promotion.Id, "Exclusive ProductB Get 10$ Off");
+            Assert.Equal("Exclusive ProductB Get 10$ Off", rewards.Single().Promotion.Id);
         }
 
         [Fact]
@@ -73,8 +73,8 @@ namespace VirtoCommerce.MarketingModule.Test
 
             //Assert
             Assert.Single(rewards);
-            Assert.Equal(rewards.Single().Promotion.Id, "Get ProductA Free");
-            Assert.Equal(productA.Price, 0);
+            Assert.Equal("Get ProductA Free", rewards.Single().Promotion.Id);
+            Assert.Equal(0, productA.Price);
         }
 
         private static IMarketingPromoEvaluator GetPromotionEvaluationPolicy(IEnumerable<Promotion> promotions)
@@ -89,9 +89,9 @@ namespace VirtoCommerce.MarketingModule.Test
             return new CombineStackablePromotionPolicy(promoSearchServiceMock.Object);
         }
 
-     
+
         private static IEnumerable<Promotion> TestPromotions
-        { 
+        {
             get
             {
                 yield return new MockPromotion
@@ -129,7 +129,7 @@ namespace VirtoCommerce.MarketingModule.Test
                     Id = "Get ProductA Free",
                     Rewards = new[]
                     {
-                       new CatalogItemAmountReward { ProductId = "ProductA", Amount = 100, AmountType = RewardAmountType.Relative, IsValid = true },                   
+                       new CatalogItemAmountReward { ProductId = "ProductA", Amount = 100, AmountType = RewardAmountType.Relative, IsValid = true },
                     },
                     Priority = 100,
                     IsExclusive = false
@@ -160,7 +160,7 @@ namespace VirtoCommerce.MarketingModule.Test
                     Id = "Buy Order with 55% Off",
                     Rewards = new[]
                     {
-                       new CartSubtotalReward {  Amount = 55, IsValid = true }                   
+                       new CartSubtotalReward {  Amount = 55, IsValid = true }
                     },
                     Priority = 20,
                     IsExclusive = false
@@ -188,7 +188,7 @@ namespace VirtoCommerce.MarketingModule.Test
     internal class MockPromotion : Promotion
     {
         public IEnumerable<PromotionReward> Rewards { get; set; }
-      
+
         public override PromotionReward[] EvaluatePromotion(IEvaluationContext context)
         {
             foreach (var reward in Rewards)

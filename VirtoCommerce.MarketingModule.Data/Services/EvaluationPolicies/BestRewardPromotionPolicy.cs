@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VirtoCommerce.Domain.Common;
 using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Model.Promotions.Search;
@@ -78,7 +76,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 }
 
                 //best order promotion 
-                var cartSubtotalRewards = rewards.OfType<CartSubtotalReward>().Where(x => x.IsValid).OrderByDescending(x => x.CalculateDiscountAmount(promoContext.CartTotal));
+                var cartSubtotalRewards = rewards.OfType<CartSubtotalReward>().Where(x => x.IsValid).OrderByDescending(x => x.GetRewardAmount(promoContext.CartTotal, 1));
                 var cartSubtotalReward = cartSubtotalRewards.FirstOrDefault(x => !string.IsNullOrEmpty(x.Coupon)) ?? cartSubtotalRewards.FirstOrDefault();
                 if (cartSubtotalReward != null)
                 {
@@ -99,15 +97,15 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             AmountBasedReward retVal = null;
             var maxAbsoluteReward = reward
                 .Where(y => y.AmountType == RewardAmountType.Absolute)
-                .OrderByDescending(y => y.CalculateDiscountAmount(currentAmount)).FirstOrDefault();
+                .OrderByDescending(y => y.GetRewardAmount(currentAmount, 1)).FirstOrDefault();
 
             var maxRelativeReward = reward
                 .Where(y => y.AmountType == RewardAmountType.Relative)
-                .OrderByDescending(y => y.CalculateDiscountAmount(currentAmount)).FirstOrDefault();
+                .OrderByDescending(y => y.GetRewardAmount(currentAmount, 1)).FirstOrDefault();
 
 
-            var absDiscountAmount = maxAbsoluteReward != null ? maxAbsoluteReward.CalculateDiscountAmount(currentAmount) : 0;
-            var relDiscountAmount = maxRelativeReward != null ? currentAmount * maxRelativeReward.CalculateDiscountAmount(currentAmount) : 0;
+            var absDiscountAmount = maxAbsoluteReward != null ? maxAbsoluteReward.GetRewardAmount(currentAmount, 1) : 0;
+            var relDiscountAmount = maxRelativeReward != null ? currentAmount * maxRelativeReward.GetRewardAmount(currentAmount, 1) : 0;
 
             if (maxAbsoluteReward != null && maxRelativeReward != null)
             {

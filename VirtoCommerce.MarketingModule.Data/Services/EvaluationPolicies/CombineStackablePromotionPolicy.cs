@@ -35,7 +35,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             var result = new PromotionResult();
 
             Func<PromotionEvaluationContext, IEnumerable<PromotionReward>> evalFunc = (evalContext) => promotions.SelectMany(x => x.EvaluatePromotion(evalContext))
-                                    .OrderByDescending(x=> x.Promotion.IsExclusive)
+                                    .OrderByDescending(x => x.Promotion.IsExclusive)
                                     .ThenByDescending(x => x.Promotion.Priority)
                                     .Where(x => x.IsValid)
                                     .ToList();
@@ -44,7 +44,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         }
 
         protected virtual void EvalAndCombineRewardsRecursively(PromotionEvaluationContext context, Func<PromotionEvaluationContext, IEnumerable<PromotionReward>> evalFunc, ICollection<PromotionReward> resultRewards, ICollection<PromotionReward> skippedRewards)
-        {         
+        {
             //Evaluate rewards with passed context and exclude already applied rewards from result
             var rewards = evalFunc(context).Except(resultRewards).Except(skippedRewards).ToList();
 
@@ -108,7 +108,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 {
                     //Call recursively
                     EvalAndCombineRewardsRecursively(context, evalFunc, resultRewards, skippedRewards);
-                }               
+                }
             }
         }
 
@@ -121,7 +121,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 var discountAmount = activeShipmentReward.GetRewardAmount(context.ShipmentMethodPrice, 1);
                 context.ShipmentMethodPrice -= discountAmount;
                 //Do not allow to make negative shipment price
-                if (context.ShipmentMethodPrice < 0)
+                if (context.ShipmentMethodPrice < 0 || discountAmount == 0)
                 {
                     skippedRewards.Add(activeShipmentReward);
                     //restore back shipment price
@@ -131,13 +131,13 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
             foreach (var productReward in rewards.OfType<CatalogItemAmountReward>())
             {
-                var promoEntry = context.PromoEntries.FirstOrDefault(x => string.IsNullOrEmpty(x.ProductId) || x.ProductId.EqualsInvariant(productReward.ProductId));             
+                var promoEntry = context.PromoEntries.FirstOrDefault(x => string.IsNullOrEmpty(x.ProductId) || x.ProductId.EqualsInvariant(productReward.ProductId));
                 if (promoEntry != null)
                 {
-                    var perUnitDiscountAmount = productReward.GetRewardAmount(promoEntry.Price, Math.Min(1, promoEntry.Quantity));
+                    var perUnitDiscountAmount = productReward.GetRewardAmount(promoEntry.Price, Math.Max(1, promoEntry.Quantity));
                     promoEntry.Price -= perUnitDiscountAmount;
-                    //Do not allow to make negative the product price
-                    if (promoEntry.Price < 0)
+                    //Do not allow to make negative the product price and exclude not affected rewards
+                    if (promoEntry.Price < 0 || perUnitDiscountAmount == 0)
                     {
                         skippedRewards.Add(productReward);
                         //restore back prices and totals
@@ -149,13 +149,13 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                         var cartPromoEntry = context.CartPromoEntries.FirstOrDefault(x => x.ProductId.EqualsInvariant(productReward.ProductId));
                         if (cartPromoEntry != null)
                         {
-                            perUnitDiscountAmount = productReward.GetRewardAmount(cartPromoEntry.Price, Math.Min(1, cartPromoEntry.Quantity));
+                            perUnitDiscountAmount = productReward.GetRewardAmount(cartPromoEntry.Price, Math.Max(1, cartPromoEntry.Quantity));
                             cartPromoEntry.Price -= perUnitDiscountAmount;
                         }
                     }
                 }
-            }        
-        }       
+            }
+        }
     }
-    
+
 }

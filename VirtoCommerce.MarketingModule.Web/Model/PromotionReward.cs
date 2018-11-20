@@ -77,6 +77,11 @@ namespace VirtoCommerce.MarketingModule.Web.Model
         /// Gets or sets the value of product id
         /// </summary>
         public string ProductId { get; set; }
+        /// <summary>
+        /// Conditional product
+        /// For N items of entry ProductId  in every Y items of entry ConditionalProductId get %X off
+        /// </summary>
+        public string ConditionalProductId { get; set; }
 
         /// <summary>
         /// Gets or sets the value of category id
@@ -100,6 +105,10 @@ namespace VirtoCommerce.MarketingModule.Web.Model
         /// Gets or sets the max limit for relative rewards
         /// </summary>
         public decimal MaxLimit { get; set; }
+
+        //For N in every Y items
+        public int ForNthQuantity { get; set; }
+        public int InEveryNthQuantity { get; set; }
 
     }
 }
