@@ -1,49 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Runtime.Serialization;
 using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.MarketingModule.Data.Model
 {
-	public class DynamicContentPublishingGroupEntity : AuditableEntity
-	{
-		public DynamicContentPublishingGroupEntity()
-		{
-			ContentItems = new NullCollection<PublishingGroupContentItemEntity>();
-			ContentPlaces = new NullCollection<PublishingGroupContentPlaceEntity>();
-		}
+    public class DynamicContentPublishingGroupEntity : AuditableEntity
+    {
+        public DynamicContentPublishingGroupEntity()
+        {
+            ContentItems = new NullCollection<PublishingGroupContentItemEntity>();
+            ContentPlaces = new NullCollection<PublishingGroupContentPlaceEntity>();
+        }
 
-		[Required]
-		[StringLength(128)]
-		public string Name { get; set; }
+        [Required]
+        [StringLength(128)]
+        public string Name { get; set; }
 
-		[StringLength(256)]
-		public string Description { get; set; }
+        [StringLength(256)]
+        public string Description { get; set; }
 
-		public int Priority { get; set; }
+        public int Priority { get; set; }
 
-		public bool IsActive { get; set; }
+        public bool IsActive { get; set; }
 
-		[StringLength(256)]
-		public string StoreId { get; set; }
+        [StringLength(256)]
+        public string StoreId { get; set; }
 
-		public DateTime? StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
-		public DateTime? EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
-		public string ConditionExpression { get; set; }
+        public string ConditionExpression { get; set; }
 
-		public string PredicateVisualTreeSerialized { get; set; }
+        public string PredicateVisualTreeSerialized { get; set; }
 
-		#region Navigation Properties
-		public virtual ObservableCollection<PublishingGroupContentItemEntity> ContentItems { get; set; }
+        #region Navigation Properties
+        public virtual ObservableCollection<PublishingGroupContentItemEntity> ContentItems { get; set; }
 
-		public virtual ObservableCollection<PublishingGroupContentPlaceEntity> ContentPlaces { get; set; }
+        public virtual ObservableCollection<PublishingGroupContentPlaceEntity> ContentPlaces { get; set; }
         #endregion
 
 
@@ -66,7 +63,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             publication.EndDate = this.EndDate;
             publication.PredicateSerialized = this.ConditionExpression;
             publication.PredicateVisualTreeSerialized = this.PredicateVisualTreeSerialized;
-        
+
             if (!string.IsNullOrEmpty(publication.PredicateVisualTreeSerialized))
             {
                 //Temporary back data compatibility fix for serialized expressions
@@ -113,11 +110,11 @@ namespace VirtoCommerce.MarketingModule.Data.Model
 
             if (publication.ContentItems != null)
             {
-                this.ContentItems = new ObservableCollection<PublishingGroupContentItemEntity>(publication.ContentItems.Select(x =>  new PublishingGroupContentItemEntity { PublishingGroup = this, DynamicContentItemId = x.Id }));
+                this.ContentItems = new ObservableCollection<PublishingGroupContentItemEntity>(publication.ContentItems.Select(x => new PublishingGroupContentItemEntity { DynamicContentPublishingGroupId = this.Id, DynamicContentItemId = x.Id }));
             }
             if (publication.ContentPlaces != null)
             {
-                this.ContentPlaces = new ObservableCollection<PublishingGroupContentPlaceEntity>(publication.ContentPlaces.Select(x => new PublishingGroupContentPlaceEntity { PublishingGroup = this, DynamicContentPlaceId = x.Id }));
+                this.ContentPlaces = new ObservableCollection<PublishingGroupContentPlaceEntity>(publication.ContentPlaces.Select(x => new PublishingGroupContentPlaceEntity { DynamicContentPublishingGroupId = this.Id, DynamicContentPlaceId = x.Id }));
             }
             return this;
         }
