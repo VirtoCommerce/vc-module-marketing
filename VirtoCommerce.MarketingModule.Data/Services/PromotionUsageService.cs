@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Model.Promotions.Search;
@@ -25,7 +22,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
         #region IMarketingUsageService Members
 
-        public GenericSearchResult<PromotionUsage> SearchUsages(PromotionUsageSearchCriteria criteria)
+        public virtual GenericSearchResult<PromotionUsage> SearchUsages(PromotionUsageSearchCriteria criteria)
         {
             if (criteria == null)
             {
@@ -34,33 +31,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
             using (var repository = _repositoryFactory())
             {
-                var query = repository.PromotionUsages;
-
-                if (!string.IsNullOrEmpty(criteria.PromotionId))
-                {
-                    query = query.Where(x => x.PromotionId == criteria.PromotionId);
-                }
-                if (!string.IsNullOrEmpty(criteria.CouponCode))
-                {
-                    query = query.Where(x => x.CouponCode == criteria.CouponCode);
-                }
-             
-                if (!string.IsNullOrEmpty(criteria.ObjectId))
-                {
-                    query = query.Where(x => x.ObjectId == criteria.ObjectId);
-                }
-                if (!string.IsNullOrEmpty(criteria.ObjectType))
-                {
-                    query = query.Where(x => x.ObjectType == criteria.ObjectType);
-                }
-                if (!string.IsNullOrWhiteSpace(criteria.UserId))
-                {
-                    query = query.Where(x => x.UserId == criteria.UserId);
-                }
-                if (!string.IsNullOrWhiteSpace(criteria.UserName))
-                {
-                    query = query.Where(x => x.UserName == criteria.UserName);
-                }
+                var query = GetPromotionUsageQuery(repository, criteria);
 
                 var sortInfos = criteria.SortInfos;
                 if (sortInfos.IsNullOrEmpty())
@@ -78,15 +49,15 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             }
         }
 
-        public PromotionUsage[] GetByIds(string[] ids)
-        {       
+        public virtual PromotionUsage[] GetByIds(string[] ids)
+        {
             using (var repository = _repositoryFactory())
             {
                 return repository.GetMarketingUsagesByIds(ids).Select(x => x.ToModel(AbstractTypeFactory<PromotionUsage>.TryCreateInstance())).ToArray();
             }
         }
 
-        public void SaveUsages(PromotionUsage[] usages)
+        public virtual void SaveUsages(PromotionUsage[] usages)
         {
             var pkMap = new PrimaryKeyResolvingMap();
             using (var repository = _repositoryFactory())
@@ -116,7 +87,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             }
         }
 
-        public void DeleteUsages(string[] ids)
+        public virtual void DeleteUsages(string[] ids)
         {
             using (var repository = _repositoryFactory())
             {
@@ -125,6 +96,38 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             }
         }
 
+
+        protected virtual IQueryable<PromotionUsageEntity> GetPromotionUsageQuery(IMarketingRepository repository, PromotionUsageSearchCriteria criteria)
+        {
+            var query = repository.PromotionUsages;
+
+            if (!string.IsNullOrEmpty(criteria.PromotionId))
+            {
+                query = query.Where(x => x.PromotionId == criteria.PromotionId);
+            }
+            if (!string.IsNullOrEmpty(criteria.CouponCode))
+            {
+                query = query.Where(x => x.CouponCode == criteria.CouponCode);
+            }
+            if (!string.IsNullOrEmpty(criteria.ObjectId))
+            {
+                query = query.Where(x => x.ObjectId == criteria.ObjectId);
+            }
+            if (!string.IsNullOrEmpty(criteria.ObjectType))
+            {
+                query = query.Where(x => x.ObjectType == criteria.ObjectType);
+            }
+            if (!string.IsNullOrWhiteSpace(criteria.UserId))
+            {
+                query = query.Where(x => x.UserId == criteria.UserId);
+            }
+            if (!string.IsNullOrWhiteSpace(criteria.UserName))
+            {
+                query = query.Where(x => x.UserName == criteria.UserName);
+            }
+
+            return query;
+        }
         #endregion
     }
 }
