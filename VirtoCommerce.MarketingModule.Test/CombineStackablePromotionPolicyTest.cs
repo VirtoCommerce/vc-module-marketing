@@ -1,6 +1,6 @@
-using Moq;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
 using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Common;
 using VirtoCommerce.Domain.Marketing.Model;
@@ -77,6 +77,27 @@ namespace VirtoCommerce.MarketingModule.Test
             Assert.Equal(0, productA.Price);
         }
 
+        [Fact]
+        public void EvaluateRewards_ShippingMethodNotSpecified_Counted()
+        {
+            //Arrange            
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("Any shipment 50% Off"));
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
+            var context = new PromotionEvaluationContext
+            {
+                ShipmentMethodCode = "FedEx",
+                ShipmentMethodPrice = 100,
+                PromoEntries = new[] { productA }
+            };
+            //Act
+            var rewards = evalPolicy.EvaluatePromotion(context).Rewards;
+
+            //Assert
+            Assert.Equal(1, rewards.Count);
+            Assert.Equal(50m, context.ShipmentMethodPrice);
+            Assert.Equal(100m, productA.Price);
+        }
+
         private static IMarketingPromoEvaluator GetPromotionEvaluationPolicy(IEnumerable<Promotion> promotions)
         {
             var result = new GenericSearchResult<Promotion>
@@ -110,6 +131,16 @@ namespace VirtoCommerce.MarketingModule.Test
                     Rewards = new[]
                    {
                         new ShipmentReward { ShippingMethod = "FedEx", Amount = 30, AmountType = RewardAmountType.Relative, IsValid = true  }
+                    },
+                    Priority = 2,
+                    IsExclusive = false
+                };
+                yield return new MockPromotion
+                {
+                    Id = "Any shipment 50% Off",
+                    Rewards = new[]
+                   {
+                        new ShipmentReward { ShippingMethod = null, Amount = 50, AmountType = RewardAmountType.Relative, IsValid = true  }
                     },
                     Priority = 2,
                     IsExclusive = false

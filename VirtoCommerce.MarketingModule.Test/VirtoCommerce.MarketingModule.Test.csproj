@@ -129,6 +129,7 @@
     <Compile Include="CustomPromotion\BuyProductWithTagPromotion.cs" />
     <Compile Include="CombineStackablePromotionPolicyTest.cs" />
     <Compile Include="MarketingControllerScenarios.cs" />
+    <Compile Include="BestRewardPromotionPolicyTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

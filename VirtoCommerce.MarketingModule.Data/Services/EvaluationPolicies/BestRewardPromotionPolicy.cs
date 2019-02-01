@@ -49,7 +49,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 //best shipment promotion
                 var curShipmentAmount = promoContext.ShipmentMethodCode != null ? promoContext.ShipmentMethodPrice : 0m;
                 var allShipmentRewards = rewards.OfType<ShipmentReward>().ToArray();
-                var groupedByShippingMethodRewards = allShipmentRewards.GroupBy(x => x.ShippingMethod).Where(x => x.Key != null);
+                var groupedByShippingMethodRewards = allShipmentRewards.GroupBy(x => x.ShippingMethod);
                 foreach (var shipmentRewards in groupedByShippingMethodRewards)
                 {
                     var bestShipmentReward = GetBestAmountReward(curShipmentAmount, shipmentRewards);
