@@ -10,7 +10,7 @@ angular.module('virtoCommerce.marketingModule')
             return;
         }
 
-        if (!isMultiSelect) {
+        if (parentElement.productId) {
             let itemDetailBlade = {
                 id: "listItemDetail",
                 itemId: parentElement.productId,
@@ -21,7 +21,48 @@ angular.module('virtoCommerce.marketingModule')
             bladeNavigationService.showBlade(itemDetailBlade, $scope.blade);
             return;
         }
-        
+
+        var selectedEntry = {};
+        if (!isMultiSelect) {
+            var catalogBlade = {
+                id: "CatalogEntrySelect",
+                title: "marketing.blades.catalog-items-select.title-product",
+                controller: 'virtoCommerce.catalogModule.catalogItemSelectController',
+                template: 'Modules/$(VirtoCommerce.Catalog)/Scripts/blades/common/catalog-items-select.tpl.html',
+                breadcrumbs: [],
+                toolbarCommands: [
+                {
+                    name: "platform.commands.pick-selected", icon: 'fa fa-plus',
+                    executeMethod: function (blade) {
+                        parentElement.productId = selectedEntry.id;
+                        parentElement.productName = selectedEntry.name;
+                        parentElement.productCode = selectedEntry.code;
+                        bladeNavigationService.closeBlade(blade);
+                    },
+                    canExecuteMethod: function () {
+                        return Object.keys(selectedEntry).length > 0;
+                    }
+                }]
+            };
+
+            catalogBlade.options = {
+                showCheckingMultiple: false,
+                checkItemFn: function (listItem, isSelected) {
+                    if (listItem.type == 'category') {
+                        catalogBlade.error = 'Must select Product';
+                        listItem.selected = undefined;
+                    } else {
+                        if (isSelected) {
+                            selectedEntry = listItem;
+                        }
+                        catalogBlade.error = undefined;
+                    }
+                }
+            };
+
+            bladeNavigationService.showBlade(catalogBlade, $scope.blade);
+            return;
+        }
 
         var openCatalogBlade = function (catalogConditionsBlade, parentBlade) {
             var catalogBlade = {
@@ -31,23 +72,23 @@ angular.module('virtoCommerce.marketingModule')
                 template: 'Modules/$(VirtoCommerce.Catalog)/Scripts/blades/common/catalog-items-select.tpl.html',
                 breadcrumbs: [],
                 toolbarCommands: [
-                    {
-                        name: "platform.commands.pick-selected", icon: 'fa fa-plus',
-                        executeMethod: function (blade) {
-                            blade.parentBlade.$scope.gridApi.grid.options.data = _.map(blade.parentBlade.selectedListEntries, function (entry) {
-                                if (entry.imageUrl) {
-                                    entry.imgSrc = entry.imageUrl;
-                                }
-                                return entry;
-                            });
-                            parentElement.productIds = parentBlade.selectedListEntries.map(function (entry) { return entry.id; });
-                            catalogConditionsBlade.productIds = parentElement.productIds;
-                            bladeNavigationService.closeBlade(blade);
-                        },
-                        canExecuteMethod: function () {
-                            return true;
-                        }
-                    }]
+                {
+                    name: "platform.commands.pick-selected", icon: 'fa fa-plus',
+                    executeMethod: function (blade) {
+                        blade.parentBlade.$scope.gridApi.grid.options.data = _.map(blade.parentBlade.selectedListEntries, function (entry) {
+                            if (entry.imageUrl) {
+                                entry.imgSrc = entry.imageUrl;
+                            }
+                            return entry;
+                        });
+                        parentElement.productIds = parentBlade.selectedListEntries.map(function (entry) { return entry.id; });
+                        catalogConditionsBlade.productIds = parentElement.productIds;
+                        bladeNavigationService.closeBlade(blade);
+                    },
+                    canExecuteMethod: function () {
+                        return true;
+                    }
+                }]
             };
 
             catalogBlade.options = {
