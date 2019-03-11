@@ -15,6 +15,14 @@
         </div>
     </div>
 </div>
+<div class="blade-static __bottom">
+    <button class="btn" ng-click="saveChanges()" ng-disabled="isEntityChanged()">
+        <span>{{'platform.commands.save' | translate}}</span>
+    </button>
+    <button class="btn" ng-click="cancel()" ng-disabled="isEntityChanged()">
+        <span>{{'platform.commands.cancel' | translate}}</span>
+    </button>
+</div>
 <script id="catalog-conditions-item-list-row.tpl.html" type="text/ng-template">
     <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.uid"
          ui-grid-one-bind-id-grid="rowRenderIndex + '-' + col.uid + '-cell'"
