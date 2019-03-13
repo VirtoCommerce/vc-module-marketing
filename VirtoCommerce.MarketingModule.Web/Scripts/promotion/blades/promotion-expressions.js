@@ -78,7 +78,6 @@ angular.module('virtoCommerce.marketingModule')
         };
 
         bladeNavigationService.showBlade(catalogBlade, $scope.blade);
-        return;
     };
 
     $scope.openCategorySelectWizard = function (parentElement) {
