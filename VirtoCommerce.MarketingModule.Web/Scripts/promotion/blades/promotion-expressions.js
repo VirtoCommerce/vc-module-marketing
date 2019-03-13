@@ -10,6 +10,19 @@ angular.module('virtoCommerce.marketingModule')
             return;
         }
 
+        if (isMultiSelect) {
+            var newBlade = {
+                id: "CatalogEntries",
+                title: "marketing.blades.catalog-entries.title-product",
+                controller: 'virtoCommerce.marketingModule.catalogEntriesController',
+                template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/promotion/blades/catalog-entry-list.tpl.html',
+                breadcrumbs: [],
+                promotion: parentElement
+            };
+            bladeNavigationService.showBlade(newBlade, $scope.blade);
+            return;
+        }
+
         if (parentElement.productId) {
             let itemDetailBlade = {
                 id: "listItemDetail",
@@ -21,58 +34,51 @@ angular.module('virtoCommerce.marketingModule')
             bladeNavigationService.showBlade(itemDetailBlade, $scope.blade);
             return;
         }
-
-        var selectedEntry = {};
-        if (!isMultiSelect) {
-            var catalogBlade = {
-                id: "CatalogEntrySelect",
-                title: "marketing.blades.catalog-items-select.title-product",
-                controller: 'virtoCommerce.catalogModule.catalogItemSelectController',
-                template: 'Modules/$(VirtoCommerce.Catalog)/Scripts/blades/common/catalog-items-select.tpl.html',
-                breadcrumbs: [],
-                toolbarCommands: [
-                {
-                    name: "platform.commands.pick-selected", icon: 'fa fa-plus',
-                    executeMethod: function (blade) {
-                        parentElement.productId = selectedEntry.id;
-                        parentElement.productName = selectedEntry.name;
-                        parentElement.productCode = selectedEntry.code;
-                        bladeNavigationService.closeBlade(blade);
-                    },
-                    canExecuteMethod: function () {
-                        return Object.keys(selectedEntry).length > 0;
-                    }
-                }]
-            };
-
-            catalogBlade.options = {
-                showCheckingMultiple: false,
-                checkItemFn: function (listItem, isSelected) {
-                    if (listItem.type == 'category') {
-                        catalogBlade.error = 'Must select Product';
-                        listItem.selected = undefined;
-                    } else {
-                        if (isSelected) {
-                            selectedEntry = listItem;
-                        }
-                        catalogBlade.error = undefined;
-                    }
-                }
-            };
-
-            bladeNavigationService.showBlade(catalogBlade, $scope.blade);
-            return;
-        }
         
-        var newBlade = {
-            id: "CatalogEntries",
-            title: "marketing.blades.catalog-entries.title-product",
-            controller: 'virtoCommerce.marketingModule.catalogEntriesController',
-            template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/promotion/blades/catalog-entry-list.tpl.html',
+        var selectedListEntries = [];
+        var catalogBlade = {
+            id: "CatalogEntrySelect",
+            title: "marketing.blades.catalog-items-select.title-product",
+            controller: 'virtoCommerce.catalogModule.catalogItemSelectController',
+            template: 'Modules/$(VirtoCommerce.Catalog)/Scripts/blades/common/catalog-items-select.tpl.html',
             breadcrumbs: [],
-            promotion: parentElement
+            toolbarCommands: [
+            {
+                name: "platform.commands.pick-selected", icon: 'fa fa-plus',
+                executeMethod: function (blade) {
+                    parentElement.productId = selectedListEntries[0].id;
+                    parentElement.productName = selectedListEntries[0].name;
+                    parentElement.productCode = selectedListEntries[0].code;
+                    bladeNavigationService.closeBlade(blade);
+                },
+                canExecuteMethod: function () {
+                    return selectedListEntries.length == 1;
+                }
+            }]
         };
-        bladeNavigationService.showBlade(newBlade, $scope.blade);
+
+        catalogBlade.options = {
+            showCheckingMultiple: false,
+            checkItemFn: function (listItem, isSelected) {
+                if (listItem.type == 'category') {
+                    catalogBlade.error = 'Must select Product';
+                    listItem.selected = undefined;
+                } else {
+                    if (isSelected) {
+                        if (_.all(selectedListEntries, function (x) { return x.id != listItem.id; })) {
+                            selectedListEntries.push(listItem);
+                        }
+                    }
+                    else {
+                        selectedListEntries = _.reject(selectedListEntries, function (x) { return x.id == listItem.id; });
+                    }
+                    catalogBlade.error = undefined;
+                }
+            }
+        };
+
+        bladeNavigationService.showBlade(catalogBlade, $scope.blade);
+        return;
     };
 
     $scope.openCategorySelectWizard = function (parentElement) {

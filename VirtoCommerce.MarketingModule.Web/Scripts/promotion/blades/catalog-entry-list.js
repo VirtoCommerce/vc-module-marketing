@@ -4,11 +4,11 @@ angular.module('virtoCommerce.marketingModule')
             var blade = $scope.blade;
 
             $scope.isEntityChanged = function () {
-                return angular.equals(this.blade.productIds, this.blade.currentProductIds);
+                return angular.equals(this.blade.productIds, this.blade.promotion.productIds);
             };
 
             $scope.saveChanges = function () {
-                this.blade.promotion.productIds = this.blade.productIds.slice();
+                this.blade.promotion.productIds = this.blade.productIds;
                 bladeNavigationService.closeBlade(this.blade);
             };
 
@@ -27,12 +27,15 @@ angular.module('virtoCommerce.marketingModule')
                 initialize();
             };
 
+            var selectedListEntries = [];
             function initialize() {
-                blade.productIds = blade.promotion.productIds != undefined ? blade.promotion.productIds.slice() : [];
-                blade.currentProductIds = angular.copy(blade.productIds);
-                items.query({ ids: blade.currentProductIds, respGroup: 'ItemInfo' }, function (data) {
+                if (!blade.promotion.productIds)
+                    blade.promotion.productIds = [];
+
+                blade.productIds = blade.promotion.productIds.slice();
+                items.query({ ids: blade.productIds, respGroup: 'ItemInfo' }, function (data) {
                     blade.$scope.gridApi.grid.options.data = data;
-                    blade.selectedListEntries = data.slice();
+                    selectedListEntries = angular.copy(data);
                     blade.isLoading = false;
                 });
             }
@@ -54,7 +57,7 @@ angular.module('virtoCommerce.marketingModule')
                     {
                         name: "platform.commands.pick-selected", icon: 'fa fa-plus',
                         executeMethod: function () {
-                            blade.$scope.gridApi.grid.options.data = _.map(blade.selectedListEntries, function (entry) {
+                            blade.$scope.gridApi.grid.options.data = _.map(selectedListEntries, function (entry) {
                                 if (entry.imageUrl) {
                                     entry.imgSrc = entry.imageUrl;
                                 }
@@ -63,7 +66,7 @@ angular.module('virtoCommerce.marketingModule')
                             bladeNavigationService.closeBlade(catalogBlade);
                         },
                         canExecuteMethod: function () {
-                            return true;
+                            return selectedListEntries.length > 0;
                         }
                     }]
                 };
@@ -77,12 +80,12 @@ angular.module('virtoCommerce.marketingModule')
                             listItem.selected = undefined;
                         } else {
                             if (isSelected) {
-                                if (_.all(blade.selectedListEntries, function (x) { return x.id != listItem.id; })) {
-                                    blade.selectedListEntries.push(listItem);
+                                if (_.all(selectedListEntries, function (x) { return x.id != listItem.id; })) {
+                                    selectedListEntries.push(listItem);
                                 }
                             }
                             else {
-                                blade.selectedListEntries = _.reject(blade.selectedListEntries, function (x) { return x.id == listItem.id; });
+                                selectedListEntries = _.reject(selectedListEntries, function (x) { return x.id == listItem.id; });
                             }
                             blade.error = undefined;
                         }
@@ -120,7 +123,7 @@ angular.module('virtoCommerce.marketingModule')
                             });
                         }
 
-                        blade.selectedListEntries = grid.options.data.slice();
+                        selectedListEntries = angular.copy(grid.options.data);
                         blade.productIds = _.map(grid.options.data, function (item) {
                             return item.id;
                         });
