@@ -9,6 +9,9 @@ angular.module('virtoCommerce.marketingModule')
 
             $scope.saveChanges = function () {
                 this.blade.promotion.productIds = this.blade.productIds;
+                this.blade.promotion.productNames = _.map(selectedListEntries, function (entry) {
+                    return entry.name;
+                });
                 bladeNavigationService.closeBlade(this.blade);
             };
 
