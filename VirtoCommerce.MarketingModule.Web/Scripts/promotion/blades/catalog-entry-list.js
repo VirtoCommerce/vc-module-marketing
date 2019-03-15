@@ -30,10 +30,19 @@ angular.module('virtoCommerce.marketingModule')
                 initialize();
             };
 
+            var isFirstRun = true;
             var selectedListEntries = [];
             function initialize() {
                 if (!blade.promotion.productIds)
                     blade.promotion.productIds = [];
+
+                if (isFirstRun) {
+                    isFirstRun = false;
+                    if (!(blade.promotion.productIds && blade.promotion.productIds.length)) {
+                        openCatalogBlade();
+                        return;
+                    }
+                }
 
                 blade.productIds = blade.promotion.productIds.slice();
                 items.query({ ids: blade.productIds, respGroup: 'ItemInfo' }, function (data) {
