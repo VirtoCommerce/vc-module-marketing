@@ -226,6 +226,8 @@
     <Content Include="Scripts\promotion\blades\coupon-list.tpl.html" />
     <Content Include="Scripts\promotion\blades\filter-detail.js" />
     <Content Include="Scripts\promotion\blades\filter-detail.tpl.html" />
+    <Content Include="Scripts\promotion\blades\catalog-entry-list.js" />
+    <Content Include="Scripts\promotion\blades\catalog-entry-list.tpl.html" />
     <Content Include="Scripts\promotion\blades\promotion-expressions.js" />
     <Content Include="Scripts\promotion\blades\promotion-detail.js" />
     <Content Include="Scripts\promotion\blades\promotion-detail.tpl.html" />
