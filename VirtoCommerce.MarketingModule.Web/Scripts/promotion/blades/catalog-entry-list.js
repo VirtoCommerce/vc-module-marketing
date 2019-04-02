@@ -9,9 +9,7 @@ angular.module('virtoCommerce.marketingModule')
 
             $scope.saveChanges = function () {
                 this.blade.promotion.productIds = this.blade.productIds;
-                this.blade.promotion.productNames = _.map(selectedListEntries, function (entry) {
-                    return entry.name;
-                });
+                this.blade.promotion.productNames = _.pluck(selectedListEntries, 'name');
                 $scope.bladeClose();
             };
 
@@ -79,9 +77,7 @@ angular.module('virtoCommerce.marketingModule')
                                 }
                                 return entry;
                             });
-                            var selectedIds = _.map(selectedListEntries, function (item) {
-                                return item.id;
-                            });
+                            var selectedIds = _.pluck(selectedListEntries, 'id');
                             blade.productIds = _.uniq(_.union(selectedIds, blade.productIds), false);
                             bladeNavigationService.closeBlade(catalogBlade);
                         },
@@ -136,9 +132,7 @@ angular.module('virtoCommerce.marketingModule')
                     name: "platform.commands.delete", icon: 'fa fa-trash-o',
                     executeMethod: function () {
                         var selectedRows = $scope.gridApi.selection.getSelectedRows();
-                        var toRemoveArray = _.map(selectedRows, function (item) {
-                            return item.id;
-                        });
+                        var toRemoveArray = _.pluck(selectedRows, 'id');
 
                         blade.productIds = _.difference(blade.productIds, toRemoveArray);
                         blade.refresh();
