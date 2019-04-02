@@ -3,8 +3,8 @@ angular.module('virtoCommerce.marketingModule')
         function ($scope, items, gridOptionExtension, bladeUtils, uiGridHelper, bladeNavigationService) {
             var blade = $scope.blade;
 
-            $scope.isEntityChanged = function () {
-                return angular.equals(this.blade.productIds, this.blade.promotion.productIds);
+            $scope.isValid = function () {
+                return !angular.equals(this.blade.productIds, this.blade.promotion.productIds);
             };
 
             $scope.saveChanges = function () {
@@ -12,7 +12,7 @@ angular.module('virtoCommerce.marketingModule')
                 this.blade.promotion.productNames = _.map(selectedListEntries, function (entry) {
                     return entry.name;
                 });
-                bladeNavigationService.closeBlade(this.blade);
+                $scope.bladeClose();
             };
 
             $scope.setGridOptions = function (gridId, gridOptions) {
@@ -26,25 +26,29 @@ angular.module('virtoCommerce.marketingModule')
                 initialize();
             };
 
-            $scope.cancel = function () {
-                initialize();
+            $scope.cancelChanges = function () {
+                $scope.bladeClose();
             };
 
             var isFirstRun = true;
             var selectedListEntries = [];
+
             function initialize() {
-                if (!blade.promotion.productIds)
+                blade.isLoading = true;
+                if (!blade.promotion.productIds) {
                     blade.promotion.productIds = [];
+                }
 
                 if (isFirstRun) {
                     isFirstRun = false;
+                    blade.productIds = angular.copy(blade.promotion.productIds);
+
                     if (!(blade.promotion.productIds && blade.promotion.productIds.length)) {
                         openCatalogBlade();
                         return;
                     }
                 }
 
-                blade.productIds = blade.promotion.productIds.slice();
                 items.query({ ids: blade.productIds, respGroup: 'ItemInfo' }, function (data) {
                     blade.$scope.gridApi.grid.options.data = data;
                     selectedListEntries = angular.copy(data);
@@ -75,6 +79,10 @@ angular.module('virtoCommerce.marketingModule')
                                 }
                                 return entry;
                             });
+                            var selectedIds = _.map(selectedListEntries, function (item) {
+                                return item.id;
+                            });
+                            blade.productIds = _.uniq(_.union(selectedIds, blade.productIds), false);
                             bladeNavigationService.closeBlade(catalogBlade);
                         },
                         canExecuteMethod: function () {
@@ -84,7 +92,7 @@ angular.module('virtoCommerce.marketingModule')
                 };
 
                 catalogBlade.options = {
-                    selectedItemIds: blade.productIds,
+                    selectedItemIds: [],
                     showCheckingMultiple: false,
                     checkItemFn: function (listItem, isSelected) {
                         if (listItem.type == 'category') {
@@ -127,18 +135,13 @@ angular.module('virtoCommerce.marketingModule')
                 {
                     name: "platform.commands.delete", icon: 'fa fa-trash-o',
                     executeMethod: function () {
-                        var grid = blade.$scope.gridApi.grid;
-                        var selectedRows = grid.api.selection.getSelectedRows();
-                        for (var entry of selectedRows) {
-                            grid.options.data = _.filter(grid.options.data, function (item) {
-                                return item.id != entry.id;
-                            });
-                        }
-
-                        selectedListEntries = angular.copy(grid.options.data);
-                        blade.productIds = _.map(grid.options.data, function (item) {
+                        var selectedRows = $scope.gridApi.selection.getSelectedRows();
+                        var toRemoveArray = _.map(selectedRows, function (item) {
                             return item.id;
                         });
+
+                        blade.productIds = _.difference(blade.productIds, toRemoveArray);
+                        blade.refresh();
                     },
                     canExecuteMethod: function () {
                         if (blade.childrenBlades.length > 0) {
