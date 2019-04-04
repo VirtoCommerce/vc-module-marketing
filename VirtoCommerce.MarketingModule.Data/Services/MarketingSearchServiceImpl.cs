@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Marketing.Model.DynamicContent.Search;
@@ -36,7 +36,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 {
                     sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<coreModel.Promotion>(x => x.Priority), SortDirection = SortDirection.Descending } };
                 }
-                query = query.OrderBySortInfos(sortInfos);
+                query = query.OrderBySortInfos(sortInfos).ThenBy(x=>x.Id);
 
                 retVal.TotalCount = query.Count();
 
@@ -98,7 +98,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 {
                     sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<coreModel.DynamicContentItem>(x => x.Name), SortDirection = SortDirection.Ascending } };
                 }
-                query = query.OrderBySortInfos(sortInfos);
+                query = query.OrderBySortInfos(sortInfos).ThenBy(x=>x.Id);
 
                 retVal.TotalCount = query.Count();
 
@@ -129,7 +129,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 {
                     sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<coreModel.DynamicContentPlace>(x => x.Name), SortDirection = SortDirection.Ascending } };
                 }
-                query = query.OrderBySortInfos(sortInfos);
+                query = query.OrderBySortInfos(sortInfos).ThenBy(x=>x.Id);
 
                 retVal.TotalCount = query.Count();
                 var ids = query.Select(x => x.Id)
@@ -163,7 +163,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 {
                     sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<coreModel.DynamicContentPublication>(x => x.Name), SortDirection = SortDirection.Ascending } };
                 }
-                query = query.OrderBySortInfos(sortInfos);
+                query = query.OrderBySortInfos(sortInfos).ThenBy(x=>x.Id);
 
                 retVal.TotalCount = query.Count();
 

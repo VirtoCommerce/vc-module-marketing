@@ -51,7 +51,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 {
                     sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<Coupon>(x => x.Code), SortDirection = SortDirection.Descending } };
                 }
-                query = query.OrderBySortInfos(sortInfos);
+                query = query.OrderBySortInfos(sortInfos).ThenBy(x=>x.Id);
                 
                 var searchResult = new GenericSearchResult<Coupon> { TotalCount = query.Count() };
 

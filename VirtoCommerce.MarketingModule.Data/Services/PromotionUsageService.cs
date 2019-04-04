@@ -38,7 +38,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 {
                     sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<PromotionUsage>(x => x.ModifiedDate), SortDirection = SortDirection.Descending } };
                 }
-                query = query.OrderBySortInfos(sortInfos);
+                query = query.OrderBySortInfos(sortInfos).ThenBy(x=>x.Id);
 
                 var searchResult = new GenericSearchResult<PromotionUsage> { TotalCount = query.Count() };
 
