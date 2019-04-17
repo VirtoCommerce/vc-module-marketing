@@ -128,6 +128,7 @@
     <Compile Include="CustomPromotionExpressions\CustomPromotionEvaluationContextExtension.cs" />
     <Compile Include="CustomPromotion\BuyProductWithTagPromotion.cs" />
     <Compile Include="CombineStackablePromotionPolicyTest.cs" />
+    <Compile Include="DynamicPromotionTests.cs" />
     <Compile Include="MarketingControllerScenarios.cs" />
     <Compile Include="BestRewardPromotionPolicyTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -154,6 +155,7 @@
   <ItemGroup>
     <Analyzer Include="..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
