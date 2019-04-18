@@ -12,6 +12,7 @@ using Xunit;
 
 namespace VirtoCommerce.MarketingModule.Test
 {
+    [Trait("Category", "CI")]
     public class DynamicPromotionTests
     {
         [Theory]
@@ -63,9 +64,8 @@ namespace VirtoCommerce.MarketingModule.Test
         public static IEnumerable<object[]> ExpirationDateData =>
             new List<object[]>
             {
-                new object[] {DateTime.Now.AddDays(-1), 0},
-                new object[] {DateTime.Now, 1},
-                new object[] {DateTime.Now.AddDays(1), 1},
+                new object[] {DateTime.UtcNow.AddDays(-1), 0},
+                new object[] {DateTime.UtcNow.AddDays(1), 1}
             };
 
         [Theory]
