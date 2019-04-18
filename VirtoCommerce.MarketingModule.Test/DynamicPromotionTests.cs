@@ -14,16 +14,10 @@ namespace VirtoCommerce.MarketingModule.Test
 {
     public class DynamicPromotionTests
     {
-        public static IEnumerable<object[]> UsesNumberData =>
-            new List<object[]>
-            {
-                new object[] {9, 10, 0},
-                new object[] {10, 10, 0},
-                new object[] {11, 10, 1}
-            };
-
         [Theory]
-        [MemberData(nameof(UsesNumberData))]
+        [InlineData(9, 10, 0)]
+        [InlineData(10, 10, 0)]
+        [InlineData(11, 10, 1)]
         public void FindValidCoupon_UsesNumber(int maxUsesNumber, int totalUses, int expectedCouponsCount)
         {
             //Arrange
@@ -43,16 +37,10 @@ namespace VirtoCommerce.MarketingModule.Test
             Assert.Equal(expectedCouponsCount, validCoupons.Count());
         }
 
-        public static IEnumerable<object[]> UsesNumberWithUserIdData =>
-            new List<object[]>
-            {
-                new object[] {9, 10, 0, "userId"},
-                new object[] {10, 10, 0, "userId"},
-                new object[] {11, 10, 1, "userId"}
-            };
-
         [Theory]
-        [MemberData(nameof(UsesNumberWithUserIdData))]
+        [InlineData(9, 10, 0, "userId")]
+        [InlineData(10, 10, 0, "userId")]
+        [InlineData(11, 10, 1, "userId")]
         public void FindValidCoupon_UsesNumberWithUserId(int maxUsesNumber, int totalUses, int expectedCouponsCount, string userId)
         {
             //Arrange
