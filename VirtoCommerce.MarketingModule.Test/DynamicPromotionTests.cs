@@ -14,8 +14,20 @@ namespace VirtoCommerce.MarketingModule.Test
 {
     public class DynamicPromotionTests
     {
-        [Fact]
-        public void FindValidCouponTest()
+        public static IEnumerable<object[]> Data =>
+            new List<object[]>
+            {
+                new object[] {9, 10, null, 0},
+                new object[] {10, 10, null, 0},
+                new object[] {11, 10, null, 1},
+                new object[] {11, 1, DateTime.Now.AddDays(-1), 0},
+                new object[] {11, 1, DateTime.Now, 1},
+                new object[] {11, 1, DateTime.Now.AddDays(1), 1},
+            };
+
+        [Theory]
+        [MemberData(nameof(Data))]
+        public void FindValidCouponTest(int maxUsesNumber, int totalUses, DateTime? expirationDate, int validCouponsExpect)
         {
             //Arrange
             var coupons = new List<Coupon>()
@@ -24,58 +36,29 @@ namespace VirtoCommerce.MarketingModule.Test
                 {
                     Id = "1",
                     Code = "1",
-                    MaxUsesNumber = 9
-                },
-                new Coupon()
-                {
-                    Id = "2",
-                    Code = "2",
-                    MaxUsesNumber = 10
-                },
-                new Coupon()
-                {
-                    Id = "3",
-                    Code = "3",
-                    MaxUsesNumber = 11
-                },
-                new Coupon()
-                {
-                    Id = "4",
-                    Code = "4",
-                    ExpirationDate = DateTime.Now.AddDays(-1)
-                },
-                new Coupon()
-                {
-                    Id = "5",
-                    Code = "5",
-                    ExpirationDate = DateTime.Now
-                },
-                new Coupon()
-                {
-                    Id = "6",
-                    Code = "6",
-                    ExpirationDate = DateTime.Now.AddDays(1)
+                    MaxUsesNumber = maxUsesNumber,
+                    ExpirationDate = expirationDate
                 }
             };
 
             var promotionUsageServiceMoq = new Mock<IPromotionUsageService>();
             promotionUsageServiceMoq.Setup(x => x.SearchUsages(It.IsAny<PromotionUsageSearchCriteria>()))
-                .Returns(new GenericSearchResult<PromotionUsage>() { TotalCount = 10 });
+                .Returns(new GenericSearchResult<PromotionUsage>() {TotalCount = totalUses});
 
             var couponServiceMoq = new Mock<ICouponService>();
             couponServiceMoq.Setup(x => x.SearchCoupons(It.IsAny<CouponSearchCriteria>()))
-                .Returns(new GenericSearchResult<Coupon>() { Results = coupons });
+                .Returns(new GenericSearchResult<Coupon>() {Results = coupons});
 
             var dynamicPromotion = new DynamicPromotionMoq(new Moq.Mock<IExpressionSerializer>().Object,
                 couponServiceMoq.Object, promotionUsageServiceMoq.Object);
 
             //Act
-            var validCoupons = dynamicPromotion.FindValidCoupons(new List<string>() { "any coupon" }, null);
-            var validCouponsWithUserId = dynamicPromotion.FindValidCoupons(new List<string>() { "any coupon" }, "userId");
+            var validCoupons = dynamicPromotion.FindValidCoupons(new List<string>() {"any coupon"}, null);
+            var validCouponsWithUserId = dynamicPromotion.FindValidCoupons(new List<string>() {"any coupon"}, "userId");
 
             //Assert
-            Assert.Equal(3, validCoupons.Count());
-            Assert.Equal(3, validCouponsWithUserId.Count());
+            Assert.Equal(validCouponsExpect, validCoupons.Count());
+            Assert.Equal(validCouponsExpect, validCouponsWithUserId.Count());
         }
 
 
