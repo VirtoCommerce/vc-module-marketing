@@ -104,8 +104,8 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
                 var ids = query.Select(x => x.Id)
                                .Skip(criteria.Skip)
-                               .Take(criteria.Take).ToArray();
-                retVal.Results = _dynamicContentService.GetContentItemsByIds(ids);
+                               .Take(criteria.Take).ToList();
+                retVal.Results = _dynamicContentService.GetContentItemsByIds(ids.ToArray()).OrderBy(x => ids.IndexOf(x.Id)).ToList();
             }
             return retVal;
         }
@@ -133,9 +133,10 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
                 retVal.TotalCount = query.Count();
                 var ids = query.Select(x => x.Id)
-                               .Skip(criteria.Skip)
-                               .Take(criteria.Take).ToArray();
-                retVal.Results = _dynamicContentService.GetPlacesByIds(ids);
+                    .Skip(criteria.Skip)
+                    .Take(criteria.Take)
+                    .ToList();
+                retVal.Results = _dynamicContentService.GetPlacesByIds(ids.ToArray()).OrderBy(x => ids.IndexOf(x.Id)).ToList();
             }
             return retVal;
         }
@@ -168,9 +169,10 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 retVal.TotalCount = query.Count();
 
                 var ids = query.Select(x => x.Id)
-                           .Skip(criteria.Skip)
-                           .Take(criteria.Take).ToArray();
-                retVal.Results = _dynamicContentService.GetPublicationsByIds(ids);
+                    .Skip(criteria.Skip)
+                    .Take(criteria.Take)
+                    .ToList();
+                retVal.Results = _dynamicContentService.GetPublicationsByIds(ids.ToArray()).OrderBy(x => ids.IndexOf(x.Id)).ToList();
             }
             return retVal;
         }
