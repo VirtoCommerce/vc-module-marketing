@@ -155,13 +155,4 @@ $RECYCLE.BIN/
 *.zip
 
 .vs/
-/.idea/.idea.VirtoCommerce.MarketingModule/.idea/.name
-/.idea/.idea.VirtoCommerce.MarketingModule/.idea/contentModel.xml
-/.idea/.idea.VirtoCommerce.MarketingModule/.idea/encodings.xml
-/.idea/.idea.VirtoCommerce.MarketingModule/.idea/indexLayout.xml
-/.idea/.idea.VirtoCommerce.MarketingModule/.idea/misc.xml
-/.idea/.idea.VirtoCommerce.MarketingModule/.idea/modules.xml
-/.idea/.idea.VirtoCommerce.MarketingModule/.idea/vcs.xml
-/.idea/.idea.VirtoCommerce.MarketingModule/.idea/workspace.xml
-/.idea/.idea.VirtoCommerce.MarketingModule/riderModule.iml
-/.idea/config/applicationhost.config
+/.idea/*
