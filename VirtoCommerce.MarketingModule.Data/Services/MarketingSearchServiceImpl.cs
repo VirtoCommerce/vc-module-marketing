@@ -42,8 +42,12 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
                 var ids = query.Select(x => x.Id)
                                .Skip(criteria.Skip)
-                               .Take(criteria.Take).ToArray();
-                retVal.Results = _promotionSrevice.GetPromotionsByIds(ids).OrderBy(p => ids.ToList().IndexOf(p.Id)).ToList();
+                               .Take(criteria.Take)
+                               .ToArray();
+
+                retVal.Results = _promotionSrevice.GetPromotionsByIds(ids)
+                    .OrderBy(p => ids.ToList().IndexOf(p.Id))
+                    .ToList();
             }
             return retVal;
         }
@@ -104,8 +108,12 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
                 var ids = query.Select(x => x.Id)
                                .Skip(criteria.Skip)
-                               .Take(criteria.Take).ToList();
-                retVal.Results = _dynamicContentService.GetContentItemsByIds(ids.ToArray()).OrderBy(x => ids.IndexOf(x.Id)).ToList();
+                               .Take(criteria.Take)
+                               .ToList();
+
+                retVal.Results = _dynamicContentService.GetContentItemsByIds(ids.ToArray())
+                    .OrderBy(x => ids.IndexOf(x.Id))
+                    .ToList();
             }
             return retVal;
         }
@@ -136,7 +144,10 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                     .Skip(criteria.Skip)
                     .Take(criteria.Take)
                     .ToList();
-                retVal.Results = _dynamicContentService.GetPlacesByIds(ids.ToArray()).OrderBy(x => ids.IndexOf(x.Id)).ToList();
+
+                retVal.Results = _dynamicContentService.GetPlacesByIds(ids.ToArray())
+                    .OrderBy(x => ids.IndexOf(x.Id))
+                    .ToList();
             }
             return retVal;
         }
@@ -172,7 +183,10 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                     .Skip(criteria.Skip)
                     .Take(criteria.Take)
                     .ToList();
-                retVal.Results = _dynamicContentService.GetPublicationsByIds(ids.ToArray()).OrderBy(x => ids.IndexOf(x.Id)).ToList();
+
+                retVal.Results = _dynamicContentService.GetPublicationsByIds(ids.ToArray())
+                    .OrderBy(x => ids.IndexOf(x.Id))
+                    .ToList();
             }
             return retVal;
         }
