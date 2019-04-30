@@ -49,6 +49,7 @@ angular.module('virtoCommerce.marketingModule')
                     parentElement.productId = selectedListEntries[0].id;
                     parentElement.productName = selectedListEntries[0].name;
                     parentElement.productCode = selectedListEntries[0].code;
+                    blade.parentBlade.$scope.$$childTail.productCodes[parentElement.productId] = parentElement.productCode;
                     bladeNavigationService.closeBlade(blade);
                 },
                 canExecuteMethod: function () {
