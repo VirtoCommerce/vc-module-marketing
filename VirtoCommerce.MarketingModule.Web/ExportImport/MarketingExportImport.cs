@@ -140,15 +140,15 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
 
             progressInfo.Description = "Loading places...";
             progressCallback(progressInfo);
-            result.ContentPlaces = LoadContentPlaces(new DynamicContentPlaceSearchCriteria { Take = int.MaxValue }).Results;
+            result.ContentPlaces = LoadContentPlaces(new DynamicContentPlaceSearchCriteria { Take = int.MaxValue }).Results.ToList();
 
             progressInfo.Description = "Loading contents...";
             progressCallback(progressInfo);
-            result.ContentItems = LoadContentItems(new DynamicContentItemSearchCriteria { Take = int.MaxValue }).Results;
+            result.ContentItems = LoadContentItems(new DynamicContentItemSearchCriteria { Take = int.MaxValue }).Results.ToList();
 
             progressInfo.Description = "Loading publications...";
             progressCallback(progressInfo);
-            result.ContentPublications = LoadContentPublications(new DynamicContentPublicationSearchCriteria { Take = int.MaxValue }).Results;
+            result.ContentPublications = LoadContentPublications(new DynamicContentPublicationSearchCriteria { Take = int.MaxValue }).Results.ToList();
 
             progressInfo.Description = "Loading coupons...";
             progressCallback(progressInfo);
