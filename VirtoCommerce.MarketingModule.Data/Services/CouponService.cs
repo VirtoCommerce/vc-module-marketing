@@ -58,10 +58,10 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 var ids = query.Select(x => x.Id)
                                .Skip(criteria.Skip)
                                .Take(criteria.Take)
-                               .ToList();
+                               .ToArray();
 
-                searchResult.Results = GetByIds(ids.ToArray())
-                    .OrderBy(x => ids.IndexOf(x.Id))
+                searchResult.Results = GetByIds(ids)
+                    .OrderBy(x => Array.IndexOf(ids, x.Id))
                     .ToList();
                 return searchResult;
             }

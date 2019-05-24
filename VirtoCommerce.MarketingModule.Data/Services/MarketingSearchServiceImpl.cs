@@ -46,7 +46,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                                .ToArray();
 
                 retVal.Results = _promotionSrevice.GetPromotionsByIds(ids)
-                    .OrderBy(p => ids.ToList().IndexOf(p.Id))
+                    .OrderBy(p => Array.IndexOf(ids, p.Id))
                     .ToList();
             }
             return retVal;
@@ -109,10 +109,10 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 var ids = query.Select(x => x.Id)
                                .Skip(criteria.Skip)
                                .Take(criteria.Take)
-                               .ToList();
+                               .ToArray();
 
                 retVal.Results = _dynamicContentService.GetContentItemsByIds(ids.ToArray())
-                    .OrderBy(x => ids.IndexOf(x.Id))
+                    .OrderBy(x => Array.IndexOf(ids, x.Id))
                     .ToList();
             }
             return retVal;
@@ -143,10 +143,10 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 var ids = query.Select(x => x.Id)
                     .Skip(criteria.Skip)
                     .Take(criteria.Take)
-                    .ToList();
+                    .ToArray();
 
                 retVal.Results = _dynamicContentService.GetPlacesByIds(ids.ToArray())
-                    .OrderBy(x => ids.IndexOf(x.Id))
+                    .OrderBy(x => Array.IndexOf(ids, x.Id))
                     .ToList();
             }
             return retVal;
@@ -182,10 +182,10 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 var ids = query.Select(x => x.Id)
                     .Skip(criteria.Skip)
                     .Take(criteria.Take)
-                    .ToList();
+                    .ToArray();
 
                 retVal.Results = _dynamicContentService.GetPublicationsByIds(ids.ToArray())
-                    .OrderBy(x => ids.IndexOf(x.Id))
+                    .OrderBy(x => Array.IndexOf(ids, x.Id))
                     .ToList();
             }
             return retVal;

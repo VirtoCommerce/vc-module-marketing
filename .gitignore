@@ -45,6 +45,7 @@ build/
 *.vssscc
 .builds
 *.pidb
+*.log
 *.scc
 
 # Visual C++ cache files
@@ -155,4 +156,3 @@ $RECYCLE.BIN/
 *.zip
 
 .vs/
-/.idea/*
