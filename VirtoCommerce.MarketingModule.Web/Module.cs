@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Web.Http;
 using Microsoft.Practices.Unity;
-using VirtoCommerce.Domain.Cart.Events;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.Domain.Order.Events;
 using VirtoCommerce.MarketingModule.Data.Handlers;
@@ -81,7 +80,7 @@ namespace VirtoCommerce.MarketingModule.Web
             eventHandlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, token) => await _container.Resolve<CouponUsageRecordHandler>().Handle(message));
 
             AbstractTypeFactory<DynamicPromotion>.RegisterType<DynamicPromotion>().WithFactory(() => _container.Resolve<DynamicPromotion>());
-
+            AbstractTypeFactory<MarketingExportImport>.RegisterType<MarketingExportImport>().WithFactory(() => _container.Resolve<MarketingExportImport>());
         }
 
         public override void PostInitialize()
@@ -118,13 +117,13 @@ namespace VirtoCommerce.MarketingModule.Web
 
         public void DoExport(System.IO.Stream outStream, PlatformExportManifest manifest, Action<ExportImportProgressInfo> progressCallback)
         {
-            var exportJob = _container.Resolve<MarketingExportImport>();
+            var exportJob = AbstractTypeFactory<MarketingExportImport>.TryCreateInstance();
             exportJob.DoExport(outStream, progressCallback);
         }
 
         public void DoImport(System.IO.Stream inputStream, PlatformExportManifest manifest, Action<ExportImportProgressInfo> progressCallback)
         {
-            var exportJob = _container.Resolve<MarketingExportImport>();
+            var exportJob = AbstractTypeFactory<MarketingExportImport>.TryCreateInstance();
             exportJob.DoImport(inputStream, progressCallback);
         }
 
