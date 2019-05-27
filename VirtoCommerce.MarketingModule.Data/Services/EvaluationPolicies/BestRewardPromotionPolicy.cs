@@ -31,8 +31,14 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 throw new ArgumentException($"{nameof(context)} type {context.GetType()} must be derived from PromotionEvaluationContext");
             }
 
+            var promotionSearchCriteria = new PromotionSearchCriteria
+            {
+                OnlyActive = true,
+                StoreIds = string.IsNullOrEmpty(promoContext.StoreId) ? null : new[] { promoContext.StoreId },
+                Take = int.MaxValue
+            };
 
-            var promotions = _promotionSearchService.SearchPromotions(new PromotionSearchCriteria { OnlyActive = true, StoreIds = new[] { promoContext.StoreId }, Take = int.MaxValue }).Results;
+            var promotions = _promotionSearchService.SearchPromotions(promotionSearchCriteria).Results;
 
             var result = new PromotionResult();
 
