@@ -111,7 +111,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                                .Take(criteria.Take)
                                .ToArray();
 
-                retVal.Results = _dynamicContentService.GetContentItemsByIds(ids.ToArray())
+                retVal.Results = _dynamicContentService.GetContentItemsByIds(ids)
                     .OrderBy(x => Array.IndexOf(ids, x.Id))
                     .ToList();
             }
@@ -145,7 +145,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                     .Take(criteria.Take)
                     .ToArray();
 
-                retVal.Results = _dynamicContentService.GetPlacesByIds(ids.ToArray())
+                retVal.Results = _dynamicContentService.GetPlacesByIds(ids)
                     .OrderBy(x => Array.IndexOf(ids, x.Id))
                     .ToList();
             }
@@ -184,7 +184,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                     .Take(criteria.Take)
                     .ToArray();
 
-                retVal.Results = _dynamicContentService.GetPublicationsByIds(ids.ToArray())
+                retVal.Results = _dynamicContentService.GetPublicationsByIds(ids)
                     .OrderBy(x => Array.IndexOf(ids, x.Id))
                     .ToList();
             }
