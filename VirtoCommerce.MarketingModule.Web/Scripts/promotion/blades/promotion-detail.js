@@ -47,23 +47,22 @@ angular.module('virtoCommerce.marketingModule')
                 blade.currentEntity = angular.copy(data);
                 blade.origEntity = data;
 
-                var conditions = _.filter(data.dynamicExpression.children, function (condition) {
-                    if (condition.children)
-                        for (var child of condition.children)
-                            if (child.productId || child.productIds)
-                                return condition;
-                });
-
                 var productsIds = [];
-                for (var condition of conditions) {
-                    for (var child of condition.children) {
-                        if (child.productId)
-                            productsIds.push(child.productId);
+                _.each(data.dynamicExpression.children, function (condition) {
+                    if (condition.children) {
+                        for (var child of condition.children) {
+                            if (child.productId || child.productIds) {
+                                for (var child of condition.children) {
+                                    if (child.productId)
+                                        productsIds.push(child.productId);
 
-                        if (child.productIds && child.productIds.length == 1)
-                            productsIds.push(child.productIds[0]);
+                                    if (child.productIds && child.productIds.length == 1)
+                                        productsIds.push(child.productIds[0]);
+                                }
+                            }
+                        }
                     }
-                }
+                });
 
                 items.query({ ids: productsIds, respGroup: 'ItemInfo' }, function (data) {
                     $scope.productCodes =[];
