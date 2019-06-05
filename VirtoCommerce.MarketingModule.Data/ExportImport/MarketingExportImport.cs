@@ -10,7 +10,7 @@ using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
 
-namespace VirtoCommerce.MarketingModule.Web.ExportImport
+namespace VirtoCommerce.MarketingModule.Data.ExportImport
 {
 
     public sealed class BackupObject

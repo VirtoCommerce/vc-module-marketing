@@ -167,7 +167,6 @@
     <Compile Include="Converters\ContentPlaceConverter.cs" />
     <Compile Include="Converters\ContentPublicationConverter.cs" />
     <Compile Include="Converters\ContentItemConverter.cs" />
-    <Compile Include="ExportImport\MarketingExportImport.cs" />
     <Compile Include="Model\MarketingConstants.cs" />
     <Compile Include="Model\DynamicContentFolder.cs" />
     <Compile Include="Model\DynamicContentItem.cs" />

@@ -84,6 +84,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ExportImport\MarketingExportImport.cs" />
     <Compile Include="Migrations\201504301503151_Initial.cs" />
     <Compile Include="Migrations\201504301503151_Initial.Designer.cs">
       <DependentUpon>201504301503151_Initial.cs</DependentUpon>
