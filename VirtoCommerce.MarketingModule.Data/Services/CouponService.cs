@@ -20,7 +20,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         }
 
         #region ICouponService members
-     
+
         public GenericSearchResult<Coupon> SearchCoupons(CouponSearchCriteria criteria)
         {
             if (criteria == null)
@@ -41,7 +41,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                     query = query.Where(c => c.Code == criteria.Code);
                 }
                 if (!criteria.Codes.IsNullOrEmpty())
-                {                    
+                {
                     query = query.Where(c => criteria.Codes.Contains(c.Code));
                 }
 
@@ -51,15 +51,18 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 {
                     sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<Coupon>(x => x.Code), SortDirection = SortDirection.Descending } };
                 }
-                query = query.OrderBySortInfos(sortInfos);
-                
+                query = query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id);
+
                 var searchResult = new GenericSearchResult<Coupon> { TotalCount = query.Count() };
 
                 var ids = query.Select(x => x.Id)
                                .Skip(criteria.Skip)
-                               .Take(criteria.Take).ToArray();
+                               .Take(criteria.Take)
+                               .ToArray();
 
-                searchResult.Results = GetByIds(ids);
+                searchResult.Results = GetByIds(ids)
+                    .OrderBy(x => Array.IndexOf(ids, x.Id))
+                    .ToList();
                 return searchResult;
             }
         }
@@ -100,7 +103,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 CommitChanges(repository);
                 pkMap.ResolvePrimaryKeys();
             }
-        }     
+        }
 
         public void DeleteCoupons(string[] ids)
         {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Marketing.Model.DynamicContent.Search;
@@ -36,14 +36,18 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 {
                     sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<coreModel.Promotion>(x => x.Priority), SortDirection = SortDirection.Descending } };
                 }
-                query = query.OrderBySortInfos(sortInfos);
+                query = query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id);
 
                 retVal.TotalCount = query.Count();
 
                 var ids = query.Select(x => x.Id)
                                .Skip(criteria.Skip)
-                               .Take(criteria.Take).ToArray();
-                retVal.Results = _promotionSrevice.GetPromotionsByIds(ids).OrderBy(p => ids.ToList().IndexOf(p.Id)).ToList();
+                               .Take(criteria.Take)
+                               .ToArray();
+
+                retVal.Results = _promotionSrevice.GetPromotionsByIds(ids)
+                    .OrderBy(p => Array.IndexOf(ids, p.Id))
+                    .ToList();
             }
             return retVal;
         }
@@ -98,14 +102,18 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 {
                     sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<coreModel.DynamicContentItem>(x => x.Name), SortDirection = SortDirection.Ascending } };
                 }
-                query = query.OrderBySortInfos(sortInfos);
+                query = query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id);
 
                 retVal.TotalCount = query.Count();
 
                 var ids = query.Select(x => x.Id)
                                .Skip(criteria.Skip)
-                               .Take(criteria.Take).ToArray();
-                retVal.Results = _dynamicContentService.GetContentItemsByIds(ids);
+                               .Take(criteria.Take)
+                               .ToArray();
+
+                retVal.Results = _dynamicContentService.GetContentItemsByIds(ids)
+                    .OrderBy(x => Array.IndexOf(ids, x.Id))
+                    .ToList();
             }
             return retVal;
         }
@@ -129,13 +137,17 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 {
                     sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<coreModel.DynamicContentPlace>(x => x.Name), SortDirection = SortDirection.Ascending } };
                 }
-                query = query.OrderBySortInfos(sortInfos);
+                query = query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id);
 
                 retVal.TotalCount = query.Count();
                 var ids = query.Select(x => x.Id)
-                               .Skip(criteria.Skip)
-                               .Take(criteria.Take).ToArray();
-                retVal.Results = _dynamicContentService.GetPlacesByIds(ids);
+                    .Skip(criteria.Skip)
+                    .Take(criteria.Take)
+                    .ToArray();
+
+                retVal.Results = _dynamicContentService.GetPlacesByIds(ids)
+                    .OrderBy(x => Array.IndexOf(ids, x.Id))
+                    .ToList();
             }
             return retVal;
         }
@@ -163,14 +175,18 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 {
                     sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<coreModel.DynamicContentPublication>(x => x.Name), SortDirection = SortDirection.Ascending } };
                 }
-                query = query.OrderBySortInfos(sortInfos);
+                query = query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id);
 
                 retVal.TotalCount = query.Count();
 
                 var ids = query.Select(x => x.Id)
-                           .Skip(criteria.Skip)
-                           .Take(criteria.Take).ToArray();
-                retVal.Results = _dynamicContentService.GetPublicationsByIds(ids);
+                    .Skip(criteria.Skip)
+                    .Take(criteria.Take)
+                    .ToArray();
+
+                retVal.Results = _dynamicContentService.GetPublicationsByIds(ids)
+                    .OrderBy(x => Array.IndexOf(ids, x.Id))
+                    .ToList();
             }
             return retVal;
         }
