@@ -47,7 +47,7 @@ The following Dynamic **Content Types** are shipped with Virto Commerce out-of-t
 
 ### Tags
 
-The Dynamic Content function can be used to show specific content to targeted customers. The system determines the customers properties via Tags. VirtoCommerce incorporates tagging system that is used to set and evaluate tags that the user can use to segment Customers, and to decide when, where and to which Customer this content should be displayed.
+The Dynamic Content functionality can be used to show specific content to targeted customers. The system determines the customers properties via Tags. VirtoCommerce incorporates tagging system that is used to set and evaluate tags that the user can use to segment Customers, and to decide when, where and to which Customer this content should be displayed.
 
 The tagging data about a customer is captured in a variety of ways, including the following:
 
