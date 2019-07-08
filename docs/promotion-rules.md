@@ -48,7 +48,7 @@ The visitor block is similar to promotion rules. It specifies criteria that dete
 There are four options:
 
 * Everyone - no filtering
-* Register user - *user that is currently logged in to storefront
+* Registered user - *user that is currently logged in to storefront
 * First time buyer - registered user who has never made any purchase
 * User groups contains[]
 

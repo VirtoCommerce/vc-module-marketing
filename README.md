@@ -4,9 +4,9 @@ VirtoCommerce.Marketing module represents a marketing management system.
 
 **Key features**:
 
-* Dynamic content management for storefront
-* Content publishing management
-* Promotions
+* Dynamic content management for storefront;
+* Content publishing management;
+* Promotions.
 
 ## Dynamic Content
 
@@ -19,7 +19,7 @@ The following should be considered before determining under which conditions the
 * Time period when the content should be displayed;
 * Where should the content be displayed.
 
-The Dynamic Content is configured, using the Virto Commerce platform manager so that the marketing personnel can set up Dynamic Content without relying on developers and server administrators. For images and Flash animations, they may need a graphic designer to create the file and upload it to the Assets. However, once that's done, the marketer can configure rules for displaying the content without any assistance from the technical team side.
+The Dynamic Content is configured using the Virto Commerce platform manager so that the marketing personnel can set up Dynamic Content without relying on developers and server administrators. For images and Flash animations, they may need a graphic designer to create the file and upload it to the Assets. However, once that's done, the marketer can configure rules for displaying the content without any assistance from the technical team side.
 
 The Dynamic Content consists of four independent components:
 
@@ -32,9 +32,9 @@ The first two components, **Dynamic Content** and **Content Publishing**, are se
 
 The **Content Placeholder** is also created via VirtoCommerce platform manager, but they are created by developers, web designers and system management personnel. As soon as the  web developer adds the Content Place to a template, the developer or another user with appropriate permissions must register it in VirtoCommerce platform manager.
 
-The **Content type** is a template used to define the Dynamic Content Type. It describes how a particular content type is displayed and what information is required for it to be displayed. VirtoCommerce includes several Content types for the most common types of Dynamic Content. For example, there is a Content type to display images with links (banner) another to display product data (product with image and price).
+The **Content type** is a template used to define the Dynamic Content Type. It describes how a particular content type is displayed and what information is required for it to be displayed. VirtoCommerce includes several Content types for the most common types of Dynamic Content. For example, there is a Content type to display images with links (banner). Another one to display product data (product with image and price).
 
-The following Dynamic **Content Types** are shipped with Virto Commerce out-of-the-box. Each of them requires one or more parameter values to specify things such as, what image file should be displayed or what the target web page should display after clicking on it.
+The following Dynamic **Content Types** are shipped with Virto Commerce out-of-the-box. Each of them requires one or more parameter values to specify things such as: what image file should be displayed or what the target web page should display after clicking on the element.
 
 
 | Content type | Description | Parameters |
@@ -60,7 +60,7 @@ Information captured by the tags is stored in the user’s session while he shop
 
 A Marketer or other Manager user with granted Dynamic Content permissions, uses the tags when creating conditions that determine whether a customer will see a piece of Dynamic Content or not.
 
-[Condition Operators](/docs/condition-operators.md)
+[Publishing Conditions](/docs/publishing-conditions.md)
 
 ### Work with Dynamic Content
 
@@ -70,15 +70,7 @@ Creating **Dynamic Content** in VirtoCommerce management application specifies w
 
 Creating **Content Publishing** specifies which Dynamic Content(s) to view and under which conditions the Dynamic Content should be available.
 
-**Important**: Dynamic Content won't be available on frontend until it's assigned to any of the Content Publishing item. 
-
-![Fig. Publishing Conditions](docs/media/screen-publishing-conditions.png)
-
-VirtoCommerce is shipped with the most commonly used tags. The following tag groups are included into the VirtoCommerce:
-
-* Browse Behavior;
-* Customer Profile;
-* Geo location.
+**Important**: Dynamic Content won't be available on frontend until it's assigned to any of the Content Publishing item.
 
 [Manage Content Items](/docs/manage-content-items.md)
 

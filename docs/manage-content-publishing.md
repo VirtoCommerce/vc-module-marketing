@@ -7,9 +7,9 @@ Content publishing sets the delivery conditions of the Dynamic Content. Therefor
 1. In order to create Content publishing, the user should navigate to Dynamic content->Content publishing and click the ‘Add’ button;
 1. The system will display the ‘New publishing element’ screen:
 
-     1. ‘Name’ input text field- required;
+     1. ‘Name’ field- required;
      1. ‘Description’ text box- optional;
-     1. ‘Store’ drop- down- required;
+     1. ‘Store’ drop down- required;
      1. ‘Is Active’ property sets activity of the Content Publishing;
      1. Priority property sets the priority of the Content Publishing. If more than one Dynamic Content configured to be displayed in the Content Place at some conditions, the Dynamic Content configured in the Content Publishing with higher priority will be displayed;
      1. ‘Available from’ and ‘Available to’ sets the dates range when the Content should be available. These properties are useful to set banners for promotions that are limited by dates. If the Content should be displayed always, the fields should be left blank;

@@ -9,10 +9,10 @@
 
 ## Create New Promotion
 
-1. The user opens Marketing Module->navigates to Promotions tab and click the 'Add' button
-1. The system will display the 'New Promotion' screen
-1. The user sets up the promotion properties (see the table bellow for more explanation) and clicks the 'Create' button
-1. The new promotion will be created by the system and displayed on the 'Promotions' list. 
+1. The user opens Marketing Module->navigates to Promotions tab and clicks the 'Add' button;
+1. The system will display the 'New Promotion' screen;
+1. The user sets up the promotion properties (see the table bellow for more explanation) and clicks the 'Create' button;
+1. The new promotion will be created by the system and displayed on the 'Promotions' list.
 
 | Field Name | Description |
 |------------|-------------|
