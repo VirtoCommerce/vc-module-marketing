@@ -12,7 +12,6 @@ using VirtoCommerce.Platform.Core.ExportImport;
 
 namespace VirtoCommerce.MarketingModule.Data.ExportImport
 {
-
     public sealed class BackupObject
     {
         public BackupObject()
@@ -53,13 +52,13 @@ namespace VirtoCommerce.MarketingModule.Data.ExportImport
             _usageService = marketingUsageService;
         }
 
-        public virtual void DoExport(Stream backupStream, Action<ExportImportProgressInfo> progressCallback)
+        public virtual void DoExport(Stream backupStream, PlatformExportManifest manifest, Action<ExportImportProgressInfo> progressCallback)
         {
-            var backupObject = GetBackupObject(progressCallback);
+            var backupObject = GetBackupObject(manifest, progressCallback);
             backupObject.SerializeJson(backupStream);
         }
 
-        public virtual void DoImport(Stream backupStream, Action<ExportImportProgressInfo> progressCallback)
+        public virtual void DoImport(Stream backupStream, PlatformExportManifest manifest, Action<ExportImportProgressInfo> progressCallback)
         {
             var backupObject = backupStream.DeserializeJson<BackupObject>();
             var progressInfo = new ExportImportProgressInfo();
@@ -119,7 +118,7 @@ namespace VirtoCommerce.MarketingModule.Data.ExportImport
 
         #region BackupObject
 
-        protected virtual BackupObject GetBackupObject(Action<ExportImportProgressInfo> progressCallback)
+        protected virtual BackupObject GetBackupObject(PlatformExportManifest manifest, Action<ExportImportProgressInfo> progressCallback)
         {
             var result = new BackupObject();
 

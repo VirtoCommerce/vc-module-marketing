@@ -118,13 +118,13 @@ namespace VirtoCommerce.MarketingModule.Web
         public void DoExport(System.IO.Stream outStream, PlatformExportManifest manifest, Action<ExportImportProgressInfo> progressCallback)
         {
             var exportJob = AbstractTypeFactory<MarketingExportImport>.TryCreateInstance();
-            exportJob.DoExport(outStream, progressCallback);
+            exportJob.DoExport(outStream, manifest, progressCallback);
         }
 
         public void DoImport(System.IO.Stream inputStream, PlatformExportManifest manifest, Action<ExportImportProgressInfo> progressCallback)
         {
             var exportJob = AbstractTypeFactory<MarketingExportImport>.TryCreateInstance();
-            exportJob.DoImport(inputStream, progressCallback);
+            exportJob.DoImport(inputStream, manifest, progressCallback);
         }
 
         public string ExportDescription
