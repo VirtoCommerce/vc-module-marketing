@@ -29,13 +29,12 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions.Conditions
             {
                 if (ProductIds != null)
                 {
-                    result = promotionEvaluationContext.IsItemInProduct(ProductId);
-                }
-                else
-                {
                     result = promotionEvaluationContext.IsItemInProducts(ProductIds);
                 }
-
+                else if(ProductId != null)
+                {
+                    result = promotionEvaluationContext.IsItemInProduct(ProductId);
+                }
             }
 
             return result;
