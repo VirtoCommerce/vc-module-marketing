@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using VirtoCommerce.CoreModule.Core.Common;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
@@ -14,7 +15,7 @@ namespace VirtoCommerce.MarketingModule.Core.Promotions
     {
         public DynamicPromotion()
         {
-            Type = nameof(DynamicPromotion); 
+            Type = nameof(DynamicPromotion);
         }
 
         /// <summary>
@@ -23,9 +24,13 @@ namespace VirtoCommerce.MarketingModule.Core.Promotions
         /// </summary>
         public bool IsAllowCombiningWithSelf { get; set; }
 
-        public  ICouponSearchService CouponSearchService { get; set; }
+        [JsonIgnore]
+        public ICouponSearchService CouponSearchService { get; set; }
+
+        [JsonIgnore]
         public IPromotionUsageSearchService PromotionUsageSearchService { get; set; }
 
+        [JsonIgnore]
         public PromotionConditionAndRewardTree DynamicExpression { get; set; }
 
         public override async Task<PromotionReward[]> EvaluatePromotionAsync(IEvaluationContext context)
@@ -136,7 +141,7 @@ namespace VirtoCommerce.MarketingModule.Core.Promotions
             {
                 result.DynamicExpression = DynamicExpression.Clone() as PromotionConditionAndRewardTree;
             }
-            
+
             return result;
         }
 
