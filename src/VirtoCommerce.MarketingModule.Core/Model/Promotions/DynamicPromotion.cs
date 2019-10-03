@@ -30,7 +30,6 @@ namespace VirtoCommerce.MarketingModule.Core.Promotions
         [JsonIgnore]
         public IPromotionUsageSearchService PromotionUsageSearchService { get; set; }
 
-        [JsonIgnore]
         public PromotionConditionAndRewardTree DynamicExpression { get; set; }
 
         public override async Task<PromotionReward[]> EvaluatePromotionAsync(IEvaluationContext context)
