@@ -82,7 +82,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
                     item.Folder = allFolders.FirstOrDefault(x => x.Id == item.FolderId);
                 }
 
-                var dynamicContentItemDynamicPropertyObjectValues = await DynamicContentItemDynamicPropertyObjectValues.Where(x => ids.Contains(x.Id)).ToArrayAsync();
+                var dynamicContentItemDynamicPropertyObjectValues = await DynamicContentItemDynamicPropertyObjectValues.Where(x => ids.Contains(x.ObjectId)).ToArrayAsync();
             }
             return retVal;
         }
@@ -102,12 +102,21 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
             return retVal;
         }
 
-        public Task<DynamicContentPublishingGroupEntity[]> GetContentPublicationsByIdsAsync(string[] ids)
+        public async Task<DynamicContentPublishingGroupEntity[]> GetContentPublicationsByIdsAsync(string[] ids)
         {
-            return PublishingGroups.Where(i => ids.Contains(i.Id))
+            var result = await PublishingGroups.Where(i => ids.Contains(i.Id))
                 .Include(x => x.ContentItems).ThenInclude(y => y.ContentItem)
                 .Include(x => x.ContentPlaces).ThenInclude(y => y.ContentPlace)
                                     .ToArrayAsync();
+
+            var contentItemIds = result.SelectMany(x => x.ContentItems).Select(x => x.DynamicContentItemId).Distinct().ToArray();
+
+            if (!contentItemIds.IsNullOrEmpty())
+            {
+                var dynamicContentItemDynamicPropertyObjectValues = await DynamicContentItemDynamicPropertyObjectValues.Where(x => contentItemIds.Contains(x.ObjectId)).ToArrayAsync();
+            }
+
+            return result;
         }
 
         public Task RemoveFoldersAsync(string[] ids)

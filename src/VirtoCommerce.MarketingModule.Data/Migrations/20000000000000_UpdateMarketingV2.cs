@@ -28,7 +28,7 @@ namespace VirtoCommerce.MarketingModule.Data.Migrations
 
                             WHILE @index < 20
                             BEGIN
-                                UPDATE [Promotion] SET[PredicateVisualTreeSerialized] = REPLACE([PredicateVisualTreeSerialized], SUBSTRING([PredicateVisualTreeSerialized], CHARINDEX(@typeInd, [PredicateVisualTreeSerialized]), CHARINDEX(@commaInd, [PredicateVisualTreeSerialized], CHARINDEX(@typeInd, [PredicateVisualTreeSerialized])) - CHARINDEX(@typeInd, [PredicateVisualTreeSerialized]) + 2), '')
+                                UPDATE [Promotion] SET [PredicateVisualTreeSerialized] = REPLACE([PredicateVisualTreeSerialized], SUBSTRING([PredicateVisualTreeSerialized], CHARINDEX(@typeInd, [PredicateVisualTreeSerialized]), CHARINDEX(@commaInd, [PredicateVisualTreeSerialized], CHARINDEX(@typeInd, [PredicateVisualTreeSerialized])) - CHARINDEX(@typeInd, [PredicateVisualTreeSerialized]) + 2), '')
                                 WHERE CHARINDEX(@typeInd, [PredicateVisualTreeSerialized]) > 0
                                 SET @index = @index + 1;
                             END
@@ -36,7 +36,7 @@ namespace VirtoCommerce.MarketingModule.Data.Migrations
                             SET @index = 1;
                             WHILE @index < 20
                             BEGIN
-                                UPDATE [DynamicContentPublishingGroup] SET[PredicateVisualTreeSerialized] = REPLACE([PredicateVisualTreeSerialized], SUBSTRING([PredicateVisualTreeSerialized], CHARINDEX(@typeInd, [PredicateVisualTreeSerialized]), CHARINDEX(@commaInd, [PredicateVisualTreeSerialized], CHARINDEX(@typeInd, [PredicateVisualTreeSerialized])) - CHARINDEX(@typeInd, [PredicateVisualTreeSerialized]) + 2), '')
+                                UPDATE [DynamicContentPublishingGroup] SET [PredicateVisualTreeSerialized] = REPLACE([PredicateVisualTreeSerialized], SUBSTRING([PredicateVisualTreeSerialized], CHARINDEX(@typeInd, [PredicateVisualTreeSerialized]), CHARINDEX(@commaInd, [PredicateVisualTreeSerialized], CHARINDEX(@typeInd, [PredicateVisualTreeSerialized])) - CHARINDEX(@typeInd, [PredicateVisualTreeSerialized]) + 2), '')
                                 WHERE CHARINDEX(@typeInd, [PredicateVisualTreeSerialized]) > 0
                                 SET @index = @index + 1;
                             END
