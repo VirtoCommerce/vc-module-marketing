@@ -38,7 +38,7 @@ namespace VirtoCommerce.MarketingModule.Data.Migrations
                         column: x => x.ObjectId,
                         principalTable: "DynamicContentItem",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
