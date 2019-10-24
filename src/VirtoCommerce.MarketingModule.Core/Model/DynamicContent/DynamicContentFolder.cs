@@ -2,7 +2,14 @@ namespace VirtoCommerce.MarketingModule.Core.Model
 {
     public class DynamicContentFolder : DynamicContentListEntry
     {
+
+        /// <summary>
+        /// all parent folders names concatenated (Root\Child\Child2)
+        /// </summary>
         public string Path => ParentFolder == null ? Name : ParentFolder.Path + "\\" + Name;
+        /// <summary>
+        /// all parent folders ids concatenated (1;21;344)
+        /// </summary>
         public string Outline => ParentFolder == null ? Id : ParentFolder.Outline + ";" + Id;
 
         public string ParentFolderId { get; set; }

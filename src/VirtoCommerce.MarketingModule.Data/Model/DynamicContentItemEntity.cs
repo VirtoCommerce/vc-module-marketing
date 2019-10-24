@@ -57,7 +57,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
 
             if (Folder != null)
             {
-                item.Folder = Folder.ToModel(AbstractTypeFactory<DynamicContentFolder>.TryCreateInstance());
+                item.Folder = Folder.ToModel(AbstractTypeFactory<DynamicContentFolder>.TryCreateInstance());               
             }
 
             item.DynamicProperties = DynamicPropertyObjectValues.GroupBy(g => g.PropertyId).Select(x =>
