@@ -44,13 +44,12 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
         public virtual async Task<PromotionEntity[]> GetPromotionsByIdsAsync(string[] ids)
         {
             var propmotions = await Promotions.Where(x => ids.Contains(x.Id)).ToArrayAsync();
-            var storesTask = PromotionStores.Where(x => ids.Contains(x.PromotionId)).ToArrayAsync();
-            var promotionsIdsWithCouponsTask = Coupons.Where(x => ids.Contains(x.PromotionId)).Select(x => x.PromotionId).Distinct().ToArrayAsync();
-            await Task.WhenAll(storesTask, promotionsIdsWithCouponsTask);
+            var stores = await PromotionStores.Where(x => ids.Contains(x.PromotionId)).ToArrayAsync();
+            var promotionsIdsWithCoupons = await Coupons.Where(x => ids.Contains(x.PromotionId)).Select(x => x.PromotionId).Distinct().ToArrayAsync();
 
             foreach (var promotion in propmotions)
             {
-                promotion.HasCoupons = promotionsIdsWithCouponsTask.Result.Contains(promotion.Id);
+                promotion.HasCoupons = promotionsIdsWithCoupons.Contains(promotion.Id);
             }
             return propmotions;
         }
@@ -123,7 +122,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
         {
             const string queryPattern = @"DELETE FROM DynamicContentFolder WHERE Id IN (@Ids)";
             var name = new SqlParameter("@Ids", string.Join(", ", ids));
-            return _dbContext.Database.ExecuteSqlCommandAsync(queryPattern, name);
+            return _dbContext.Database.ExecuteSqlRawAsync(queryPattern, name);
         }
 
 
@@ -131,28 +130,28 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
         {
             const string queryPattern = @"DELETE FROM DynamicContentPublishingGroup WHERE Id IN (@Ids)";
             var name = new SqlParameter("@Ids", string.Join(", ", ids));
-            return _dbContext.Database.ExecuteSqlCommandAsync(queryPattern, name);
+            return _dbContext.Database.ExecuteSqlRawAsync(queryPattern, name);
         }
 
         public Task RemovePlacesAsync(string[] ids)
         {
             const string queryPattern = @"DELETE FROM DynamicContentPlace WHERE Id IN (@Ids)";
             var name = new SqlParameter("@Ids", string.Join(", ", ids));
-            return _dbContext.Database.ExecuteSqlCommandAsync(queryPattern, name);
+            return _dbContext.Database.ExecuteSqlRawAsync(queryPattern, name);
         }
 
         public Task RemoveContentItemsAsync(string[] ids)
         {
             const string queryPattern = @"DELETE FROM DynamicContentItem WHERE Id IN (@Ids)";
             var name = new SqlParameter("@Ids", string.Join(", ", ids));
-            return _dbContext.Database.ExecuteSqlCommandAsync(queryPattern, name);
+            return _dbContext.Database.ExecuteSqlRawAsync(queryPattern, name);
         }
 
         public virtual Task RemovePromotionsAsync(string[] ids)
         {
             const string queryPattern = @"DELETE FROM Promotion WHERE Id IN (@Ids)";
             var name = new SqlParameter("@Ids", string.Join(", ", ids));
-            return _dbContext.Database.ExecuteSqlCommandAsync(queryPattern, name);
+            return _dbContext.Database.ExecuteSqlRawAsync(queryPattern, name);
         }
 
         public async Task<CouponEntity[]> GetCouponsByIdsAsync(string[] ids)
@@ -176,7 +175,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
         {
             const string queryPattern = @"DELETE FROM Coupon WHERE Id IN (@Ids)";
             var name = new SqlParameter("@Ids", string.Join(", ", ids));
-            return _dbContext.Database.ExecuteSqlCommandAsync(queryPattern, name);
+            return _dbContext.Database.ExecuteSqlRawAsync(queryPattern, name);
         }
 
         public Task<PromotionUsageEntity[]> GetMarketingUsagesByIdsAsync(string[] ids)
@@ -188,7 +187,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
         {
             const string queryPattern = @"DELETE FROM PromotionUsage WHERE Id IN (@Ids)";
             var name = new SqlParameter("@Ids", string.Join(", ", ids));
-            return _dbContext.Database.ExecuteSqlCommandAsync(queryPattern, name);
+            return _dbContext.Database.ExecuteSqlRawAsync(queryPattern, name);
         }
         #endregion
     }

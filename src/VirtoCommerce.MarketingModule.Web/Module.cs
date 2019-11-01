@@ -171,7 +171,7 @@ namespace VirtoCommerce.MarketingModule.Web
             dynamicPropertyService.SaveDynamicPropertiesAsync(new[] { contentItemTypeProperty }).GetAwaiter().GetResult();         
 
             //Next lines allow to use polymorph types in API controller methods
-            var mvcJsonOptions = appBuilder.ApplicationServices.GetService<IOptions<MvcJsonOptions>>();
+            var mvcJsonOptions = appBuilder.ApplicationServices.GetService<IOptions<MvcNewtonsoftJsonOptions>>();
             mvcJsonOptions.Value.SerializerSettings.Converters.Add(new PolymorphicMarketingJsonConverter());
             mvcJsonOptions.Value.SerializerSettings.Converters.Add(new RewardJsonConverter());
 
