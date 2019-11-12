@@ -44,13 +44,11 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
         public virtual async Task<PromotionEntity[]> GetPromotionsByIdsAsync(string[] ids)
         {
             var propmotions = await Promotions.Where(x => ids.Contains(x.Id)).ToArrayAsync();
-            var storesTask = PromotionStores.Where(x => ids.Contains(x.PromotionId)).ToArrayAsync();
-            var promotionsIdsWithCouponsTask = Coupons.Where(x => ids.Contains(x.PromotionId)).Select(x => x.PromotionId).Distinct().ToArrayAsync();
-            await Task.WhenAll(storesTask, promotionsIdsWithCouponsTask);
-
+            await PromotionStores.Where(x => ids.Contains(x.PromotionId)).ToArrayAsync();
+            var promotionsIdsWithCoupons = await Coupons.Where(x => ids.Contains(x.PromotionId)).Select(x => x.PromotionId).Distinct().ToArrayAsync();          
             foreach (var promotion in propmotions)
             {
-                promotion.HasCoupons = promotionsIdsWithCouponsTask.Result.Contains(promotion.Id);
+                promotion.HasCoupons = promotionsIdsWithCoupons.Contains(promotion.Id);
             }
             return propmotions;
         }
@@ -82,7 +80,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
                     item.Folder = allFolders.FirstOrDefault(x => x.Id == item.FolderId);
                 }
 
-                var dynamicContentItemDynamicPropertyObjectValues = await DynamicContentItemDynamicPropertyObjectValues.Where(x => ids.Contains(x.ObjectId)).ToArrayAsync();
+               await DynamicContentItemDynamicPropertyObjectValues.Where(x => ids.Contains(x.ObjectId)).LoadAsync();
             }
             return retVal;
         }
@@ -113,7 +111,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
 
             if (!contentItemIds.IsNullOrEmpty())
             {
-                var dynamicContentItemDynamicPropertyObjectValues = await DynamicContentItemDynamicPropertyObjectValues.Where(x => contentItemIds.Contains(x.ObjectId)).ToArrayAsync();
+                await DynamicContentItemDynamicPropertyObjectValues.Where(x => contentItemIds.Contains(x.ObjectId)).LoadAsync();
             }
 
             return result;
