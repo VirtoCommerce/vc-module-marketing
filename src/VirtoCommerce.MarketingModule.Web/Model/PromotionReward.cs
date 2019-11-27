@@ -1,7 +1,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
-using coreModel = VirtoCommerce.MarketingModule.Core.Model.Promotions;
 
 namespace VirtoCommerce.MarketingModule.Web.Model
 {
@@ -113,51 +112,5 @@ namespace VirtoCommerce.MarketingModule.Web.Model
         //For N in every Y items
         public int ForNthQuantity { get; set; }
         public int InEveryNthQuantity { get; set; }
-
-        public virtual PromotionReward FromModel(coreModel.PromotionReward coreModel)
-        {
-            IsValid = coreModel.IsValid;
-            Description = coreModel.Description;
-            CouponAmount = coreModel.CouponAmount;
-            Coupon = coreModel.Coupon;
-            CouponMinOrderAmount = coreModel.CouponMinOrderAmount;
-            PromotionId = coreModel.PromotionId;
-            Promotion = coreModel.Promotion;
-            RewardType = coreModel.Id;
-            //TODO can't find
-            //LineItemId = coreModel.LineItemId;
-
-            if (coreModel is GiftReward giftRewardModel)
-            {
-                CategoryId = giftRewardModel.CategoryId;
-                ProductId = giftRewardModel.ProductId;
-                Quantity = giftRewardModel.Quantity;
-                MeasureUnit = giftRewardModel.MeasureUnit;
-                ImageUrl = giftRewardModel.ImageUrl;
-            }
-
-            if (coreModel is AmountBasedReward amountBasedRewardModel)
-            {
-                AmountType = amountBasedRewardModel.AmountType;
-                Amount = amountBasedRewardModel.Amount;
-                MaxLimit = amountBasedRewardModel.MaxLimit;
-                Quantity = amountBasedRewardModel.Quantity;
-                ForNthQuantity = amountBasedRewardModel.ForNthQuantity;
-                InEveryNthQuantity = amountBasedRewardModel.InEveryNthQuantity;
-            }
-
-            if (coreModel is CatalogItemAmountReward catalogItemAmountRewardModel)
-            {
-                ProductId = catalogItemAmountRewardModel.ProductId;
-                ConditionalProductId = catalogItemAmountRewardModel.ConditionalProductId;
-            }
-
-            if (coreModel is ShipmentReward shipmentRewardModel)
-            {
-                ShippingMethod = shipmentRewardModel.ShippingMethod;
-            }
-
-            return this;
-        }
     }
 }

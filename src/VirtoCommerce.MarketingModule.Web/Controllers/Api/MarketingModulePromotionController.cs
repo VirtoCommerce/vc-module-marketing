@@ -92,7 +92,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         public async Task<ActionResult<webModel.PromotionReward[]>> EvaluatePromotions([FromBody]PromotionEvaluationContext context)
         {
             var promotionResult = await _promoEvaluator.EvaluatePromotionAsync(context);
-            var result = promotionResult.Rewards.Select(x => AbstractTypeFactory<webModel.PromotionReward>.TryCreateInstance().FromModel(x));
+            var result = promotionResult.Rewards.Select(x => (dynamic)x).ToArray();
             return Ok(result);
         }
 
