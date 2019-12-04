@@ -5,7 +5,6 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
     /// </summary>
     public class GiftReward : PromotionReward
     {
-    
         public string Name { get; set; }
 
         public string CategoryId { get; set; }
@@ -17,7 +16,5 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
         public string MeasureUnit { get; set; }
 
         public string ImageUrl { get; set; }
-
-
     }
 }
