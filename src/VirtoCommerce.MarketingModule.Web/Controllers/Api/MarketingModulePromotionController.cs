@@ -92,6 +92,8 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         public async Task<ActionResult<webModel.PromotionReward[]>> EvaluatePromotions([FromBody]PromotionEvaluationContext context)
         {
             var promotionResult = await _promoEvaluator.EvaluatePromotionAsync(context);
+            //This dynamic casting is used here for duck-type casting class hierarchy into flat type
+            //because OpenAPI and code generation like AutoRest tools don't work with inheritances
             var result = promotionResult.Rewards.Select(x => (dynamic)x).ToArray();
             return Ok(result);
         }
