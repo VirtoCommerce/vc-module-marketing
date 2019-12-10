@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Newtonsoft.Json;
 using Omu.ValueInjecter;
 using VirtoCommerce.Domain.Common;
@@ -13,7 +13,7 @@ namespace VirtoCommerce.MarketingModule.Web.Converters
     {
         public static webModel.DynamicContentPublication ToWebModel(this coreModel.DynamicContentPublication publication, ConditionExpressionTree etalonEpressionTree = null)
         {
-            var retVal = new webModel.DynamicContentPublication();
+            var retVal = AbstractTypeFactory<webModel.DynamicContentPublication>.TryCreateInstance();
             retVal.InjectFrom(publication);
             if (publication.ContentItems != null)
             {
@@ -49,7 +49,7 @@ namespace VirtoCommerce.MarketingModule.Web.Converters
 
         public static coreModel.DynamicContentPublication ToCoreModel(this webModel.DynamicContentPublication publication, IExpressionSerializer expressionSerializer)
         {
-            var retVal = new coreModel.DynamicContentPublication();
+            var retVal = AbstractTypeFactory<coreModel.DynamicContentPublication>.TryCreateInstance();
             retVal.InjectFrom(publication);
             if (publication.ContentItems != null)
             {

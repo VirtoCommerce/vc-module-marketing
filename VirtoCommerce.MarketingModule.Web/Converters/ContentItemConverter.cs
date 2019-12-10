@@ -1,16 +1,16 @@
-﻿using Omu.ValueInjecter;
-using System.Linq;
+using Omu.ValueInjecter;
+using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.DynamicProperties;
 using coreModel = VirtoCommerce.Domain.Marketing.Model;
 using webModel = VirtoCommerce.MarketingModule.Web.Model;
-using VirtoCommerce.Platform.Core.DynamicProperties;
 
 namespace VirtoCommerce.MarketingModule.Web.Converters
 {
-	public static class ContentItemConverter
+    public static class ContentItemConverter
 	{
 		public static webModel.DynamicContentItem ToWebModel(this coreModel.DynamicContentItem content)
 		{
-			var retVal = new webModel.DynamicContentItem();
+			var retVal = AbstractTypeFactory<webModel.DynamicContentItem>.TryCreateInstance();
 			retVal.InjectFrom(content);
 			if(content.Folder != null)
 			{
@@ -23,8 +23,8 @@ namespace VirtoCommerce.MarketingModule.Web.Converters
 
 		public static coreModel.DynamicContentItem ToCoreModel(this webModel.DynamicContentItem content)
 		{
-			var retVal = new coreModel.DynamicContentItem();
-			retVal.InjectFrom(content);
+			var retVal = AbstractTypeFactory<coreModel.DynamicContentItem>.TryCreateInstance();
+            retVal.InjectFrom(content);
 			retVal.DynamicProperties = content.DynamicProperties;
 			if (content.DynamicProperties != null)
 			{
