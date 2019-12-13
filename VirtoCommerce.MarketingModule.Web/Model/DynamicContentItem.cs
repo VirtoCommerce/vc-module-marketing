@@ -21,7 +21,6 @@ namespace VirtoCommerce.MarketingModule.Web.Model
 
         public int Priority { get; set; }
 
-    
         public ICollection<DynamicObjectProperty> DynamicProperties { get; set; }
     }
 }

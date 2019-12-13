@@ -18,13 +18,5 @@ namespace VirtoCommerce.MarketingModule.Web.Converters
             }
             return retVal;
         }
-
-        public static coreModel.DynamicContentPlace ToCoreModel(this webModel.DynamicContentPlace place)
-        {
-            var retVal = AbstractTypeFactory<coreModel.DynamicContentPlace>.TryCreateInstance();
-            retVal.InjectFrom(place);
-            return retVal;
-        }
-    
     }
 }

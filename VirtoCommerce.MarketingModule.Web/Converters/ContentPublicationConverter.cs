@@ -15,13 +15,14 @@ namespace VirtoCommerce.MarketingModule.Web.Converters
         {
             var retVal = AbstractTypeFactory<webModel.DynamicContentPublication>.TryCreateInstance();
             retVal.InjectFrom(publication);
+
             if (publication.ContentItems != null)
             {
-                retVal.ContentItems = publication.ContentItems.Select(x => x.ToWebModel()).ToList();
+                retVal.ContentItems = publication.ContentItems;
             }
             if (publication.ContentPlaces != null)
             {
-                retVal.ContentPlaces = publication.ContentPlaces.Select(x => x.ToWebModel()).ToList();
+                retVal.ContentPlaces = publication.ContentPlaces;
             }
 
             retVal.DynamicExpression = etalonEpressionTree;
@@ -53,11 +54,11 @@ namespace VirtoCommerce.MarketingModule.Web.Converters
             retVal.InjectFrom(publication);
             if (publication.ContentItems != null)
             {
-                retVal.ContentItems = publication.ContentItems.Select(x => x.ToCoreModel()).ToList();
+                retVal.ContentItems = publication.ContentItems;
             }
             if (publication.ContentPlaces != null)
             {
-                retVal.ContentPlaces = publication.ContentPlaces.Select(x => x.ToCoreModel()).ToList();
+                retVal.ContentPlaces = publication.ContentPlaces;
             }
 
             if (publication.DynamicExpression != null)

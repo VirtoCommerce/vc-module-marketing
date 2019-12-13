@@ -13,12 +13,5 @@ namespace VirtoCommerce.MarketingModule.Web.Converters
             retVal.InjectFrom(folder);
             return retVal;
         }
-
-        public static coreModel.DynamicContentFolder ToCoreModel(this webModel.DynamicContentFolder folder)
-        {
-            var retVal = AbstractTypeFactory<coreModel.DynamicContentFolder>.TryCreateInstance();
-            retVal.InjectFrom(folder);
-            return retVal;
-        }
     }
 }
