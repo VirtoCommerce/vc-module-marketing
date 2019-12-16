@@ -47,7 +47,9 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual DynamicContentPublication ToModel(DynamicContentPublication publication)
         {
             if (publication == null)
-                throw new NullReferenceException(nameof(publication));
+            {
+                throw new ArgumentNullException(nameof(publication));
+            }
 
             publication.Id = this.Id;
             publication.CreatedBy = this.CreatedBy;
@@ -89,8 +91,9 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual DynamicContentPublishingGroupEntity FromModel(DynamicContentPublication publication, PrimaryKeyResolvingMap pkMap)
         {
             if (publication == null)
-                throw new NullReferenceException(nameof(publication));
-
+            {
+                throw new ArgumentNullException(nameof(publication));
+            }
             pkMap.AddPair(publication, this);
 
             this.Id = publication.Id;
@@ -136,7 +139,9 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual void Patch(DynamicContentPublishingGroupEntity target)
         {
             if (target == null)
-                throw new NullReferenceException(nameof(target));
+            {
+                throw new ArgumentNullException(nameof(target));
+            }
 
             target.Description = this.Description;
             target.Name = this.Name;

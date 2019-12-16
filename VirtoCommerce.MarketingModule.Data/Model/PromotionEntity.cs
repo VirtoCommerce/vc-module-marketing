@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -54,7 +54,9 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual Promotion ToModel(DynamicPromotion promotion)
         {
             if (promotion == null)
-                throw new NullReferenceException(nameof(promotion));
+            {
+                throw new ArgumentNullException(nameof(promotion));
+            }
 
             promotion.Id = this.Id;
             promotion.CreatedBy = this.CreatedBy;
@@ -102,7 +104,9 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual PromotionEntity FromModel(DynamicPromotion promotion, PrimaryKeyResolvingMap pkMap)
         {
             if (promotion == null)
-                throw new NullReferenceException(nameof(promotion));
+            {
+                throw new ArgumentNullException(nameof(promotion));
+            }
 
             pkMap.AddPair(promotion, this);
 
@@ -139,7 +143,9 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual void Patch(PromotionEntity target)
         {
             if (target == null)
-                throw new NullReferenceException(nameof(target));
+            {
+                throw new ArgumentNullException(nameof(target));
+            }
 
             target.StartDate = this.StartDate;
             target.EndDate = this.EndDate;
