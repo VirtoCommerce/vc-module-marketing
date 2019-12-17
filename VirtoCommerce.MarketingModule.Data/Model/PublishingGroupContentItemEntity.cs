@@ -16,7 +16,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
 
         public int Priority { get; set; }
 
-        public DynamicContentItem ToModel(DynamicContentItem contentItem)
+        public virtual DynamicContentItem ToModel(DynamicContentItem contentItem)
         {
             if (contentItem == null)
             {

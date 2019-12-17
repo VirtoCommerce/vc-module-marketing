@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Services;
@@ -144,7 +144,16 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         {
             using (var repository = _repositoryFactory())
             {
-                return repository.GetContentPublicationsByIds(ids).Select(x => x.ToModel(AbstractTypeFactory<DynamicContentPublication>.TryCreateInstance())).ToArray();
+                var publications = repository.GetContentPublicationsByIds(ids).Select(x => x.ToModel(AbstractTypeFactory<DynamicContentPublication>.TryCreateInstance())).ToArray();
+
+                var contentItems = publications.SelectMany(x => x.ContentItems).ToArray<IHasDynamicProperties>();
+
+                if (contentItems.Length != 0)
+                {
+                    _dynamicPropertyService.LoadDynamicPropertyValues(contentItems);
+                }
+                
+                return publications;
             }
         }
 
