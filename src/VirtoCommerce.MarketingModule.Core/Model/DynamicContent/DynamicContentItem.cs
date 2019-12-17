@@ -8,6 +8,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model
     public class DynamicContentItem : DynamicContentListEntry, IsHasFolder, IHasDynamicProperties
     {
         public string ContentType { get; set; }
+        public int Priority { get; set; }
         /// <summary>
         /// all parent folders ids concatenated (1;21;344)
         /// </summary>
