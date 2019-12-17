@@ -7,7 +7,6 @@ using VirtoCommerce.Domain.Marketing.Model;
 using VirtoCommerce.Domain.Marketing.Model.DynamicContent;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.MarketingModule.Data.Repositories;
-using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.Serialization;
 
 namespace VirtoCommerce.MarketingModule.Data.Services
@@ -18,21 +17,18 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         private readonly IDynamicContentService _dynamicContentService;
         private readonly IExpressionSerializer _expressionSerializer;
         private readonly ILog _logger;
-        private readonly IDynamicPropertyService _dynamicPropertyService;
 
         public DefaultDynamicContentEvaluatorImpl(
             Func<IMarketingRepository> repositoryFactory,
             IDynamicContentService dynamicContentService,
             IExpressionSerializer expressionSerializer,
-            ILog logger,
-            IDynamicPropertyService dynamicPropertyService
+            ILog logger
             )
         {
             _repositoryFactory = repositoryFactory;
             _dynamicContentService = dynamicContentService;
             _expressionSerializer = expressionSerializer;
             _logger = logger;
-            _dynamicPropertyService = dynamicPropertyService;
         }
 
         #region IMarketingDynamicContentEvaluator Members
@@ -53,13 +49,12 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
             using (var repository = _repositoryFactory())
             {
-                var publishingGroups = repository.PublishingGroups
-                                                        .Include(x => x.ContentItems)
-                                                        .Where(x => x.IsActive)
-                                                        .Where(x => x.StoreId == dynamicContext.StoreId)
-                                                        .Where(x => (x.StartDate == null || dynamicContext.ToDate >= x.StartDate) && (x.EndDate == null || x.EndDate >= dynamicContext.ToDate))
-                                                        .Where(x => x.ContentPlaces.Any(y => y.ContentPlace.Name == dynamicContext.PlaceName))
-                                                        .ToArray();
+                var publishingGroups = repository.PublishingGroups.Include(x => x.ContentItems)
+                                                            .Where(x => x.IsActive)
+                                                            .Where(x => x.StoreId == dynamicContext.StoreId)
+                                                            .Where(x => (x.StartDate == null || dynamicContext.ToDate >= x.StartDate) && (x.EndDate == null || x.EndDate >= dynamicContext.ToDate))
+                                                            .Where(x => x.ContentPlaces.Any(y => y.ContentPlace.Name == dynamicContext.PlaceName))
+                                                            .ToArray();
 
                 var publications = _dynamicContentService.GetPublicationsByIds(publishingGroups.Select(p => p.Id).ToArray());
 
