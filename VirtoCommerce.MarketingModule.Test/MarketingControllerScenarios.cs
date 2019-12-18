@@ -25,18 +25,20 @@ namespace VirtoCommerce.MarketingModule.Test
     [Trait("Category", "CI")]
     public class MarketingControllerScenarios : FunctionalTestBase
     {
-        [Fact]
-        public void Can_create_marketing_contentitem()
-        {
-            var repository = GetRepository();
-            var contentItem = new dataModel.DynamicContentItemEntity()
-            {
-                Name = "ss",
-            };
 
-            repository.Add(contentItem);
-            repository.UnitOfWork.Commit();
-        }
+        // Switched off due to impossibility to connect to SQL server on CI area
+        //[Fact]
+        //public void Can_create_marketing_contentitem()
+        //{
+        //    var repository = GetRepository();
+        //    var contentItem = new dataModel.DynamicContentItemEntity()
+        //    {
+        //        Name = "ss",
+        //    };
+
+        //    repository.Add(contentItem);
+        //    repository.UnitOfWork.Commit();
+        //}
 
         //[Fact]
         //public void Can_create_marketing_dynamicpromotion_using_api()
