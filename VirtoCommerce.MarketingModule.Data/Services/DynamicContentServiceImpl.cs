@@ -148,7 +148,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
                 var contentItems = publications.SelectMany(x => x.ContentItems).ToArray<IHasDynamicProperties>();
 
-                if (contentItems.Length != 0)
+                if (!contentItems.IsNullOrEmpty())
                 {
                     _dynamicPropertyService.LoadDynamicPropertyValues(contentItems);
                 }
