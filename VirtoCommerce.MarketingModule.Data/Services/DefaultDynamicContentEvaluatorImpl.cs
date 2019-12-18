@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using Common.Logging;
@@ -19,7 +18,12 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         private readonly IExpressionSerializer _expressionSerializer;
         private readonly ILog _logger;
 
-        public DefaultDynamicContentEvaluatorImpl(Func<IMarketingRepository> repositoryFactory, IDynamicContentService dynamicContentService, IExpressionSerializer expressionSerializer, ILog logger)
+        public DefaultDynamicContentEvaluatorImpl(
+            Func<IMarketingRepository> repositoryFactory,
+            IDynamicContentService dynamicContentService,
+            IExpressionSerializer expressionSerializer,
+            ILog logger
+            )
         {
             _repositoryFactory = repositoryFactory;
             _dynamicContentService = dynamicContentService;
@@ -32,40 +36,43 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         public DynamicContentItem[] EvaluateItems(IEvaluationContext context)
         {
             var dynamicContext = context as DynamicContentEvaluationContext;
+
             if (dynamicContext == null)
             {
                 throw new ArgumentException("The context must be a DynamicContentEvaluationContext.");
             }
+
             if(dynamicContext.ToDate == default(DateTime))
             {
                 dynamicContext.ToDate = DateTime.UtcNow;
             }
-            var retVal = new List<DynamicContentItem>();
+
             using (var repository = _repositoryFactory())
             {
-                var publishings = repository.PublishingGroups.Include(x => x.ContentItems)
-                                                       .Where(x => x.IsActive)
-                                                       .Where(x => x.StoreId == dynamicContext.StoreId)
-                                                       .Where(x => (x.StartDate == null || dynamicContext.ToDate >= x.StartDate) && (x.EndDate == null || x.EndDate >= dynamicContext.ToDate))
-                                                       .Where(x => x.ContentPlaces.Any(y => y.ContentPlace.Name == dynamicContext.PlaceName))
-                                                       .OrderBy(x => x.Priority)
-                                                       .ToArray();
+                var publishingGroups = repository.PublishingGroups.Include(x => x.ContentItems)
+                                                            .Where(x => x.IsActive)
+                                                            .Where(x => x.StoreId == dynamicContext.StoreId)
+                                                            .Where(x => (x.StartDate == null || dynamicContext.ToDate >= x.StartDate) && (x.EndDate == null || x.EndDate >= dynamicContext.ToDate))
+                                                            .Where(x => x.ContentPlaces.Any(y => y.ContentPlace.Name == dynamicContext.PlaceName))
+                                                            .ToArray();
 
-                //Get content items ids for publishings without ConditionExpression
-                var contentItemIds = publishings.Where(x => x.ConditionExpression == null)
-                                                .SelectMany(x => x.ContentItems)
-                                                .Select(x => x.DynamicContentItemId)
-                                                .ToList();
-                foreach (var publishing in publishings.Where(x => x.ConditionExpression != null))
+                var publications = _dynamicContentService.GetPublicationsByIds(publishingGroups.Select(p => p.Id).ToArray());
+
+                var contentItems = publications.Where(x => x.PredicateSerialized == null)
+                    .SelectMany(x => x.ContentItems)
+                    .ToList();
+
+                foreach (var dynamicContentPublication in publications.Where(x => x.PredicateSerialized != null))
                 {
                     try
                     {
-                        //Next step need filter assignments contains dynamicexpression
-                        var condition = _expressionSerializer.DeserializeExpression<Func<IEvaluationContext, bool>>(publishing.ConditionExpression);
+                        var condition = _expressionSerializer.DeserializeExpression<Func<IEvaluationContext, bool>>(dynamicContentPublication.PredicateSerialized);
+
                         if (condition(context))
                         {
-                            contentItemIds.AddRange(publishing.ContentItems.Select(x => x.DynamicContentItemId));
+                            contentItems.AddRange(dynamicContentPublication.ContentItems);
                         }
+
                     }
                     catch (Exception ex)
                     {
@@ -73,10 +80,8 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                     }
                 }
 
-                retVal.AddRange(_dynamicContentService.GetContentItemsByIds(contentItemIds.ToArray()));
+                return contentItems.ToArray();
             }
-
-            return retVal.ToArray();
         }
 
         #endregion

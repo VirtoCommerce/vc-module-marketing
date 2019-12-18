@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
@@ -38,7 +38,9 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual DynamicContentFolder ToModel(DynamicContentFolder folder)
         {
             if (folder == null)
-                throw new NullReferenceException(nameof(folder));
+            {
+                throw new ArgumentNullException(nameof(folder));
+            }
 
             folder.Id = this.Id;
             folder.CreatedBy = this.CreatedBy;
@@ -59,7 +61,9 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual DynamicContentFolderEntity FromModel(DynamicContentFolder folder, PrimaryKeyResolvingMap pkMap)
         {
             if (folder == null)
-                throw new NullReferenceException(nameof(folder));
+            {
+                throw new ArgumentNullException(nameof(folder));
+            }
 
             pkMap.AddPair(folder, this);
 
@@ -78,7 +82,9 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual void Patch(DynamicContentFolderEntity target)
         {
             if (target == null)
-                throw new NullReferenceException(nameof(target));
+            {
+                throw new ArgumentNullException(nameof(target));
+            }
 
             target.Name = this.Name;
             target.Description = this.Description;            

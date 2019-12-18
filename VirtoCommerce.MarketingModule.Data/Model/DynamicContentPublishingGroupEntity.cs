@@ -47,7 +47,9 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual DynamicContentPublication ToModel(DynamicContentPublication publication)
         {
             if (publication == null)
-                throw new NullReferenceException(nameof(publication));
+            {
+                throw new ArgumentNullException(nameof(publication));
+            }
 
             publication.Id = this.Id;
             publication.CreatedBy = this.CreatedBy;
@@ -76,7 +78,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             }
             if (this.ContentItems != null)
             {
-                publication.ContentItems = this.ContentItems.Select(x => x.ContentItem.ToModel(AbstractTypeFactory<DynamicContentItem>.TryCreateInstance())).ToList();
+                publication.ContentItems = this.ContentItems.Select(x => x.ToModel(AbstractTypeFactory<DynamicContentItem>.TryCreateInstance())).ToList();
             }
             if (this.ContentPlaces != null)
             {
@@ -89,8 +91,9 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual DynamicContentPublishingGroupEntity FromModel(DynamicContentPublication publication, PrimaryKeyResolvingMap pkMap)
         {
             if (publication == null)
-                throw new NullReferenceException(nameof(publication));
-
+            {
+                throw new ArgumentNullException(nameof(publication));
+            }
             pkMap.AddPair(publication, this);
 
             this.Id = publication.Id;
@@ -110,11 +113,25 @@ namespace VirtoCommerce.MarketingModule.Data.Model
 
             if (publication.ContentItems != null)
             {
-                this.ContentItems = new ObservableCollection<PublishingGroupContentItemEntity>(publication.ContentItems.Select(x => new PublishingGroupContentItemEntity { DynamicContentPublishingGroupId = this.Id, DynamicContentItemId = x.Id }));
+                ContentItems = new ObservableCollection<PublishingGroupContentItemEntity>(publication.ContentItems.Select(
+                    x =>
+                    {
+                        var result = AbstractTypeFactory<PublishingGroupContentItemEntity>.TryCreateInstance().FromModel(x, pkMap);
+                        result.DynamicContentPublishingGroupId = Id;
+
+                        return result;
+                    }));
             }
             if (publication.ContentPlaces != null)
             {
-                this.ContentPlaces = new ObservableCollection<PublishingGroupContentPlaceEntity>(publication.ContentPlaces.Select(x => new PublishingGroupContentPlaceEntity { DynamicContentPublishingGroupId = this.Id, DynamicContentPlaceId = x.Id }));
+                ContentPlaces = new ObservableCollection<PublishingGroupContentPlaceEntity>(publication.ContentPlaces.Select(
+                    x =>
+                    {
+                        var result = AbstractTypeFactory<PublishingGroupContentPlaceEntity>.TryCreateInstance().FromModel(x, pkMap);
+                        result.DynamicContentPublishingGroupId = Id;
+
+                        return result;
+                    }));
             }
             return this;
         }
@@ -122,7 +139,9 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual void Patch(DynamicContentPublishingGroupEntity target)
         {
             if (target == null)
-                throw new NullReferenceException(nameof(target));
+            {
+                throw new ArgumentNullException(nameof(target));
+            }
 
             target.Description = this.Description;
             target.Name = this.Name;
@@ -137,13 +156,13 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             if (!this.ContentItems.IsNullCollection())
             {
                 var itemComparer = AnonymousComparer.Create((PublishingGroupContentItemEntity x) => x.DynamicContentItemId);
-                this.ContentItems.Patch(target.ContentItems, itemComparer, (sourceProperty, targetProperty) => { });
+                this.ContentItems.Patch(target.ContentItems, itemComparer, (sourceProperty, targetProperty) => { sourceProperty.Patch(targetProperty); });
             }
 
             if (!this.ContentPlaces.IsNullCollection())
             {
                 var itemComparer = AnonymousComparer.Create((PublishingGroupContentPlaceEntity x) => x.DynamicContentPlaceId);
-                this.ContentPlaces.Patch(target.ContentPlaces, itemComparer, (sourceProperty, targetProperty) => { });
+                this.ContentPlaces.Patch(target.ContentPlaces, itemComparer, (sourceProperty, targetProperty) => { sourceProperty.Patch(targetProperty); });
             }
         }
     }

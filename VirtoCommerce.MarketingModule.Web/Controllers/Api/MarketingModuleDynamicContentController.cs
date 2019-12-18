@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -72,14 +72,11 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         /// <param name="criteria">criteria</param>
         [HttpPost]
         [Route("contentplaces/search")]
-        [ResponseType(typeof(GenericSearchResult<webModel.DynamicContentPlace>))]
+        [ResponseType(typeof(GenericSearchResult<coreModel.DynamicContentPlace>))]
         public IHttpActionResult DynamicContentPlacesSearch(DynamicContentPlaceSearchCriteria criteria)
         {
-            var retVal = new GenericSearchResult<webModel.DynamicContentPlace>();          
             var placesSearchResult = _dynamicConentSearchService.SearchContentPlaces(criteria);
-            retVal.TotalCount = placesSearchResult.TotalCount;
-            retVal.Results = placesSearchResult.Results.Select(x => x.ToWebModel()).ToList();
-            return Ok(retVal);
+            return Ok(placesSearchResult);
         }
 
         /// <summary>
@@ -117,14 +114,11 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         /// <param name="criteria">criteria</param>
         [HttpPost]
         [Route("contentitems/search")]
-        [ResponseType(typeof(GenericSearchResult<webModel.DynamicContentItem>))]
+        [ResponseType(typeof(GenericSearchResult<coreModel.DynamicContentItem>))]
         public IHttpActionResult DynamicContentItemsSearch(DynamicContentItemSearchCriteria criteria)
         {
-            var retVal = new GenericSearchResult<webModel.DynamicContentItem>();
             var itemsSearchResult = _dynamicConentSearchService.SearchContentItems(criteria);
-            retVal.TotalCount = itemsSearchResult.TotalCount;
-            retVal.Results = itemsSearchResult.Results.Select(x => x.ToWebModel()).ToList();
-            return Ok(retVal);
+            return Ok(itemsSearchResult);
         }
 
         /// <summary>
@@ -148,11 +142,11 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         /// Get dynamic content for given placeholders
         /// </summary>
         [HttpPost]
-        [ResponseType(typeof(webModel.DynamicContentItem[]))]
+        [ResponseType(typeof(coreModel.DynamicContentItem[]))]
         [Route("contentitems/evaluate")]
         public IHttpActionResult EvaluateDynamicContent(coreModel.DynamicContent.DynamicContentEvaluationContext evalContext)
         {
-            var retVal = _dynamicContentEvaluator.EvaluateItems(evalContext).Select(x => x.ToWebModel()).ToArray();
+            var retVal = _dynamicContentEvaluator.EvaluateItems(evalContext);
             return Ok(retVal);
         }
 
@@ -162,14 +156,14 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         /// <remarks>Return a single dynamic content item object </remarks>
         /// <param name="id"> content item id</param>
         [HttpGet]
-        [ResponseType(typeof(webModel.DynamicContentItem))]
+        [ResponseType(typeof(coreModel.DynamicContentItem))]
         [Route("contentitems/{id}")]
         public IHttpActionResult GetDynamicContentById(string id)
         {
             var retVal = _dynamicContentService.GetContentItemsByIds(new[] { id }).FirstOrDefault();
             if (retVal != null)
             {
-                return Ok(retVal.ToWebModel());
+                return Ok(retVal);
             }
             return NotFound();
         }
@@ -180,14 +174,13 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         /// </summary>
         /// <param name="contentItem">dynamic content object that needs to be added to the dynamic content system</param>
         [HttpPost]
-        [ResponseType(typeof(webModel.DynamicContentItem))]
+        [ResponseType(typeof(coreModel.DynamicContentItem))]
         [Route("contentitems")]
         [CheckPermission(Permission = MarketingPredefinedPermissions.Create)]
-        public IHttpActionResult CreateDynamicContent(webModel.DynamicContentItem contentItem)
+        public IHttpActionResult CreateDynamicContent(coreModel.DynamicContentItem contentItem)
         {
-            var coreItem = contentItem.ToCoreModel();
-            _dynamicContentService.SaveContentItems(new[] { coreItem });
-            return GetDynamicContentById(coreItem.Id);
+            _dynamicContentService.SaveContentItems(new[] { contentItem });
+            return GetDynamicContentById(contentItem.Id);
         }
 
 
@@ -199,10 +192,9 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [ResponseType(typeof(void))]
         [Route("contentitems")]
         [CheckPermission(Permission = MarketingPredefinedPermissions.Update)]
-        public IHttpActionResult UpdateDynamicContent(webModel.DynamicContentItem contentItem)
+        public IHttpActionResult UpdateDynamicContent(coreModel.DynamicContentItem contentItem)
         {
-            var coreItem = contentItem.ToCoreModel();
-            _dynamicContentService.SaveContentItems(new[] { coreItem });
+            _dynamicContentService.SaveContentItems(new[] { contentItem });
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -227,14 +219,14 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         /// <remarks>Return a single dynamic content place object </remarks>
         /// <param name="id">place id</param>
         [HttpGet]
-        [ResponseType(typeof(webModel.DynamicContentPlace))]
+        [ResponseType(typeof(coreModel.DynamicContentPlace))]
         [Route("contentplaces/{id}")]
         public IHttpActionResult GetDynamicContentPlaceById(string id)
         {
             var retVal = _dynamicContentService.GetPlacesByIds(new[] { id }).FirstOrDefault();
             if (retVal != null)
             {
-                return Ok(retVal.ToWebModel());
+                return Ok(retVal);
             }
             return NotFound();
         }
@@ -245,14 +237,13 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         /// </summary>
         /// <param name="contentPlace">dynamic content place object that needs to be added to the dynamic content system</param>
         [HttpPost]
-        [ResponseType(typeof(webModel.DynamicContentPlace))]
+        [ResponseType(typeof(coreModel.DynamicContentPlace))]
         [Route("contentplaces")]
         [CheckPermission(Permission = MarketingPredefinedPermissions.Create)]
-        public IHttpActionResult CreateDynamicContentPlace(webModel.DynamicContentPlace contentPlace)
+        public IHttpActionResult CreateDynamicContentPlace(coreModel.DynamicContentPlace contentPlace)
         {
-            var corePlace = contentPlace.ToCoreModel();
-            _dynamicContentService.SavePlaces(new[] { corePlace });
-            return GetDynamicContentPlaceById(corePlace.Id);
+            _dynamicContentService.SavePlaces(new[] { contentPlace });
+            return GetDynamicContentPlaceById(contentPlace.Id);
         }
 
 
@@ -264,10 +255,9 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [ResponseType(typeof(void))]
         [Route("contentplaces")]
         [CheckPermission(Permission = MarketingPredefinedPermissions.Update)]
-        public IHttpActionResult UpdateDynamicContentPlace(webModel.DynamicContentPlace contentPlace)
+        public IHttpActionResult UpdateDynamicContentPlace(coreModel.DynamicContentPlace contentPlace)
         {
-            var corePlace = contentPlace.ToCoreModel();
-            _dynamicContentService.SavePlaces(new[] { corePlace });
+            _dynamicContentService.SavePlaces(new[] { contentPlace });
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -296,8 +286,8 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         {
             var retVal = new webModel.DynamicContentPublication
             {
-                ContentItems = new webModel.DynamicContentItem[] { },
-                ContentPlaces = new webModel.DynamicContentPlace[] { },
+                ContentItems = new coreModel.DynamicContentItem[] { },
+                ContentPlaces = new coreModel.DynamicContentPlace[] { },
                 DynamicExpression = _marketingExtensionManager.DynamicContentExpressionTree,
                 IsActive = true
             };
@@ -374,14 +364,14 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         /// <remarks>Return a single dynamic content folder</remarks>
         /// <param name="id">folder id</param>
         [HttpGet]
-        [ResponseType(typeof(webModel.DynamicContentFolder))]
+        [ResponseType(typeof(coreModel.DynamicContentFolder))]
         [Route("contentfolders/{id}")]
         public IHttpActionResult GetDynamicContentFolderById(string id)
         {
             var retVal = _dynamicContentService.GetFoldersByIds(new[] { id }).FirstOrDefault();
             if (retVal != null)
             {
-                return Ok(retVal.ToWebModel());
+                return Ok(retVal);
             }
             return NotFound();
         }
@@ -392,14 +382,13 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         /// </summary>
         /// <param name="folder">dynamic content folder that needs to be added</param>
         [HttpPost]
-        [ResponseType(typeof(webModel.DynamicContentFolder))]
+        [ResponseType(typeof(coreModel.DynamicContentFolder))]
         [Route("contentfolders")]
         [CheckPermission(Permission = MarketingPredefinedPermissions.Create)]
-        public IHttpActionResult CreateDynamicContentFolder(webModel.DynamicContentFolder folder)
+        public IHttpActionResult CreateDynamicContentFolder(coreModel.DynamicContentFolder folder)
         {
-            var coreFolder = folder.ToCoreModel();
-            _dynamicContentService.SaveFolders(new[] { coreFolder });
-            return GetDynamicContentFolderById(coreFolder.Id);
+            _dynamicContentService.SaveFolders(new[] { folder });
+            return GetDynamicContentFolderById(folder.Id);
         }
 
         /// <summary>
@@ -410,10 +399,9 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [ResponseType(typeof(void))]
         [Route("contentfolders")]
         [CheckPermission(Permission = MarketingPredefinedPermissions.Update)]
-        public IHttpActionResult UpdateDynamicContentFolder(webModel.DynamicContentFolder folder)
+        public IHttpActionResult UpdateDynamicContentFolder(coreModel.DynamicContentFolder folder)
         {
-            var coreFolder = folder.ToCoreModel();
-            _dynamicContentService.SaveFolders(new[] { coreFolder });
+            _dynamicContentService.SaveFolders(new[] { folder });
             return StatusCode(HttpStatusCode.NoContent);
         }
 
