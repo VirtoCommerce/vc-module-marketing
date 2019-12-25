@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using VirtoCommerce.CoreModule.Core.Conditions;
 using VirtoCommerce.MarketingModule.Core;
 using VirtoCommerce.MarketingModule.Core.Model;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
@@ -13,7 +12,6 @@ using VirtoCommerce.MarketingModule.Core.Model.PushNotifications;
 using VirtoCommerce.MarketingModule.Core.Promotions;
 using VirtoCommerce.MarketingModule.Core.Search;
 using VirtoCommerce.MarketingModule.Core.Services;
-using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.MarketingModule.Web.Authorization;
 using VirtoCommerce.MarketingModule.Web.ExportImport;
@@ -22,6 +20,7 @@ using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.PushNotifications;
 using VirtoCommerce.Platform.Core.Security;
+using webModel = VirtoCommerce.MarketingModule.Web.Model;
 
 namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
 {
@@ -80,7 +79,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
                 return Unauthorized();
             }
             var result = await _promoSearchService.SearchPromotionsAsync(criteria);
-        
+
             return Ok(result);
         }
 
@@ -90,10 +89,13 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         /// <param name="context">Promotion evaluation context</param>
         [HttpPost]
         [Route("evaluate")]
-        public async Task<ActionResult<PromotionReward[]>> EvaluatePromotions([FromBody]PromotionEvaluationContext context)
+        public async Task<ActionResult<webModel.PromotionReward[]>> EvaluatePromotions([FromBody]PromotionEvaluationContext context)
         {
-            var retVal = await _promoEvaluator.EvaluatePromotionAsync(context);
-            return Ok(retVal.Rewards);
+            var promotionResult = await _promoEvaluator.EvaluatePromotionAsync(context);
+            //This dynamic casting is used here for duck-type casting class hierarchy into flat type
+            //because OpenAPI and code generation like AutoRest tools don't work with inheritances
+            var result = promotionResult.Rewards.Select(x => (dynamic)x).ToArray();
+            return Ok(result);
         }
 
         /// <summary>
@@ -150,7 +152,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Route("")]
         [Authorize(ModuleConstants.Security.Permissions.Create)]
         public async Task<ActionResult<Promotion>> CreatePromotion([FromBody]Promotion promotion)
-        {          
+        {
             await _promotionService.SavePromotionsAsync(new[] { promotion });
             return await GetPromotionById(promotion.Id);
         }
@@ -163,7 +165,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Route("")]
         [Authorize(ModuleConstants.Security.Permissions.Update)]
         public async Task<ActionResult> UpdatePromotions([FromBody]Promotion promotion)
-        {           
+        {
             await _promotionService.SavePromotionsAsync(new[] { promotion });
             return NoContent();
         }
