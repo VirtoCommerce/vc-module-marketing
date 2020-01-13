@@ -22,8 +22,8 @@ namespace VirtoCommerce.MarketingModule.Web.Authorization
 
     public sealed class MarketingAuthorizationHandler : PermissionAuthorizationHandlerBase<MarketingAuthorizationRequirement>
     {
-        private readonly MvcJsonOptions _jsonOptions;
-        public MarketingAuthorizationHandler(IOptions<MvcJsonOptions> jsonOptions)
+        private readonly MvcNewtonsoftJsonOptions _jsonOptions;
+        public MarketingAuthorizationHandler(IOptions<MvcNewtonsoftJsonOptions> jsonOptions)
         {
             _jsonOptions = jsonOptions.Value;
         }
