@@ -21,7 +21,7 @@ angular.module('virtoCommerce.marketingModule')
                     marketing_res_promotions.getNew(initializeBlade);
                 }
             } else {
-                marketing_res_promotions.get({ id: blade.currentEntityId, code: blade.currentEntityCode }, function (data) {
+                marketing_res_promotions.get({ id: blade.currentEntityId, code: (blade.currentEntityCode === undefined) ? '' : blade.currentEntityCode }, function (data) {
                     initializeBlade(data);
                     if (parentRefresh) {
                         blade.parentBlade.refresh();

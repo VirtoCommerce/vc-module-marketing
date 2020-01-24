@@ -60,7 +60,6 @@ namespace VirtoCommerce.MarketingModule.Web
             serviceCollection.AddTransient<IPromotionUsageService, PromotionUsageService>();
             serviceCollection.AddTransient<IMarketingDynamicContentEvaluator, DefaultDynamicContentEvaluator>();
             serviceCollection.AddTransient<IDynamicContentService, DynamicContentService>();
-            serviceCollection.AddTransient<ICouponService, CouponService>();
 
             #endregion
 
@@ -90,11 +89,14 @@ namespace VirtoCommerce.MarketingModule.Web
                 return new BestRewardPromotionPolicy(promotionService);
             });
 
+            var snapshot = serviceCollection.BuildServiceProvider();
+            var couponSearchService = snapshot.GetService<ICouponSearchService>();
+            var promotionUsageSearchService = snapshot.GetService<IPromotionUsageSearchService>();
             AbstractTypeFactory<Promotion>.RegisterType<DynamicPromotion>().WithSetupAction((promotion) =>
             {
                 var dynamicPromotion = promotion as DynamicPromotion;
-                dynamicPromotion.CouponSearchService = serviceCollection.BuildServiceProvider().GetService<ICouponSearchService>();
-                dynamicPromotion.PromotionUsageSearchService = serviceCollection.BuildServiceProvider().GetService<IPromotionUsageSearchService>();            
+                dynamicPromotion.CouponSearchService = couponSearchService;
+                dynamicPromotion.PromotionUsageSearchService = promotionUsageSearchService;            
             });
           
             serviceCollection.AddTransient<LogChangesChangedEventHandler>();
