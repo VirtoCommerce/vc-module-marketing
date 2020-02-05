@@ -71,8 +71,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
 
             if (ContentItems != null)
             {
-                //TODO
-                publication.ContentItems = ContentItems.Where(ci => ci.ContentItem != null).Select(x => x.ContentItem.ToModel(AbstractTypeFactory<DynamicContentItem>.TryCreateInstance())).ToList();
+                publication.ContentItems = ContentItems.Select(x => x.ToModel(AbstractTypeFactory<DynamicContentItem>.TryCreateInstance())).ToList();
             }
             if (ContentPlaces != null)
             {
@@ -116,11 +115,25 @@ namespace VirtoCommerce.MarketingModule.Data.Model
 
             if (publication.ContentItems != null)
             {
-                ContentItems = new ObservableCollection<PublishingGroupContentItemEntity>(publication.ContentItems.Select(x => new PublishingGroupContentItemEntity { DynamicContentPublishingGroupId = Id, DynamicContentItemId = x.Id }));
+                ContentItems = new ObservableCollection<PublishingGroupContentItemEntity>(publication.ContentItems.Select(
+                    x =>
+                    {
+                        var result = AbstractTypeFactory<PublishingGroupContentItemEntity>.TryCreateInstance().FromModel(x, pkMap);
+                        result.DynamicContentPublishingGroupId = Id;
+
+                        return result;
+                    }));
             }
             if (publication.ContentPlaces != null)
             {
-                ContentPlaces = new ObservableCollection<PublishingGroupContentPlaceEntity>(publication.ContentPlaces.Select(x => new PublishingGroupContentPlaceEntity { DynamicContentPublishingGroupId = Id, DynamicContentPlaceId = x.Id }));
+                ContentPlaces = new ObservableCollection<PublishingGroupContentPlaceEntity>(publication.ContentPlaces.Select(
+                    x =>
+                    {
+                        var result = AbstractTypeFactory<PublishingGroupContentPlaceEntity>.TryCreateInstance().FromModel(x, pkMap);
+                        result.DynamicContentPublishingGroupId = Id;
+
+                        return result;
+                    }));
             }
             if (publication.DynamicExpression != null)
             {
@@ -148,13 +161,13 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             if (!ContentItems.IsNullCollection())
             {
                 var itemComparer = AnonymousComparer.Create((PublishingGroupContentItemEntity x) => x.DynamicContentItemId);
-                ContentItems.Patch(target.ContentItems, itemComparer, (sourceProperty, targetProperty) => { });
+                ContentItems.Patch(target.ContentItems, itemComparer, (sourceProperty, targetProperty) => { sourceProperty.Patch(targetProperty); });
             }
 
             if (!ContentPlaces.IsNullCollection())
             {
                 var itemComparer = AnonymousComparer.Create((PublishingGroupContentPlaceEntity x) => x.DynamicContentPlaceId);
-                ContentPlaces.Patch(target.ContentPlaces, itemComparer, (sourceProperty, targetProperty) => { });
+                ContentPlaces.Patch(target.ContentPlaces, itemComparer, (sourceProperty, targetProperty) => { sourceProperty.Patch(targetProperty); });
             }
         }
     }

@@ -64,7 +64,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                         var targetEntity = existEntities.FirstOrDefault(x => x.Id == item.Id);
                         if (targetEntity != null)
                         {
-                            changedEntries.Add(new GenericChangedEntry<DynamicContentItem>(item, sourceEntity.ToModel(AbstractTypeFactory<DynamicContentItem>.TryCreateInstance()), EntryState.Modified));
+                            changedEntries.Add(new GenericChangedEntry<DynamicContentItem>(item, targetEntity.ToModel(AbstractTypeFactory<DynamicContentItem>.TryCreateInstance()), EntryState.Modified));
                             sourceEntity.Patch(targetEntity);
                         }
                         else
@@ -132,7 +132,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                         var targetEntity = existEntities.FirstOrDefault(x => x.Id == place.Id);
                         if (targetEntity != null)
                         {
-                            changedEntries.Add(new GenericChangedEntry<DynamicContentPlace>(place, sourceEntity.ToModel(AbstractTypeFactory<DynamicContentPlace>.TryCreateInstance()), EntryState.Modified));
+                            changedEntries.Add(new GenericChangedEntry<DynamicContentPlace>(place, targetEntity.ToModel(AbstractTypeFactory<DynamicContentPlace>.TryCreateInstance()), EntryState.Modified));
                             sourceEntity.Patch(targetEntity);
                         }
                         else
@@ -196,7 +196,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                         var targetEntity = existEntities.FirstOrDefault(x => x.Id == publication.Id);
                         if (targetEntity != null)
                         {
-                            changedEntries.Add(new GenericChangedEntry<DynamicContentPublication>(publication, sourceEntity.ToModel(AbstractTypeFactory<DynamicContentPublication>.TryCreateInstance()), EntryState.Modified));
+                            changedEntries.Add(new GenericChangedEntry<DynamicContentPublication>(publication, targetEntity.ToModel(AbstractTypeFactory<DynamicContentPublication>.TryCreateInstance()), EntryState.Modified));
                             sourceEntity.Patch(targetEntity);
                         }
                         else
@@ -259,7 +259,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                         var targetEntity = existEntities.FirstOrDefault(x => x.Id == folder.Id);
                         if (targetEntity != null)
                         {
-                            changedEntries.Add(new GenericChangedEntry<DynamicContentFolder>(folder, sourceEntity.ToModel(AbstractTypeFactory<DynamicContentFolder>.TryCreateInstance()), EntryState.Modified));
+                            changedEntries.Add(new GenericChangedEntry<DynamicContentFolder>(folder, targetEntity.ToModel(AbstractTypeFactory<DynamicContentFolder>.TryCreateInstance()), EntryState.Modified));
                             sourceEntity.Patch(targetEntity);
                         }
                         else

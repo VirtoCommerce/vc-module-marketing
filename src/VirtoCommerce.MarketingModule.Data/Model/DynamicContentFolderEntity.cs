@@ -34,7 +34,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual DynamicContentFolder ToModel(DynamicContentFolder folder)
         {
             if (folder == null)
-                throw new NullReferenceException(nameof(folder));
+                throw new ArgumentNullException(nameof(folder));
 
             folder.Id = Id;
             folder.CreatedBy = CreatedBy;
@@ -56,7 +56,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual DynamicContentFolderEntity FromModel(DynamicContentFolder folder, PrimaryKeyResolvingMap pkMap)
         {
             if (folder == null)
-                throw new NullReferenceException(nameof(folder));
+                throw new ArgumentNullException(nameof(folder));
 
             pkMap.AddPair(folder, this);
 
@@ -76,7 +76,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual void Patch(DynamicContentFolderEntity target)
         {
             if (target == null)
-                throw new NullReferenceException(nameof(target));
+                throw new ArgumentNullException(nameof(target));
 
             target.Name = Name;
             target.Description = Description;

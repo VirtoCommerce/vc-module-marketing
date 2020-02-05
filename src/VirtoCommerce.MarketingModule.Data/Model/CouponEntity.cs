@@ -33,7 +33,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual Coupon ToModel(Coupon coupon)
         {
             if (coupon == null)
-                throw new NullReferenceException(nameof(coupon));
+                throw new ArgumentNullException(nameof(coupon));
 
             coupon.Code = Code;
             coupon.CreatedBy = CreatedBy;
@@ -56,7 +56,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual CouponEntity FromModel(Coupon coupon, PrimaryKeyResolvingMap pkMap)
         {
             if (coupon == null)
-                throw new NullReferenceException(nameof(coupon));
+                throw new ArgumentNullException(nameof(coupon));
 
             pkMap.AddPair(coupon, this);
 
@@ -80,7 +80,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual void Patch(CouponEntity target)
         {
             if (target == null)
-                throw new NullReferenceException(nameof(target));
+                throw new ArgumentNullException(nameof(target));
 
             target.Code = Code;
             target.ExpirationDate = ExpirationDate;
