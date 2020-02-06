@@ -27,7 +27,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual DynamicContentPlace ToModel(DynamicContentPlace place)
         {
             if (place == null)
-                throw new NullReferenceException(nameof(place));
+                throw new ArgumentNullException(nameof(place));
 
             place.Id = Id;
             place.CreatedBy = CreatedBy;
@@ -51,7 +51,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual DynamicContentPlaceEntity FromModel(DynamicContentPlace place, PrimaryKeyResolvingMap pkMap)
         {
             if (place == null)
-                throw new NullReferenceException(nameof(place));
+                throw new ArgumentNullException(nameof(place));
 
             pkMap.AddPair(place, this);
 
@@ -72,7 +72,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual void Patch(DynamicContentPlaceEntity target)
         {
             if (target == null)
-                throw new NullReferenceException(nameof(target));
+                throw new ArgumentNullException(nameof(target));
 
             target.Name = Name;
             target.Description = Description;

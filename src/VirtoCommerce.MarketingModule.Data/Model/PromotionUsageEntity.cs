@@ -32,7 +32,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual PromotionUsage ToModel(PromotionUsage usage)
         {
             if (usage == null)
-                throw new NullReferenceException(nameof(usage));
+                throw new ArgumentNullException(nameof(usage));
 
             usage.Id = Id;
             usage.CreatedBy = CreatedBy;
@@ -53,7 +53,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual PromotionUsageEntity FromModel(PromotionUsage usage, PrimaryKeyResolvingMap pkMap)
         {
             if (usage == null)
-                throw new NullReferenceException(nameof(usage));
+                throw new ArgumentNullException(nameof(usage));
 
             pkMap.AddPair(usage, this);
 
@@ -76,7 +76,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         public virtual void Patch(PromotionUsageEntity target)
         {
             if (target == null)
-                throw new NullReferenceException(nameof(target));
+                throw new ArgumentNullException(nameof(target));
 
             target.ObjectId = ObjectId;
             target.ObjectType = ObjectType;
