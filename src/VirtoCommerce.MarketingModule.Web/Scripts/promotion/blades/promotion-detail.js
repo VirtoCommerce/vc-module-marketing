@@ -8,8 +8,8 @@ angular.module('virtoCommerce.marketingModule')
         blade.expressionTreeTemplateUrl = dynamicExpressionService.expressionTreeTemplateUrl;
 
         blade.allowCombination = false;
-        settings.getValues({ id: 'Marketing.Promotion.CombinePolicy' }, function (data) {
-            blade.allowCombination = _.contains(data, 'CombineStackable');
+        settings.get({ id: 'Marketing.Promotion.CombinePolicy' }, function (data) {
+            blade.allowCombination = data.value === 'CombineStackable';
         });
         blade.refresh = function (parentRefresh) {
             if (blade.isNew) {
