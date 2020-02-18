@@ -1,5 +1,5 @@
 angular.module('virtoCommerce.marketingModule')
-    .controller('virtoCommerce.marketingModule.promotionDetailController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.marketingModule.promotions', 'virtoCommerce.catalogModule.catalogs', 'virtoCommerce.storeModule.stores', 'virtoCommerce.coreModule.common.dynamicExpressionService', 'virtoCommerce.catalogModule.categories', 'virtoCommerce.catalogModule.items', '$q', 'platformWebApp.settings', 'platformWebApp.metaFormsService', function ($scope, bladeNavigationService, marketing_res_promotions, catalogs, stores, dynamicExpressionService, categories, items, $q, settings, metaFormsService) {
+    .controller('virtoCommerce.marketingModule.promotionDetailController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.marketingModule.promotions', 'virtoCommerce.storeModule.stores', 'virtoCommerce.coreModule.common.dynamicExpressionService', 'virtoCommerce.catalogModule.categories', 'virtoCommerce.catalogModule.items', '$q', 'platformWebApp.settings', 'platformWebApp.metaFormsService', 'virtoCommerce.shippingModule.shippingMethods', 'virtoCommerce.paymentModule.paymentMethods', function ($scope, bladeNavigationService, marketing_res_promotions, stores, dynamicExpressionService, categories, items, $q, settings, metaFormsService, shippingMethods, paymentMethods) {
         var blade = $scope.blade;
         blade.updatePermission = 'marketing:update';
 
@@ -12,22 +12,37 @@ angular.module('virtoCommerce.marketingModule')
             blade.allowCombination = data.value === 'CombineStackable';
         });
         blade.refresh = function (parentRefresh) {
-            if (blade.isNew) {
-                if (blade.isCloning) {
-                    blade.data.id = null;
-                    blade.data.name = null;
-                    initializeBlade(blade.data);
-                } else {
-                    marketing_res_promotions.getNew(initializeBlade);
-                }
-            } else {
-                marketing_res_promotions.get({ id: blade.currentEntityId, code: (blade.currentEntityCode === undefined) ? '' : blade.currentEntityCode }, function (data) {
-                    initializeBlade(data);
-                    if (parentRefresh) {
-                        blade.parentBlade.refresh();
+            $scope.stores = stores.query({}, function(data) {
+                _.each(data, function(store) {
+                    var storeId = store.id;
+                    shippingMethods.search({ storeId }, function (data) {
+                        store.shippingMethods = _.findWhere(data.results, { isActive: true });
+                    });
+
+                    paymentMethods.search({ storeId }, function (data) {
+                        store.paymentMethods = _.findWhere(data.results, { isActive: true });
+                    });
+                })
+
+                if (blade.isNew) {
+                    if (blade.isCloning) {
+                        blade.data.id = null;
+                        blade.data.name = null;
+                        initializeBlade(blade.data);
+                    } else {
+                        marketing_res_promotions.getNew(initializeBlade);
                     }
-                });
-            }
+                } else {
+                    marketing_res_promotions.get({ id: blade.currentEntityId, code: (blade.currentEntityCode === undefined) ? '' : blade.currentEntityCode }, function (data) {
+                        initializeBlade(data);
+                        if (parentRefresh) {
+                            blade.parentBlade.refresh();
+                        }
+                    });
+                }
+            });
+
+            
         };
 
         function initializeBlade(data) {
@@ -228,6 +243,6 @@ angular.module('virtoCommerce.marketingModule')
 
         initializeToolbar();
         blade.refresh(false);
-        $scope.stores = stores.query();
+                
         $scope.exclusivityTypes = [{ name: 'marketing.blades.promotion-detail.labels.combined-with-others', value: false }, { name: 'marketing.blades.promotion-detail.labels.exclusive', value: true }];
     }]);
