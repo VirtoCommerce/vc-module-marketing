@@ -10,6 +10,7 @@ namespace VirtoCommerce.MarketingModule.Data.Migrations
                 IF (EXISTS (SELECT * FROM __MigrationHistory WHERE ContextKey = 'VirtoCommerce.MarketingModule.Data.Migrations.Configuration'))
                     BEGIN
 	                    INSERT INTO [dbo].[__EFMigrationsHistory] ([MigrationId],[ProductVersion]) VALUES ('20190409185706_InitialMarketing', '2.2.3-servicing-35854')
+                        INSERT INTO [dbo].[__EFMigrationsHistory] ([MigrationId],[ProductVersion]) VALUES ('20200205144826_AddPriority', '3.1.0')
 
                         UPDATE [PlatformDynamicProperty] SET ObjectType = 'VirtoCommerce.MarketingModule.Core.Model.DynamicContentItem' WHERE ObjectType = 'VirtoCommerce.Domain.Marketing.Model.DynamicContentItem'
                         UPDATE [PlatformDynamicPropertyObjectValue] SET ObjectType = 'VirtoCommerce.MarketingModule.Core.Model.DynamicContentItem' WHERE ObjectType = 'VirtoCommerce.Domain.Marketing.Model.DynamicContentItem'
