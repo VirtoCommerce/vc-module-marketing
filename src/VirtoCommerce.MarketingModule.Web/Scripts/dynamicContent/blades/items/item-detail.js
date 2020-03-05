@@ -1,15 +1,26 @@
 ﻿angular.module('virtoCommerce.marketingModule')
-.controller('virtoCommerce.marketingModule.itemDetailController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.contentItems', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.dynamicProperties.dictionaryItemsApi', 'platformWebApp.settings',
-    function ($scope, dynamicContentItemsApi, bladeNavigationService, dialogService, dictionaryItemsApi, settings) {
+.controller('virtoCommerce.marketingModule.itemDetailController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.contentItems', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.dynamicProperties.dictionaryItemsApi', 'platformWebApp.settings', 'platformWebApp.dynamicProperties.api',
+    function ($scope, dynamicContentItemsApi, bladeNavigationService, dialogService, dictionaryItemsApi, settings, dynamicPropertiesApi) {
         var blade = $scope.blade;
         blade.updatePermission = 'marketing:update';
 
         blade.refresh = function() {
             if (!blade.isNew) {
                 dynamicContentItemsApi.get({id: blade.entity.id}, function (response) {
-                    blade.entity = response;
-                    blade.currentEntity = response;
-                    blade.initialize();
+                    dynamicPropertiesApi.search({objectType: blade.entity.objectType, take: response.dynamicProperties.length}, function (dynamicPropertiesResponse) {
+                        var rawDynamicProperties = dynamicPropertiesResponse.results;
+                        _.each(rawDynamicProperties, function(prop) {
+                            prop.values = [];
+                            var filteredProperty = _.find(response.dynamicProperties, function (o) { return o.id === prop.id; });
+                            if (filteredProperty) {
+                                prop.values = filteredProperty.values;
+                            }
+                        })
+                        response.dynamicProperties = rawDynamicProperties;
+                        blade.entity = response;
+                        blade.currentEntity = response;
+                        blade.initialize();
+                    });
                 });
             } else {
                 blade.initialize();
