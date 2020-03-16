@@ -1,6 +1,6 @@
+using Moq;
 using System.Collections.Generic;
 using System.Linq;
-using Moq;
 using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Common;
 using VirtoCommerce.Domain.Marketing.Model;
@@ -96,6 +96,27 @@ namespace VirtoCommerce.MarketingModule.Test
             Assert.Equal(1, rewards.Count);
             Assert.Equal(50m, context.ShipmentMethodPrice);
             Assert.Equal(100m, productA.Price);
+        }
+
+        [Fact]
+        public void EvaluateRewards_SeveralPromotionsWithTheSamePriority_CouldBeStacked()
+        {
+            //Arrange            
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("Register and First time buyer => get 20% off.", "Free shipping on orders totaling $35.00 or more."));
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 45, Quantity = 1 };
+            var context = new PromotionEvaluationContext
+            {
+                ShipmentMethodCode = "FedEx",
+                ShipmentMethodPrice = 5,
+                PromoEntries = new[] { productA }
+            };
+            //Act
+            var rewards = evalPolicy.EvaluatePromotion(context).Rewards;
+
+            //Assert
+            Assert.Equal(2, rewards.Count);
+            Assert.Equal(0m, context.ShipmentMethodPrice);
+            Assert.Equal(36m, context.PromoEntries.First().Price);
         }
 
         private static IMarketingPromoEvaluator GetPromotionEvaluationPolicy(IEnumerable<Promotion> promotions)
@@ -202,6 +223,26 @@ namespace VirtoCommerce.MarketingModule.Test
                     Rewards = new[]
                     {
                        new GiftReward {  ProductId = "ProductA", IsValid = true }
+                    },
+                    Priority = 0,
+                    IsExclusive = false
+                };
+                yield return new MockPromotion
+                {
+                    Id = "Register and First time buyer => get 20% off.",
+                    Rewards = new[]
+                    {
+                       new CatalogItemAmountReward { ProductId = "ProductA", Amount = 20, AmountType = RewardAmountType.Relative, IsValid = true }
+                    },
+                    Priority = 0,
+                    IsExclusive = false
+                };
+                yield return new MockPromotion
+                {
+                    Id = "Free shipping on orders totaling $35.00 or more.",
+                    Rewards = new[]
+                    {
+                        new ShipmentReward { ShippingMethod = null, Amount = 100, AmountType = RewardAmountType.Relative, IsValid = true  }
                     },
                     Priority = 0,
                     IsExclusive = false

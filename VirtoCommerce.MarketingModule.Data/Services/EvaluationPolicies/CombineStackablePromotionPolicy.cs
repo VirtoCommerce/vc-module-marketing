@@ -66,19 +66,9 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             else
             {
                 var newRewards = new List<PromotionReward>();
-                //shipment rewards
-                var groupedByShipmentMethodRewards = rewards.OfType<ShipmentReward>()
-                                                            .GroupBy(x => x.ShippingMethod);
-                foreach (var shipmentMethodRewards in groupedByShipmentMethodRewards)
-                {
-                    //Need to take one reward from first prioritized promotion for each shipment method group
-                    var shipmentPriorityReward = shipmentMethodRewards.FirstOrDefault();
-                    if (shipmentPriorityReward != null)
-                    {
-                        newRewards.Add(shipmentPriorityReward);
-                        rewards.Remove(shipmentPriorityReward);
-                    }
-                }
+                // This variable shows whether we applied reward that could change discounted cart total.
+                // This could affect other rewards conditions, so we need to skip other rewards and start another iteration with potentially changed discouted total.
+                var discountedTotalCouldBeChanged = false;
 
                 //catalog item rewards
                 var groupedByProductRewards = rewards.OfType<CatalogItemAmountReward>()
@@ -91,15 +81,39 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                     {
                         newRewards.Add(productPriorityReward);
                         rewards.Remove(productPriorityReward);
+                        discountedTotalCouldBeChanged = true;
+                        break;
                     }
                 }
 
-                //cart subtotal rewards
-                var cartPriorityReward = rewards.OfType<CartSubtotalReward>().FirstOrDefault();
-                if (cartPriorityReward != null)
+                if (!discountedTotalCouldBeChanged)
                 {
-                    newRewards.Add(cartPriorityReward);
-                    rewards.Remove(cartPriorityReward);
+                    //cart subtotal rewards
+                    var cartPriorityReward = rewards.OfType<CartSubtotalReward>().FirstOrDefault();
+                    if (cartPriorityReward != null)
+                    {
+                        newRewards.Add(cartPriorityReward);
+                        rewards.Remove(cartPriorityReward);
+                        discountedTotalCouldBeChanged = true;
+                    }
+                }
+
+                if (!discountedTotalCouldBeChanged)
+                {
+                    //shipment rewards
+                    var groupedByShipmentMethodRewards = rewards.OfType<ShipmentReward>()
+                                                                .GroupBy(x => x.ShippingMethod);
+                    foreach (var shipmentMethodRewards in groupedByShipmentMethodRewards)
+                    {
+                        //Need to take one reward from first prioritized promotion for each shipment method group
+                        var shipmentPriorityReward = shipmentMethodRewards.FirstOrDefault();
+                        if (shipmentPriorityReward != null)
+                        {
+                            newRewards.Add(shipmentPriorityReward);
+                            rewards.Remove(shipmentPriorityReward);
+                            break;
+                        }
+                    }
                 }
 
                 //Gifts
