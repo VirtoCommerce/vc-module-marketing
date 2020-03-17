@@ -1,6 +1,7 @@
-using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
 using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Common;
 using VirtoCommerce.Domain.Marketing.Model;
@@ -96,6 +97,30 @@ namespace VirtoCommerce.MarketingModule.Test
             Assert.Equal(1, rewards.Count);
             Assert.Equal(50m, context.ShipmentMethodPrice);
             Assert.Equal(100m, productA.Price);
+        }
+
+        [CLSCompliant(false)]
+        [Theory]
+        [InlineData(45, 2, 36, 0)]
+        [InlineData(40, 1, 32, 5)]
+        public void EvaluateRewards_PromotionRewardEvaluation_ConditionCalculatesBasedOnChangedPrice(decimal initialPrice, int expectedRewardsApplied, decimal expectedPrice, decimal expectedShipmentPrice)
+        {
+            //Arrange
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("Register and First time buyer => get 20% off.", "Free shipping on orders totaling $35.00 or more."));
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = initialPrice, Quantity = 1 };
+            var context = new PromotionEvaluationContext
+            {
+                ShipmentMethodCode = "FedEx",
+                ShipmentMethodPrice = 5,
+                PromoEntries = new[] { productA }
+            };
+            //Act
+            var rewards = evalPolicy.EvaluatePromotion(context).Rewards;
+
+            //Assert
+            Assert.Equal(expectedRewardsApplied, rewards.Count);
+            Assert.Equal(expectedShipmentPrice, context.ShipmentMethodPrice);
+            Assert.Equal(expectedPrice, productA.Price);
         }
 
         [Fact]
@@ -303,6 +328,7 @@ namespace VirtoCommerce.MarketingModule.Test
                 yield return new MockPromotion
                 {
                     Id = "Free shipping on orders totaling $35.00 or more.",
+                    Condition = x => (x as PromotionEvaluationContext)?.PromoEntries.Sum(entry => entry.Price * entry.Quantity) >= 35,
                     Rewards = new[]
                     {
                         new ShipmentReward { ShippingMethod = "FedEx", Amount = 100, AmountType = RewardAmountType.Relative, IsValid = true  }
@@ -335,12 +361,16 @@ namespace VirtoCommerce.MarketingModule.Test
     {
         public IEnumerable<PromotionReward> Rewards { get; set; }
 
+        public Func<IEvaluationContext, bool> Condition { get; set; }
+
         public override PromotionReward[] EvaluatePromotion(IEvaluationContext context)
         {
             foreach (var reward in Rewards)
             {
                 reward.Promotion = this;
+                reward.IsValid = Condition == null || Condition(context);
             }
+
             return Rewards.ToArray();
         }
     }
