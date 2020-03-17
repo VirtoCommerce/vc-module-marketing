@@ -56,6 +56,11 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 .Except(skippedRewards)
                 .ToList();
 
+            if (rewards.IsNullOrEmpty())
+            {
+                return;
+            }
+
             var firstOrderExlusiveReward = rewards.FirstOrDefault(x => x.Promotion.IsExclusive);
             if (firstOrderExlusiveReward != null)
             {
@@ -66,44 +71,42 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             }
             else
             {
+                var promotionsByRewards = rewards
+                    .GroupBy(x => x.Promotion.Priority)
+                    .OrderByDescending(x => x.Key);
+                var highestPriorityPromotions = promotionsByRewards.First().ToList();
                 var newRewards = new List<PromotionReward>();
-                // This variable shows whether we applied reward that could change discounted cart total.
-                // This could affect other promotions conditions, so we need to skip other promotion rewards and start another iteration with potentially changed discouted total.
-                // All current promotion rewards should be applied in this iteration, otherwise current promotion conditions could be affected too and rewards will not be applied.
-                string promotionAffectingCartTotalDiscountId = null;
 
                 //catalog item rewards
-                var groupedByProductRewards = rewards.OfType<CatalogItemAmountReward>()
+                var groupedByProductRewards = highestPriorityPromotions.OfType<CatalogItemAmountReward>()
                                                      .GroupBy(x => x.ProductId);
                 foreach (var productRewards in groupedByProductRewards)
                 {
                     //Need to take one reward from first prioritized promotion for each product rewards group
                     var productPriorityReward = productRewards.FirstOrDefault();
-                    if (productPriorityReward != null && (promotionAffectingCartTotalDiscountId == null || promotionAffectingCartTotalDiscountId == productPriorityReward.Promotion.Id))
+                    if (productPriorityReward != null)
                     {
                         newRewards.Add(productPriorityReward);
                         rewards.Remove(productPriorityReward);
-                        promotionAffectingCartTotalDiscountId = productPriorityReward.Promotion.Id;
                     }
                 }
 
                 //cart subtotal rewards
-                var cartPriorityReward = rewards.OfType<CartSubtotalReward>().FirstOrDefault();
-                if (cartPriorityReward != null && (promotionAffectingCartTotalDiscountId == null || promotionAffectingCartTotalDiscountId == cartPriorityReward.Promotion.Id))
+                var cartPriorityReward = highestPriorityPromotions.OfType<CartSubtotalReward>().FirstOrDefault();
+                if (cartPriorityReward != null)
                 {
                     newRewards.Add(cartPriorityReward);
                     rewards.Remove(cartPriorityReward);
-                    promotionAffectingCartTotalDiscountId = cartPriorityReward.Promotion.Id;
                 }
 
                 //shipment rewards
-                var groupedByShipmentMethodRewards = rewards.OfType<ShipmentReward>()
+                var groupedByShipmentMethodRewards = highestPriorityPromotions.OfType<ShipmentReward>()
                                                             .GroupBy(x => x.ShippingMethod);
                 foreach (var shipmentMethodRewards in groupedByShipmentMethodRewards)
                 {
                     //Need to take one reward from first prioritized promotion for each shipment method group
                     var shipmentPriorityReward = shipmentMethodRewards.FirstOrDefault();
-                    if (shipmentPriorityReward != null && (promotionAffectingCartTotalDiscountId == null || promotionAffectingCartTotalDiscountId == shipmentPriorityReward.Promotion.Id))
+                    if (shipmentPriorityReward != null)
                     {
                         newRewards.Add(shipmentPriorityReward);
                         rewards.Remove(shipmentPriorityReward);
@@ -111,9 +114,9 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 }
 
                 //Gifts
-                resultRewards.AddRange(rewards.OfType<GiftReward>());
+                resultRewards.AddRange(highestPriorityPromotions.OfType<GiftReward>());
                 //Special offer
-                resultRewards.AddRange(rewards.OfType<SpecialOfferReward>());
+                resultRewards.AddRange(highestPriorityPromotions.OfType<SpecialOfferReward>());
 
                 //Apply new rewards to the evaluation context to influent for conditions in the  next evaluation iteration
                 ApplyRewardsToContext(context, newRewards, skippedRewards);

@@ -322,7 +322,7 @@ namespace VirtoCommerce.MarketingModule.Test
                     {
                        new CatalogItemAmountReward { ProductId = "ProductA", Amount = 20, AmountType = RewardAmountType.Relative, IsValid = true }
                     },
-                    Priority = 0,
+                    Priority = 10,
                     IsExclusive = false
                 };
                 yield return new MockPromotion
@@ -333,7 +333,7 @@ namespace VirtoCommerce.MarketingModule.Test
                     {
                         new ShipmentReward { ShippingMethod = "FedEx", Amount = 100, AmountType = RewardAmountType.Relative, IsValid = true  }
                     },
-                    Priority = 0,
+                    Priority = 2,
                     IsExclusive = false
                 };
                 yield return new MockPromotion
