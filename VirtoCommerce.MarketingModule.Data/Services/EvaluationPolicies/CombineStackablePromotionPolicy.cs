@@ -12,9 +12,12 @@ namespace VirtoCommerce.MarketingModule.Data.Services
     public class CombineStackablePromotionPolicy : IMarketingPromoEvaluator
     {
         private readonly IPromotionSearchService _promotionSearchService;
-        public CombineStackablePromotionPolicy(IPromotionSearchService promotionSearchService)
+        private readonly IPromotionRewardEvaluator _promotionRewardEvaluator;
+
+        public CombineStackablePromotionPolicy(IPromotionSearchService promotionSearchService, IPromotionRewardEvaluator promotionRewardEvaluator)
         {
             _promotionSearchService = promotionSearchService;
+            _promotionRewardEvaluator = promotionRewardEvaluator;
         }
 
         public PromotionResult EvaluatePromotion(IEvaluationContext context)
@@ -41,19 +44,22 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
             var result = new PromotionResult();
 
-            Func<PromotionEvaluationContext, IEnumerable<PromotionReward>> evalFunc = (evalContext) => promotions.SelectMany(x => x.EvaluatePromotion(evalContext))
-                                    .OrderByDescending(x => x.Promotion.IsExclusive)
-                                    .ThenByDescending(x => x.Promotion.Priority)
-                                    .Where(x => x.IsValid)
-                                    .ToList();
-            EvalAndCombineRewardsRecursively(promoContext, evalFunc, result.Rewards, new List<PromotionReward>());
+            EvalAndCombineRewardsRecursively(promoContext, promotions, result.Rewards, new List<PromotionReward>());
             return result;
         }
 
-        protected virtual void EvalAndCombineRewardsRecursively(PromotionEvaluationContext context, Func<PromotionEvaluationContext, IEnumerable<PromotionReward>> evalFunc, ICollection<PromotionReward> resultRewards, ICollection<PromotionReward> skippedRewards)
+        protected virtual void EvalAndCombineRewardsRecursively(PromotionEvaluationContext context, IEnumerable<Promotion> promotions, ICollection<PromotionReward> resultRewards, ICollection<PromotionReward> skippedRewards)
         {
             //Evaluate rewards with passed context and exclude already applied rewards from result
-            var rewards = evalFunc(context).Except(resultRewards).Except(skippedRewards).ToList();
+            var rewards = _promotionRewardEvaluator.GetOrderedValidRewards(promotions, context)
+                .Except(resultRewards)
+                .Except(skippedRewards)
+                .ToList();
+
+            if (rewards.IsNullOrEmpty())
+            {
+                return;
+            }
 
             var firstOrderExlusiveReward = rewards.FirstOrDefault(x => x.Promotion.IsExclusive);
             if (firstOrderExlusiveReward != null)
@@ -65,23 +71,14 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             }
             else
             {
+                var promotionsByRewards = rewards
+                    .GroupBy(x => x.Promotion.Priority)
+                    .OrderByDescending(x => x.Key);
+                var highestPriorityPromotions = promotionsByRewards.First().ToList();
                 var newRewards = new List<PromotionReward>();
-                //shipment rewards
-                var groupedByShipmentMethodRewards = rewards.OfType<ShipmentReward>()
-                                                            .GroupBy(x => x.ShippingMethod);
-                foreach (var shipmentMethodRewards in groupedByShipmentMethodRewards)
-                {
-                    //Need to take one reward from first prioritized promotion for each shipment method group
-                    var shipmentPriorityReward = shipmentMethodRewards.FirstOrDefault();
-                    if (shipmentPriorityReward != null)
-                    {
-                        newRewards.Add(shipmentPriorityReward);
-                        rewards.Remove(shipmentPriorityReward);
-                    }
-                }
 
                 //catalog item rewards
-                var groupedByProductRewards = rewards.OfType<CatalogItemAmountReward>()
+                var groupedByProductRewards = highestPriorityPromotions.OfType<CatalogItemAmountReward>()
                                                      .GroupBy(x => x.ProductId);
                 foreach (var productRewards in groupedByProductRewards)
                 {
@@ -95,17 +92,31 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 }
 
                 //cart subtotal rewards
-                var cartPriorityReward = rewards.OfType<CartSubtotalReward>().FirstOrDefault();
+                var cartPriorityReward = highestPriorityPromotions.OfType<CartSubtotalReward>().FirstOrDefault();
                 if (cartPriorityReward != null)
                 {
                     newRewards.Add(cartPriorityReward);
                     rewards.Remove(cartPriorityReward);
                 }
 
+                //shipment rewards
+                var groupedByShipmentMethodRewards = highestPriorityPromotions.OfType<ShipmentReward>()
+                                                            .GroupBy(x => x.ShippingMethod);
+                foreach (var shipmentMethodRewards in groupedByShipmentMethodRewards)
+                {
+                    //Need to take one reward from first prioritized promotion for each shipment method group
+                    var shipmentPriorityReward = shipmentMethodRewards.FirstOrDefault();
+                    if (shipmentPriorityReward != null)
+                    {
+                        newRewards.Add(shipmentPriorityReward);
+                        rewards.Remove(shipmentPriorityReward);
+                    }
+                }
+
                 //Gifts
-                resultRewards.AddRange(rewards.OfType<GiftReward>());
+                resultRewards.AddRange(highestPriorityPromotions.OfType<GiftReward>());
                 //Special offer
-                resultRewards.AddRange(rewards.OfType<SpecialOfferReward>());
+                resultRewards.AddRange(highestPriorityPromotions.OfType<SpecialOfferReward>());
 
                 //Apply new rewards to the evaluation context to influent for conditions in the  next evaluation iteration
                 ApplyRewardsToContext(context, newRewards, skippedRewards);
@@ -114,7 +125,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 if (rewards.Any())
                 {
                     //Call recursively
-                    EvalAndCombineRewardsRecursively(context, evalFunc, resultRewards, skippedRewards);
+                    EvalAndCombineRewardsRecursively(context, promotions, resultRewards, skippedRewards);
                 }
             }
         }

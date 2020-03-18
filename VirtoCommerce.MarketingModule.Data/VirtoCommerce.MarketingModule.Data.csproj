@@ -139,9 +139,11 @@
     <Compile Include="Repositories\MarketingRepositoryImpl.cs" />
     <Compile Include="Services\CouponService.cs" />
     <Compile Include="Services\DefaultDynamicContentEvaluatorImpl.cs" />
+    <Compile Include="Services\DefaultPromotionRewardEvaluator.cs" />
     <Compile Include="Services\DynamicContentServiceImpl.cs" />
     <Compile Include="Services\EvaluationPolicies\BestRewardPromotionPolicy.cs" />
     <Compile Include="Services\EvaluationPolicies\CombineStackablePromotionPolicy.cs" />
+    <Compile Include="Services\IPromotionRewardEvaluator.cs" />
     <Compile Include="Services\MarketingSearchServiceImpl.cs" />
     <Compile Include="Services\PromotionUsageService.cs" />
     <Compile Include="Services\PromotionServiceImpl.cs" />

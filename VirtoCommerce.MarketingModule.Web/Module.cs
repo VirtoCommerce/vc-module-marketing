@@ -1,7 +1,7 @@
+using Microsoft.Practices.Unity;
 using System;
 using System.Linq;
 using System.Web.Http;
-using Microsoft.Practices.Unity;
 using VirtoCommerce.Domain.Marketing.Services;
 using VirtoCommerce.Domain.Order.Events;
 using VirtoCommerce.MarketingModule.Data.ExportImport;
@@ -58,6 +58,7 @@ namespace VirtoCommerce.MarketingModule.Web
             _container.RegisterType<IPromotionUsageService, PromotionUsageService>();
             _container.RegisterType<IMarketingDynamicContentEvaluator, DefaultDynamicContentEvaluatorImpl>();
             _container.RegisterType<IDynamicContentService, DynamicContentServiceImpl>();
+            _container.RegisterType<IPromotionRewardEvaluator, DefaultPromotionRewardEvaluator>();
 
             _container.RegisterType<IPromotionSearchService, MarketingSearchServiceImpl>();
             _container.RegisterType<ICouponService, CouponService>();
