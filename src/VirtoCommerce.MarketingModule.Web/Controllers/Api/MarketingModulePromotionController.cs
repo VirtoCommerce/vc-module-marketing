@@ -25,6 +25,7 @@ using webModel = VirtoCommerce.MarketingModule.Web.Model;
 namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
 {
     [Route("api/marketing/promotions")]
+    [Authorize]
     public class MarketingModulePromotionController : Controller
     {
         private readonly IPromotionService _promotionService;
