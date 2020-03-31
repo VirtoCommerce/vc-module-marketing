@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -119,38 +120,28 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
 
         public Task RemoveFoldersAsync(string[] ids)
         {
-            const string queryPattern = @"DELETE FROM DynamicContentFolder WHERE Id IN (@Ids)";
-            var name = new SqlParameter("@Ids", string.Join(", ", ids));
-            return _dbContext.Database.ExecuteSqlRawAsync(queryPattern, name);
+            return GenericMassRemove<DynamicContentFolderEntity>(ids);
         }
 
 
         public Task RemoveContentPublicationsAsync(string[] ids)
         {
-            const string queryPattern = @"DELETE FROM DynamicContentPublishingGroup WHERE Id IN (@Ids)";
-            var name = new SqlParameter("@Ids", string.Join(", ", ids));
-            return _dbContext.Database.ExecuteSqlRawAsync(queryPattern, name);
+            return GenericMassRemove<DynamicContentPublishingGroupEntity>(ids);
         }
 
         public Task RemovePlacesAsync(string[] ids)
         {
-            const string queryPattern = @"DELETE FROM DynamicContentPlace WHERE Id IN (@Ids)";
-            var name = new SqlParameter("@Ids", string.Join(", ", ids));
-            return _dbContext.Database.ExecuteSqlRawAsync(queryPattern, name);
+            return GenericMassRemove<DynamicContentPlaceEntity>(ids);          
         }
 
         public Task RemoveContentItemsAsync(string[] ids)
         {
-            const string queryPattern = @"DELETE FROM DynamicContentItem WHERE Id IN (@Ids)";
-            var name = new SqlParameter("@Ids", string.Join(", ", ids));
-            return _dbContext.Database.ExecuteSqlRawAsync(queryPattern, name);
+            return GenericMassRemove<DynamicContentItemEntity>(ids);            
         }
 
         public virtual Task RemovePromotionsAsync(string[] ids)
         {
-            const string queryPattern = @"DELETE FROM Promotion WHERE Id IN (@Ids)";
-            var name = new SqlParameter("@Ids", string.Join(", ", ids));
-            return _dbContext.Database.ExecuteSqlRawAsync(queryPattern, name);
+            return GenericMassRemove<PromotionEntity>(ids);
         }
 
         public async Task<CouponEntity[]> GetCouponsByIdsAsync(string[] ids)
@@ -172,9 +163,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
 
         public Task RemoveCouponsAsync(string[] ids)
         {
-            const string queryPattern = @"DELETE FROM Coupon WHERE Id IN (@Ids)";
-            var name = new SqlParameter("@Ids", string.Join(", ", ids));
-            return _dbContext.Database.ExecuteSqlRawAsync(queryPattern, name);
+            return GenericMassRemove<CouponEntity>(ids);
         }
 
         public Task<PromotionUsageEntity[]> GetMarketingUsagesByIdsAsync(string[] ids)
@@ -184,11 +173,23 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
 
         public Task RemoveMarketingUsagesAsync(string[] ids)
         {
-            const string queryPattern = @"DELETE FROM PromotionUsage WHERE Id IN (@Ids)";
-            var name = new SqlParameter("@Ids", string.Join(", ", ids));
-            return _dbContext.Database.ExecuteSqlRawAsync(queryPattern, name);
+            return GenericMassRemove<PromotionUsageEntity>(ids);
         }
         #endregion
+
+        private Task GenericMassRemove<T>(string[] ids) where T : IEntity
+        {
+
+            foreach (var id in ids ?? Array.Empty<string>())
+            {
+                var toRemove = AbstractTypeFactory<T>.TryCreateInstance();
+                toRemove.Id = id;
+                _dbContext.Attach(toRemove);
+                _dbContext.Remove(toRemove);
+            }
+            return Task.CompletedTask;
+        }
+
     }
 
 }

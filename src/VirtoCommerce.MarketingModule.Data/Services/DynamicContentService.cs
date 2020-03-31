@@ -217,7 +217,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         public async Task DeletePublicationsAsync(string[] ids)
         {
             using (var repository = _repositoryFactory())
-            {
+            { 
                 await repository.RemoveContentPublicationsAsync(ids);
                 await repository.UnitOfWork.CommitAsync();
             }
