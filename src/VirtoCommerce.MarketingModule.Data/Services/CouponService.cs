@@ -71,7 +71,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                                 .FirstOrDefault(x => x.Code == coupon.Code && x.PromotionId == coupon.PromotionId);
                             if (couponWithSameName != null)
                             {
-                                throw new ArgumentException($"Coupon with Name: '{couponWithSameName.Code}' for Promotion: '{couponWithSameName.Promotion.Name}' already exist");
+                                throw new InvalidOperationException($"Coupon with Name: '{couponWithSameName.Code}' for Promotion: '{couponWithSameName.Promotion.Name}' already exists");
                             }
                             changedEntries.Add(new GenericChangedEntry<Coupon>(coupon, EntryState.Added));
                             repository.Add(sourceEntity);
