@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Data.Model;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Data.Infrastructure;
@@ -46,7 +46,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
         {
             var propmotions = await Promotions.Where(x => ids.Contains(x.Id)).ToArrayAsync();
             await PromotionStores.Where(x => ids.Contains(x.PromotionId)).ToArrayAsync();
-            var promotionsIdsWithCoupons = await Coupons.Where(x => ids.Contains(x.PromotionId)).Select(x => x.PromotionId).Distinct().ToArrayAsync();          
+            var promotionsIdsWithCoupons = await Coupons.Where(x => ids.Contains(x.PromotionId)).Select(x => x.PromotionId).Distinct().ToArrayAsync();
             foreach (var promotion in propmotions)
             {
                 promotion.HasCoupons = promotionsIdsWithCoupons.Contains(promotion.Id);
@@ -81,7 +81,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
                     item.Folder = allFolders.FirstOrDefault(x => x.Id == item.FolderId);
                 }
 
-               await DynamicContentItemDynamicPropertyObjectValues.Where(x => ids.Contains(x.ObjectId)).LoadAsync();
+                await DynamicContentItemDynamicPropertyObjectValues.Where(x => ids.Contains(x.ObjectId)).LoadAsync();
             }
             return retVal;
         }
@@ -131,12 +131,12 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
 
         public Task RemovePlacesAsync(string[] ids)
         {
-            return GenericMassRemove<DynamicContentPlaceEntity>(ids);          
+            return GenericMassRemove<DynamicContentPlaceEntity>(ids);
         }
 
         public Task RemoveContentItemsAsync(string[] ids)
         {
-            return GenericMassRemove<DynamicContentItemEntity>(ids);            
+            return GenericMassRemove<DynamicContentItemEntity>(ids);
         }
 
         public virtual Task RemovePromotionsAsync(string[] ids)
@@ -176,6 +176,16 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
             return GenericMassRemove<PromotionUsageEntity>(ids);
         }
         #endregion
+
+        public Task<string[]> CheckCouponsForUniqueness(Coupon[] coupons)
+        {
+            var uniqueListCodeAndPromotionId = coupons.Select(x => x.Code + x.PromotionId).Distinct();
+            return Coupons.Where(x => uniqueListCodeAndPromotionId.Contains(x.Code + x.PromotionId))
+                .Include(x => x.Promotion)
+                .Select(x => $"Coupon with Name: '{x.Code}' for Promotion: '{x.Promotion.Name}' already exists;")
+                .ToArrayAsync();
+
+        }
 
         private Task GenericMassRemove<T>(string[] ids) where T : IEntity
         {

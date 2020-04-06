@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.MarketingModule.Core.Events;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
@@ -52,6 +51,13 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             using (var repository = _repositoryFactory())
             {
                 var existCouponEntities = await repository.GetCouponsByIdsAsync(coupons.Where(x => !x.IsTransient()).Select(x => x.Id).ToArray());
+
+                var nonUniqueCouponErrors = await repository.CheckCouponsForUniqueness(coupons.Where(x => x.IsTransient()).ToArray());
+                if (!nonUniqueCouponErrors.IsNullOrEmpty())
+                {
+                    throw new InvalidOperationException(string.Join(Environment.NewLine, nonUniqueCouponErrors));
+                }
+
                 foreach (var coupon in coupons)
                 {
                     var sourceEntity = AbstractTypeFactory<CouponEntity>.TryCreateInstance();
@@ -66,13 +72,6 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                         }
                         else
                         {
-                            var couponWithSameName = repository.Coupons
-                                .Include(x => x.Promotion)
-                                .FirstOrDefault(x => x.Code == coupon.Code && x.PromotionId == coupon.PromotionId);
-                            if (couponWithSameName != null)
-                            {
-                                throw new InvalidOperationException($"Coupon with Name: '{couponWithSameName.Code}' for Promotion: '{couponWithSameName.Promotion.Name}' already exists");
-                            }
                             changedEntries.Add(new GenericChangedEntry<Coupon>(coupon, EntryState.Added));
                             repository.Add(sourceEntity);
                         }

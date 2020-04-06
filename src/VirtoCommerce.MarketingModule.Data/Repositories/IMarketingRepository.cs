@@ -1,6 +1,6 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
+using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Data.Model;
 using VirtoCommerce.Platform.Core.Common;
 
@@ -36,5 +36,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
 
         Task<PromotionUsageEntity[]> GetMarketingUsagesByIdsAsync(string[] ids);
         Task RemoveMarketingUsagesAsync(string[] ids);
+
+        Task<string[]> CheckCouponsForUniqueness(Coupon[] coupons);
     }
 }
