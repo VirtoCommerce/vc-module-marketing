@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.MarketingModule.Core.Events;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
-using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Services;
 using VirtoCommerce.MarketingModule.Data.Caching;
 using VirtoCommerce.MarketingModule.Data.Model;
@@ -67,6 +66,13 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                         }
                         else
                         {
+                            var couponWithSameName = repository.Coupons
+                                .Include(x => x.Promotion)
+                                .FirstOrDefault(x => x.Code == coupon.Code && x.PromotionId == coupon.PromotionId);
+                            if (couponWithSameName != null)
+                            {
+                                throw new ArgumentException($"Coupon with Name: '{couponWithSameName.Code}' for Promotion: '{couponWithSameName.Promotion.Name}' already exist");
+                            }
                             changedEntries.Add(new GenericChangedEntry<Coupon>(coupon, EntryState.Added));
                             repository.Add(sourceEntity);
                         }
