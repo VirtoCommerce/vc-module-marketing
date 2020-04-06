@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using VirtoCommerce.CoreModule.Core.Conditions;
 using VirtoCommerce.MarketingModule.Core;
 using VirtoCommerce.MarketingModule.Core.Model.DynamicContent;
 using VirtoCommerce.MarketingModule.Core.Model.DynamicContent.Search;
@@ -412,6 +410,6 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         {
             await _dynamicContentService.DeleteFoldersAsync(ids);
             return NoContent();
-        }    
+        }
     }
 }
