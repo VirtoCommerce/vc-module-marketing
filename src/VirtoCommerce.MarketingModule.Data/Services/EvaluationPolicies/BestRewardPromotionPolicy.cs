@@ -22,15 +22,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
         public async Task<PromotionResult> EvaluatePromotionAsync(IEvaluationContext context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            if (!(context is PromotionEvaluationContext promoContext))
-            {
-                throw new ArgumentException($"{nameof(context)} type {context.GetType()} must be derived from PromotionEvaluationContext");
-            }
+            var promoContext = GetPromotionEvaluationContext(context);
 
             var promotionSearchCriteria = new PromotionSearchCriteria
             {
@@ -129,6 +121,21 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             }
 
             return retVal;
+        }
+
+        private static PromotionEvaluationContext GetPromotionEvaluationContext(IEvaluationContext context)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            if (!(context is PromotionEvaluationContext promoContext))
+            {
+                throw new ArgumentException($"{nameof(context)} type {context.GetType()} must be derived from PromotionEvaluationContext");
+            }
+
+            return promoContext;
         }
     }
 }

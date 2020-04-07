@@ -5,7 +5,6 @@ using Newtonsoft.Json.Linq;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Promotions;
-using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.MarketingModule.Web.JsonConverters
@@ -22,7 +21,7 @@ namespace VirtoCommerce.MarketingModule.Web.JsonConverters
         public override bool CanConvert(Type objectType)
         {
             return _knownTypes.Any(x => x.IsAssignableFrom(objectType));
-        }      
+        }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
@@ -31,7 +30,7 @@ namespace VirtoCommerce.MarketingModule.Web.JsonConverters
 
             serializer.Populate(JObject.Load(reader).CreateReader(), retVal);
             return retVal;
-         }
+        }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {

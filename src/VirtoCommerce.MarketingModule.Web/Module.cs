@@ -15,7 +15,6 @@ using VirtoCommerce.MarketingModule.Core.Events;
 using VirtoCommerce.MarketingModule.Core.Model;
 using VirtoCommerce.MarketingModule.Core.Model.DynamicContent;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
-using VirtoCommerce.MarketingModule.Core.Model.Promotions.Conditions;
 using VirtoCommerce.MarketingModule.Core.Promotions;
 using VirtoCommerce.MarketingModule.Core.Search;
 using VirtoCommerce.MarketingModule.Core.Services;
@@ -60,6 +59,7 @@ namespace VirtoCommerce.MarketingModule.Web
             serviceCollection.AddTransient<IPromotionUsageService, PromotionUsageService>();
             serviceCollection.AddTransient<IMarketingDynamicContentEvaluator, DefaultDynamicContentEvaluator>();
             serviceCollection.AddTransient<IDynamicContentService, DynamicContentService>();
+            serviceCollection.AddTransient<IPromotionRewardEvaluator, DefaultPromotionRewardEvaluator>();
 
             #endregion
 
@@ -81,11 +81,14 @@ namespace VirtoCommerce.MarketingModule.Web
             {
                 var settingsManager = provider.GetService<ISettingsManager>();
                 var promotionService = provider.GetService<IPromotionSearchService>();
+                var promotionRewardEvaluator = provider.GetService<IPromotionRewardEvaluator>();
                 var promotionCombinePolicy = settingsManager.GetValue(ModuleConstants.Settings.General.CombinePolicy.Name, "BestReward");
+
                 if (promotionCombinePolicy.EqualsInvariant("CombineStackable"))
                 {
-                    return new CombineStackablePromotionPolicy(promotionService);
+                    return new CombineStackablePromotionPolicy(promotionService, promotionRewardEvaluator);
                 }
+
                 return new BestRewardPromotionPolicy(promotionService);
             });
 
@@ -96,9 +99,9 @@ namespace VirtoCommerce.MarketingModule.Web
             {
                 var dynamicPromotion = promotion as DynamicPromotion;
                 dynamicPromotion.CouponSearchService = couponSearchService;
-                dynamicPromotion.PromotionUsageSearchService = promotionUsageSearchService;            
+                dynamicPromotion.PromotionUsageSearchService = promotionUsageSearchService;
             });
-          
+
             serviceCollection.AddTransient<LogChangesChangedEventHandler>();
             serviceCollection.AddTransient<MarketingExportImport>();
 
@@ -170,7 +173,7 @@ namespace VirtoCommerce.MarketingModule.Web
                 CreatedBy = "Auto",
             };
 
-            dynamicPropertyService.SaveDynamicPropertiesAsync(new[] { contentItemTypeProperty }).GetAwaiter().GetResult();         
+            dynamicPropertyService.SaveDynamicPropertiesAsync(new[] { contentItemTypeProperty }).GetAwaiter().GetResult();
 
             //Next lines allow to use polymorph types in API controller methods
             var mvcJsonOptions = appBuilder.ApplicationServices.GetService<IOptions<MvcNewtonsoftJsonOptions>>();
@@ -178,7 +181,7 @@ namespace VirtoCommerce.MarketingModule.Web
             mvcJsonOptions.Value.SerializerSettings.Converters.Add(new RewardJsonConverter());
 
             //Register the resulting trees expressions into the AbstractFactory<IConditionTree> 
-            foreach (var conditionTree in AbstractTypeFactory<PromotionConditionAndRewardTreePrototype>.TryCreateInstance().Traverse<IConditionTree>(x=> x.AvailableChildren))
+            foreach (var conditionTree in AbstractTypeFactory<PromotionConditionAndRewardTreePrototype>.TryCreateInstance().Traverse<IConditionTree>(x => x.AvailableChildren))
             {
                 AbstractTypeFactory<IConditionTree>.RegisterType(conditionTree.GetType());
             }
@@ -203,6 +206,6 @@ namespace VirtoCommerce.MarketingModule.Web
             ICancellationToken cancellationToken)
         {
             await _appBuilder.ApplicationServices.GetRequiredService<MarketingExportImport>().DoImportAsync(inputStream, progressCallback, cancellationToken);
-        }    
+        }
     }
 }
