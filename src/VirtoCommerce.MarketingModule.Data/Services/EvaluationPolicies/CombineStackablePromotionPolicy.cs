@@ -107,6 +107,20 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                     }
                 }
 
+                //payment method rewards
+                var groupedByPaymentMethodRewards = highestPriorityPromotions.OfType<PaymentReward>()
+                                                            .GroupBy(x => x.PaymentMethod);
+                foreach (var paymentMethodRewards in groupedByPaymentMethodRewards)
+                {
+                    //Need to take one reward from first prioritized promotion for each payment method group
+                    var paymentPriorityReward = paymentMethodRewards.FirstOrDefault();
+                    if (paymentPriorityReward != null)
+                    {
+                        newRewards.Add(paymentPriorityReward);
+                        rewards.Remove(paymentPriorityReward);
+                    }
+                }
+
                 //Gifts
                 resultRewards.AddRange(highestPriorityPromotions.OfType<GiftReward>());
                 //Special offer
@@ -118,6 +132,14 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 //If there any other rewards left need to cycle new iteration
                 if (rewards.Any())
                 {
+                    // Throw exception if there are non-handled rewards. They could cause cycling otherwise.
+                    if (!newRewards.Any())
+                    {
+                        var notSupportedRewards = rewards.Select(x => x.GetType().Name).ToArray();
+
+                        throw new NotSupportedException($"Some reward types are not handled by the promotion policy: {string.Join(",", notSupportedRewards)}");
+                    }
+
                     //Call recursively
                     await EvalAndCombineRewardsRecursivelyAsync(context, promotions, resultRewards, skippedRewards);
                 }
@@ -126,8 +148,10 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
         protected virtual void ApplyRewardsToContext(PromotionEvaluationContext context, IEnumerable<PromotionReward> rewards, ICollection<PromotionReward> skippedRewards)
         {
-            var activeShipmentReward = rewards.OfType<ShipmentReward>().Where(x => string.IsNullOrEmpty(x.ShippingMethod) || x.ShippingMethod.EqualsInvariant(context.ShipmentMethodCode))
-                                                                       .FirstOrDefault(x => string.IsNullOrEmpty(x.ShippingMethodOption) || x.ShippingMethodOption.EqualsInvariant(context.ShipmentMethodOption));
+            var activeShipmentReward = rewards.OfType<ShipmentReward>()
+                .Where(x => string.IsNullOrEmpty(x.ShippingMethod) || x.ShippingMethod.EqualsInvariant(context.ShipmentMethodCode))
+                .FirstOrDefault(x => string.IsNullOrEmpty(x.ShippingMethodOption) || x.ShippingMethodOption.EqualsInvariant(context.ShipmentMethodOption));
+
             if (activeShipmentReward != null)
             {
                 var discountAmount = activeShipmentReward.GetRewardAmount(context.ShipmentMethodPrice, 1);
@@ -138,6 +162,22 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                     skippedRewards.Add(activeShipmentReward);
                     //restore back shipment price
                     context.ShipmentMethodPrice += discountAmount;
+                }
+            }
+
+            var activePaymentReward = rewards.OfType<PaymentReward>()
+                .FirstOrDefault(x => string.IsNullOrEmpty(x.PaymentMethod) || x.PaymentMethod.EqualsInvariant(context.PaymentMethodCode));
+
+            if (activePaymentReward != null)
+            {
+                var discountAmount = activePaymentReward.GetRewardAmount(context.PaymentMethodPrice, 1);
+                context.PaymentMethodPrice -= discountAmount;
+                //Do not allow to make negative payment price
+                if (context.PaymentMethodPrice < 0 || discountAmount == 0)
+                {
+                    skippedRewards.Add(activePaymentReward);
+                    //restore back payment price
+                    context.PaymentMethodPrice += discountAmount;
                 }
             }
 
