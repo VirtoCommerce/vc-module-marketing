@@ -104,6 +104,12 @@ namespace VirtoCommerce.MarketingModule.Web.Model
         /// Gets or sets the value of reward shipping method code
         /// </summary>
         public string ShippingMethod { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value of reward payment method code
+        /// </summary>
+        public string PaymentMethod { get; set; }
+
         /// <summary>
         /// Gets or sets the max limit for relative rewards
         /// </summary>
