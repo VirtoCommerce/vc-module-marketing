@@ -191,7 +191,6 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
                     .Select(x => $"Coupon with Name: '{x.Code}' for Promotion: '{x.Promotion.Name}' already exists.")
                     .ToArrayAsync();
                 result.AddRange(errors);
-
             }
 
             return result.ToArray();
@@ -211,5 +210,4 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
         }
 
     }
-
 }
