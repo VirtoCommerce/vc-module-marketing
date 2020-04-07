@@ -13,6 +13,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
     public class MarketingRepository : DbContextRepositoryBase<MarketingDbContext>, IMarketingRepository
     {
         private readonly MarketingDbContext _dbContext;
+        private const int DefaultPageSize = 50;
         public MarketingRepository(MarketingDbContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
@@ -179,12 +180,20 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
 
         public Task<string[]> CheckCouponsForUniqueness(Coupon[] coupons)
         {
-            var uniqueListCodeAndPromotionId = coupons.Select(x => x.Code + x.PromotionId).Distinct();
-            return Coupons.Where(x => uniqueListCodeAndPromotionId.Contains(x.Code + x.PromotionId))
-                .Include(x => x.Promotion)
-                .Select(x => $"Coupon with Name: '{x.Code}' for Promotion: '{x.Promotion.Name}' already exists;")
-                .ToArrayAsync();
+            var result = new List<string>();
+            var uniqueListCodeAndPromotionId = coupons.Select(x => x.Code + x.PromotionId).Distinct().ToArray();
 
+            for (var skip = 0; skip < uniqueListCodeAndPromotionId.Length; skip += DefaultPageSize)
+            {
+                var part = uniqueListCodeAndPromotionId.Skip(skip).Take(DefaultPageSize).ToArray();
+                result.AddRange(Coupons.Where(x => part.Contains(x.Code + x.PromotionId))
+                    .Include(x => x.Promotion)
+                    .Select(x => $"Coupon with Name: '{x.Code}' for Promotion: '{x.Promotion.Name}' already exists;")
+                    .ToArray());
+
+            }
+
+            return Task.FromResult(result.ToArray());
         }
 
         private Task GenericMassRemove<T>(string[] ids) where T : IEntity
