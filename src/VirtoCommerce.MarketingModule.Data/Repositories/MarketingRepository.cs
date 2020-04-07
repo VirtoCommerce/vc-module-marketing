@@ -181,14 +181,14 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
         public async Task<string[]> CheckCouponsForUniquenessAsync(Coupon[] coupons)
         {
             var result = new List<string>();
-            var uniqueListCodeAndPromotionId = coupons.Select(x => x.Code + x.PromotionId).Distinct().ToArray();
+            var couponKeysToAdd = coupons.Select(x => x.Code + x.PromotionId).Distinct().ToArray();
 
-            for (var skip = 0; skip < uniqueListCodeAndPromotionId.Length; skip += DefaultPageSize)
+            for (var skip = 0; skip < couponKeysToAdd.Length; skip += DefaultPageSize)
             {
-                var part = uniqueListCodeAndPromotionId.Skip(skip).Take(DefaultPageSize).ToArray();
-                var errors = await Coupons.Where(x => part.Contains(x.Code + x.PromotionId))
+                var couponKeysBatch = couponKeysToAdd.Skip(skip).Take(DefaultPageSize).ToArray();
+                var errors = await Coupons.Where(x => couponKeysBatch.Contains(x.Code + x.PromotionId))
                     .Include(x => x.Promotion)
-                    .Select(x => $"Coupon with Name: '{x.Code}' for Promotion: '{x.Promotion.Name}' already exists;")
+                    .Select(x => $"Coupon with Name: '{x.Code}' for Promotion: '{x.Promotion.Name}' already exists.")
                     .ToArrayAsync();
                 result.AddRange(errors);
 
