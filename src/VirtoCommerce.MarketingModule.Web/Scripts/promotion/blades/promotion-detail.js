@@ -15,12 +15,12 @@ angular.module('virtoCommerce.marketingModule')
             $scope.stores = stores.query({}, function(data) {
                 _.each(data, function(store) {
                     var storeId = store.id;
-                    shippingMethods.search({ storeId }, function (data) {
-                        store.shippingMethods = _.findWhere(data.results, { isActive: true });
+                    shippingMethods.search({ storeId }, function (shippingMethodsData) {
+                        store.shippingMethods = _.findWhere(shippingMethodsData.results, { isActive: true }) || [];
                     });
 
-                    paymentMethods.search({ storeId }, function (data) {
-                        store.paymentMethods = _.findWhere(data.results, { isActive: true });
+                    paymentMethods.search({ storeId }, function (paymentMethodsData) {
+                        store.paymentMethods = _.findWhere(paymentMethodsData.results, { isActive: true }) || [];
                     });
                 })
 
