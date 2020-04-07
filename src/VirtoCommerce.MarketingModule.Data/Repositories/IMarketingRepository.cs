@@ -37,6 +37,6 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
         Task<PromotionUsageEntity[]> GetMarketingUsagesByIdsAsync(string[] ids);
         Task RemoveMarketingUsagesAsync(string[] ids);
 
-        Task<string[]> CheckCouponsForUniqueness(Coupon[] coupons);
+        Task<string[]> CheckCouponsForUniquenessAsync(Coupon[] coupons);
     }
 }

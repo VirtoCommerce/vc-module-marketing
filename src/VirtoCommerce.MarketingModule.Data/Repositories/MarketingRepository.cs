@@ -178,7 +178,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
         }
         #endregion
 
-        public Task<string[]> CheckCouponsForUniqueness(Coupon[] coupons)
+        public async Task<string[]> CheckCouponsForUniquenessAsync(Coupon[] coupons)
         {
             var result = new List<string>();
             var uniqueListCodeAndPromotionId = coupons.Select(x => x.Code + x.PromotionId).Distinct().ToArray();
@@ -186,14 +186,15 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
             for (var skip = 0; skip < uniqueListCodeAndPromotionId.Length; skip += DefaultPageSize)
             {
                 var part = uniqueListCodeAndPromotionId.Skip(skip).Take(DefaultPageSize).ToArray();
-                result.AddRange(Coupons.Where(x => part.Contains(x.Code + x.PromotionId))
+                var errors = await Coupons.Where(x => part.Contains(x.Code + x.PromotionId))
                     .Include(x => x.Promotion)
                     .Select(x => $"Coupon with Name: '{x.Code}' for Promotion: '{x.Promotion.Name}' already exists;")
-                    .ToArray());
+                    .ToArrayAsync();
+                result.AddRange(errors);
 
             }
 
-            return Task.FromResult(result.ToArray());
+            return result.ToArray();
         }
 
         private Task GenericMassRemove<T>(string[] ids) where T : IEntity

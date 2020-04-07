@@ -52,7 +52,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             {
                 var existCouponEntities = await repository.GetCouponsByIdsAsync(coupons.Where(x => !x.IsTransient()).Select(x => x.Id).ToArray());
 
-                var nonUniqueCouponErrors = await repository.CheckCouponsForUniqueness(coupons.Where(x => x.IsTransient()).ToArray());
+                var nonUniqueCouponErrors = await repository.CheckCouponsForUniquenessAsync(coupons.Where(x => x.IsTransient()).ToArray());
                 if (!nonUniqueCouponErrors.IsNullOrEmpty())
                 {
                     throw new InvalidOperationException(string.Join(Environment.NewLine, nonUniqueCouponErrors));
