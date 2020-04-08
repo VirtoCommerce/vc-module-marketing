@@ -5,6 +5,9 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
     /// </summary>
     public class ShipmentReward : AmountBasedReward
     {
+        public ShipmentReward() : base(nameof(ShipmentReward))
+        { }
+
         public string ShippingMethod { get; set; }
         public string ShippingMethodOption { get; set; }
     }

@@ -4,9 +4,10 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 {
     public abstract class PromotionReward : ValueObject
     {
-        protected PromotionReward()
+        protected PromotionReward(string rewardType)
         {
-            RewardType = Id = GetType().Name;
+            Id = GetType().Name;
+            RewardType = rewardType;
         }
 
         public string Id { get; set; }

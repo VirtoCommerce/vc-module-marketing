@@ -5,6 +5,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
     /// </summary>
     public class SpecialOfferReward : PromotionReward
     {
-      
+        public SpecialOfferReward() : base(nameof(SpecialOfferReward))
+        { }
     }
 }
