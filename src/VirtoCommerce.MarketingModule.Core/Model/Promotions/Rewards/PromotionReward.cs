@@ -8,7 +8,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
         {
             Id = GetType().Name;
         }
-       
+
         public string Id { get; set; }
         /// <summary>
         /// Flag for applicability
@@ -37,5 +37,9 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 
         public Promotion Promotion { get; set; }
 
+        /// <summary>
+        /// Promotion reward type. Should be here for proper web model PromotionReward.RewardType filling
+        /// </summary>
+        public string RewardType => GetType().Name;
     }
 }
