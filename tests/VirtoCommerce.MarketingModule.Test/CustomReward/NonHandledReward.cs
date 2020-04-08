@@ -4,5 +4,7 @@ namespace VirtoCommerce.MarketingModule.Test.CustomReward
 {
     public class NonHandledReward : PromotionReward
     {
+        public NonHandledReward() : base(nameof(NonHandledReward))
+        { }
     }
 }

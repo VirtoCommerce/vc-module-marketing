@@ -5,6 +5,8 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
     /// </summary>
     public class GiftReward : PromotionReward
     {
+        public GiftReward() : base(nameof(GiftReward))
+        { }
         public string Name { get; set; }
 
         public string CategoryId { get; set; }
