@@ -340,6 +340,57 @@ namespace VirtoCommerce.MarketingModule.Test
             Assert.ThrowsAsync<NotSupportedException>(() => evalPolicy.EvaluatePromotionAsync(context));
         }
 
+        [Fact]
+        public async Task EvaluateRewards_GiftReward_Applied()
+        {
+            //Arrange            
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("Get Gift"));
+            var context = new PromotionEvaluationContext();
+
+            //Act
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards;
+
+            //Assert
+            Assert.Single(rewards);
+            Assert.Equal("Get Gift", rewards.Single().Promotion.Id);
+        }
+
+        [Fact]
+        public async Task EvaluateRewards_SpecialOfferReward_Applied()
+        {
+            //Arrange            
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("Special offer"));
+            var context = new PromotionEvaluationContext();
+
+            //Act
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards;
+
+            //Assert
+            Assert.Single(rewards);
+            Assert.Equal("Special offer", rewards.Single().Promotion.Id);
+        }
+
+        [Fact]
+        public async Task EvaluateRewards_CartSubTotalReward_Applied()
+        {
+            //Arrange            
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("Buy Order with 55% Off"));
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
+            var productB = new ProductPromoEntry { ProductId = "ProductB", Price = 10, Quantity = 1 };
+            var context = new PromotionEvaluationContext
+            {
+                PromoEntries = new[] { productA, productB }
+            };
+            //Act
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards;
+
+            //Assert
+            Assert.Single(rewards);
+            Assert.Equal("Buy Order with 55% Off", rewards.Single().Promotion.Id);
+            Assert.Equal(100m, productA.Price);
+            Assert.Equal(10m, productB.Price);
+        }
+
         private static IMarketingPromoEvaluator GetPromotionEvaluationPolicy(IEnumerable<Promotion> promotions, Mock<IPromotionRewardEvaluator> promotionRewardEvaluatorMock = null)
         {
             var result = new PromotionSearchResult
@@ -522,6 +573,16 @@ namespace VirtoCommerce.MarketingModule.Test
                     Rewards = new PromotionReward[]
                     {
                         new NonHandledReward { IsValid = true },
+                    },
+                    Priority = 0,
+                    IsExclusive = false
+                };
+                yield return new MockPromotion
+                {
+                    Id = "Special offer",
+                    Rewards = new[]
+                    {
+                       new SpecialOfferReward { IsValid = true },
                     },
                     Priority = 0,
                     IsExclusive = false
