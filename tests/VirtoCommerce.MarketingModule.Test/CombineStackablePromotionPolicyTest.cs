@@ -14,6 +14,7 @@ using VirtoCommerce.MarketingModule.Core.Services;
 using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.MarketingModule.Data.Services;
 using VirtoCommerce.MarketingModule.Test.CustomPromotion;
+using VirtoCommerce.MarketingModule.Test.CustomReward;
 using VirtoCommerce.Platform.Core.Common;
 using Xunit;
 
@@ -258,6 +259,87 @@ namespace VirtoCommerce.MarketingModule.Test
             Assert.Equal(2, rewards.Count);
         }
 
+        [Fact]
+        public async Task EvaluateRewards_SpecificPaymentMethod_Applied()
+        {
+            //Arrange            
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("For MasterCard Payment method => get 10% off for payment method"));
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
+            var context = new PromotionEvaluationContext
+            {
+                PaymentMethodCode = "MasterCard",
+                PaymentMethodPrice = 100,
+                PromoEntries = new[] { productA },
+            };
+
+            //Act
+            await evalPolicy.EvaluatePromotionAsync(context);
+
+            //Assert
+            Assert.Equal(90m, context.PaymentMethodPrice);
+            Assert.Equal(100m, productA.Price);
+        }
+
+        [Fact]
+        public async Task EvaluateRewards_SpecificPaymentMethod_NotApplied()
+        {
+            //Arrange            
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("For MasterCard Payment method => get 10% off for payment method"));
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
+            var context = new PromotionEvaluationContext
+            {
+                PaymentMethodCode = "AuthorizeNet",
+                PaymentMethodPrice = 100,
+                PromoEntries = new[] { productA },
+            };
+            //Act
+            await evalPolicy.EvaluatePromotionAsync(context);
+
+            //Assert
+            Assert.Equal(100m, context.PaymentMethodPrice);
+            Assert.Equal(100m, productA.Price);
+        }
+
+        [Theory]
+        [InlineData("MasterCard")]
+        [InlineData("")]
+        [InlineData(null)]
+        public async Task EvaluateRewards_PaymentMethodNotSpecified_AppliedForAnyProductPaymentMethod(string productPaymentMethod)
+        {
+            //Arrange            
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("For Any Payment method => get 10% off for payment method"));
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
+            var context = new PromotionEvaluationContext
+            {
+                PaymentMethodCode = productPaymentMethod,
+                PaymentMethodPrice = 100,
+                PromoEntries = new[] { productA },
+            };
+            //Act
+            await evalPolicy.EvaluatePromotionAsync(context);
+
+            //Assert
+            Assert.Equal(90m, context.PaymentMethodPrice);
+            Assert.Equal(100m, productA.Price);
+        }
+
+        [Fact]
+        public void EvaluateRewards_NonHandledReward_Throws()
+        {
+            //Arrange            
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("Reward non handled by the policy"));
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
+            var context = new PromotionEvaluationContext
+            {
+                PromoEntries = new[] { productA },
+            };
+
+            //Act
+
+            //Assert
+            Assert.ThrowsAsync<NotSupportedException>(() => evalPolicy.EvaluatePromotionAsync(context));
+        }
+
         private static IMarketingPromoEvaluator GetPromotionEvaluationPolicy(IEnumerable<Promotion> promotions, Mock<IPromotionRewardEvaluator> promotionRewardEvaluatorMock = null)
         {
             var result = new PromotionSearchResult
@@ -410,6 +492,36 @@ namespace VirtoCommerce.MarketingModule.Test
                     {
                        new CatalogItemAmountReward { ProductId = "ProductA", Amount = 20, AmountType = RewardAmountType.Relative, IsValid = true },
                        new ShipmentReward { ShippingMethod = null, Amount = 100, AmountType = RewardAmountType.Relative, IsValid = true  }
+                    },
+                    Priority = 0,
+                    IsExclusive = false
+                };
+                yield return new MockPromotion
+                {
+                    Id = "For MasterCard Payment method => get 10% off for payment method",
+                    Rewards = new PromotionReward[]
+                    {
+                        new PaymentReward { PaymentMethod = "MasterCard", Amount = 10, AmountType = RewardAmountType.Relative, IsValid = true },
+                    },
+                    Priority = 0,
+                    IsExclusive = false
+                };
+                yield return new MockPromotion
+                {
+                    Id = "For Any Payment method => get 10% off for payment method",
+                    Rewards = new PromotionReward[]
+                    {
+                        new PaymentReward { PaymentMethod = null, Amount = 10, AmountType = RewardAmountType.Relative, IsValid = true },
+                    },
+                    Priority = 0,
+                    IsExclusive = false
+                };
+                yield return new MockPromotion
+                {
+                    Id = "Reward non handled by the policy",
+                    Rewards = new PromotionReward[]
+                    {
+                        new NonHandledReward { IsValid = true },
                     },
                     Priority = 0,
                     IsExclusive = false
