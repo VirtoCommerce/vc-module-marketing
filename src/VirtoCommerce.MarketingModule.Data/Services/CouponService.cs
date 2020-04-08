@@ -2,11 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.MarketingModule.Core.Events;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
-using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Services;
 using VirtoCommerce.MarketingModule.Data.Caching;
 using VirtoCommerce.MarketingModule.Data.Model;
@@ -53,6 +51,13 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             using (var repository = _repositoryFactory())
             {
                 var existCouponEntities = await repository.GetCouponsByIdsAsync(coupons.Where(x => !x.IsTransient()).Select(x => x.Id).ToArray());
+
+                var nonUniqueCouponErrors = await repository.CheckCouponsForUniquenessAsync(coupons.Where(x => x.IsTransient()).ToArray());
+                if (!nonUniqueCouponErrors.IsNullOrEmpty())
+                {
+                    throw new InvalidOperationException(string.Join(Environment.NewLine, nonUniqueCouponErrors));
+                }
+
                 foreach (var coupon in coupons)
                 {
                     var sourceEntity = AbstractTypeFactory<CouponEntity>.TryCreateInstance();
