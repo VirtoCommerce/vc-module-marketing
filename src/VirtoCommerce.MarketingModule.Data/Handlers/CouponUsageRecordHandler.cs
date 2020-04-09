@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hangfire;
 using VirtoCommerce.CoreModule.Core.Common;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
@@ -33,7 +34,17 @@ namespace VirtoCommerce.MarketingModule.Data.Handlers
 
         #region Implementation of IHandler<in OrderChangedEvent>
 
-        public async Task Handle(OrderChangedEvent message)
+        public virtual Task Handle(OrderChangedEvent message)
+        {
+            BackgroundJob.Enqueue(() => HandleCouponUsages(message));
+
+            return Task.CompletedTask;
+        }
+
+        #endregion
+
+        [DisableConcurrentExecution(60 * 60 * 24)]
+        public virtual async Task HandleCouponUsages(OrderChangedEvent message)
         {
             foreach (var changedEntry in message.ChangedEntries)
             {
@@ -45,8 +56,6 @@ namespace VirtoCommerce.MarketingModule.Data.Handlers
                 }
             }
         }
-
-        #endregion
 
         private async Task RecordUsages(string objectId, IEnumerable<PromotionUsage> oldUsages, IEnumerable<PromotionUsage> newUsages)
         {
