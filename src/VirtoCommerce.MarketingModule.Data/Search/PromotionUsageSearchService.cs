@@ -15,7 +15,7 @@ using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.MarketingModule.Data.Search
 {
-    public class PromotionUsageSearchService: IPromotionUsageSearchService
+    public class PromotionUsageSearchService : IPromotionUsageSearchService
     {
         private readonly IPlatformMemoryCache _platformMemoryCache;
         private readonly Func<IMarketingRepository> _repositoryFactory;
@@ -28,16 +28,13 @@ namespace VirtoCommerce.MarketingModule.Data.Search
 
         public virtual async Task<PromotionUsageSearchResult> SearchUsagesAsync(PromotionUsageSearchCriteria criteria)
         {
-            if (criteria == null)
-            {
-                throw new ArgumentNullException(nameof(criteria));
-            }
+            EnsureAgrumentsValid(criteria);
 
             var cacheKey = CacheKey.With(GetType(), nameof(SearchUsagesAsync), criteria.GetCacheKey());
             return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
                 var result = AbstractTypeFactory<PromotionUsageSearchResult>.TryCreateInstance();
-              
+
                 using (var repository = _repositoryFactory())
                 {
                     var sortInfos = BuildSortExpression(criteria);
@@ -52,14 +49,22 @@ namespace VirtoCommerce.MarketingModule.Data.Search
                                          .ToArrayAsync();
                         result.Results = usages.Select(x => x.ToModel(AbstractTypeFactory<PromotionUsage>.TryCreateInstance())).ToList();
                     }
-                    cacheEntry.AddExpirationToken(PromotionUsageCacheRegion.CreateChangeToken(criteria.PromotionId));
+                    cacheEntry.AddExpirationToken(PromotionUsageCacheRegion.CreateChangeToken(new[] { criteria.PromotionId }));
 
                     return result;
                 }
             });
         }
 
-        protected  virtual IList<SortInfo> BuildSortExpression(PromotionUsageSearchCriteria criteria)
+        private static void EnsureAgrumentsValid(PromotionUsageSearchCriteria criteria)
+        {
+            if (criteria == null)
+            {
+                throw new ArgumentNullException(nameof(criteria));
+            }
+        }
+
+        protected virtual IList<SortInfo> BuildSortExpression(PromotionUsageSearchCriteria criteria)
         {
             var sortInfos = criteria.SortInfos;
             if (sortInfos.IsNullOrEmpty())

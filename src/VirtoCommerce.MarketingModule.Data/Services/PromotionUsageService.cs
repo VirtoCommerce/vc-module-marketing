@@ -12,6 +12,7 @@ using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.MarketingModule.Data.Services
 {
@@ -37,15 +38,17 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             {
                 using (var repository = _repositoryFactory())
                 {
-                    var promotionUsages = await repository.GetMarketingUsagesByIdsAsync(ids);
-                    cacheEntry.AddExpirationToken(PromotionUsageCacheRegion.CreateChangeToken());
-                    var usages = promotionUsages.Select(x => x.ToModel(AbstractTypeFactory<PromotionUsage>.TryCreateInstance())).ToArray();
-                    var promotionIds = promotionUsages.Select(x => x.PromotionId).Distinct().ToArray();
+                    //Optimize performance and CPU usage
+                    repository.DisableChangesTracking();
 
-                    foreach (var promotionId in promotionIds)
-                    {
-                        cacheEntry.AddExpirationToken(PromotionUsageCacheRegion.CreateChangeToken(promotionId));
-                    }
+                    //It is so important to generate change tokens for all ids even for not existing objects to prevent an issue
+                    //with caching of empty results for non - existing objects that have the infinitive lifetime in the cache
+                    //and future unavailability to create objects with these ids.
+                    cacheEntry.AddExpirationToken(PromotionUsageCacheRegion.CreateChangeToken(ids));
+                    cacheEntry.AddExpirationToken(PromotionUsageCacheRegion.CreateChangeToken());
+
+                    var promotionUsages = await repository.GetMarketingUsagesByIdsAsync(ids);
+                    var usages = promotionUsages.Select(x => x.ToModel(AbstractTypeFactory<PromotionUsage>.TryCreateInstance())).ToArray();
 
                     return usages;
                 }
@@ -83,9 +86,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 await _eventPublisher.Publish(new PromotionUsageChangedEvent(changedEntries));
             }
 
-            var promotionIds = usages.Select(x => x.PromotionId).Distinct().ToArray();
-
-            PromotionUsageCacheRegion.ExpireUsages(promotionIds);
+            PromotionUsageCacheRegion.ExpireUsages(usages);
         }
 
         public virtual async Task DeleteUsagesAsync(string[] ids)
@@ -97,9 +98,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 await repository.UnitOfWork.CommitAsync();
             }
 
-            var promotionIds = usages.Select(x => x.PromotionId).Distinct().ToArray();
-
-            PromotionUsageCacheRegion.ExpireUsages(promotionIds);
+            PromotionUsageCacheRegion.ExpireUsages(usages);
         }
 
         #endregion
