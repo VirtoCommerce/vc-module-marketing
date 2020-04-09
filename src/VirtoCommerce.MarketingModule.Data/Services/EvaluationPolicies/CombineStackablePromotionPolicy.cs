@@ -122,9 +122,20 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 }
 
                 //Gifts
-                resultRewards.AddRange(highestPriorityPromotions.OfType<GiftReward>());
+                var giftRewards = highestPriorityPromotions.OfType<GiftReward>();
+                foreach (var giftReward in giftRewards)
+                {
+                    newRewards.Add(giftReward);
+                    rewards.Remove(giftReward);
+                }
+
                 //Special offer
-                resultRewards.AddRange(highestPriorityPromotions.OfType<SpecialOfferReward>());
+                var specialOfferRewards = highestPriorityPromotions.OfType<SpecialOfferReward>();
+                foreach (var specialOfferReward in specialOfferRewards)
+                {
+                    newRewards.Add(specialOfferReward);
+                    rewards.Remove(specialOfferReward);
+                }
 
                 //Apply new rewards to the evaluation context to influent for conditions in the  next evaluation iteration
                 ApplyRewardsToContext(context, newRewards, skippedRewards);
@@ -135,7 +146,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                     // Throw exception if there are non-handled rewards. They could cause cycling otherwise.
                     if (!newRewards.Any())
                     {
-                        var notSupportedRewards = rewards.Select(x => x.GetType().Name).ToArray();
+                        var notSupportedRewards = highestPriorityPromotions.Select(x => x.GetType().Name).ToArray();
 
                         throw new NotSupportedException($"Some reward types are not handled by the promotion policy: {string.Join(",", notSupportedRewards)}");
                     }
