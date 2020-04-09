@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Concurrent;
 using System.Threading;
 using Microsoft.Extensions.Primitives;
-using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.Platform.Core.Caching;
 
 namespace VirtoCommerce.MarketingModule.Data.Caching
@@ -11,21 +9,17 @@ namespace VirtoCommerce.MarketingModule.Data.Caching
     {
         private static readonly ConcurrentDictionary<string, CancellationTokenSource> _promotionUsageRegionTokenLookup = new ConcurrentDictionary<string, CancellationTokenSource>();
 
-        public static IChangeToken CreateChangeToken(PromotionUsage usage)
+        public static IChangeToken CreateChangeToken(string promotionId)
         {
-            if (usage == null)
-            {
-                throw new ArgumentNullException(nameof(usage));
-            }
-            var cancellationTokenSource = _promotionUsageRegionTokenLookup.GetOrAdd(usage.PromotionId, new CancellationTokenSource());
+            var cancellationTokenSource = _promotionUsageRegionTokenLookup.GetOrAdd(promotionId, new CancellationTokenSource());
             return new CompositeChangeToken(new[] { CreateChangeToken(), new CancellationChangeToken(cancellationTokenSource.Token) });
         }
 
-        public static void ExpireUsages(params PromotionUsage[] usages)
+        public static void ExpireUsages(params string[] promotionIds)
         {
-            foreach (var usage in usages)
+            foreach (var promotionId in promotionIds)
             {
-                if (_promotionUsageRegionTokenLookup.TryRemove(usage.PromotionId, out var token))
+                if (_promotionUsageRegionTokenLookup.TryRemove(promotionId, out var token))
                 {
                     token.Cancel();
                 }

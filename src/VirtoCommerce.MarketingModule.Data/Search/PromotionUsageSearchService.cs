@@ -51,11 +51,9 @@ namespace VirtoCommerce.MarketingModule.Data.Search
                                          .Skip(criteria.Skip).Take(criteria.Take)
                                          .ToArrayAsync();
                         result.Results = usages.Select(x => x.ToModel(AbstractTypeFactory<PromotionUsage>.TryCreateInstance())).ToList();
-                        foreach(var usage in result.Results)
-                        {
-                            cacheEntry.AddExpirationToken(PromotionUsageCacheRegion.CreateChangeToken(usage));
-                        }
                     }
+                    cacheEntry.AddExpirationToken(PromotionUsageCacheRegion.CreateChangeToken(criteria.PromotionId));
+
                     return result;
                 }
             });
