@@ -13,7 +13,6 @@ using VirtoCommerce.MarketingModule.Data.Model;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.MarketingModule.Data.Search
 {
@@ -41,9 +40,6 @@ namespace VirtoCommerce.MarketingModule.Data.Search
 
                 using (var repository = _repositoryFactory())
                 {
-                    //Optimize performance and CPU usage
-                    repository.DisableChangesTracking();
-
                     var sortInfos = BuildSortExpression(criteria);
                     var query = BuildQuery(repository, criteria);
                     //https://github.com/zzzprojects/EntityFramework-Plus/issues/293

@@ -12,7 +12,6 @@ using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
-using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.MarketingModule.Data.Services
 {
@@ -43,9 +42,6 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
                 using (var repository = _repositoryFactory())
                 {
-                    //Optimize performance and CPU usage
-                    repository.DisableChangesTracking();
-
                     var promotionEntities = await repository.GetPromotionsByIdsAsync(ids);
                     return promotionEntities.Select(x => x.ToModel(AbstractTypeFactory<Promotion>.TryCreateInstance())).ToArray();
                 }

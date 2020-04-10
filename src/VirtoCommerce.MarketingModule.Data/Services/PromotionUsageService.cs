@@ -12,7 +12,6 @@ using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
-using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.MarketingModule.Data.Services
 {
@@ -38,9 +37,6 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             {
                 using (var repository = _repositoryFactory())
                 {
-                    //Optimize performance and CPU usage
-                    repository.DisableChangesTracking();
-
                     //It is so important to generate change tokens for all ids even for not existing objects to prevent an issue
                     //with caching of empty results for non - existing objects that have the infinitive lifetime in the cache
                     //and future unavailability to create objects with these ids.

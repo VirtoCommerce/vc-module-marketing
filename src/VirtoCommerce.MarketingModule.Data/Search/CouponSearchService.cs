@@ -13,11 +13,10 @@ using VirtoCommerce.MarketingModule.Data.Model;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.MarketingModule.Data.Search
 {
-    public class CouponSearchService : ICouponSearchService
+    public class CouponSearchService: ICouponSearchService
     {
         private readonly Func<IMarketingRepository> _repositoryFactory;
         private readonly IPlatformMemoryCache _platformMemoryCache;
@@ -44,9 +43,6 @@ namespace VirtoCommerce.MarketingModule.Data.Search
 
                 using (var repository = _repositoryFactory())
                 {
-                    //Optimize performance and CPU usage
-                    repository.DisableChangesTracking();
-
                     var sortInfos = BuildSearchExpression(criteria);
                     var query = BuildQuery(criteria, repository);
 

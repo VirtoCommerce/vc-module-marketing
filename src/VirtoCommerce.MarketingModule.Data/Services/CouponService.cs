@@ -12,7 +12,6 @@ using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
-using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.MarketingModule.Data.Services
 {
@@ -39,9 +38,6 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 cacheEntry.AddExpirationToken(CouponCacheRegion.CreateChangeToken());
                 using (var repository = _repositoryFactory())
                 {
-                    //Optimize performance and CPU usage
-                    repository.DisableChangesTracking();
-
                     var coupons = await repository.GetCouponsByIdsAsync(ids);
                     return coupons.Select(x => x.ToModel(AbstractTypeFactory<Coupon>.TryCreateInstance())).ToArray();
                 }
