@@ -2,7 +2,9 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 {
     public class CatalogItemAmountReward : AmountBasedReward
     {
-       
+        public CatalogItemAmountReward() : base(nameof(CatalogItemAmountReward))
+        { }
+
         /// <summary>
         /// Target reward product
         /// </summary>

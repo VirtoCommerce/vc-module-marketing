@@ -5,7 +5,10 @@ using VirtoCommerce.CoreModule.Core.Extensions;
 namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 {
     public abstract class AmountBasedReward : PromotionReward
-    {        
+    {
+        protected AmountBasedReward(string rewardType) : base(rewardType)
+        { }
+
         public RewardAmountType AmountType { get; set; }
         /// <summary>
         /// Reward amount

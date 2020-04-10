@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,7 +7,6 @@ using Newtonsoft.Json;
 using VirtoCommerce.CoreModule.Core.Common;
 using VirtoCommerce.CoreModule.Core.Conditions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
-using VirtoCommerce.MarketingModule.Core.Model.Promotions.Conditions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Promotions;
 using VirtoCommerce.MarketingModule.Core.Search;
@@ -14,6 +14,7 @@ using VirtoCommerce.MarketingModule.Core.Services;
 using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.MarketingModule.Data.Services;
 using VirtoCommerce.MarketingModule.Test.CustomPromotion;
+using VirtoCommerce.MarketingModule.Test.CustomReward;
 using VirtoCommerce.Platform.Core.Common;
 using Xunit;
 
@@ -39,7 +40,7 @@ namespace VirtoCommerce.MarketingModule.Test
             var rewards = evalPolicy.EvaluatePromotionAsync(context).GetAwaiter().GetResult().Rewards;
 
             //Assert
-            Assert.Equal(5, rewards.Count());
+            Assert.Equal(5, rewards.Count);
             Assert.Equal(35m, context.ShipmentMethodPrice);
             Assert.Equal(37.5m, productA.Price);
             Assert.Equal(66.66m, productB.Price);
@@ -165,10 +166,6 @@ namespace VirtoCommerce.MarketingModule.Test
                 CartPromoEntries = new List<ProductPromoEntry> { new ProductPromoEntry { Quantity = 11, Price = 5 } }
             };
 
-            
-
-            //RegisterConditionRewards();
-
             //Act
             var rewards = evalPolicy.EvaluatePromotionAsync(context).GetAwaiter().GetResult().Rewards;
 
@@ -176,7 +173,225 @@ namespace VirtoCommerce.MarketingModule.Test
             Assert.Equal(1, rewards.Count);
         }
 
-        private static IMarketingPromoEvaluator GetPromotionEvaluationPolicy(IEnumerable<Promotion> promotions)
+        [Theory]
+        [InlineData(45, 2, 36, 0)]
+        [InlineData(40, 1, 32, 5)]
+        public async Task EvaluateRewards_PromotionRewardEvaluation_ConditionCalculatesBasedOnChangedPrice(decimal initialPrice, int expectedRewardsApplied, decimal expectedPrice, decimal expectedShipmentPrice)
+        {
+            //Arrange
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("Register and First time buyer => get 20% off.", "Free shipping on orders totaling $35.00 or more."));
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = initialPrice, Quantity = 1 };
+            var context = new PromotionEvaluationContext
+            {
+                ShipmentMethodCode = "FedEx",
+                ShipmentMethodPrice = 5,
+                PromoEntries = new[] { productA }
+            };
+            //Act
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards;
+
+            //Assert
+            Assert.Equal(expectedRewardsApplied, rewards.Count);
+            Assert.Equal(expectedShipmentPrice, context.ShipmentMethodPrice);
+            Assert.Equal(expectedPrice, productA.Price);
+        }
+
+        [Fact]
+        public async Task EvaluateRewards_PromotionRewardEvaluation_CalledAgainAfterPossibleDiscountAffectingCartTotal()
+        {
+            //Arrange
+            var promotionRewardEvaluatorMock = GetPromotionRewardEvaluatorMock();
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("Register and First time buyer => get 20% off.", "Free shipping on orders totaling $35.00 or more."), promotionRewardEvaluatorMock);
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 45, Quantity = 1 };
+            var context = new PromotionEvaluationContext
+            {
+                ShipmentMethodCode = "FedEx",
+                ShipmentMethodPrice = 5,
+                PromoEntries = new[] { productA }
+            };
+            //Act
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards;
+
+            //Assert
+            promotionRewardEvaluatorMock.Verify(x => x.GetOrderedValidRewardsAsync(It.IsAny<IEnumerable<Promotion>>(), It.IsAny<IEvaluationContext>()), Times.Exactly(2));
+            Assert.Equal(2, rewards.Count);
+        }
+
+        [Fact]
+        public async Task EvaluateRewards_PromotionRewardEvaluation_CalledOnceWhenNoPossibleDiscountsAffectingCartTotal()
+        {
+            //Arrange
+            var promotionRewardEvaluatorMock = GetPromotionRewardEvaluatorMock();
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("Any shipment 50% Off", "Free shipping on orders totaling $35.00 or more."), promotionRewardEvaluatorMock);
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 45, Quantity = 1 };
+            var context = new PromotionEvaluationContext
+            {
+                ShipmentMethodCode = "FedEx",
+                ShipmentMethodPrice = 5,
+                PromoEntries = new[] { productA }
+            };
+            //Act
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards;
+
+            //Assert
+            promotionRewardEvaluatorMock.Verify(x => x.GetOrderedValidRewardsAsync(It.IsAny<IEnumerable<Promotion>>(), It.IsAny<IEvaluationContext>()), Times.Once);
+            Assert.Equal(2, rewards.Count);
+        }
+
+        [Fact]
+        public async Task EvaluateRewards_PromotionRewardEvaluation_CalledOnceOnTwoDifferentTypeRewardsInOnePromotion()
+        {
+            //Arrange
+            var promotionRewardEvaluatorMock = GetPromotionRewardEvaluatorMock();
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("Register and First time buyer => get 20% off and free shipping."), promotionRewardEvaluatorMock);
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 45, Quantity = 1 };
+            var context = new PromotionEvaluationContext
+            {
+                ShipmentMethodCode = "FedEx",
+                ShipmentMethodPrice = 5,
+                PromoEntries = new[] { productA }
+            };
+            //Act
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards;
+
+            //Assert
+            promotionRewardEvaluatorMock.Verify(x => x.GetOrderedValidRewardsAsync(It.IsAny<IEnumerable<Promotion>>(), It.IsAny<IEvaluationContext>()), Times.Once);
+            Assert.Equal(2, rewards.Count);
+        }
+
+        [Fact]
+        public async Task EvaluateRewards_SpecificPaymentMethod_Applied()
+        {
+            //Arrange            
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("For MasterCard Payment method => get 10% off for payment method"));
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
+            var context = new PromotionEvaluationContext
+            {
+                PaymentMethodCode = "MasterCard",
+                PaymentMethodPrice = 100,
+                PromoEntries = new[] { productA },
+            };
+
+            //Act
+            await evalPolicy.EvaluatePromotionAsync(context);
+
+            //Assert
+            Assert.Equal(90m, context.PaymentMethodPrice);
+            Assert.Equal(100m, productA.Price);
+        }
+
+        [Fact]
+        public async Task EvaluateRewards_SpecificPaymentMethod_NotApplied()
+        {
+            //Arrange            
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("For MasterCard Payment method => get 10% off for payment method"));
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
+            var context = new PromotionEvaluationContext
+            {
+                PaymentMethodCode = "AuthorizeNet",
+                PaymentMethodPrice = 100,
+                PromoEntries = new[] { productA },
+            };
+            //Act
+            await evalPolicy.EvaluatePromotionAsync(context);
+
+            //Assert
+            Assert.Equal(100m, context.PaymentMethodPrice);
+            Assert.Equal(100m, productA.Price);
+        }
+
+        [Theory]
+        [InlineData("MasterCard")]
+        [InlineData("")]
+        [InlineData(null)]
+        public async Task EvaluateRewards_PaymentMethodNotSpecified_AppliedForAnyProductPaymentMethod(string productPaymentMethod)
+        {
+            //Arrange            
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("For Any Payment method => get 10% off for payment method"));
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
+            var context = new PromotionEvaluationContext
+            {
+                PaymentMethodCode = productPaymentMethod,
+                PaymentMethodPrice = 100,
+                PromoEntries = new[] { productA },
+            };
+            //Act
+            await evalPolicy.EvaluatePromotionAsync(context);
+
+            //Assert
+            Assert.Equal(90m, context.PaymentMethodPrice);
+            Assert.Equal(100m, productA.Price);
+        }
+
+        [Fact]
+        public void EvaluateRewards_NonHandledReward_Throws()
+        {
+            //Arrange            
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("Reward non handled by the policy"));
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
+            var context = new PromotionEvaluationContext
+            {
+                PromoEntries = new[] { productA },
+            };
+
+            //Act
+
+            //Assert
+            Assert.ThrowsAsync<NotSupportedException>(() => evalPolicy.EvaluatePromotionAsync(context));
+        }
+
+        [Fact]
+        public async Task EvaluateRewards_GiftReward_Applied()
+        {
+            //Arrange            
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("Get Gift"));
+            var context = new PromotionEvaluationContext();
+
+            //Act
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards;
+
+            //Assert
+            Assert.Single(rewards);
+            Assert.Equal("Get Gift", rewards.Single().Promotion.Id);
+        }
+
+        [Fact]
+        public async Task EvaluateRewards_SpecialOfferReward_Applied()
+        {
+            //Arrange            
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("Special offer"));
+            var context = new PromotionEvaluationContext();
+
+            //Act
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards;
+
+            //Assert
+            Assert.Single(rewards);
+            Assert.Equal("Special offer", rewards.Single().Promotion.Id);
+        }
+
+        [Fact]
+        public async Task EvaluateRewards_CartSubTotalReward_Applied()
+        {
+            //Arrange            
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("Buy Order with 55% Off"));
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
+            var productB = new ProductPromoEntry { ProductId = "ProductB", Price = 10, Quantity = 1 };
+            var context = new PromotionEvaluationContext
+            {
+                PromoEntries = new[] { productA, productB }
+            };
+            //Act
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards;
+
+            //Assert
+            Assert.Single(rewards);
+            Assert.Equal("Buy Order with 55% Off", rewards.Single().Promotion.Id);
+            Assert.Equal(100m, productA.Price);
+            Assert.Equal(10m, productB.Price);
+        }
+
+        private static IMarketingPromoEvaluator GetPromotionEvaluationPolicy(IEnumerable<Promotion> promotions, Mock<IPromotionRewardEvaluator> promotionRewardEvaluatorMock = null)
         {
             var result = new PromotionSearchResult
             {
@@ -185,7 +400,24 @@ namespace VirtoCommerce.MarketingModule.Test
             var promoSearchServiceMock = new Moq.Mock<IPromotionSearchService>();
             promoSearchServiceMock.Setup(x => x.SearchPromotionsAsync(It.IsAny<PromotionSearchCriteria>())).ReturnsAsync(result);
 
-            return new CombineStackablePromotionPolicy(promoSearchServiceMock.Object);
+            if (promotionRewardEvaluatorMock == null)
+            {
+                promotionRewardEvaluatorMock = GetPromotionRewardEvaluatorMock();
+            }
+
+            return new CombineStackablePromotionPolicy(promoSearchServiceMock.Object, promotionRewardEvaluatorMock.Object);
+        }
+
+        private static Mock<IPromotionRewardEvaluator> GetPromotionRewardEvaluatorMock()
+        {
+            var result = new Mock<IPromotionRewardEvaluator>();
+
+            result.Setup(x => x.GetOrderedValidRewardsAsync(It.IsAny<IEnumerable<Promotion>>(), It.IsAny<IEvaluationContext>()))
+                .Returns<IEnumerable<Promotion>, IEvaluationContext>(
+                    async (promotions, context) => await new DefaultPromotionRewardEvaluator().GetOrderedValidRewardsAsync(promotions, context)
+                );
+
+            return result;
         }
 
         private static IEnumerable<Promotion> TestPromotions
@@ -283,6 +515,78 @@ namespace VirtoCommerce.MarketingModule.Test
                     Priority = 0,
                     IsExclusive = false
                 };
+                yield return new MockPromotion
+                {
+                    Id = "Register and First time buyer => get 20% off.",
+                    Rewards = new[]
+                    {
+                       new CatalogItemAmountReward { ProductId = "ProductA", Amount = 20, AmountType = RewardAmountType.Relative, IsValid = true }
+                    },
+                    Priority = 10,
+                    IsExclusive = false
+                };
+                yield return new MockPromotion
+                {
+                    Id = "Free shipping on orders totaling $35.00 or more.",
+                    Condition = x => (x as PromotionEvaluationContext)?.PromoEntries.Sum(entry => entry.Price * entry.Quantity) >= 35,
+                    Rewards = new[]
+                    {
+                        new ShipmentReward { ShippingMethod = "FedEx", Amount = 100, AmountType = RewardAmountType.Relative, IsValid = true  }
+                    },
+                    Priority = 2,
+                    IsExclusive = false
+                };
+                yield return new MockPromotion
+                {
+                    Id = "Register and First time buyer => get 20% off and free shipping.",
+                    Rewards = new PromotionReward[]
+                    {
+                       new CatalogItemAmountReward { ProductId = "ProductA", Amount = 20, AmountType = RewardAmountType.Relative, IsValid = true },
+                       new ShipmentReward { ShippingMethod = null, Amount = 100, AmountType = RewardAmountType.Relative, IsValid = true  }
+                    },
+                    Priority = 0,
+                    IsExclusive = false
+                };
+                yield return new MockPromotion
+                {
+                    Id = "For MasterCard Payment method => get 10% off for payment method",
+                    Rewards = new PromotionReward[]
+                    {
+                        new PaymentReward { PaymentMethod = "MasterCard", Amount = 10, AmountType = RewardAmountType.Relative, IsValid = true },
+                    },
+                    Priority = 0,
+                    IsExclusive = false
+                };
+                yield return new MockPromotion
+                {
+                    Id = "For Any Payment method => get 10% off for payment method",
+                    Rewards = new PromotionReward[]
+                    {
+                        new PaymentReward { PaymentMethod = null, Amount = 10, AmountType = RewardAmountType.Relative, IsValid = true },
+                    },
+                    Priority = 0,
+                    IsExclusive = false
+                };
+                yield return new MockPromotion
+                {
+                    Id = "Reward non handled by the policy",
+                    Rewards = new PromotionReward[]
+                    {
+                        new NonHandledReward { IsValid = true },
+                    },
+                    Priority = 0,
+                    IsExclusive = false
+                };
+                yield return new MockPromotion
+                {
+                    Id = "Special offer",
+                    Rewards = new[]
+                    {
+                       new SpecialOfferReward { IsValid = true },
+                    },
+                    Priority = 0,
+                    IsExclusive = false
+                };
             }
         }
 
@@ -290,66 +594,22 @@ namespace VirtoCommerce.MarketingModule.Test
         {
             return TestPromotions.Where(x => ids.Contains(x.Id));
         }
-
-        private static void RegisterConditionRewards()
-        {
-            AbstractTypeFactory<IConditionTree>.RegisterType<PromotionConditionAndRewardTree>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<BlockConditionAndOr>();
-
-            AbstractTypeFactory<IConditionTree>.RegisterType<BlockCustomerCondition>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<ConditionIsRegisteredUser>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<ConditionIsEveryone>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<ConditionIsFirstTimeBuyer>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<UserGroupsContainsCondition>();
-
-            AbstractTypeFactory<IConditionTree>.RegisterType<BlockCatalogCondition>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<ConditionAtNumItemsInCart>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<ConditionAtNumItemsInCategoryAreInCart>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<ConditionAtNumItemsOfEntryAreInCart>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<ConditionCartSubtotalLeast>();
-
-            AbstractTypeFactory<IConditionTree>.RegisterType<BlockCartCondition>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<ConditionCategoryIs>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<ConditionCodeContains>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<ConditionCurrencyIs>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<ConditionEntryIs>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<ConditionInStockQuantity>();
-
-            AbstractTypeFactory<IConditionTree>.RegisterType<BlockReward>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<RewardCartGetOfAbsSubtotal>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<RewardCartGetOfRelSubtotal>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<RewardItemGetFreeNumItemOfProduct>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<RewardItemGetOfAbs>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<RewardItemGetOfAbsForNum>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<RewardItemGetOfRel>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<RewardItemGetOfRelForNum>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<RewardItemGiftNumItem>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<RewardShippingGetOfAbsShippingMethod>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<RewardShippingGetOfRelShippingMethod>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<RewardPaymentGetOfAbs>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<RewardPaymentGetOfRel>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<RewardItemForEveryNumInGetOfRel>();
-            AbstractTypeFactory<IConditionTree>.RegisterType<RewardItemForEveryNumOtherItemInGetOfRel>();
-
-            AbstractTypeFactory<PromotionReward>.RegisterType<GiftReward>();
-            AbstractTypeFactory<PromotionReward>.RegisterType<CartSubtotalReward>();
-            AbstractTypeFactory<PromotionReward>.RegisterType<CatalogItemAmountReward>();
-            AbstractTypeFactory<PromotionReward>.RegisterType<PaymentReward>();
-            AbstractTypeFactory<PromotionReward>.RegisterType<ShipmentReward>();
-            AbstractTypeFactory<PromotionReward>.RegisterType<SpecialOfferReward>();
-        }
     }
 
     internal class MockPromotion : Promotion
     {
         public IEnumerable<PromotionReward> Rewards { get; set; }
 
+        public Func<IEvaluationContext, bool> Condition { get; set; }
+
         public override Task<PromotionReward[]> EvaluatePromotionAsync(IEvaluationContext context)
         {
             foreach (var reward in Rewards)
             {
                 reward.Promotion = this;
+                reward.IsValid = Condition == null || Condition(context);
             }
+
             return Task.FromResult(Rewards.ToArray());
         }
     }

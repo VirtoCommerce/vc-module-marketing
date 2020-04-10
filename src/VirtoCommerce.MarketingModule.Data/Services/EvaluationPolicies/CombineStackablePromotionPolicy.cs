@@ -14,22 +14,17 @@ namespace VirtoCommerce.MarketingModule.Data.Services
     public class CombineStackablePromotionPolicy : IMarketingPromoEvaluator
     {
         private readonly IPromotionSearchService _promotionSearchService;
-        public CombineStackablePromotionPolicy(IPromotionSearchService promotionSearchService)
+        private readonly IPromotionRewardEvaluator _promotionRewardEvaluator;
+
+        public CombineStackablePromotionPolicy(IPromotionSearchService promotionSearchService, IPromotionRewardEvaluator promotionRewardEvaluator)
         {
             _promotionSearchService = promotionSearchService;
+            _promotionRewardEvaluator = promotionRewardEvaluator;
         }
 
         public async Task<PromotionResult> EvaluatePromotionAsync(IEvaluationContext context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            if (!(context is PromotionEvaluationContext promoContext))
-            {
-                throw new ArgumentException($"{nameof(context)} type {context.GetType()} must be derived from PromotionEvaluationContext");
-            }
+            var promoContext = GetPromotionEvaluationContext(context);
 
             var promotionSearchCriteria = new PromotionSearchCriteria
             {
@@ -42,24 +37,23 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
             var result = new PromotionResult();
 
-            async Task<IEnumerable<PromotionReward>> evalFunc(PromotionEvaluationContext evalContext)
-            {
-                var evalPromtionTasks = promotions.Results.Select(x => x.EvaluatePromotionAsync(evalContext)).ToArray();
-                await Task.WhenAll(evalPromtionTasks);
-                return evalPromtionTasks.SelectMany(x => x.Result).OrderByDescending(x => x.Promotion.IsExclusive)
-                                    .ThenByDescending(x => x.Promotion.Priority)
-                                    .Where(x => x.IsValid)
-                                    .ToList();
-            }        
+            await EvalAndCombineRewardsRecursivelyAsync(promoContext, promotions.Results, result.Rewards, new List<PromotionReward>());
 
-            await EvalAndCombineRewardsRecursivelyAsync(promoContext, evalFunc, result.Rewards, new List<PromotionReward>());
             return result;
         }
 
-        protected virtual async Task EvalAndCombineRewardsRecursivelyAsync(PromotionEvaluationContext context, Func<PromotionEvaluationContext, Task<IEnumerable<PromotionReward>>> evalFunc, ICollection<PromotionReward> resultRewards, ICollection<PromotionReward> skippedRewards)
+        protected virtual async Task EvalAndCombineRewardsRecursivelyAsync(PromotionEvaluationContext context, IEnumerable<Promotion> promotions, ICollection<PromotionReward> resultRewards, ICollection<PromotionReward> skippedRewards)
         {
             //Evaluate rewards with passed context and exclude already applied rewards from result
-            var rewards = (await evalFunc(context)).Except(resultRewards).Except(skippedRewards).ToList();
+            var rewards = (await _promotionRewardEvaluator.GetOrderedValidRewardsAsync(promotions, context))
+                .Except(resultRewards)
+                .Except(skippedRewards)
+                .ToList();
+
+            if (rewards.IsNullOrEmpty())
+            {
+                return;
+            }
 
             var firstOrderExlusiveReward = rewards.FirstOrDefault(x => x.Promotion.IsExclusive);
             if (firstOrderExlusiveReward != null)
@@ -71,23 +65,14 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             }
             else
             {
+                var promotionsByRewards = rewards
+                    .GroupBy(x => x.Promotion.Priority)
+                    .OrderByDescending(x => x.Key);
+                var highestPriorityPromotions = promotionsByRewards.First().ToList();
                 var newRewards = new List<PromotionReward>();
-                //shipment rewards
-                var groupedByShipmentMethodRewards = rewards.OfType<ShipmentReward>()
-                                                            .GroupBy(x => x.ShippingMethod);
-                foreach (var shipmentMethodRewards in groupedByShipmentMethodRewards)
-                {
-                    //Need to take one reward from first prioritized promotion for each shipment method group
-                    var shipmentPriorityReward = shipmentMethodRewards.FirstOrDefault();
-                    if (shipmentPriorityReward != null)
-                    {
-                        newRewards.Add(shipmentPriorityReward);
-                        rewards.Remove(shipmentPriorityReward);
-                    }
-                }
 
                 //catalog item rewards
-                var groupedByProductRewards = rewards.OfType<CatalogItemAmountReward>()
+                var groupedByProductRewards = highestPriorityPromotions.OfType<CatalogItemAmountReward>()
                                                      .GroupBy(x => x.ProductId);
                 foreach (var productRewards in groupedByProductRewards)
                 {
@@ -101,17 +86,56 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 }
 
                 //cart subtotal rewards
-                var cartPriorityReward = rewards.OfType<CartSubtotalReward>().FirstOrDefault();
+                var cartPriorityReward = highestPriorityPromotions.OfType<CartSubtotalReward>().FirstOrDefault();
                 if (cartPriorityReward != null)
                 {
                     newRewards.Add(cartPriorityReward);
                     rewards.Remove(cartPriorityReward);
                 }
 
+                //shipment rewards
+                var groupedByShipmentMethodRewards = highestPriorityPromotions.OfType<ShipmentReward>()
+                                                            .GroupBy(x => x.ShippingMethod);
+                foreach (var shipmentMethodRewards in groupedByShipmentMethodRewards)
+                {
+                    //Need to take one reward from first prioritized promotion for each shipment method group
+                    var shipmentPriorityReward = shipmentMethodRewards.FirstOrDefault();
+                    if (shipmentPriorityReward != null)
+                    {
+                        newRewards.Add(shipmentPriorityReward);
+                        rewards.Remove(shipmentPriorityReward);
+                    }
+                }
+
+                //payment method rewards
+                var groupedByPaymentMethodRewards = highestPriorityPromotions.OfType<PaymentReward>()
+                                                            .GroupBy(x => x.PaymentMethod);
+                foreach (var paymentMethodRewards in groupedByPaymentMethodRewards)
+                {
+                    //Need to take one reward from first prioritized promotion for each payment method group
+                    var paymentPriorityReward = paymentMethodRewards.FirstOrDefault();
+                    if (paymentPriorityReward != null)
+                    {
+                        newRewards.Add(paymentPriorityReward);
+                        rewards.Remove(paymentPriorityReward);
+                    }
+                }
+
                 //Gifts
-                resultRewards.AddRange(rewards.OfType<GiftReward>());
+                var giftRewards = highestPriorityPromotions.OfType<GiftReward>();
+                foreach (var giftReward in giftRewards)
+                {
+                    newRewards.Add(giftReward);
+                    rewards.Remove(giftReward);
+                }
+
                 //Special offer
-                resultRewards.AddRange(rewards.OfType<SpecialOfferReward>());
+                var specialOfferRewards = highestPriorityPromotions.OfType<SpecialOfferReward>();
+                foreach (var specialOfferReward in specialOfferRewards)
+                {
+                    newRewards.Add(specialOfferReward);
+                    rewards.Remove(specialOfferReward);
+                }
 
                 //Apply new rewards to the evaluation context to influent for conditions in the  next evaluation iteration
                 ApplyRewardsToContext(context, newRewards, skippedRewards);
@@ -119,16 +143,26 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 //If there any other rewards left need to cycle new iteration
                 if (rewards.Any())
                 {
+                    // Throw exception if there are non-handled rewards. They could cause cycling otherwise.
+                    if (!newRewards.Any())
+                    {
+                        var notSupportedRewards = highestPriorityPromotions.Select(x => x.GetType().Name).ToArray();
+
+                        throw new NotSupportedException($"Some reward types are not handled by the promotion policy: {string.Join(",", notSupportedRewards)}");
+                    }
+
                     //Call recursively
-                    await EvalAndCombineRewardsRecursivelyAsync(context, evalFunc, resultRewards, skippedRewards);
+                    await EvalAndCombineRewardsRecursivelyAsync(context, promotions, resultRewards, skippedRewards);
                 }
             }
         }
 
         protected virtual void ApplyRewardsToContext(PromotionEvaluationContext context, IEnumerable<PromotionReward> rewards, ICollection<PromotionReward> skippedRewards)
         {
-            var activeShipmentReward = rewards.OfType<ShipmentReward>().Where(x => string.IsNullOrEmpty(x.ShippingMethod) || x.ShippingMethod.EqualsInvariant(context.ShipmentMethodCode))
-                                                                       .FirstOrDefault(x => string.IsNullOrEmpty(x.ShippingMethodOption) || x.ShippingMethodOption.EqualsInvariant(context.ShipmentMethodOption));
+            var activeShipmentReward = rewards.OfType<ShipmentReward>()
+                .Where(x => string.IsNullOrEmpty(x.ShippingMethod) || x.ShippingMethod.EqualsInvariant(context.ShipmentMethodCode))
+                .FirstOrDefault(x => string.IsNullOrEmpty(x.ShippingMethodOption) || x.ShippingMethodOption.EqualsInvariant(context.ShipmentMethodOption));
+
             if (activeShipmentReward != null)
             {
                 var discountAmount = activeShipmentReward.GetRewardAmount(context.ShipmentMethodPrice, 1);
@@ -139,6 +173,22 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                     skippedRewards.Add(activeShipmentReward);
                     //restore back shipment price
                     context.ShipmentMethodPrice += discountAmount;
+                }
+            }
+
+            var activePaymentReward = rewards.OfType<PaymentReward>()
+                .FirstOrDefault(x => string.IsNullOrEmpty(x.PaymentMethod) || x.PaymentMethod.EqualsInvariant(context.PaymentMethodCode));
+
+            if (activePaymentReward != null)
+            {
+                var discountAmount = activePaymentReward.GetRewardAmount(context.PaymentMethodPrice, 1);
+                context.PaymentMethodPrice -= discountAmount;
+                //Do not allow to make negative payment price
+                if (context.PaymentMethodPrice < 0 || discountAmount == 0)
+                {
+                    skippedRewards.Add(activePaymentReward);
+                    //restore back payment price
+                    context.PaymentMethodPrice += discountAmount;
                 }
             }
 
@@ -169,6 +219,20 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 }
             }
         }
-    }
 
+        private static PromotionEvaluationContext GetPromotionEvaluationContext(IEvaluationContext context)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            if (!(context is PromotionEvaluationContext promoContext))
+            {
+                throw new ArgumentException($"{nameof(context)} type {context.GetType()} must be derived from PromotionEvaluationContext");
+            }
+
+            return promoContext;
+        }
+    }
 }
