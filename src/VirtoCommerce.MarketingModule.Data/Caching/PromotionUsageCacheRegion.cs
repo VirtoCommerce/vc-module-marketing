@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Microsoft.Extensions.Primitives;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
@@ -11,26 +13,34 @@ namespace VirtoCommerce.MarketingModule.Data.Caching
     {
         private static readonly ConcurrentDictionary<string, CancellationTokenSource> _promotionUsageRegionTokenLookup = new ConcurrentDictionary<string, CancellationTokenSource>();
 
-        public static IChangeToken CreateChangeToken(PromotionUsage usage)
+        public static IChangeToken CreateChangeToken(string[] usageIds)
         {
-            if (usage == null)
+            if (usageIds == null)
             {
-                throw new ArgumentNullException(nameof(usage));
+                throw new ArgumentNullException(nameof(usageIds));
             }
-            var cancellationTokenSource = _promotionUsageRegionTokenLookup.GetOrAdd(usage.PromotionId, new CancellationTokenSource());
-            return new CompositeChangeToken(new[] { CreateChangeToken(), new CancellationChangeToken(cancellationTokenSource.Token) });
+
+            var changeTokens = new List<IChangeToken>() { CreateChangeToken() };
+
+            foreach (var usageId in usageIds.Distinct())
+            {
+                changeTokens.Add(new CancellationChangeToken(_promotionUsageRegionTokenLookup.GetOrAdd(usageId, new CancellationTokenSource()).Token));
+            }
+
+            return new CompositeChangeToken(changeTokens);
         }
 
-        public static void ExpireUsages(params PromotionUsage[] usages)
+        public static void ExpireUsages(PromotionUsage[] usages)
         {
-            foreach (var usage in usages)
+            var usageIds = usages.Select(x => x.Id).ToArray();
+
+            foreach (var usageId in usageIds)
             {
-                if (_promotionUsageRegionTokenLookup.TryRemove(usage.PromotionId, out var token))
+                if (_promotionUsageRegionTokenLookup.TryRemove(usageId, out var token))
                 {
                     token.Cancel();
                 }
             }
         }
-
     }
 }

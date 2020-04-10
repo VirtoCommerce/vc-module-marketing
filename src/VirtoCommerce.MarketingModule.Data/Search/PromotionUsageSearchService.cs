@@ -15,7 +15,7 @@ using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.MarketingModule.Data.Search
 {
-    public class PromotionUsageSearchService: IPromotionUsageSearchService
+    public class PromotionUsageSearchService : IPromotionUsageSearchService
     {
         private readonly IPlatformMemoryCache _platformMemoryCache;
         private readonly Func<IMarketingRepository> _repositoryFactory;
@@ -26,7 +26,9 @@ namespace VirtoCommerce.MarketingModule.Data.Search
             _repositoryFactory = repositoryFactory;
         }
 
+#pragma warning disable S4457 // Parameter validation in "async"/"await" methods should be wrapped
         public virtual async Task<PromotionUsageSearchResult> SearchUsagesAsync(PromotionUsageSearchCriteria criteria)
+#pragma warning restore S4457 // Parameter validation in "async"/"await" methods should be wrapped
         {
             if (criteria == null)
             {
@@ -36,8 +38,10 @@ namespace VirtoCommerce.MarketingModule.Data.Search
             var cacheKey = CacheKey.With(GetType(), nameof(SearchUsagesAsync), criteria.GetCacheKey());
             return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
+                cacheEntry.AddExpirationToken(PromotionUsageSearchCacheRegion.CreateChangeToken());
+
                 var result = AbstractTypeFactory<PromotionUsageSearchResult>.TryCreateInstance();
-              
+
                 using (var repository = _repositoryFactory())
                 {
                     var sortInfos = BuildSortExpression(criteria);
@@ -51,17 +55,14 @@ namespace VirtoCommerce.MarketingModule.Data.Search
                                          .Skip(criteria.Skip).Take(criteria.Take)
                                          .ToArrayAsync();
                         result.Results = usages.Select(x => x.ToModel(AbstractTypeFactory<PromotionUsage>.TryCreateInstance())).ToList();
-                        foreach(var usage in result.Results)
-                        {
-                            cacheEntry.AddExpirationToken(PromotionUsageCacheRegion.CreateChangeToken(usage));
-                        }
                     }
+
                     return result;
                 }
             });
         }
 
-        protected  virtual IList<SortInfo> BuildSortExpression(PromotionUsageSearchCriteria criteria)
+        protected virtual IList<SortInfo> BuildSortExpression(PromotionUsageSearchCriteria criteria)
         {
             var sortInfos = criteria.SortInfos;
             if (sortInfos.IsNullOrEmpty())

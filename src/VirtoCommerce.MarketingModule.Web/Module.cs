@@ -27,6 +27,7 @@ using VirtoCommerce.MarketingModule.Data.Services;
 using VirtoCommerce.MarketingModule.Web.Authorization;
 using VirtoCommerce.MarketingModule.Web.ExportImport;
 using VirtoCommerce.MarketingModule.Web.JsonConverters;
+using VirtoCommerce.OrdersModule.Core.Events;
 using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
@@ -104,6 +105,7 @@ namespace VirtoCommerce.MarketingModule.Web
 
             serviceCollection.AddTransient<LogChangesChangedEventHandler>();
             serviceCollection.AddTransient<MarketingExportImport>();
+            serviceCollection.AddTransient<CouponUsageRecordHandler>();
 
             serviceCollection.AddTransient<IAuthorizationHandler, MarketingAuthorizationHandler>();
         }
@@ -131,6 +133,8 @@ namespace VirtoCommerce.MarketingModule.Web
 
             var eventHandlerRegistrar = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
             //Create order observer. record order coupon usage
+            eventHandlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<CouponUsageRecordHandler>().Handle(message));
+
             eventHandlerRegistrar.RegisterHandler<PromotionChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<LogChangesChangedEventHandler>().Handle(message));
             eventHandlerRegistrar.RegisterHandler<CouponChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<LogChangesChangedEventHandler>().Handle(message));
 
