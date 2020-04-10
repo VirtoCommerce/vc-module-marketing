@@ -13,10 +13,11 @@ using VirtoCommerce.MarketingModule.Data.Model;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.MarketingModule.Data.Search
 {
-    public class FolderSearchService: IFolderSearchService
+    public class FolderSearchService : IFolderSearchService
     {
         private readonly Func<IMarketingRepository> _repositoryFactory;
         private readonly IPlatformMemoryCache _platformMemoryCache;
@@ -39,6 +40,9 @@ namespace VirtoCommerce.MarketingModule.Data.Search
                 var retVal = AbstractTypeFactory<DynamicContentFolderSearchResult>.TryCreateInstance();
                 using (var repository = _repositoryFactory())
                 {
+                    //Optimize performance and CPU usage
+                    repository.DisableChangesTracking();
+
                     var sortInfos = BuildSortExpression(criteria);
                     var query = BuildQuery(criteria, repository);
 

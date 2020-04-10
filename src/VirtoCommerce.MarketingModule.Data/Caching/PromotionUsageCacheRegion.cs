@@ -13,30 +13,30 @@ namespace VirtoCommerce.MarketingModule.Data.Caching
     {
         private static readonly ConcurrentDictionary<string, CancellationTokenSource> _promotionUsageRegionTokenLookup = new ConcurrentDictionary<string, CancellationTokenSource>();
 
-        public static IChangeToken CreateChangeToken(string[] promotionIds)
+        public static IChangeToken CreateChangeToken(string[] usageIds)
         {
-            if (promotionIds == null)
+            if (usageIds == null)
             {
-                throw new ArgumentNullException(nameof(promotionIds));
+                throw new ArgumentNullException(nameof(usageIds));
             }
 
             var changeTokens = new List<IChangeToken>() { CreateChangeToken() };
 
-            foreach (var promotionId in promotionIds.Distinct())
+            foreach (var usageId in usageIds.Distinct())
             {
-                changeTokens.Add(new CancellationChangeToken(_promotionUsageRegionTokenLookup.GetOrAdd(promotionId, new CancellationTokenSource()).Token));
+                changeTokens.Add(new CancellationChangeToken(_promotionUsageRegionTokenLookup.GetOrAdd(usageId, new CancellationTokenSource()).Token));
             }
 
             return new CompositeChangeToken(changeTokens);
         }
 
-        public static void ExpireUsages(params PromotionUsage[] usages)
+        public static void ExpireUsages(PromotionUsage[] usages)
         {
-            var promotionIds = usages.Select(x => x.PromotionId).Distinct();
+            var usageIds = usages.Select(x => x.Id).ToArray();
 
-            foreach (var promotionId in promotionIds)
+            foreach (var usageId in usageIds)
             {
-                if (_promotionUsageRegionTokenLookup.TryRemove(promotionId, out var token))
+                if (_promotionUsageRegionTokenLookup.TryRemove(usageId, out var token))
                 {
                     token.Cancel();
                 }

@@ -45,7 +45,6 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                     //with caching of empty results for non - existing objects that have the infinitive lifetime in the cache
                     //and future unavailability to create objects with these ids.
                     cacheEntry.AddExpirationToken(PromotionUsageCacheRegion.CreateChangeToken(ids));
-                    cacheEntry.AddExpirationToken(PromotionUsageCacheRegion.CreateChangeToken());
 
                     var promotionUsages = await repository.GetMarketingUsagesByIdsAsync(ids);
                     var usages = promotionUsages.Select(x => x.ToModel(AbstractTypeFactory<PromotionUsage>.TryCreateInstance())).ToArray();
@@ -86,7 +85,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 await _eventPublisher.Publish(new PromotionUsageChangedEvent(changedEntries));
             }
 
-            PromotionUsageCacheRegion.ExpireUsages(usages);
+            ClearCache(usages);
         }
 
         public virtual async Task DeleteUsagesAsync(string[] ids)
@@ -98,9 +97,15 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 await repository.UnitOfWork.CommitAsync();
             }
 
-            PromotionUsageCacheRegion.ExpireUsages(usages);
+            ClearCache(usages);
         }
 
         #endregion
+
+        private static void ClearCache(PromotionUsage[] usages)
+        {
+            PromotionUsageSearchCacheRegion.ExpireRegion();
+            PromotionUsageCacheRegion.ExpireUsages(usages);
+        }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
-using Newtonsoft.Json;
 using VirtoCommerce.MarketingModule.Core.Events;
 using VirtoCommerce.MarketingModule.Core.Model;
 using VirtoCommerce.MarketingModule.Core.Services;
@@ -13,6 +12,7 @@ using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.MarketingModule.Data.Services
 {
@@ -42,6 +42,9 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 DynamicContentItem[] retVal = null;
                 using (var repository = _repositoryFactory())
                 {
+                    //Optimize performance and CPU usage
+                    repository.DisableChangesTracking();
+
                     retVal = (await repository.GetContentItemsByIdsAsync(ids)).Select(x => x.ToModel(AbstractTypeFactory<DynamicContentItem>.TryCreateInstance())).ToArray();
                 }
                 return retVal;
@@ -109,6 +112,9 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 cacheEntry.AddExpirationToken(DynamicContentPlaceCacheRegion.CreateChangeToken());
                 using (var repository = _repositoryFactory())
                 {
+                    //Optimize performance and CPU usage
+                    repository.DisableChangesTracking();
+
                     var contentPlaces = await repository.GetContentPlacesByIdsAsync(ids);
                     return contentPlaces
                         .Select(x => x.ToModel(AbstractTypeFactory<DynamicContentPlace>.TryCreateInstance())).ToArray();
@@ -174,6 +180,9 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 cacheEntry.AddExpirationToken(DynamicContentPublicationCacheRegion.CreateChangeToken());
                 using (var repository = _repositoryFactory())
                 {
+                    //Optimize performance and CPU usage
+                    repository.DisableChangesTracking();
+
                     var publications = await repository.GetContentPublicationsByIdsAsync(ids);
                     return publications.Select(x => x.ToModel(AbstractTypeFactory<DynamicContentPublication>.TryCreateInstance())).ToArray();
                 }
@@ -217,14 +226,14 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         public async Task DeletePublicationsAsync(string[] ids)
         {
             using (var repository = _repositoryFactory())
-            { 
+            {
                 await repository.RemoveContentPublicationsAsync(ids);
                 await repository.UnitOfWork.CommitAsync();
             }
 
             DynamicContentPublicationCacheRegion.ExpireRegion();
         }
-      
+
         #endregion
 
         #region DynamicContentFolder methods
@@ -237,6 +246,9 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 cacheEntry.AddExpirationToken(DynamicContentFolderCacheRegion.CreateChangeToken());
                 using (var repository = _repositoryFactory())
                 {
+                    //Optimize performance and CPU usage
+                    repository.DisableChangesTracking();
+
                     var folders = await repository.GetContentFoldersByIdsAsync(ids);
                     return folders.Select(x => x.ToModel(AbstractTypeFactory<DynamicContentFolder>.TryCreateInstance())).ToArray();
                 }

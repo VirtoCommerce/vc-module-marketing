@@ -13,16 +13,17 @@ using VirtoCommerce.MarketingModule.Data.Model;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.MarketingModule.Data.Search
 {
-    public class PromotionSearchService: IPromotionSearchService
+    public class PromotionSearchService : IPromotionSearchService
     {
         private readonly Func<IMarketingRepository> _repositoryFactory;
         private readonly IPromotionService _promotionService;
         private readonly IPlatformMemoryCache _platformMemoryCache;
 
-        public PromotionSearchService(Func<IMarketingRepository> repositoryFactory ,IPromotionService promotionService, IPlatformMemoryCache platformMemoryCache)
+        public PromotionSearchService(Func<IMarketingRepository> repositoryFactory, IPromotionService promotionService, IPlatformMemoryCache platformMemoryCache)
         {
             _repositoryFactory = repositoryFactory;
             _promotionService = promotionService;
@@ -34,15 +35,20 @@ namespace VirtoCommerce.MarketingModule.Data.Search
             var cacheKey = CacheKey.With(GetType(), nameof(SearchPromotionsAsync), criteria.GetCacheKey());
             return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
-                cacheEntry.AddExpirationToken(PromotionCacheRegion.CreateChangeToken());
-                var retVal = AbstractTypeFactory<PromotionSearchResult>.TryCreateInstance();
+                cacheEntry.AddExpirationToken(PromotionSearchCacheRegion.CreateChangeToken());
+
+                var result = AbstractTypeFactory<PromotionSearchResult>.TryCreateInstance();
+
                 using (var repository = _repositoryFactory())
                 {
+                    //Optimize performance and CPU usage
+                    repository.DisableChangesTracking();
+
                     var sortInfos = BuildSortExpression(criteria);
                     var query = BuildQuery(repository, criteria);
                     //https://github.com/zzzprojects/EntityFramework-Plus/issues/293
                     //Workaround ArgumentException with CountAsync have no predicate when query has a Cast or OfType expression
-                    retVal.TotalCount = await query.CountAsync(x=> true);
+                    result.TotalCount = await query.CountAsync(x => true);
 
                     if (criteria.Take > 0)
                     {
@@ -51,11 +57,11 @@ namespace VirtoCommerce.MarketingModule.Data.Search
                                         .Skip(criteria.Skip).Take(criteria.Take)
                                         .ToArrayAsync();
 
-                        retVal.Results = (await _promotionService.GetPromotionsByIdsAsync(ids))
+                        result.Results = (await _promotionService.GetPromotionsByIdsAsync(ids))
                             .OrderBy(x => Array.IndexOf(ids, x.Id)).ToList();
                     }
                 }
-                return retVal;
+                return result;
             });
         }
 

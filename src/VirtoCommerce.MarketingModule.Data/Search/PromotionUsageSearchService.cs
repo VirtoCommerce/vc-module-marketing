@@ -12,6 +12,7 @@ using VirtoCommerce.MarketingModule.Data.Model;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.MarketingModule.Data.Search
 {
@@ -26,17 +27,27 @@ namespace VirtoCommerce.MarketingModule.Data.Search
             _repositoryFactory = repositoryFactory;
         }
 
+#pragma warning disable S4457 // Parameter validation in "async"/"await" methods should be wrapped
         public virtual async Task<PromotionUsageSearchResult> SearchUsagesAsync(PromotionUsageSearchCriteria criteria)
+#pragma warning restore S4457 // Parameter validation in "async"/"await" methods should be wrapped
         {
-            EnsureAgrumentsValid(criteria);
+            if (criteria == null)
+            {
+                throw new ArgumentNullException(nameof(criteria));
+            }
 
             var cacheKey = CacheKey.With(GetType(), nameof(SearchUsagesAsync), criteria.GetCacheKey());
             return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
+                cacheEntry.AddExpirationToken(PromotionUsageSearchCacheRegion.CreateChangeToken());
+
                 var result = AbstractTypeFactory<PromotionUsageSearchResult>.TryCreateInstance();
 
                 using (var repository = _repositoryFactory())
                 {
+                    //Optimize performance and CPU usage
+                    repository.DisableChangesTracking();
+
                     var sortInfos = BuildSortExpression(criteria);
                     var query = BuildQuery(repository, criteria);
 
@@ -49,19 +60,10 @@ namespace VirtoCommerce.MarketingModule.Data.Search
                                          .ToArrayAsync();
                         result.Results = usages.Select(x => x.ToModel(AbstractTypeFactory<PromotionUsage>.TryCreateInstance())).ToList();
                     }
-                    cacheEntry.AddExpirationToken(PromotionUsageCacheRegion.CreateChangeToken(new[] { criteria.PromotionId }));
 
                     return result;
                 }
             });
-        }
-
-        private static void EnsureAgrumentsValid(PromotionUsageSearchCriteria criteria)
-        {
-            if (criteria == null)
-            {
-                throw new ArgumentNullException(nameof(criteria));
-            }
         }
 
         protected virtual IList<SortInfo> BuildSortExpression(PromotionUsageSearchCriteria criteria)

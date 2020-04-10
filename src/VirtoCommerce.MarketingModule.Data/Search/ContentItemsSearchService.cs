@@ -13,10 +13,11 @@ using VirtoCommerce.MarketingModule.Data.Model;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.MarketingModule.Data.Search
 {
-    public class ContentItemsSearchService: IContentItemsSearchService
+    public class ContentItemsSearchService : IContentItemsSearchService
     {
         private readonly Func<IMarketingRepository> _repositoryFactory;
         private readonly IPlatformMemoryCache _platformMemoryCache;
@@ -39,6 +40,9 @@ namespace VirtoCommerce.MarketingModule.Data.Search
                 var result = AbstractTypeFactory<DynamicContentItemSearchResult>.TryCreateInstance();
                 using (var repository = _repositoryFactory())
                 {
+                    //Optimize performance and CPU usage
+                    repository.DisableChangesTracking();
+
                     var sortInfos = BuildSortExpression(criteria);
                     var query = BuildQuery(criteria, repository);
 
@@ -76,7 +80,7 @@ namespace VirtoCommerce.MarketingModule.Data.Search
             return sortInfos;
         }
 
-        protected virtual IQueryable<DynamicContentItemEntity> BuildQuery(DynamicContentItemSearchCriteria criteria,  IMarketingRepository repository)
+        protected virtual IQueryable<DynamicContentItemEntity> BuildQuery(DynamicContentItemSearchCriteria criteria, IMarketingRepository repository)
         {
             var query = repository.Items;
             if (!string.IsNullOrEmpty(criteria.FolderId))

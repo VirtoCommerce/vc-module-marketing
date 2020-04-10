@@ -13,10 +13,11 @@ using VirtoCommerce.MarketingModule.Data.Model;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.MarketingModule.Data.Search
 {
-    public class ContentPlacesSearchService: IContentPlacesSearchService
+    public class ContentPlacesSearchService : IContentPlacesSearchService
     {
         private readonly Func<IMarketingRepository> _repositoryFactory;
         private readonly IPlatformMemoryCache _platformMemoryCache;
@@ -38,6 +39,9 @@ namespace VirtoCommerce.MarketingModule.Data.Search
                 var result = AbstractTypeFactory<DynamicContentPlaceSearchResult>.TryCreateInstance();
                 using (var repository = _repositoryFactory())
                 {
+                    //Optimize performance and CPU usage
+                    repository.DisableChangesTracking();
+
                     var sortInfos = BuildSearchExpression(criteria);
                     var query = BuildQuery(criteria, repository);
 
@@ -45,7 +49,7 @@ namespace VirtoCommerce.MarketingModule.Data.Search
 
                     if (criteria.Take > 0)
                     {
-                        var ids = await query.OrderBySortInfos(sortInfos).ThenBy(x=>x.Id)
+                        var ids = await query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
                                              .Select(x => x.Id).Skip(criteria.Skip)
                                              .Take(criteria.Take)
                                              .ToArrayAsync();

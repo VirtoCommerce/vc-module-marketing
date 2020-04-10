@@ -12,6 +12,7 @@ using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.MarketingModule.Data.Services
 {
@@ -35,9 +36,16 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             var cacheKey = CacheKey.With(GetType(), "GetPromotionsByIds", string.Join("-", ids));
             return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
-                cacheEntry.AddExpirationToken(PromotionCacheRegion.CreateChangeToken());
+                //It is so important to generate change tokens for all ids even for not existing objects to prevent an issue
+                //with caching of empty results for non - existing objects that have the infinitive lifetime in the cache
+                //and future unavailability to create objects with these ids.
+                cacheEntry.AddExpirationToken(PromotionCacheRegion.CreateChangeToken(ids));
+
                 using (var repository = _repositoryFactory())
                 {
+                    //Optimize performance and CPU usage
+                    repository.DisableChangesTracking();
+
                     var promotionEntities = await repository.GetPromotionsByIdsAsync(ids);
                     return promotionEntities.Select(x => x.ToModel(AbstractTypeFactory<Promotion>.TryCreateInstance())).ToArray();
                 }
@@ -75,7 +83,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 await _eventPublisher.Publish(new PromotionChangedEvent(changedEntries));
             }
 
-            PromotionCacheRegion.ExpireRegion();
+            ClearCache(promotions.Select(x => x.Id).ToArray());
         }
 
         public virtual async Task DeletePromotionsAsync(string[] ids)
@@ -85,7 +93,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 await repository.RemovePromotionsAsync(ids);
                 await repository.UnitOfWork.CommitAsync();
                 var changedEntries = new List<GenericChangedEntry<Promotion>>();
-                foreach(var id in ids)
+                foreach (var id in ids)
                 {
                     var emptyPromotion = AbstractTypeFactory<Promotion>.TryCreateInstance();
                     emptyPromotion.Id = id;
@@ -95,9 +103,15 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 await _eventPublisher.Publish(new PromotionChangedEvent(changedEntries));
             }
 
-            PromotionCacheRegion.ExpireRegion();
+            ClearCache(ids);
         }
 
         #endregion
+
+        private static void ClearCache(string[] promotionIds)
+        {
+            PromotionSearchCacheRegion.ExpireRegion();
+            PromotionCacheRegion.ExpirePromotions(promotionIds);
+        }
     }
 }
