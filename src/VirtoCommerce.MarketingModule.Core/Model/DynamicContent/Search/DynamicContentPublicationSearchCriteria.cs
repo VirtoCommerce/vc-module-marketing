@@ -15,6 +15,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model
             Store = context.StoreId;
             PlaceName = context.PlaceName;
             EndDate = context.ToDate;
+            OnlyActive = true;
             return this;
         }
     }
