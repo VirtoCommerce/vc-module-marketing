@@ -7,9 +7,9 @@ angular.module('virtoCommerce.marketingModule')
 
         blade.expressionTreeTemplateUrl = dynamicExpressionService.expressionTreeTemplateUrl;
 
-        blade.allowCombination = false;
+        blade.showPriority = false;
         settings.get({ id: 'Marketing.Promotion.CombinePolicy' }, function (data) {
-            blade.allowCombination = data.value === 'CombineStackable';
+            blade.showPriority = data.value === 'CombineStackable';
         });
         blade.refresh = function (parentRefresh) {
             $scope.stores = stores.query({}, function(data) {
