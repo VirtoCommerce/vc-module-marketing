@@ -135,9 +135,17 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
             return GenericMassRemove<DynamicContentPlaceEntity>(ids);
         }
 
-        public Task RemoveContentItemsAsync(string[] ids)
+        public async Task RemoveContentItemsAsync(string[] ids)
         {
-            return GenericMassRemove<DynamicContentItemEntity>(ids);
+
+            // GenericMassRemove does not delete DynamicContentItemDynamicPropertyObjectValueEntity DESPITE CascadeDelete specified
+            // VP-1945
+
+            var items = await GetContentItemsByIdsAsync(ids);
+            foreach (var item in items)
+            {
+                Remove(item);
+            }
         }
 
         public virtual Task RemovePromotionsAsync(string[] ids)
