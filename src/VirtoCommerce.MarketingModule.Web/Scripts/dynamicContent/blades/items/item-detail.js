@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.marketingModule')
+angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.itemDetailController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.contentItems', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.dynamicProperties.dictionaryItemsApi', 'platformWebApp.settings', 'platformWebApp.dynamicProperties.api',
     function ($scope, dynamicContentItemsApi, bladeNavigationService, dialogService, dictionaryItemsApi, settings, dynamicPropertiesApi) {
         var blade = $scope.blade;
@@ -7,7 +7,10 @@
         blade.refresh = function() {
             if (!blade.isNew) {
                 dynamicContentItemsApi.get({id: blade.entity.id}, function (response) {
-                    dynamicPropertiesApi.search({objectType: blade.entity.objectType, take: response.dynamicProperties.length}, function (dynamicPropertiesResponse) {
+                    dynamicPropertiesApi.search({
+                        objectType: blade.entity.objectType,
+                        take: 10000         // It is for getting all object dynamic properties
+                    }, function (dynamicPropertiesResponse) {
                         var rawDynamicProperties = dynamicPropertiesResponse.results;
                         _.each(rawDynamicProperties, function(prop) {
                             prop.values = [];
