@@ -28,8 +28,8 @@ angular.module(moduleName, [])
   }]
 )
 .run(
-    ['$http', '$compile', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', 'platformWebApp.toolbarService', '$state', 'platformWebApp.authService', 'virtoCommerce.storeModule.stores', 'platformWebApp.permissionScopeResolver', 'platformWebApp.bladeNavigationService'
-    , function ($http, $compile, mainMenuService, widgetService, toolbarService, $state, authService, stores, permissionScopeResolver, bladeNavigationService) {
+    ['$http', '$compile', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', 'platformWebApp.toolbarService', '$state', 'platformWebApp.authService', 'virtoCommerce.storeModule.stores', 'platformWebApp.permissionScopeResolver', 'platformWebApp.bladeNavigationService', 'virtoCommerce.coreModule.common.dynamicExpressionService'
+    , function ($http, $compile, mainMenuService, widgetService, toolbarService, $state, authService, stores, permissionScopeResolver, bladeNavigationService, dynamicExpressionService) {
       // // test toolbar commands and content
       //toolbarService.register({
       //    name: "ADDITIONAL COMMAND", icon: 'fa fa-cloud',
@@ -90,6 +90,11 @@ angular.module(moduleName, [])
       //    controller: 'virtoCommerce.marketingModule.dashboard.promotionsWidgetController',
       //    template: 'tile-count.html'
       //}, 'mainDashboard');
+
+    dynamicExpressionService.registerExpression({
+        id: 'ConditionHasNoSalePrice',
+        displayName: 'Apply only to full price items and not sales items'
+    });
 
       $http.get('Modules/$(VirtoCommerce.Marketing)/Scripts/dynamicConditions/templates.html').then(function (response) {
         // compile the response, which will put stuff into the cache

@@ -13,7 +13,8 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 		public int Quantity { get; set; }
         public int InStockQuantity { get; set; }
         public decimal Price { get; set; }
-		public decimal Discount { get; set; }
+        public decimal ListPrice { get; set; }
+        public decimal Discount { get; set; }
 		public string CatalogId { get; set; }
 		public string CategoryId { get; set; }
 		public string ProductId { get; set; }

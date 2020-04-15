@@ -23,7 +23,8 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
                         new ConditionCodeContains(),
                         new ConditionCurrencyIs(),
                         new ConditionEntryIs(),
-                        new ConditionInStockQuantity()
+                        new ConditionInStockQuantity(),
+                        new ConditionHasNoSalePrice()
                      );
             var blockCart = new BlockCartCondition()
                     .WithAvailConditions(
