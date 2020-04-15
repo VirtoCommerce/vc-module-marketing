@@ -140,6 +140,8 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
             // VP-1945
             // GenericMassRemove does not delete DynamicContentItemDynamicPropertyObjectValueEntity DESPITE CascadeDelete specified, as DynamicPropertyValues are not loaded by EF in memory.
             // https://docs.microsoft.com/en-us/ef/core/saving/cascade-delete#delete-behaviors See comment. So need to delete loaded entities, not just parent ones attached by Ids.
+            // Also, we do not specify ON CASCADE DELETE for the foreign key on database level in migration intentionally (onDelete: ReferentialAction.Restrict),
+            // because it is self referencing table, which cannot have cascade delete FK's in MSSQL.
 
             var items = await GetContentItemsByIdsAsync(ids);
             foreach (var item in items)
