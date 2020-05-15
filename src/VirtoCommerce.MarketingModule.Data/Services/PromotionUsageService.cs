@@ -32,7 +32,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
         public virtual async Task<PromotionUsage[]> GetByIdsAsync(string[] ids)
         {
-            var cacheKey = CacheKey.With(GetType(), "GetByIdsAsync", string.Join("-", ids));
+            var cacheKey = CacheKey.With(GetType(), nameof(GetByIdsAsync), string.Join("-", ids));
             return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
                 using (var repository = _repositoryFactory())
