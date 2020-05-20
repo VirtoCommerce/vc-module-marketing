@@ -31,12 +31,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 throw new ArgumentException($"{nameof(context)} type {context.GetType()} must be derived from PromotionEvaluationContext");
             }
 
-            var promotionSearchCriteria = new PromotionSearchCriteria
-            {
-                OnlyActive = true,
-                StoreIds = string.IsNullOrEmpty(promoContext.StoreId) ? null : new[] { promoContext.StoreId },
-                Take = int.MaxValue
-            };
+            var promotionSearchCriteria = GetPromotionSearchCriteria(promoContext);
 
             var promotions = _promotionSearchService.SearchPromotions(promotionSearchCriteria).Results;
 
@@ -134,6 +129,17 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             }
 
             return retVal;
+        }
+
+        protected virtual PromotionSearchCriteria GetPromotionSearchCriteria(PromotionEvaluationContext context)
+        {
+            var searchCriteria = AbstractTypeFactory<PromotionSearchCriteria>.TryCreateInstance();
+
+            searchCriteria.OnlyActive = true;
+            searchCriteria.StoreIds = string.IsNullOrEmpty(context.StoreId) ? null : new[] { context.StoreId };
+            searchCriteria.Take = int.MaxValue;
+
+            return searchCriteria;
         }
     }
 }
