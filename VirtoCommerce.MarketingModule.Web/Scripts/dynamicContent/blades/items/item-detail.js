@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.marketingModule')
+angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.itemDetailController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.contentItems', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.dynamicProperties.dictionaryItemsApi', 'platformWebApp.settings',
     function ($scope, dynamicContentItemsApi, bladeNavigationService, dialogService, dictionaryItemsApi, settings) {
         var blade = $scope.blade;
@@ -81,6 +81,14 @@
         
         blade.saveChanges = function () {
             blade.isLoading = true;
+
+            var contentTypeProperty = _.find(blade.currentEntity.dynamicProperties, function(property) {
+                return property.name === "Content type";
+            });
+
+            if (contentTypeProperty && contentTypeProperty.values[0]) {
+                blade.currentEntity.contentType = contentTypeProperty.values[0].value.name;
+            }
 
             if (blade.isNew) {
                 dynamicContentItemsApi.save(blade.currentEntity, function (data) {
