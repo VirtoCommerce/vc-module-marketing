@@ -394,7 +394,7 @@
     "settings": {
         "Marketing.Promotion.CombinePolicy": {
             "description": "BestReward - select the promotion rewards that benefits the shoppers the most. CombineStackable - If your store has multiple active promotions, shoppers can qualify for multiple promotions at a time. ",
-            "title": "Selected policy of combine active promotions (requires restart)"
+            "title": "Selected policy of combining active promotions"
         },
         "Marketing.ExportImport.Description": {
             "description": "Export/Import promotions and dynamic contents (places, contents, publications)",
