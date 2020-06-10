@@ -6,7 +6,11 @@ angular.module('virtoCommerce.marketingModule')
         var entities = [
             { id: '3', name: 'Promotions', entityName: 'promotion', icon: 'fa-area-chart' },
             { id: '20', name: 'Dynamic content', entityName: 'dynamicContent', icon: 'fa-calendar-o' },
-            { id: '30', name: 'Dynamic product associations', entityName: 'productAssociations', icon: 'fa fa-a' }];
+            {
+                id: '30', name: 'Dynamic product associations', entityName: 'dynamicProductAssociations', icon: 'fa fa-a',
+                controller: 'virtoCommerce.catalogModule.dynamicAssociationsListController',
+                template: 'Modules/$(VirtoCommerce.Catalog)/Scripts/blades/dynamicAssociations/dynamicAssociations-list.tpl.html'
+            }];
         $scope.blade.currentEntities = entities;
         $scope.blade.isLoading = false;
 
@@ -20,8 +24,8 @@ angular.module('virtoCommerce.marketingModule')
             id: 'marketingMainListChildren',
             title: data.name,
             subtitle: 'Marketing service',
-            controller: 'virtoCommerce.marketingModule.' + data.entityName + 'ListController',
-            template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/' + data.entityName +  '/blades/' +  data.entityName + '-list.tpl.html'
+            controller: data.controller || 'virtoCommerce.marketingModule.' + data.entityName + 'ListController',
+            template: data.template || 'Modules/$(VirtoCommerce.Marketing)/Scripts/' + data.entityName +  '/blades/' +  data.entityName + '-list.tpl.html'
         };
         bladeNavigationService.showBlade(newBlade, $scope.blade);
     };
