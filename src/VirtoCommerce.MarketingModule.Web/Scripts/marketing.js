@@ -25,29 +25,24 @@ angular.module(moduleName, [])
                   }
               ]
           });
-  }]
-)
-.run(
-    ['$http', '$compile', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', 'platformWebApp.toolbarService', '$state', 'platformWebApp.authService', 'virtoCommerce.storeModule.stores', 'platformWebApp.permissionScopeResolver', 'platformWebApp.bladeNavigationService', 'virtoCommerce.coreModule.common.dynamicExpressionService'
-    , function ($http, $compile, mainMenuService, widgetService, toolbarService, $state, authService, stores, permissionScopeResolver, bladeNavigationService, dynamicExpressionService) {
-      // // test toolbar commands and content
-      //toolbarService.register({
-      //    name: "ADDITIONAL COMMAND", icon: 'fa fa-cloud',
-      //    executeMethod: function (blade) {
-      //        console.log('test: ' + this.name + this.icon + blade);
-      //    },
-      //    canExecuteMethod: function () { return true; },
-      //    index: 2
-      //}, 'virtoCommerce.marketingModule.itemsDynamicContentListController');
-      //toolbarService.register({
-      //    name: "EXTERNAL ACTION", icon: 'fa fa-bolt',
-      //    executeMethod: function (blade) {
-      //        console.log('test: ' + this.name + this.icon + blade);
-      //    },
-      //    canExecuteMethod: function () { return true; },
-      //    index: 0
-      //}, 'virtoCommerce.marketingModule.itemsDynamicContentListController');
-      
+    }])
+
+
+.factory('virtoCommerce.marketingModule.marketingMenuService', function () {
+    return {
+        objects: [],
+        register: function (item) {
+            this.objects.push(item);
+        },
+        resolve: function () {
+            return this.objects;
+        }
+    };
+
+})
+
+.run(['$http', '$compile', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', 'platformWebApp.toolbarService', '$state', 'platformWebApp.authService', 'virtoCommerce.storeModule.stores', 'platformWebApp.permissionScopeResolver', 'platformWebApp.bladeNavigationService', 'virtoCommerce.coreModule.common.dynamicExpressionService', 'virtoCommerce.marketingModule.marketingMenuService'
+        , function ($http, $compile, mainMenuService, widgetService, toolbarService, $state, authService, stores, permissionScopeResolver, bladeNavigationService, dynamicExpressionService, marketingMenuService) {
       //Register module in main menu
       var menuItem = {
           path: 'browse/marketing',
@@ -58,6 +53,10 @@ angular.module(moduleName, [])
           permission: 'marketing:access'
       };
       mainMenuService.addMenuItem(menuItem);
+      // Register marketing main blade items
+
+      marketingMenuService.register({ id: '3', name: 'Promotions', entityName: 'promotion', icon: 'fa-area-chart' });
+      marketingMenuService.register({ id: '20', name: 'Dynamic content', entityName: 'dynamicContent', icon: 'fa-calendar-o' });
 
       widgetService.registerWidget({
           controller: 'virtoCommerce.marketingModule.couponsWidgetController',
