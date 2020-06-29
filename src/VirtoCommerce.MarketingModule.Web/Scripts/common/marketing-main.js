@@ -1,9 +1,9 @@
 angular.module('virtoCommerce.marketingModule')
-    .controller('virtoCommerce.marketingModule.marketingMainController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.marketingModule.marketingMenuService', function ($scope, bladeNavigationService, marketingMenuService) {
+    .controller('virtoCommerce.marketingModule.marketingMainController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.marketingModule.marketingMenuItemService', function ($scope, bladeNavigationService, marketingMenuItemService) {
     $scope.selectedNodeId = null;
 
     function initializeBlade() {
-        var entities = marketingMenuService.resolve();
+        var entities = marketingMenuItemService.items;
         $scope.blade.currentEntities = entities;
         $scope.blade.isLoading = false;
 
