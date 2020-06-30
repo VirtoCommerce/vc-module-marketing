@@ -3,12 +3,12 @@ angular.module('virtoCommerce.marketingModule')
     $scope.selectedNodeId = null;
 
     function initializeBlade() {
-        var entities = marketingMenuItemService.items;
+        var entities = marketingMenuItemService.items.sort(compare);
         $scope.blade.currentEntities = entities;
         $scope.blade.isLoading = false;
 
         $scope.blade.openBlade(entities[0]);
-    };
+    }
 
     $scope.blade.openBlade = function(data) {
         $scope.selectedNodeId = data.id;
@@ -26,4 +26,14 @@ angular.module('virtoCommerce.marketingModule')
     $scope.blade.headIcon = 'fa-flag';
 
     initializeBlade();
+
+    function compare(a, b) {
+        if (+a.id < +b.id) {
+            return -1;
+        }
+        if (+a.id > +b.id) {
+            return 1;
+        }
+        return 0;
+    }
 }]);
