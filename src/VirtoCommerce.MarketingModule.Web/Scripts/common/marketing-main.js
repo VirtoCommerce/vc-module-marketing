@@ -3,7 +3,7 @@ angular.module('virtoCommerce.marketingModule')
     $scope.selectedNodeId = null;
 
     function initializeBlade() {
-        var entities = marketingMenuItemService.items.sort(compare);
+        var entities = _.sortBy(marketingMenuItemService.items, 'id');
         $scope.blade.currentEntities = entities;
         $scope.blade.isLoading = false;
 
@@ -26,14 +26,4 @@ angular.module('virtoCommerce.marketingModule')
     $scope.blade.headIcon = 'fa-flag';
 
     initializeBlade();
-
-    function compare(a, b) {
-        if (+a.id < +b.id) {
-            return -1;
-        }
-        if (+a.id > +b.id) {
-            return 1;
-        }
-        return 0;
-    }
 }]);
