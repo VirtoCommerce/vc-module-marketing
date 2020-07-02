@@ -3,12 +3,12 @@ angular.module('virtoCommerce.marketingModule')
     $scope.selectedNodeId = null;
 
     function initializeBlade() {
-        var entities = marketingMenuItemService.items;
+        var entities = _.sortBy(marketingMenuItemService.items, 'id');
         $scope.blade.currentEntities = entities;
         $scope.blade.isLoading = false;
 
         $scope.blade.openBlade(entities[0]);
-    };
+    }
 
     $scope.blade.openBlade = function(data) {
         $scope.selectedNodeId = data.id;
