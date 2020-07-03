@@ -78,7 +78,7 @@ namespace VirtoCommerce.MarketingModule.Web
 
             serviceCollection.AddTransient<CsvCouponImporter>();
 
-            serviceCollection.AddScoped<IMarketingPromoEvaluator>(provider =>
+            serviceCollection.AddTransient<IMarketingPromoEvaluator>(provider =>
             {
                 var settingsManager = provider.GetService<ISettingsManager>();
                 var promotionService = provider.GetService<IPromotionSearchService>();
