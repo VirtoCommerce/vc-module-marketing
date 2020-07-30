@@ -78,15 +78,15 @@ namespace VirtoCommerce.MarketingModule.Web
 
             serviceCollection.AddTransient<CsvCouponImporter>();
 
-            serviceCollection.AddSingleton<IMarketingPromoEvaluator>(provider =>
+            serviceCollection.AddTransient<IMarketingPromoEvaluator>(provider =>
             {
                 var settingsManager = provider.GetService<ISettingsManager>();
                 var promotionService = provider.GetService<IPromotionSearchService>();
-                var promotionRewardEvaluator = provider.GetService<IPromotionRewardEvaluator>();
                 var promotionCombinePolicy = settingsManager.GetValue(ModuleConstants.Settings.General.CombinePolicy.Name, "BestReward");
 
                 if (promotionCombinePolicy.EqualsInvariant("CombineStackable"))
                 {
+                    var promotionRewardEvaluator = provider.GetService<IPromotionRewardEvaluator>();
                     return new CombineStackablePromotionPolicy(promotionService, promotionRewardEvaluator);
                 }
 
