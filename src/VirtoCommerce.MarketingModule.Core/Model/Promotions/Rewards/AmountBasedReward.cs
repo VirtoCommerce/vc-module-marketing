@@ -64,9 +64,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
             //Do not allow maxLimit be greater that total cost (to prevent reward amount be greater that price)
             workMaxLimit = Math.Min(workMaxLimit, totalCost);
             result = Math.Min(workMaxLimit, result);
-
-            //TODO: need allocate more rightly between  given quantities
-            result = result.Allocate(quantity).FirstOrDefault();
+            result = Math.Min(workMaxLimit, result) / quantity;
             return result;
         }
 
