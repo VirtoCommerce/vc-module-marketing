@@ -23,5 +23,10 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions.Search
                 _storeIds = value;
             }
         }
+
+        public virtual void PopulateFromEvalContext(PromotionEvaluationContext context)
+        {
+            StoreIds = string.IsNullOrEmpty(context.StoreId) ? null : new[] { context.StoreId };
+        }
     }
 }

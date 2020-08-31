@@ -71,7 +71,7 @@ namespace VirtoCommerce.MarketingModule.Data.ExportImport
                 await writer.WritePropertyNameAsync("Promotions");
 
                 await writer.SerializeJsonArrayWithPagingAsync(_jsonSerializer, _batchSize, async (skip, take) =>
-                    (GenericSearchResult<Promotion>)await LoadPromotionsPageAsync(skip, take)
+                    (GenericSearchResult<Promotion>)await LoadPromotionsPageAsync(skip, take, options, progressCallback)
                 , (processedCount, totalCount) =>
                 {
                     progressInfo.Description = $"{ processedCount } of { totalCount } promotions have been exported";
@@ -177,7 +177,7 @@ namespace VirtoCommerce.MarketingModule.Data.ExportImport
                     {
                         if (reader.Value.ToString() == "Promotions")
                         {
-                            await reader.DeserializeJsonArrayWithPagingAsync<Promotion>(_jsonSerializer, _batchSize, items => SavePromotionsAsync(items.ToArray()), processedCount =>
+                            await reader.DeserializeJsonArrayWithPagingAsync<Promotion>(_jsonSerializer, _batchSize, items => SavePromotionsAsync(items.ToArray(), options, progressCallback), processedCount =>
                             {
                                 progressInfo.Description = $"{ processedCount } promotions have been imported";
                                 progressCallback(progressInfo);
@@ -237,12 +237,12 @@ namespace VirtoCommerce.MarketingModule.Data.ExportImport
             }
         }
 
-        protected virtual Task<PromotionSearchResult>  LoadPromotionsPageAsync(int skip, int take)
+        protected virtual Task<PromotionSearchResult>  LoadPromotionsPageAsync(int skip, int take, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback)
         {
             return  _promotionSearchService.SearchPromotionsAsync(new PromotionSearchCriteria { Skip = skip, Take = take });
         }
 
-        protected virtual Task SavePromotionsAsync(Promotion[] promotions)
+        protected virtual Task SavePromotionsAsync(Promotion[] promotions, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback)
         {
             return _promotionService.SavePromotionsAsync(promotions);
         }
