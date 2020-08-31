@@ -18,7 +18,8 @@ VirtoCommerce.Marketing module represents a marketing management system.
 ## Installation
 Installing the module:
 * Automatically: in VC Manager go to Configuration -> Modules -> Marketing module -> Install
-* Manually: download module zip package from https://github.com/VirtoCommerce/vc-module-marketing/releases. In VC Manager go to Configuration -> Modules -> Advanced -> upload module package -> Install.
+* Manually: download module zip package from https://github.com/VirtoCommerce/vc-module-marketing/releases. 
+* In VC Manager go to Configuration -> Modules -> Advanced -> upload module package -> Install.
 
 ## Available resources
 
