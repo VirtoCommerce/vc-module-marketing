@@ -101,7 +101,7 @@ In order to add a real advertising content, the user should do the following:
 1. Insert the code into HTML text box and save the changes;
 1. The new content will appear immediately on the web page.  
 
-![Fig. Advertising Sport](docs/media/screen-advertising-spot.png)
+![Fig. Advertising Sport](media/screen-advertising-spot.png)
 
 ## Promotions
 
