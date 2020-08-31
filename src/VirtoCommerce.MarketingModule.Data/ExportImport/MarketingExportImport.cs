@@ -53,7 +53,7 @@ namespace VirtoCommerce.MarketingModule.Data.ExportImport
             _folderSearchService = folderSearchService;
         }
 
-        public async Task DoExportAsync(Stream outStream, Action<ExportImportProgressInfo> progressCallback,
+        public virtual async Task DoExportAsync(Stream outStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback,
             ICancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -71,7 +71,7 @@ namespace VirtoCommerce.MarketingModule.Data.ExportImport
                 await writer.WritePropertyNameAsync("Promotions");
 
                 await writer.SerializeJsonArrayWithPagingAsync(_jsonSerializer, _batchSize, async (skip, take) =>
-                    (GenericSearchResult<Promotion>)await _promotionSearchService.SearchPromotionsAsync(new PromotionSearchCriteria { Skip = skip, Take = take })
+                    (GenericSearchResult<Promotion>)await LoadPromotionsPageAsync(skip, take)
                 , (processedCount, totalCount) =>
                 {
                     progressInfo.Description = $"{ processedCount } of { totalCount } promotions have been exported";
@@ -161,7 +161,7 @@ namespace VirtoCommerce.MarketingModule.Data.ExportImport
             }
         }
 
-        public async Task DoImportAsync(Stream inputStream, Action<ExportImportProgressInfo> progressCallback,
+        public virtual async Task DoImportAsync(Stream inputStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback,
             ICancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -177,7 +177,7 @@ namespace VirtoCommerce.MarketingModule.Data.ExportImport
                     {
                         if (reader.Value.ToString() == "Promotions")
                         {
-                            await reader.DeserializeJsonArrayWithPagingAsync<Promotion>(_jsonSerializer, _batchSize, items => _promotionService.SavePromotionsAsync(items.ToArray()), processedCount =>
+                            await reader.DeserializeJsonArrayWithPagingAsync<Promotion>(_jsonSerializer, _batchSize, items => SavePromotionsAsync(items.ToArray()), processedCount =>
                             {
                                 progressInfo.Description = $"{ processedCount } promotions have been imported";
                                 progressCallback(progressInfo);
@@ -235,6 +235,16 @@ namespace VirtoCommerce.MarketingModule.Data.ExportImport
                     }
                 }
             }
+        }
+
+        protected virtual Task<PromotionSearchResult>  LoadPromotionsPageAsync(int skip, int take)
+        {
+            return  _promotionSearchService.SearchPromotionsAsync(new PromotionSearchCriteria { Skip = skip, Take = take });
+        }
+
+        protected virtual Task SavePromotionsAsync(Promotion[] promotions)
+        {
+            return _promotionService.SavePromotionsAsync(promotions);
         }
 
         private async Task<IList<DynamicContentFolder>> LoadFoldersRecursiveAsync(DynamicContentFolder folder)
