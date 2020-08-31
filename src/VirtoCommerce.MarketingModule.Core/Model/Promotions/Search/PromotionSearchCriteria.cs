@@ -26,7 +26,8 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions.Search
 
         public virtual void PopulateFromEvalContext(PromotionEvaluationContext context)
         {
-            StoreIds = string.IsNullOrEmpty(context.StoreId) ? null : new[] { context.StoreId };
+            //the Extension point for future extensions
+            //Nothing todo here.
         }
     }
 }

@@ -24,13 +24,13 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         {
             var promoContext = GetPromotionEvaluationContext(context);
 
-            var promotionSearchCriteria = new PromotionSearchCriteria
-            {
-                OnlyActive = true,
-                StoreIds = string.IsNullOrEmpty(promoContext.StoreId) ? null : new[] { promoContext.StoreId },
-                Take = int.MaxValue
-            };
+            var promotionSearchCriteria = AbstractTypeFactory<PromotionSearchCriteria>.TryCreateInstance();
+            promotionSearchCriteria.PopulateFromEvalContext(promoContext);
 
+            promotionSearchCriteria.OnlyActive = true;
+            promotionSearchCriteria.Take = int.MaxValue;
+            promotionSearchCriteria.StoreIds = string.IsNullOrEmpty(promoContext.StoreId) ? null : new[] { promoContext.StoreId };
+         
             var promotions = await _promotionSearchService.SearchPromotionsAsync(promotionSearchCriteria);
 
             var result = new PromotionResult();
