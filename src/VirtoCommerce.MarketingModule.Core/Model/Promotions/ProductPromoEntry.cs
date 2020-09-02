@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 {
-	public class ProductPromoEntry
+    public class ProductPromoEntry : ICloneable
 	{
 		public ProductPromoEntry()
 		{
@@ -24,6 +26,14 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 		public ICollection<ProductPromoEntry> Variations { get; set; }
 
 		public Dictionary<string, string> Attributes { get; set; }
-        
-	}
+
+        public virtual object Clone()
+        {
+            var result = MemberwiseClone() as ProductPromoEntry;
+            result.Variations = Variations?.Select(x => x.Clone()).OfType<ProductPromoEntry>().ToList();
+            result.Attributes = new Dictionary<string, string>(Attributes);
+            return result;
+        }
+
+    }
 }
