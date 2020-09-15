@@ -8,6 +8,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
 {
     public class CouponEntity : AuditableEntity, IHasOuterId
     {
+        [Required]
         [StringLength(64)]
         public string Code { get; set; }
 

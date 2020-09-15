@@ -46,6 +46,11 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
         public async Task SaveCouponsAsync(Coupon[] coupons)
         {
+            if (coupons.Any(x => x.Code.IsNullOrEmpty()))
+            {
+                throw new InvalidOperationException($"Coupon can't have empty code!");
+            }
+
             var pkMap = new PrimaryKeyResolvingMap();
             var changedEntries = new List<GenericChangedEntry<Coupon>>();
             using (var repository = _repositoryFactory())
