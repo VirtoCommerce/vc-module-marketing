@@ -30,7 +30,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             promotionSearchCriteria.OnlyActive = true;
             promotionSearchCriteria.Take = int.MaxValue;
             promotionSearchCriteria.StoreIds = string.IsNullOrEmpty(promoContext.StoreId) ? null : new[] { promoContext.StoreId };
-         
+
             var promotions = await _promotionSearchService.SearchPromotionsAsync(promotionSearchCriteria);
 
             var result = new PromotionResult();
@@ -67,7 +67,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                     var item = promoContext.PromoEntries.FirstOrDefault(x => x.ProductId == groupReward.Key);
                     if (item != null)
                     {
-                        var bestItemReward = GetBestAmountReward(item.Price, groupReward);
+                        var bestItemReward = GetBestAmountReward(item.Price, item.Quantity, groupReward);
                         if (bestItemReward != null)
                         {
                             result.Rewards.Add(bestItemReward);
@@ -95,17 +95,22 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
         protected virtual AmountBasedReward GetBestAmountReward(decimal currentAmount, IEnumerable<AmountBasedReward> reward)
         {
+            return GetBestAmountReward(currentAmount, 1, reward);
+        }
+
+        protected virtual AmountBasedReward GetBestAmountReward(decimal currentAmount, int quantity, IEnumerable<AmountBasedReward> reward)
+        {
             AmountBasedReward retVal = null;
             var maxAbsoluteReward = reward
                 .Where(y => y.AmountType == RewardAmountType.Absolute)
-                .OrderByDescending(y => y.GetRewardAmount(currentAmount, 1)).FirstOrDefault();
+                .OrderByDescending(y => y.GetRewardAmount(currentAmount, quantity)).FirstOrDefault();
 
             var maxRelativeReward = reward
                 .Where(y => y.AmountType == RewardAmountType.Relative)
-                .OrderByDescending(y => y.GetRewardAmount(currentAmount, 1)).FirstOrDefault();
+                .OrderByDescending(y => y.GetRewardAmount(currentAmount, quantity)).FirstOrDefault();
 
-            var absDiscountAmount = maxAbsoluteReward != null ? maxAbsoluteReward.GetRewardAmount(currentAmount, 1) : 0;
-            var relDiscountAmount = maxRelativeReward != null ? currentAmount * maxRelativeReward.GetRewardAmount(currentAmount, 1) : 0;
+            var absDiscountAmount = maxAbsoluteReward != null ? maxAbsoluteReward.GetRewardAmount(currentAmount, quantity) : 0;
+            var relDiscountAmount = maxRelativeReward != null ? currentAmount * maxRelativeReward.GetRewardAmount(currentAmount, quantity) : 0;
 
             if (maxAbsoluteReward != null && maxRelativeReward != null)
             {

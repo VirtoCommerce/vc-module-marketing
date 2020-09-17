@@ -14,6 +14,10 @@ namespace VirtoCommerce.MarketingModule.Test
     [Trait("Category", "CI")]
     public class BestRewardPromotionPolicyTest
     {
+        private const string promoGet_10_off = "Get 10% off on ProductA";
+        private const string promoGet_15_offFor1of2 = "Get 15% off for every 1 of 2 on ProductA";
+        private const string promoGet_25_offFor1of2 = "Get 25% off for every 1 of 2 on ProductA";
+
         [Fact]
         public void EvaluateRewards_ShippingMethodNotSpecified_Counted()
         {
@@ -33,6 +37,32 @@ namespace VirtoCommerce.MarketingModule.Test
             Assert.Equal(2, rewards.Count);
             Assert.Equal(30m, rewards.FirstOrDefault(x => x.Promotion.Id.EqualsInvariant("FedEx Get 30% Off")).Amount);
             Assert.Equal(70m, rewards.FirstOrDefault(x => x.Promotion.Id.EqualsInvariant("Any shipment 70% Off")).Amount);
+        }
+
+        [Theory]
+        [InlineData(1, 10, promoGet_10_off, promoGet_15_offFor1of2)]
+        [InlineData(2, 10, promoGet_10_off, promoGet_15_offFor1of2)]
+        [InlineData(2, 25, promoGet_10_off, promoGet_15_offFor1of2, promoGet_25_offFor1of2)]
+        [InlineData(2, 15, promoGet_15_offFor1of2)]
+        [InlineData(2, 25, promoGet_15_offFor1of2, promoGet_25_offFor1of2)]
+        [InlineData(3, 10, promoGet_10_off, promoGet_25_offFor1of2)]
+        [InlineData(4, 25, promoGet_10_off, promoGet_25_offFor1of2)]
+        [InlineData(7, 25, promoGet_10_off, promoGet_25_offFor1of2)]
+        public void EvaluateRewards_PickBestRelativeDiscount(int quantity, decimal expectedReward, params string[] promotions)
+        {
+            //Arrange            
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions(promotions));
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = quantity };
+            var context = new PromotionEvaluationContext
+            {
+                PromoEntries = new[] { productA }
+            };
+            //Act
+            var rewards = evalPolicy.EvaluatePromotionAsync(context).GetAwaiter().GetResult().Rewards.OfType<CatalogItemAmountReward>().ToList();
+
+            //Assert
+            Assert.Single(rewards);
+            Assert.Equal(expectedReward, rewards.First().Amount);
         }
 
         private static IMarketingPromoEvaluator GetPromotionEvaluationPolicy(IEnumerable<Promotion> promotions)
@@ -71,6 +101,32 @@ namespace VirtoCommerce.MarketingModule.Test
                     },
                     Priority = 2,
                     IsExclusive = false
+                };
+                yield return new MockPromotion
+                {
+                    Id = promoGet_10_off,
+                    Rewards = new[]
+                   {
+                        new CatalogItemAmountReward { Amount = 10, ProductId = "ProductA"}
+                    }
+                };
+                yield return new MockPromotion
+                {
+                    Id = promoGet_15_offFor1of2,
+                    Rewards = new[]
+                   {
+                        new CatalogItemAmountReward { Amount = 15, ForNthQuantity = 1, InEveryNthQuantity = 2, ProductId = "ProductA"  }
+                    },
+                    Priority = 2
+                };
+                yield return new MockPromotion
+                {
+                    Id = promoGet_25_offFor1of2,
+                    Rewards = new[]
+                   {
+                        new CatalogItemAmountReward { Amount = 25, ForNthQuantity = 1, InEveryNthQuantity = 2, ProductId = "ProductA"  }
+                    },
+                    Priority = 2
                 };
             }
         }
