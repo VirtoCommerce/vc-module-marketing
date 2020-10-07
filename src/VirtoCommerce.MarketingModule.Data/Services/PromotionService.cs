@@ -33,7 +33,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         public virtual async Task<Promotion[]> GetPromotionsByIdsAsync(string[] ids)
         {
             var cacheKey = CacheKey.With(GetType(), nameof(GetPromotionsByIdsAsync), string.Join("-", ids));
-            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
+            var result = await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
                 //It is so important to generate change tokens for all ids even for not existing objects to prevent an issue
                 //with caching of empty results for non - existing objects that have the infinitive lifetime in the cache
@@ -46,6 +46,8 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                     return promotionEntities.Select(x => x.ToModel(AbstractTypeFactory<Promotion>.TryCreateInstance())).ToArray();
                 }
             });
+
+            return result.Select(x => x.Clone() as Promotion).ToArray();
         }
 
         public virtual async Task SavePromotionsAsync(Promotion[] promotions)
