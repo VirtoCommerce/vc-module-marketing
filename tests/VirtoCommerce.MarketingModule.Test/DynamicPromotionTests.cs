@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Moq;
+using VirtoCommerce.CoreModule.Core.Conditions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
+using VirtoCommerce.MarketingModule.Core.Model.Promotions.Conditions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Promotions;
 using VirtoCommerce.MarketingModule.Core.Search;
-using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Testing;
 using Xunit;
 
 namespace VirtoCommerce.MarketingModule.Test
@@ -73,6 +75,66 @@ namespace VirtoCommerce.MarketingModule.Test
 
             //Assert
             Assert.Equal(expectedCouponsCount, validCoupons.Count());
+        }
+
+        [Fact]
+        public void DynamicPromotion_Clone()
+        {
+
+            var blockCustomer = new BlockCustomerCondition()
+                    .WithAvailConditions(
+                        new ConditionIsRegisteredUser(),
+                        new ConditionIsEveryone(),
+                        new ConditionIsFirstTimeBuyer(),
+                        new UserGroupsContainsCondition() { Group = "11" }
+                     );
+            var blockCatalog = new BlockCatalogCondition()
+                    .WithAvailConditions(
+                        new ConditionCategoryIs() { CategoryId = "11", CategoryName = "", ExcludingCategoryIds = new string[] { "1", "2" }, ExcludingProductIds = new string[] { "3", "4" } },
+                        new ConditionCodeContains() { Keyword = "keyword" },
+                        new ConditionCurrencyIs() { Currency = "USD" },
+                        new ConditionEntryIs() { ProductIds = new string[] { "1", "2" }, ProductNames = new string[] { "name1", "name2" } },
+                        new ConditionInStockQuantity() { CompareCondition = "CND", Quantity = 111, QuantitySecond = 222 },
+                        new ConditionHasNoSalePrice()
+                     );
+            var blockCart = new BlockCartCondition()
+                    .WithAvailConditions(
+                        new ConditionAtNumItemsInCart() { CompareCondition = "CND", ExcludingCategoryIds = new string[] { "1", "2" }, ExcludingProductIds = new string[] { "3", "4" }, NumItem = 111, NumItemSecond = 222 },
+                        new ConditionAtNumItemsInCategoryAreInCart() { CategoryId = "catid", CategoryName = "catname", CompareCondition = "CND", ExcludingCategoryIds = new string[] { "1", "2" }, ExcludingProductIds = new string[] { "3", "4" }, NumItem = 111, NumItemSecond = 222 },
+                        new ConditionAtNumItemsOfEntryAreInCart() { CompareCondition = "CND", NumItem = 111, NumItemSecond = 222, ProductId = "Id", ProductName = "Name" },
+                        new ConditionCartSubtotalLeast() { CompareCondition = "CND", ExcludingCategoryIds = new string[] { "1", "2" }, ExcludingProductIds = new string[] { "3", "4" }, SubTotal = 111, SubTotalSecond = 222 }
+                     );
+            var blockReward = new BlockReward()
+                    .WithAvailConditions(
+                      new RewardCartGetOfAbsSubtotal() { Amount = 444 },
+                      new RewardCartGetOfRelSubtotal() { Amount = 444, MaxLimit = 555 },
+                      new RewardItemGetFreeNumItemOfProduct() { NumItem = 55, ProductId = "Id", ProductName = "Name" },
+                      new RewardItemGetOfAbs() { Amount = 444, ProductId = "Id", ProductName = "Name" },
+                      new RewardItemGetOfAbsForNum() { Amount = 444, ProductId = "Id", ProductName = "Name", NumItem = 23 },
+                      new RewardItemGetOfRel() { Amount = 444, ProductId = "Id", ProductName = "Name", MaxLimit = 23 },
+                      new RewardItemGetOfRelForNum() { Amount = 444, ProductId = "Id", ProductName = "Name", MaxLimit = 23, NumItem = 32 },
+                      new RewardItemGiftNumItem() { CategoryId = "catid", CategoryName = "catname", Description = "description", ProductId = "productId", ProductName = "ptoductName", Name = "Name", ImageUrl = "url:\\", MeasureUnit = "px", Quantity = 33 },
+                      new RewardShippingGetOfAbsShippingMethod() { Amount = 444, ShippingMethod = "shipMethod" },
+                      new RewardShippingGetOfRelShippingMethod() { Amount = 444, ShippingMethod = "shipMethod", MaxLimit = 22 },
+                      new RewardPaymentGetOfAbs() { Amount = 444, PaymentMethod = "payMethod" },
+                      new RewardPaymentGetOfRel() { Amount = 444, PaymentMethod = "payMethod", MaxLimit = 22 },
+                      new RewardItemForEveryNumInGetOfRel() { Amount = 444, ForNthQuantity = 77, InEveryNthQuantity = 78, MaxLimit = 22, ItemLimit = 23, Product = new ProductContainer() { ProductId = "prodID", ProductName = "prodName" } },
+                      new RewardItemForEveryNumOtherItemInGetOfRel() { Amount = 444, ForNthQuantity = 77, InEveryNthQuantity = 78, MaxLimit = 22, ItemLimit = 23, Product = new ProductContainer() { ProductId = "prodID", ProductName = "prodName" }, ConditionalProduct = new ProductContainer() { ProductId = "condProdID", ProductName = "condProdName" } }
+                    );
+
+
+            var dynamicPromotion = new DynamicPromotion
+            {
+                DynamicExpression = AbstractTypeFactory<PromotionConditionAndRewardTree>.TryCreateInstance()
+            };
+            dynamicPromotion.DynamicExpression.WithChildrens(
+                blockCustomer,
+                blockCatalog,
+                blockCart,
+                blockReward
+                );
+
+            dynamicPromotion.AssertCloneIndependency();
         }
 
         private DynamicPromotionMoq CreateDynamicPromotion(int totalUses, Coupon testCoupon)
