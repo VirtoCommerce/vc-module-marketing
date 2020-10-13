@@ -84,10 +84,11 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 }
                 await repository.UnitOfWork.CommitAsync();
                 pkMap.ResolvePrimaryKeys();
+
+                CouponCacheRegion.ExpireRegion();
+
                 await _eventPublisher.Publish(new CouponChangedEvent(changedEntries));
             }
-
-            CouponCacheRegion.ExpireRegion();
         }
 
         public async Task DeleteCouponsAsync(string[] ids)

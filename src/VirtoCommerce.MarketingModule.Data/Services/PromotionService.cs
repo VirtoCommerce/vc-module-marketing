@@ -78,10 +78,11 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 }
                 await repository.UnitOfWork.CommitAsync();
                 pkMap.ResolvePrimaryKeys();
+
+                ClearCache(promotions.Select(x => x.Id).ToArray());
+
                 await _eventPublisher.Publish(new PromotionChangedEvent(changedEntries));
             }
-
-            ClearCache(promotions.Select(x => x.Id).ToArray());
         }
 
         public virtual async Task DeletePromotionsAsync(string[] ids)
@@ -97,11 +98,12 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                     emptyPromotion.Id = id;
                     changedEntries.Add(new GenericChangedEntry<Promotion>(emptyPromotion, EntryState.Deleted));
                 }
+
+                ClearCache(ids);
+
                 //Raise domain events after deletion
                 await _eventPublisher.Publish(new PromotionChangedEvent(changedEntries));
             }
-
-            ClearCache(ids);
         }
 
         #endregion

@@ -78,10 +78,11 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 }
                 await repository.UnitOfWork.CommitAsync();
                 pkMap.ResolvePrimaryKeys();
+
+                ClearCache(usages);
+
                 await _eventPublisher.Publish(new PromotionUsageChangedEvent(changedEntries));
             }
-
-            ClearCache(usages);
         }
 
         public virtual async Task DeleteUsagesAsync(string[] ids)
