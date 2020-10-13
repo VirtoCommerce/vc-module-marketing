@@ -77,10 +77,11 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
                 await repository.UnitOfWork.CommitAsync();
                 pkMap.ResolvePrimaryKeys();
+
+                DynamicContentItemCacheRegion.ExpireRegion();
+
                 await _eventPublisher.Publish(new DynamicContentItemChangedEvent(changedEntries));
             }
-
-            DynamicContentItemCacheRegion.ExpireRegion();
         }
 
         public async Task DeleteContentItemsAsync(string[] ids)
@@ -92,9 +93,10 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 await repository.RemoveContentItemsAsync(ids);
                 await repository.UnitOfWork.CommitAsync();
             }
-            await _eventPublisher.Publish(new DynamicContentItemChangedEvent(changedEntries));
 
             DynamicContentItemCacheRegion.ExpireRegion();
+
+            await _eventPublisher.Publish(new DynamicContentItemChangedEvent(changedEntries));
         }
 
         #endregion
@@ -145,10 +147,11 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
                 await repository.UnitOfWork.CommitAsync();
                 pkMap.ResolvePrimaryKeys();
+
+                DynamicContentPlaceCacheRegion.ExpireRegion();
+
                 await _eventPublisher.Publish(new DynamicContentPlaceChangedEvent(changedEntries));
             }
-
-            DynamicContentPlaceCacheRegion.ExpireRegion();
         }
 
         public async Task DeletePlacesAsync(string[] ids)
@@ -208,10 +211,11 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 }
                 await repository.UnitOfWork.CommitAsync();
                 pkMap.ResolvePrimaryKeys();
+
+                DynamicContentPublicationCacheRegion.ExpireRegion();
+
                 await _eventPublisher.Publish(new DynamicContentPublicationChangedEvent(changedEntries));
             }
-
-            DynamicContentPublicationCacheRegion.ExpireRegion();
         }
 
         public async Task DeletePublicationsAsync(string[] ids)
@@ -271,10 +275,11 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 }
                 await repository.UnitOfWork.CommitAsync();
                 pkMap.ResolvePrimaryKeys();
+
+                DynamicContentFolderCacheRegion.ExpireRegion();
+
                 await _eventPublisher.Publish(new DynamicContentFolderChangedEvent(changedEntries));
             }
-
-            DynamicContentFolderCacheRegion.ExpireRegion();
         }
 
         public async Task DeleteFoldersAsync(string[] ids)
