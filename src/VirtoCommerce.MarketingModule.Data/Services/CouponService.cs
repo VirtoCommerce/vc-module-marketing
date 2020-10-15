@@ -53,6 +53,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
             var pkMap = new PrimaryKeyResolvingMap();
             var changedEntries = new List<GenericChangedEntry<Coupon>>();
+            
             using (var repository = _repositoryFactory())
             {
                 var existCouponEntities = await repository.GetCouponsByIdsAsync(coupons.Where(x => !x.IsTransient()).Select(x => x.Id).ToArray());
@@ -85,7 +86,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 await repository.UnitOfWork.CommitAsync();
                 pkMap.ResolvePrimaryKeys();
 
-                CouponCacheRegion.ExpireRegion();
+                ClearCache(coupons.Select(x => x.PromotionId).ToArray());
 
                 await _eventPublisher.Publish(new CouponChangedEvent(changedEntries));
             }
@@ -99,9 +100,19 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 await repository.UnitOfWork.CommitAsync();
             }
 
-            CouponCacheRegion.ExpireRegion();
+            ClearCache();
         }
 
+        private void ClearCache(string[] promotionIds = null)
+        {
+            CouponCacheRegion.ExpireRegion();
+            PromotionSearchCacheRegion.ExpireRegion();
+
+            if (promotionIds != null)
+            {
+                PromotionCacheRegion.ExpirePromotions(promotionIds);
+            }
+        }
         #endregion
     }
 }
