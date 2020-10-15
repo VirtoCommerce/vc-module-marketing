@@ -99,6 +99,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 await repository.RemoveCouponsAsync(ids);
                 await repository.UnitOfWork.CommitAsync();
             }
+
             ClearCache();
         }
 
@@ -106,6 +107,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         {
             CouponCacheRegion.ExpireRegion();
             PromotionSearchCacheRegion.ExpireRegion();
+
             if (promotionIds != null)
             {
                 PromotionCacheRegion.ExpirePromotions(promotionIds);
