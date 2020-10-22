@@ -12,17 +12,32 @@ angular.module('virtoCommerce.marketingModule')
             blade.showPriority = data.value === 'CombineStackable';
         });
         blade.refresh = function (parentRefresh) {
-            $scope.stores = stores.query({}, function(data) {
-                _.each(data, function(store) {
-                    var storeId = store.id;
-                    shippingMethods.search({ storeId }, function (shippingMethodsData) {
-                        store.shippingMethods = _.findWhere(shippingMethodsData.results, { isActive: true }) || [];
-                    });
 
-                    paymentMethods.search({ storeId }, function (paymentMethodsData) {
-                        store.paymentMethods = _.findWhere(paymentMethodsData.results, { isActive: true }) || [];
-                    });
-                })
+            var shippingMethodsPromise = !blade.shippingMethods
+                ? shippingMethods.getAllRegistered(function (methods) {
+                        blade.shippingMethods = _.uniq(methods, method => method.code);
+                    })
+                    .$promise
+                : $q.when();
+
+            var paymentMethodsPromise = !blade.paymentMethods
+                ? paymentMethods.getAllRegistered(function (methods) {
+                        blade.paymentMethods = _.uniq(methods, method => method.code);
+                    })
+                    .$promise
+                : $q.when();
+
+            // VP-5647: Wait for payment/shipment method loading before requesting stores and initialize dynamic tree
+            $q.all(shippingMethodsPromise, paymentMethodsPromise).then(() => initializeStores(parentRefresh));        
+        };
+
+        function initializeStores(parentRefresh) {
+            $scope.stores = stores.query({}, function (data) {
+                _.each(data, function (store) {
+                    // VP-5647: Left for backward compatibility, as virtoCommerce.dynamicExpressions.shippingMethodRewardController in Core module expects these properties to be filled in the store
+                    store.shippingMethods = blade.shippingMethods || [];
+                    store.paymentMethods = blade.paymentMethods || [];
+                });
 
                 if (blade.isNew) {
                     if (blade.isCloning) {
@@ -41,9 +56,7 @@ angular.module('virtoCommerce.marketingModule')
                     });
                 }
             });
-
-            
-        };
+        }
 
         function initializeBlade(data) {
             if (!blade.isNew) {
