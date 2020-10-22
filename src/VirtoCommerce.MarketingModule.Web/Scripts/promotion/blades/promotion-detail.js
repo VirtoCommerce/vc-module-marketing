@@ -12,20 +12,17 @@ angular.module('virtoCommerce.marketingModule')
             blade.showPriority = data.value === 'CombineStackable';
         });
         blade.refresh = function (parentRefresh) {
-            const maxMethodsCount = 10000;
 
             var shippingMethodsPromise = !blade.shippingMethods
-                ? shippingMethods.search({ isActive: true, take: maxMethodsCount },
-                    function (data) {
-                        blade.shippingMethods = _.uniq(data.results, method => method.code);
+                ? shippingMethods.getAllRegistered(function (methods) {
+                        blade.shippingMethods = _.uniq(methods, method => method.code);
                     })
                     .$promise
                 : $q.when();
 
             var paymentMethodsPromise = !blade.paymentMethods
-                ? paymentMethods.search({ isActive: true, take: maxMethodsCount },
-                    function (data) {
-                        blade.paymentMethods = _.uniq(data.results, method => method.code);
+                ? paymentMethods.getAllRegistered(function (methods) {
+                        blade.paymentMethods = _.uniq(methods, method => method.code);
                     })
                     .$promise
                 : $q.when();
