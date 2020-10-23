@@ -16,6 +16,10 @@ angular.module('virtoCommerce.marketingModule')
             var shippingMethodsPromise = !blade.shippingMethods
                 ? shippingMethods.getAllRegistered(function (methods) {
                         blade.shippingMethods = _.uniq(methods, method => method.code);
+                        // VP-5647: Need to fill `method.id` for proper work of methods selectors UI template from core module (e.g. expression-RewardShippingGetOfAbsShippingMethod.html)
+                        _.each(blade.shippingMethods, function (method) {
+                            method.id = method.id ? method.id : method.code;
+                        });
                     })
                     .$promise
                 : $q.when();
@@ -23,6 +27,10 @@ angular.module('virtoCommerce.marketingModule')
             var paymentMethodsPromise = !blade.paymentMethods
                 ? paymentMethods.getAllRegistered(function (methods) {
                         blade.paymentMethods = _.uniq(methods, method => method.code);
+                        // VP-5647: Need to fill `method.id` for proper work of methods selectors UI template from core module (e.g. expression-RewardShippingGetOfAbsShippingMethod.html)
+                        _.each(blade.paymentMethods, function (method) {
+                            method.id = method.id ? method.id : method.code;
+                        });
                     })
                     .$promise
                 : $q.when();
