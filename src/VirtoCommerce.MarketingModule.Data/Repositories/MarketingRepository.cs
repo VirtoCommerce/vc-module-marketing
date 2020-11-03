@@ -121,7 +121,13 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
 
         public Task RemoveFoldersAsync(string[] ids)
         {
-            return GenericMassRemove<DynamicContentFolderEntity>(ids);
+            var itemsToDelete = Folders.Where(x => ids.Contains(x.Id));
+            foreach (var dynamicContentFolderEntity in itemsToDelete)
+            {
+                Remove(dynamicContentFolderEntity);
+            }
+
+            return Task.CompletedTask;
         }
 
 
