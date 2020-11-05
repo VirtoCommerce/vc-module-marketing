@@ -283,30 +283,31 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
         public async Task DeleteFoldersAsync(string[] ids)
         {
-
-            await RemoveChildren(ids);
-
             using (var repository = _repositoryFactory())
             {
-                await repository.RemoveFoldersAsync(ids);
+                var itemsToDelete = repository.Folders.Where(x => ids.Contains(x.Id)).ToArray();
+                await RemoveChildren(itemsToDelete, repository); 
+                await repository.RemoveFoldersAsync(itemsToDelete);
+                await repository.UnitOfWork.CommitAsync();
             }
 
             DynamicContentFolderCacheRegion.ExpireRegion();
         }
 
-        private async Task RemoveChildren(string[] ids)
+        private async Task RemoveChildren(DynamicContentFolderEntity[] folders, IMarketingRepository repository)
         {
-            using (var repository = _repositoryFactory())
-            {
-                var children  = repository.Folders.Where(x => ids.Contains(x.ParentFolderId)).ToArray();
+                var childrenIds  = repository.Folders
+                    .Where(x => folders
+                        .Select(q=>q.Id)
+                        .Contains(x.ParentFolderId))
+                    .ToArray();
 
-                if (!children.IsNullOrEmpty())
+                if (!childrenIds.IsNullOrEmpty())
                 {
-                    await RemoveChildren(children.Select(x => x.Id).ToArray());
+                    await RemoveChildren(childrenIds, repository);
                 }
 
-                await repository.RemoveFoldersAsync(ids);
-            }
+                await repository.RemoveFoldersAsync(folders);
         }
 
         #endregion
