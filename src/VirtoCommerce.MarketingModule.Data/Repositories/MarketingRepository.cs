@@ -124,6 +124,12 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
             return GenericMassRemove<DynamicContentFolderEntity>(ids);
         }
 
+        public Task RemoveFoldersAsync(DynamicContentFolderEntity[] folderEntities )
+        {
+            DbContext.RemoveRange(folderEntities);
+
+            return Task.CompletedTask;
+        }
 
         public Task RemoveContentPublicationsAsync(string[] ids)
         {

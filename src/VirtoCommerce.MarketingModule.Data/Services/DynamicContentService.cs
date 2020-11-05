@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
-using Newtonsoft.Json;
 using VirtoCommerce.MarketingModule.Core.Events;
 using VirtoCommerce.MarketingModule.Core.Model;
 using VirtoCommerce.MarketingModule.Core.Services;
@@ -286,11 +285,29 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         {
             using (var repository = _repositoryFactory())
             {
-                await repository.RemoveFoldersAsync(ids);
+                var itemsToDelete = repository.Folders.Where(x => ids.Contains(x.Id)).ToArray();
+                await RemoveChildren(itemsToDelete, repository); 
+                await repository.RemoveFoldersAsync(itemsToDelete);
                 await repository.UnitOfWork.CommitAsync();
             }
 
             DynamicContentFolderCacheRegion.ExpireRegion();
+        }
+
+        private async Task RemoveChildren(DynamicContentFolderEntity[] folders, IMarketingRepository repository)
+        {
+                var childrenIds  = repository.Folders
+                    .Where(x => folders
+                        .Select(q=>q.Id)
+                        .Contains(x.ParentFolderId))
+                    .ToArray();
+
+                if (!childrenIds.IsNullOrEmpty())
+                {
+                    await RemoveChildren(childrenIds, repository);
+                }
+
+                await repository.RemoveFoldersAsync(folders);
         }
 
         #endregion
