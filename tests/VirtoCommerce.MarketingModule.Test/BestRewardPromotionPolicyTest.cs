@@ -65,6 +65,26 @@ namespace VirtoCommerce.MarketingModule.Test
             Assert.Equal(expectedReward, rewards.First().Amount);
         }
 
+        [Fact]
+        public void EvaluatePromotion_GetBestPaymentReward()
+        {
+            //Agganre
+            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("Get 5$ Off payment method PayPal"));
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
+            var context = new PromotionEvaluationContext
+            {
+                ShipmentMethodCode = "PayPal",
+                ShipmentMethodPrice = 5m,
+                PromoEntries = new[] { productA }
+            };
+
+            //Act
+            var rewards = evalPolicy.EvaluatePromotionAsync(context).GetAwaiter().GetResult().Rewards.OfType<PaymentReward>().ToList();
+
+            //Assert
+            Assert.Equal(5m, rewards.First().Amount);
+        }
+
         private static IMarketingPromoEvaluator GetPromotionEvaluationPolicy(IEnumerable<Promotion> promotions)
         {
 
@@ -127,6 +147,16 @@ namespace VirtoCommerce.MarketingModule.Test
                         new CatalogItemAmountReward { Amount = 25, ForNthQuantity = 1, InEveryNthQuantity = 2, ProductId = "ProductA"  }
                     },
                     Priority = 2
+                };
+                yield return new MockPromotion
+                {
+                    Id = "Get 5$ Off payment method PayPal",
+                    Rewards = new[]
+                   {
+                        new PaymentReward { PaymentMethod = "PayPal", Amount = 5, AmountType = RewardAmountType.Absolute, IsValid = true  }
+                    },
+                    Priority = 2,
+                    IsExclusive = false
                 };
             }
         }
