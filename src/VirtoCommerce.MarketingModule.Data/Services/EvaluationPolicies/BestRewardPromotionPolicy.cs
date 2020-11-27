@@ -59,6 +59,19 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                     }
                 }
 
+                //best payment promotion
+                var currentPaymentAmount = promoContext.PaymentMethodCode != null ? promoContext.PaymentMethodPrice : 0m;
+                var allPaymentRewards = rewards.OfType<PaymentReward>().ToArray();
+                var groupedByPaymentMethodRewards = allPaymentRewards.GroupBy(x => x.PaymentMethod);
+                foreach (var paymentRewards in groupedByPaymentMethodRewards)
+                {
+                    var bestPaymentReward = GetBestAmountReward(currentPaymentAmount, paymentRewards);
+                    if (bestPaymentReward != null)
+                    {
+                        result.Rewards.Add(bestPaymentReward);
+                    }
+                }
+
                 //best catalog item promotion
                 var allItemsRewards = rewards.OfType<CatalogItemAmountReward>().ToArray();
                 var groupRewards = allItemsRewards.GroupBy(x => x.ProductId).Where(x => x.Key != null);

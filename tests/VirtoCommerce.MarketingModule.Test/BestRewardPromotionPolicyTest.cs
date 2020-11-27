@@ -3,6 +3,7 @@ using System.Linq;
 using Moq;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
+using VirtoCommerce.MarketingModule.Core.Promotions;
 using VirtoCommerce.MarketingModule.Core.Search;
 using VirtoCommerce.MarketingModule.Core.Services;
 using VirtoCommerce.MarketingModule.Data.Services;
@@ -63,6 +64,34 @@ namespace VirtoCommerce.MarketingModule.Test
             //Assert
             Assert.Single(rewards);
             Assert.Equal(expectedReward, rewards.First().Amount);
+        }
+
+        [Fact]
+        public void EvaluatePromotion_GetBestPaymentReward()
+        {
+            //Agganre
+            var blockReward = new BlockReward().WithChildrens(new RewardPaymentGetOfAbs() { Amount = 10m, PaymentMethod = "PayTest" });
+            var dynamicPromotion = new DynamicPromotion
+            {
+                DynamicExpression = AbstractTypeFactory<PromotionConditionAndRewardTree>.TryCreateInstance()
+            };
+            dynamicPromotion.DynamicExpression.WithChildrens(blockReward);
+
+            var evalPolicy = GetPromotionEvaluationPolicy(new[] { dynamicPromotion });
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
+            var context = new PromotionEvaluationContext
+            {
+                PaymentMethodCode = "PayTest",
+                PaymentMethodPrice = 5m,
+                PromoEntries = new[] { productA }
+            };
+            
+            //Act
+            var rewards = evalPolicy.EvaluatePromotionAsync(context).GetAwaiter().GetResult().Rewards.OfType<PaymentReward>().ToList();
+
+            //Assert
+            Assert.Equal(10m, rewards.First().Amount);
+            Assert.True(rewards.First().IsValid);
         }
 
         private static IMarketingPromoEvaluator GetPromotionEvaluationPolicy(IEnumerable<Promotion> promotions)
