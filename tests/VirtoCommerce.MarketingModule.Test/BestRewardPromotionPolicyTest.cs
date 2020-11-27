@@ -3,6 +3,7 @@ using System.Linq;
 using Moq;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
+using VirtoCommerce.MarketingModule.Core.Promotions;
 using VirtoCommerce.MarketingModule.Core.Search;
 using VirtoCommerce.MarketingModule.Core.Services;
 using VirtoCommerce.MarketingModule.Data.Services;
@@ -69,20 +70,28 @@ namespace VirtoCommerce.MarketingModule.Test
         public void EvaluatePromotion_GetBestPaymentReward()
         {
             //Agganre
-            var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("Get 5$ Off payment method PayPal"));
+            var blockReward = new BlockReward().WithChildrens(new RewardPaymentGetOfAbs() { Amount = 10m, PaymentMethod = "PayTest" });
+            var dynamicPromotion = new DynamicPromotion
+            {
+                DynamicExpression = AbstractTypeFactory<PromotionConditionAndRewardTree>.TryCreateInstance()
+            };
+            dynamicPromotion.DynamicExpression.WithChildrens(blockReward);
+
+            var evalPolicy = GetPromotionEvaluationPolicy(new[] { dynamicPromotion });
             var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
             var context = new PromotionEvaluationContext
             {
-                ShipmentMethodCode = "PayPal",
-                ShipmentMethodPrice = 5m,
+                PaymentMethodCode = "PayTest",
+                PaymentMethodPrice = 5m,
                 PromoEntries = new[] { productA }
             };
-
+            
             //Act
             var rewards = evalPolicy.EvaluatePromotionAsync(context).GetAwaiter().GetResult().Rewards.OfType<PaymentReward>().ToList();
 
             //Assert
-            Assert.Equal(5m, rewards.First().Amount);
+            Assert.Equal(10m, rewards.First().Amount);
+            Assert.True(rewards.First().IsValid);
         }
 
         private static IMarketingPromoEvaluator GetPromotionEvaluationPolicy(IEnumerable<Promotion> promotions)
@@ -147,16 +156,6 @@ namespace VirtoCommerce.MarketingModule.Test
                         new CatalogItemAmountReward { Amount = 25, ForNthQuantity = 1, InEveryNthQuantity = 2, ProductId = "ProductA"  }
                     },
                     Priority = 2
-                };
-                yield return new MockPromotion
-                {
-                    Id = "Get 5$ Off payment method PayPal",
-                    Rewards = new[]
-                   {
-                        new PaymentReward { PaymentMethod = "PayPal", Amount = 5, AmountType = RewardAmountType.Absolute, IsValid = true  }
-                    },
-                    Priority = 2,
-                    IsExclusive = false
                 };
             }
         }
