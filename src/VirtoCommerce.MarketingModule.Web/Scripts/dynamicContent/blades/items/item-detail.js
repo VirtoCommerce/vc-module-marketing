@@ -35,7 +35,9 @@ angular.module('virtoCommerce.marketingModule')
             // Changes check method ensures the fact of different presentation way of dynamic properties:
             // In the whole object and dynamic properties thru va-generic-value-input template directive
             var result = angular.equals(_.omit(blade.origEntity, ['dynamicProperties']), _.omit(blade.currentEntity, ['dynamicProperties']));
-            result = result && blade.origEntity.dynamicProperties[0].values[0].valueId == blade.currentEntity.dynamicProperties[0].values[0].value.id;            
+            if (blade.origEntity.dynamicProperties && blade.currentEntity.dynamicProperties) {
+                result = result && blade.origEntity.dynamicProperties[0].values[0].valueId == blade.currentEntity.dynamicProperties[0].values[0].value.id;
+            }
             return !result;
         };
        
