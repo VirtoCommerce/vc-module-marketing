@@ -30,6 +30,14 @@ angular.module('virtoCommerce.marketingModule')
             }
 
         };
+
+        blade.IsChanged = function () {
+            // Changes check method ensures the fact of different presentation way of dynamic properties:
+            // In the whole object and dynamic properties thru va-generic-value-input template directive
+            var result = angular.equals(_.omit(blade.origEntity, ['dynamicProperties']), _.omit(blade.currentEntity, ['dynamicProperties']));
+            result = result && blade.origEntity.dynamicProperties[0].values[0].valueId == blade.currentEntity.dynamicProperties[0].values[0].value.id;            
+            return !result;
+        };
        
         blade.initialize = function () {
             blade.toolbarCommands = [];
@@ -44,7 +52,7 @@ angular.module('virtoCommerce.marketingModule')
                             blade.saveChanges();
                         },
                         canExecuteMethod: function () {
-                            return !angular.equals(blade.origEntity, blade.currentEntity) && $scope.formScope.$valid;
+                            return blade.IsChanged() && $scope.formScope.$valid;
                         },
                         permission: blade.updatePermission
                     },
@@ -54,7 +62,7 @@ angular.module('virtoCommerce.marketingModule')
                             angular.copy(blade.origEntity, blade.currentEntity);
                         },
                         canExecuteMethod: function () {
-                            return !angular.equals(blade.origEntity, blade.currentEntity);
+                            return blade.IsChanged();
                         },
                         permission: blade.updatePermission
                     },
@@ -141,7 +149,9 @@ angular.module('virtoCommerce.marketingModule')
         };
 
         $scope.getDictionaryValues = function (property, callback) {
+
             dictionaryItemsApi.query({ id: property.objectType, propertyId: property.id }, callback);
+
         };
 
         $scope.setForm = function (form) { $scope.formScope = form; };
