@@ -11,7 +11,7 @@ namespace VirtoCommerce.MarketingModule.Web.JsonConverters
 {
     public class PolymorphicMarketingJsonConverter : JsonConverter
     {
-        private static Type[] _knownTypes = { typeof(Promotion), typeof(DynamicPromotion), typeof(PromotionSearchCriteria), typeof(PromotionEvaluationContext) };
+        private static Type[] _knownTypes = { typeof(Coupon), typeof(Promotion), typeof(DynamicPromotion), typeof(PromotionSearchCriteria), typeof(PromotionEvaluationContext) };
 
         #region Overrides of JsonConverter
 
