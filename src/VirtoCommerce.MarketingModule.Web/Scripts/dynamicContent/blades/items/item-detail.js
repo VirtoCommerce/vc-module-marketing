@@ -34,9 +34,16 @@ angular.module('virtoCommerce.marketingModule')
         blade.IsChanged = function () {
             // Changes check method ensures the fact of different presentation way of dynamic properties:
             // In the whole object and dynamic properties thru va-generic-value-input template directive
-            var result = angular.equals(_.omit(blade.origEntity, ['dynamicProperties']), _.omit(blade.currentEntity, ['dynamicProperties']));
-            if (blade.origEntity.dynamicProperties && blade.currentEntity.dynamicProperties) {
-                result = result && blade.origEntity.dynamicProperties[0].values[0].valueId == blade.currentEntity.dynamicProperties[0].values[0].value.id;
+            // First check objects for full equivalence
+            var result = angular.equals(blade.origEntity, blade.currentEntity);
+            if (!result) {
+                // Check possibility they are really equivalent but have a different representation of dynamic property value
+                result = angular.equals(_.omit(blade.origEntity, ['dynamicProperties']), _.omit(blade.currentEntity, ['dynamicProperties']));
+                if (blade.origEntity.dynamicProperties && blade.currentEntity.dynamicProperties &&
+                    blade.origEntity.dynamicProperties.length > 0 && blade.currentEntity.dynamicProperties.length > 0 &&
+                    blade.origEntity.dynamicProperties[0].values.length > 0 && blade.currentEntity.dynamicProperties[0].values.length > 0 ) {
+                    result = result && blade.origEntity.dynamicProperties[0].values[0].valueId == blade.currentEntity.dynamicProperties[0].values[0].value.id;
+                }
             }
             return !result;
         };
