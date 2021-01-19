@@ -68,12 +68,12 @@ namespace VirtoCommerce.MarketingModule.Data.Handlers
 
         private async Task RecordUsages(string objectId, IEnumerable<PromotionUsage> oldUsages, IEnumerable<PromotionUsage> newUsages)
         {
-            var toAddUsages = newUsages.Except(oldUsages, EqualityComparer);
+            var toAddUsages = newUsages.Except(oldUsages, EqualityComparer).ToArray();
             var toRemoveUsages = oldUsages.Except(newUsages, EqualityComparer);
             if (!toAddUsages.IsNullOrEmpty())
             {
                 await ValidateUsagesAndThrow(toAddUsages);
-                await _usageService.SaveUsagesAsync(toAddUsages.ToArray());
+                await _usageService.SaveUsagesAsync(toAddUsages);
             }
             if (!toRemoveUsages.IsNullOrEmpty())
             {
@@ -82,7 +82,7 @@ namespace VirtoCommerce.MarketingModule.Data.Handlers
             }
         }
 
-        private async Task ValidateUsagesAndThrow(IEnumerable<PromotionUsage> usages)
+        private async Task ValidateUsagesAndThrow(IReadOnlyCollection<PromotionUsage> usages)
         {
             var invalidUsage = usages.FirstOrDefault(x => x.PromotionId.IsNullOrEmpty());
             if (invalidUsage != null)
