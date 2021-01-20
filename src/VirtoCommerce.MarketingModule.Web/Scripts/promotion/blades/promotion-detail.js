@@ -15,38 +15,28 @@ angular.module('virtoCommerce.marketingModule')
 
             var shippingMethodsPromise = !blade.shippingMethods
                 ? shippingMethods.getAllRegistered(function (methods) {
-                        blade.shippingMethods = _.uniq(methods, method => method.code);
-                        // VP-5647: Need to fill `method.id` for proper work of methods selectors UI template from core module (e.g. expression-RewardShippingGetOfAbsShippingMethod.html)
-                        _.each(blade.shippingMethods, function (method) {
-                            method.id = method.id ? method.id : method.code;
-                        });
-                    })
+                    blade.shippingMethods = _.uniq(methods, method => method.code);
+                    // VP-5647: Need to fill `method.id` for proper work of methods selectors UI template from core module (e.g. expression-RewardShippingGetOfAbsShippingMethod.html)
+                    _.each(blade.shippingMethods, function (method) {
+                        method.id = method.id ? method.id : method.code;
+                    });
+                })
                     .$promise
                 : $q.when();
 
             var paymentMethodsPromise = !blade.paymentMethods
                 ? paymentMethods.getAllRegistered(function (methods) {
-                        blade.paymentMethods = _.uniq(methods, method => method.code);
-                        // VP-5647: Need to fill `method.id` for proper work of methods selectors UI template from core module (e.g. expression-RewardShippingGetOfAbsShippingMethod.html)
-                        _.each(blade.paymentMethods, function (method) {
-                            method.id = method.id ? method.id : method.code;
-                        });
-                    })
+                    blade.paymentMethods = _.uniq(methods, method => method.code);
+                    // VP-5647: Need to fill `method.id` for proper work of methods selectors UI template from core module (e.g. expression-RewardShippingGetOfAbsShippingMethod.html)
+                    _.each(blade.paymentMethods, function (method) {
+                        method.id = method.id ? method.id : method.code;
+                    });
+                })
                     .$promise
                 : $q.when();
 
             // VP-5647: Wait for payment/shipment method loading before requesting stores and initialize dynamic tree
-            $q.all(shippingMethodsPromise, paymentMethodsPromise).then(() => initializeStores(parentRefresh));        
-        };
-
-        function initializeStores(parentRefresh) {
-            $scope.stores = stores.query({}, function (data) {
-                _.each(data, function (store) {
-                    // VP-5647: Left for backward compatibility, as virtoCommerce.dynamicExpressions.shippingMethodRewardController in Core module expects these properties to be filled in the store
-                    store.shippingMethods = blade.shippingMethods || [];
-                    store.paymentMethods = blade.paymentMethods || [];
-                });
-
+            $q.all(shippingMethodsPromise, paymentMethodsPromise).then(() => {
                 if (blade.isNew) {
                     if (blade.isCloning) {
                         blade.data.id = null;
@@ -64,7 +54,7 @@ angular.module('virtoCommerce.marketingModule')
                     });
                 }
             });
-        }
+        };
 
         function initializeBlade(data) {
             if (!blade.isNew) {
@@ -126,9 +116,9 @@ angular.module('virtoCommerce.marketingModule')
             return isDirty()
                 && $scope.formScope
                 && $scope.formScope.$valid;
-                //&& (!blade.currentEntity.dynamicExpression;
-                //    || (blade.currentEntity.dynamicExpression.children[0].children.length > 0
-                //        && blade.currentEntity.dynamicExpression.children[3].children.length > 0));
+            //&& (!blade.currentEntity.dynamicExpression;
+            //    || (blade.currentEntity.dynamicExpression.children[0].children.length > 0
+            //        && blade.currentEntity.dynamicExpression.children[3].children.length > 0));
         };
 
         blade.onClose = function (closeCallback) {
@@ -263,7 +253,76 @@ angular.module('virtoCommerce.marketingModule')
         //);
 
         initializeToolbar();
+
+        /// TODO: refactor to new va-marketing-stores-selector directive.
+        // PageSize amount must be enough to show scrollbar in dropdown list container.
+        // If scrollbar doesn't appear auto loading won't work.
+        $scope.pageSize = 25;
+        $scope.stores = [];
+        var lastSearchPhrase = '';
+        var totalCount = 0;
+
+        $scope.fetchStores = function ($select) {
+            $q.all([loadPromotionStores(), $scope.fetchNextStores($select)]);
+        };
+
+        function loadPromotionStores() {
+            if (_.any(blade.currentEntity.storeIds) && !_.any($scope.stores)) {
+                return stores.search({
+                    storeIds: blade.currentEntity.storeIds,
+                    take: blade.currentEntity.storeIds.length,
+                    responseGroup: 'none'
+                }, (data) => {
+                    joinStores(data.results);
+                }).$promise;
+            }
+
+            return $q.resolve();
+        }
+
+        $scope.fetchNextStores = ($select) => {
+            $select.page = $select.page || 0;
+
+            if (lastSearchPhrase !== $select.search) {
+                lastSearchPhrase = $select.search;
+                $select.page = 0;
+            }
+
+            if ($select.page === 0 || totalCount > $scope.stores.length) {
+                return stores.search(
+                    {
+                        searchPhrase: $select.search,
+                        take: $scope.pageSize,
+                        skip: $select.page * $scope.pageSize,
+                        responseGroup: 'none'
+                    }, (data) => {
+                        joinStores(data.results);
+                        $select.page++;
+
+                        if ($select.page * $scope.pageSize < data.totalCount) {
+                            $scope.$broadcast('scrollCompleted');
+                        }
+
+                        totalCount = Math.max(totalCount, data.totalCount);
+                    }).$promise;
+            }
+
+            return $q.resolve();
+        };
+
+        function joinStores(newItems) {
+            newItems = _.reject(newItems, x => _.any($scope.stores, y => y.id === x.id));
+
+            _.each(newItems, function (store) {
+                // VP-5647: Left for backward compatibility, as virtoCommerce.dynamicExpressions.shippingMethodRewardController in Core module expects these properties to be filled in the store
+                store.shippingMethods = blade.shippingMethods || [];
+                store.paymentMethods = blade.paymentMethods || [];
+            });
+
+            $scope.stores = $scope.stores.concat(newItems);
+        }
+
         blade.refresh(false);
-                
+
         $scope.exclusivityTypes = [{ name: 'marketing.blades.promotion-detail.labels.combined-with-others', value: false }, { name: 'marketing.blades.promotion-detail.labels.exclusive', value: true }];
     }]);

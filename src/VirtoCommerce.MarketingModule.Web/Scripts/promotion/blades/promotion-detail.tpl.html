@@ -105,10 +105,10 @@
                             <div class="form-group __info list">
                                 <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.store' | translate }}</label>
                                 <div class="form-input">
-                                    <ui-select multiple ng-model="blade.currentEntity.storeIds">
-                                        <ui-select-match placeholder="{{'marketing.blades.promotion-detail.placeholders.store' | translate}}">{{$item.name}}</ui-select-match>
-                                        <ui-select-choices repeat="x.id as x in stores">
-                                            <span ng-bind-html="x.name | highlight: $select.search"></span>
+                                    <ui-select multiple ng-model="blade.currentEntity.storeIds" ng-class="{disabled: stores.length === 0}">
+                                        <ui-select-match placeholder="{{'marketing.blades.promotion-detail.placeholders.store' | translate}}">{{stores.length > 0 ? $item.name : 'Loading...'}}</ui-select-match>
+                                        <ui-select-choices repeat="x.id as x in stores | filter: { name: $select.search }" refresh="fetchStores($select)" refresh-delay="300" when-scrolled="fetchNextStores($select)">
+                                            <span ng-bind-html="x.name | highlight: $select.search" ng-show='stores.length > 0'></span>
                                         </ui-select-choices>
                                     </ui-select>
                                 </div>
