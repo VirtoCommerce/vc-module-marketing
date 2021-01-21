@@ -46,7 +46,7 @@ angular.module('virtoCommerce.marketingModule')
                         marketing_res_promotions.getNew(initializeBlade);
                     }
                 } else {
-                    marketing_res_promotions.get({ id: blade.currentEntityId, code: (blade.currentEntityCode === undefined) ? '' : blade.currentEntityCode }, function (data) {
+                    marketing_res_promotions.get({ id: blade.currentEntity.id, code: (blade.currentEntityCode === undefined) ? '' : blade.currentEntityCode }, function (data) {
                         initializeBlade(data);
                         if (parentRefresh) {
                             blade.parentBlade.refresh();
@@ -99,7 +99,7 @@ angular.module('virtoCommerce.marketingModule')
             if (blade.isNew) {
                 marketing_res_promotions.save({}, blade.currentEntity, function (data) {
                     blade.isNew = undefined;
-                    blade.currentEntityId = data.id;
+                    blade.currentEntity = data;
                     initializeToolbar();
                     blade.refresh(true);
                 });
