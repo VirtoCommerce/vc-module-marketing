@@ -1,10 +1,10 @@
-﻿angular.module('virtoCommerce.marketingModule')
+angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.couponsWidgetController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.marketingModule.promotions', function ($scope, bladeNavigationService, promotionsApi) {
     var blade = $scope.blade;
 
     blade.couponCount = function () {
         if (!blade.isNew) {
-            promotionsApi.searchCoupons({ promotionId: blade.currentEntityId, skip: 0, take: 1 }, function (response) {
+            promotionsApi.searchCoupons({ promotionId: blade.currentEntity.id, skip: 0, take: 0 }, function (response) {
                 blade.totalCouponsCount = response.totalCount;
             });
         }
