@@ -27,7 +27,7 @@
     if (!blade.isNew) {
         blade.toolbarCommands = [
             {
-                name: "platform.commands.save", icon: 'fa fa-save',
+                name: "platform.commands.save", icon: 'fas fa-save',
                 executeMethod: blade.saveChanges,
                 canExecuteMethod: function () {
                     return !angular.equals(blade.origEntity, blade.currentEntity) && !$scope.formScope.$invalid;
@@ -45,7 +45,7 @@
                 permission: blade.updatePermission
             },
             {
-                name: "platform.commands.delete", icon: 'fa fa-trash-o',
+                name: "platform.commands.delete", icon: 'fas fa-trash-alt',
                 executeMethod: function () {
                     var dialog = {
                         id: "confirmDeleteContentItem",

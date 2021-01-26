@@ -69,7 +69,7 @@ angular.module('virtoCommerce.marketingModule')
                     breadcrumbs: [],
                     toolbarCommands: [
                         {
-                            name: "platform.commands.pick-selected", icon: 'fa fa-plus',
+                            name: "platform.commands.pick-selected", icon: 'fas fa-plus',
                             executeMethod: function () {
                                 blade.$scope.gridApi.grid.options.data = _.map(selectedListEntries, function (entry) {
                                     if (entry.imageUrl) {
@@ -120,7 +120,7 @@ angular.module('virtoCommerce.marketingModule')
                     canExecuteMethod: function () { return true; }
                 },
                 {
-                    name: "platform.commands.add", icon: 'fa fa-plus',
+                    name: "platform.commands.add", icon: 'fas fa-plus',
                     executeMethod: function () {
                         openCatalogBlade();
                     },
@@ -129,7 +129,7 @@ angular.module('virtoCommerce.marketingModule')
                     }
                 },
                 {
-                    name: "platform.commands.delete", icon: 'fa fa-trash-o',
+                    name: "platform.commands.delete", icon: 'fas fa-trash-alt',
                     executeMethod: function () {
                         var selectedRows = $scope.gridApi.selection.getSelectedRows();
                         var toRemoveArray = _.pluck(selectedRows, 'id');
