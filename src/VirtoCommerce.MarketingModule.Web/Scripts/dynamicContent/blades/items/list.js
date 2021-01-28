@@ -82,7 +82,7 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentFolders
             executeMethod: blade.refresh,
             canExecuteMethod: function () { return true; }
         }, {
-            name: 'platform.commands.add', icon: 'fa fa-plus',
+            name: 'platform.commands.add', icon: 'fas fa-plus',
             executeMethod: blade.addNew,
             canExecuteMethod: function () { return true; }
         }, {

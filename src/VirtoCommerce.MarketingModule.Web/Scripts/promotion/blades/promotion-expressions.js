@@ -44,7 +44,7 @@ angular.module('virtoCommerce.marketingModule')
             breadcrumbs: [],
             toolbarCommands: [
             {
-                name: "platform.commands.pick-selected", icon: 'fa fa-plus',
+                name: "platform.commands.pick-selected", icon: 'fas fa-plus',
                 executeMethod: function (blade) {
                     parentElement.productId = selectedListEntries[0].id;
                     parentElement.productName = selectedListEntries[0].name;
@@ -94,7 +94,7 @@ angular.module('virtoCommerce.marketingModule')
             breadcrumbs: [],
             toolbarCommands: [
             {
-                name: "platform.commands.pick-selected", icon: 'fa fa-plus',
+                name: "platform.commands.pick-selected", icon: 'fas fa-plus',
                 executeMethod: function (blade) {
                     parentElement.categoryId = selectedListEntries[0].id;
                     parentElement.categoryName = selectedListEntries[0].name;

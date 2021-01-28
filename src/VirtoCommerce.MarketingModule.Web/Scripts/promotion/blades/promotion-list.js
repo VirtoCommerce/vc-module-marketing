@@ -71,7 +71,7 @@ angular.module('virtoCommerce.marketingModule')
                 canExecuteMethod: function () { return true; }
             },
             {
-                name: "platform.commands.add", icon: 'fa fa-plus',
+                name: "platform.commands.add", icon: 'fas fa-plus',
                 executeMethod: function () {
                     bladeNavigationService.closeChildrenBlades(blade, function () {
                         var newBlade = {
@@ -90,7 +90,7 @@ angular.module('virtoCommerce.marketingModule')
                 permission: 'marketing:create'
             },
             {
-                name: "platform.commands.delete", icon: 'fa fa-trash-o',
+                name: "platform.commands.delete", icon: 'fas fa-trash-alt',
                 executeMethod: function () {
                     $scope.deleteList($scope.gridApi.selection.getSelectedRows());
                 },

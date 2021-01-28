@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.marketingModule')
+angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.couponDetailController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.marketingModule.promotions', function ($scope, bladeNavigationService, promotionsApi) {
     var blade = $scope.blade;
     blade.isLoading = false;
@@ -57,7 +57,7 @@
 
     blade.toolbarCommands = [{
         name: "platform.commands.save",
-        icon: 'fa fa-save',
+        icon: 'fas fa-save',
         executeMethod: $scope.saveChanges,
         canExecuteMethod: $scope.isValid
     }];

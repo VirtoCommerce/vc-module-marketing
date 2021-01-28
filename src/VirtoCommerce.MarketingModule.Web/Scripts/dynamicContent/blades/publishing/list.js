@@ -47,7 +47,7 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentPublica
         canExecuteMethod: function () { return true; },
         executeMethod: blade.refresh
     }, {
-        name: 'platform.commands.add', icon: 'fa fa-plus',
+        name: 'platform.commands.add', icon: 'fas fa-plus',
         canExecuteMethod: function () { return true; },
         executeMethod: function () { $scope.selectNode({}, true); }
     }, {

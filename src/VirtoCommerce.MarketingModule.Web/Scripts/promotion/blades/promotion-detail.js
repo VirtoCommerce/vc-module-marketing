@@ -132,7 +132,7 @@ angular.module('virtoCommerce.marketingModule')
                 blade.toolbarCommands = [
                     {
                         name: "platform.commands.save",
-                        icon: 'fa fa-save',
+                        icon: 'fas fa-save',
                         executeMethod: $scope.saveChanges,
                         canExecuteMethod: $scope.isValid,
                         permission: blade.updatePermission
@@ -147,7 +147,7 @@ angular.module('virtoCommerce.marketingModule')
                         permission: blade.updatePermission
                     },
                     {
-                        name: "platform.commands.clone", icon: 'fa fa-files-o',
+                        name: "platform.commands.clone", icon: 'fas fa-clone',
                         executeMethod: function () {
                             var newBlade = {
                                 id: 'promotionClone',
