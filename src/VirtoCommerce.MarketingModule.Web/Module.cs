@@ -46,11 +46,12 @@ namespace VirtoCommerce.MarketingModule.Web
 
         public void Initialize(IServiceCollection serviceCollection)
         {
-            var configuration = serviceCollection.BuildServiceProvider().GetRequiredService<IConfiguration>();
-            var connectionString = configuration.GetConnectionString("VirtoCommerce.Marketing") ?? configuration.GetConnectionString("VirtoCommerce");
-
+            serviceCollection.AddDbContext<MarketingDbContext>((provider, options) =>
+            {
+                var configuration = provider.GetRequiredService<IConfiguration>();
+                options.UseSqlServer(configuration.GetConnectionString("VirtoCommerce.Marketing") ?? configuration.GetConnectionString("VirtoCommerce"));
+            });
             serviceCollection.AddTransient<IMarketingRepository, MarketingRepository>();
-            serviceCollection.AddDbContext<MarketingDbContext>(options => options.UseSqlServer(connectionString));
             serviceCollection.AddTransient<Func<IMarketingRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<IMarketingRepository>());
 
             #region Services
