@@ -49,7 +49,7 @@ namespace VirtoCommerce.MarketingModule.Web
             serviceCollection.AddDbContext<MarketingDbContext>((provider, options) =>
             {
                 var configuration = provider.GetRequiredService<IConfiguration>();
-                options.UseSqlServer(configuration.GetConnectionString("VirtoCommerce.Marketing") ?? configuration.GetConnectionString("VirtoCommerce"));
+                options.UseSqlServer(configuration.GetConnectionString(ModuleInfo.Id) ?? configuration.GetConnectionString("VirtoCommerce"));
             });
             serviceCollection.AddTransient<IMarketingRepository, MarketingRepository>();
             serviceCollection.AddTransient<Func<IMarketingRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<IMarketingRepository>());
