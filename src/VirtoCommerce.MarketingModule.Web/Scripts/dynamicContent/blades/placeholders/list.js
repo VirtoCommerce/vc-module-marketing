@@ -1,9 +1,9 @@
-﻿angular.module('virtoCommerce.marketingModule')
+angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.placeholdersDynamicContentListController', ['$scope', 'platformWebApp.bladeUtils', 'platformWebApp.uiGridHelper', 'platformWebApp.dialogService', 'virtoCommerce.marketingModule.dynamicContent.folders', 'virtoCommerce.marketingModule.dynamicContent.contentPlaces',
 function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentFoldersApi, contentPlacesApi) {
     var bladeNavigationService = bladeUtils.bladeNavigationService;
     var blade = $scope.blade;
-    blade.headIcon = 'fa-location-arrow';
+    blade.headIcon = 'fa fa-location-arrow';
     blade.chosenFolderId = 'ContentPlace';
     blade.currentEntity = {};
 

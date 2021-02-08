@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.marketingModule')
+angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.placeholderDetailController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.contentPlaces', 'platformWebApp.bladeNavigationService', 'FileUploader', 'platformWebApp.dialogService', function ($scope, contentPlacesApi, bladeNavigationService, FileUploader, dialogService) {
     var blade = $scope.blade;
     blade.updatePermission = 'marketing:update';
@@ -32,14 +32,14 @@
 
         if (!blade.isNew) {
             $scope.blade.toolbarCommands = [
-				{
-				    name: "platform.commands.save", icon: 'fas fa-save',
-				    executeMethod: blade.saveChanges,
-				    canExecuteMethod: function () {
-				        return !angular.equals(blade.origEntity, blade.currentEntity) && !$scope.formScope.$invalid;
-				    },
-				    permission: blade.updatePermission
-				},
+                {
+                    name: "platform.commands.save", icon: 'fas fa-save',
+                    executeMethod: blade.saveChanges,
+                    canExecuteMethod: function () {
+                        return !angular.equals(blade.origEntity, blade.currentEntity) && !$scope.formScope.$invalid;
+                    },
+                    permission: blade.updatePermission
+                },
                 {
                     name: "platform.commands.reset", icon: 'fa fa-undo',
                     executeMethod: function () {
@@ -50,28 +50,28 @@
                     },
                     permission: blade.updatePermission
                 },
-				{
-				    name: "platform.commands.delete", icon: 'fas fa-trash-alt',
-				    executeMethod: function () {
-				        var dialog = {
-				            id: "confirmDeleteContentPlaceholder",
-				            title: "marketing.dialogs.content-placeholder-delete.title",
-				            message: "marketing.dialogs.content-placeholder-delete.message",
-				            callback: function (remove) {
-				                if (remove) {
-				                    blade.isLoading = true;
-				                    contentPlacesApi.delete({ ids: [blade.currentEntity.id] }, function () {
-				                        blade.parentBlade.initialize();
-				                        bladeNavigationService.closeBlade(blade);
-				                    });
-				                }
-				            }
-				        };
-				        dialogService.showConfirmationDialog(dialog);
-				    },
-				    canExecuteMethod: function () { return true; },
-				    permission: blade.updatePermission
-				}
+                {
+                    name: "platform.commands.delete", icon: 'fas fa-trash-alt',
+                    executeMethod: function () {
+                        var dialog = {
+                            id: "confirmDeleteContentPlaceholder",
+                            title: "marketing.dialogs.content-placeholder-delete.title",
+                            message: "marketing.dialogs.content-placeholder-delete.message",
+                            callback: function (remove) {
+                                if (remove) {
+                                    blade.isLoading = true;
+                                    contentPlacesApi.delete({ ids: [blade.currentEntity.id] }, function () {
+                                        blade.parentBlade.initialize();
+                                        bladeNavigationService.closeBlade(blade);
+                                    });
+                                }
+                            }
+                        };
+                        dialogService.showConfirmationDialog(dialog);
+                    },
+                    canExecuteMethod: function () { return true; },
+                    permission: blade.updatePermission
+                }
             ];
         }
 
@@ -98,7 +98,7 @@
 
     $scope.setForm = function (form) { $scope.formScope = form; };
 
-    $scope.blade.headIcon = 'fa-location-arrow';
+    $scope.blade.headIcon = 'fa fa-location-arrow';
 
     blade.initialize();
 }]);

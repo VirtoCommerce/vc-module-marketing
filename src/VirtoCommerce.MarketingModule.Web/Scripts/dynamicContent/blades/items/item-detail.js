@@ -163,7 +163,7 @@ angular.module('virtoCommerce.marketingModule')
 
         $scope.setForm = function (form) { $scope.formScope = form; };
 
-        blade.headIcon = 'fa-inbox';
+        blade.headIcon = 'fa fa-inbox';
 
         settings.getValues({ id: 'VirtoCommerce.Core.General.Languages' }, function (data) {
             $scope.languages = data;

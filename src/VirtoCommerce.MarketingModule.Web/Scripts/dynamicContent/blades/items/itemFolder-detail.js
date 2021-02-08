@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.marketingModule')
+angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.itemFolderDetailController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.folders', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', function ($scope, marketing_dynamicContents_res_folders, bladeNavigationService, dialogService) {
     var blade = $scope.blade;
     blade.updatePermission = 'marketing:update';
@@ -22,7 +22,7 @@
         }
     };
 
-    blade.headIcon = 'fa-inbox';
+    blade.headIcon = 'fa fa-inbox';
 
     if (!blade.isNew) {
         blade.toolbarCommands = [

@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.marketingModule')
+angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.publicationDetailController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.contentPublications', 'platformWebApp.bladeNavigationService', 'virtoCommerce.coreModule.common.dynamicExpressionService', 'virtoCommerce.storeModule.stores', 'platformWebApp.dialogService', function ($scope, contentPublications, bladeNavigationService, dynamicExpressionService, stores, dialogService) {
     var blade = $scope.blade;
     blade.updatePermission = 'marketing:update';
@@ -9,48 +9,48 @@
                 initializeBlade(data);
 
                 blade.toolbarCommands = [
-				    {
-				        name: "platform.commands.save", icon: 'fas fa-save',
-				        executeMethod: function () {
-				            blade.saveChanges();
-				        },
-				        canExecuteMethod: function () {
-				            return blade.checkDifferense();
-				        },
-				        permission: blade.updatePermission
-				    },
-				    {
-				        name: "platform.commands.reset", icon: 'fa fa-undo',
-				        executeMethod: function () {
-				            angular.copy(blade.origEntity, blade.currentEntity);
-				        },
-				        canExecuteMethod: function () {
-				            return blade.checkDifferense();
-				        },
-				        permission: blade.updatePermission
-				    },
-				    {
-				        name: "platform.commands.delete", icon: 'fas fa-trash-alt',
-				        executeMethod: function () {
-				            var dialog = {
-				                id: "confirmDeleteContentItem",
-				                title: "marketing.dialogs.publication-delete.title",
-				                message: "marketing.dialogs.publication-delete.message",
-				                callback: function (remove) {
-				                    if (remove) {
-				                        blade.isLoading = true;
-				                        contentPublications.delete({ ids: [blade.currentEntity.id] }, function () {
-				                            blade.parentBlade.initialize();
-				                            bladeNavigationService.closeBlade(blade);
-				                        });
-				                    }
-				                }
-				            };
-				            dialogService.showConfirmationDialog(dialog);
-				        },
-				        canExecuteMethod: function () { return true; },
-				        permission: blade.updatePermission
-				    }
+                    {
+                        name: "platform.commands.save", icon: 'fas fa-save',
+                        executeMethod: function () {
+                            blade.saveChanges();
+                        },
+                        canExecuteMethod: function () {
+                            return blade.checkDifferense();
+                        },
+                        permission: blade.updatePermission
+                    },
+                    {
+                        name: "platform.commands.reset", icon: 'fa fa-undo',
+                        executeMethod: function () {
+                            angular.copy(blade.origEntity, blade.currentEntity);
+                        },
+                        canExecuteMethod: function () {
+                            return blade.checkDifferense();
+                        },
+                        permission: blade.updatePermission
+                    },
+                    {
+                        name: "platform.commands.delete", icon: 'fas fa-trash-alt',
+                        executeMethod: function () {
+                            var dialog = {
+                                id: "confirmDeleteContentItem",
+                                title: "marketing.dialogs.publication-delete.title",
+                                message: "marketing.dialogs.publication-delete.message",
+                                callback: function (remove) {
+                                    if (remove) {
+                                        blade.isLoading = true;
+                                        contentPublications.delete({ ids: [blade.currentEntity.id] }, function () {
+                                            blade.parentBlade.initialize();
+                                            bladeNavigationService.closeBlade(blade);
+                                        });
+                                    }
+                                }
+                            };
+                            dialogService.showConfirmationDialog(dialog);
+                        },
+                        canExecuteMethod: function () { return true; },
+                        permission: blade.updatePermission
+                    }
                 ];
             });
         }
@@ -136,14 +136,14 @@
 
     blade.availableSave = function () {
         return !$scope.formScope.$invalid &&
-			blade.currentEntity.contentItems.length > 0 &&
-			blade.currentEntity.contentPlaces.length > 0;
+            blade.currentEntity.contentItems.length > 0 &&
+            blade.currentEntity.contentPlaces.length > 0;
     };
     
     blade.checkDifferense = function () {
         var retVal = !$scope.formScope.$invalid &&
-							blade.currentEntity.contentItems.length > 0 &&
-							blade.currentEntity.contentPlaces.length > 0;
+                            blade.currentEntity.contentItems.length > 0 &&
+                            blade.currentEntity.contentPlaces.length > 0;
 
         if (retVal) {
             retVal = !angular.equals(blade.currentEntity, blade.origEntity);
@@ -200,7 +200,7 @@
     $scope.formats = ['shortDate', 'dd-MMMM-yyyy', 'yyyy/MM/dd'];
     $scope.format = $scope.formats[0];
 
-    blade.headIcon = 'fa-paperclip';
+    blade.headIcon = 'fa fa-paperclip';
 
     // Dynamic ExpressionBlock
     function extendElementBlock(expressionBlock) {
