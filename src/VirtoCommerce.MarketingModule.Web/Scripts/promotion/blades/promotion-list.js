@@ -62,7 +62,7 @@ angular.module('virtoCommerce.marketingModule')
             dialogService.showConfirmationDialog(dialog);
         };
 
-        blade.headIcon = 'fa-area-chart';
+        blade.headIcon = 'fa fa-area-chart';
 
         blade.toolbarCommands = [
             {

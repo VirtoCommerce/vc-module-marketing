@@ -1,7 +1,7 @@
-﻿angular.module('virtoCommerce.marketingModule')
+angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.couponImportController', ['$scope', 'platformWebApp.bladeNavigationService', 'FileUploader', 'virtoCommerce.marketingModule.promotions', function ($scope, bladeNavigationService, FileUploader, promotionsApi) {
     var blade = $scope.blade;
-    blade.headIcon = 'fa-download';
+    blade.headIcon = 'fa fa-download';
     blade.isLoading = false;
 
     if (!$scope.uploader) {

@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.marketingModule')
+angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.addFolderPlaceholderController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.folders', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', function ($scope, marketing_dynamicContents_res_folders, bladeNavigationService, dialogService) {
     var blade = $scope.blade;
     blade.updatePermission = 'marketing:update';
@@ -79,7 +79,7 @@
 
     $scope.setForm = function (form) { $scope.formScope = form; };
 
-    blade.headIcon = 'fa-location-arrow';
+    blade.headIcon = 'fa fa-location-arrow';
 
     blade.initialize();
 }]);

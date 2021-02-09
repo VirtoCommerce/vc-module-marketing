@@ -125,7 +125,7 @@ angular.module('virtoCommerce.marketingModule')
             bladeNavigationService.showConfirmationIfNeeded(isDirty() && !blade.isNew, $scope.isValid(), blade, $scope.saveChanges, closeCallback, "marketing.dialogs.promotion-save.title", "marketing.dialogs.promotion-save.message");
         };
 
-        blade.headIcon = 'fa-area-chart';
+        blade.headIcon = 'fa fa-area-chart';
 
         function initializeToolbar() {
             if (!blade.isNew) {
