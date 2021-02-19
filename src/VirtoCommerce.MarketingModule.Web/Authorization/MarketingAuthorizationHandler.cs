@@ -5,21 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Promotions;
-using VirtoCommerce.MarketingModule.Data.Promotions;
+using VirtoCommerce.MarketingModule.Data.Authorization;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Security.Authorization;
 
 namespace VirtoCommerce.MarketingModule.Web.Authorization
 {
-    public sealed class MarketingAuthorizationRequirement : PermissionAuthorizationRequirement
-    {
-        public MarketingAuthorizationRequirement(string permission)
-            : base(permission)
-        {
-        }
-    }
-
     public sealed class MarketingAuthorizationHandler : PermissionAuthorizationHandlerBase<MarketingAuthorizationRequirement>
     {
         private readonly MvcNewtonsoftJsonOptions _jsonOptions;
