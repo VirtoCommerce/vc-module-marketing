@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using VirtoCommerce.CoreModule.Core.Conditions;
 
 namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
@@ -10,7 +11,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 
         #region IRewardExpression Members
 
-        public PromotionReward[] GetRewards()
+        public IEnumerable<PromotionReward> GetRewards()
         {
             var retVal = new ShipmentReward
             {

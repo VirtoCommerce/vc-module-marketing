@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using VirtoCommerce.CoreModule.Core.Conditions;
 
@@ -11,12 +12,13 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
             All = true;
         }
 
-        public virtual PromotionReward[] GetRewards()
+        public virtual IEnumerable<PromotionReward> GetRewards()
         {
-            var result = Array.Empty<PromotionReward>();
+            var result = Enumerable.Empty<PromotionReward>();
+
             if (Children != null)
             {
-                result = Children.OfType<IReward>().SelectMany(x => x.GetRewards()).ToArray();
+                result = Children.OfType<IReward>().SelectMany(x => x.GetRewards());
             }
             return result;
         }

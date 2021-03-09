@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 {
     //For [] items of entry [] in every [] items of entry [] get [] % off no more than [] not to exceed $ []
@@ -7,7 +9,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 
         #region IRewardExpression Members
 
-        public override PromotionReward[] GetRewards()
+        public override IEnumerable<PromotionReward> GetRewards()
         {
             var result = base.GetRewards();
             foreach (var reward in result)

@@ -1,7 +1,9 @@
+using System.Collections.Generic;
+
 namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 {
     public interface IReward
     {
-        PromotionReward[] GetRewards();
+        IEnumerable<PromotionReward> GetRewards();
     }
 }
