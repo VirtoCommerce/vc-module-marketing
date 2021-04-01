@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.CoreModule.Core.Common;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Search;
 using VirtoCommerce.MarketingModule.Core.Services;
+using VirtoCommerce.MarketingModule.Data.Caching;
+using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.MarketingModule.Data.Services
@@ -15,24 +18,40 @@ namespace VirtoCommerce.MarketingModule.Data.Services
     {
         private readonly IPromotionSearchService _promotionSearchService;
         private readonly IPromotionRewardEvaluator _promotionRewardEvaluator;
+        private readonly IPlatformMemoryCache _platformMemoryCache;
 
-        public CombineStackablePromotionPolicy(IPromotionSearchService promotionSearchService, IPromotionRewardEvaluator promotionRewardEvaluator)
+        public CombineStackablePromotionPolicy(IPromotionSearchService promotionSearchService, IPromotionRewardEvaluator promotionRewardEvaluator, IPlatformMemoryCache platformMemoryCache)
         {
             _promotionSearchService = promotionSearchService;
             _promotionRewardEvaluator = promotionRewardEvaluator;
+            _platformMemoryCache = platformMemoryCache;
         }
 
         public async Task<PromotionResult> EvaluatePromotionAsync(IEvaluationContext context)
         {
             var promoContext = GetPromotionEvaluationContext(context);
 
+            var cacheKey = CacheKey.With(GetType(), nameof(EvaluatePromotionAsync), string.Join("-", promoContext.GetCacheKey()));
+            var result = await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
+            {
+                cacheEntry.SlidingExpiration = TimeSpan.FromMinutes(1);
+                cacheEntry.AddExpirationToken(PromotionSearchCacheRegion.CreateChangeToken());
+
+                return await EvaluatePromotionCachelessAsync(promoContext);
+            });
+
+            return result;
+        }
+
+        protected virtual async Task<PromotionResult> EvaluatePromotionCachelessAsync(PromotionEvaluationContext promoContext)
+        {
             var promotionSearchCriteria = AbstractTypeFactory<PromotionSearchCriteria>.TryCreateInstance();
             promotionSearchCriteria.PopulateFromEvalContext(promoContext);
 
             promotionSearchCriteria.OnlyActive = true;
             promotionSearchCriteria.Take = int.MaxValue;
             promotionSearchCriteria.StoreIds = string.IsNullOrEmpty(promoContext.StoreId) ? null : new[] { promoContext.StoreId };
-           
+
             var promotions = await _promotionSearchService.SearchPromotionsAsync(promotionSearchCriteria);
 
             var result = new PromotionResult();

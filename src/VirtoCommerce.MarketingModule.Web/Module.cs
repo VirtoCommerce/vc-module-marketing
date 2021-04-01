@@ -29,6 +29,7 @@ using VirtoCommerce.MarketingModule.Web.ExportImport;
 using VirtoCommerce.MarketingModule.Web.JsonConverters;
 using VirtoCommerce.OrdersModule.Core.Events;
 using VirtoCommerce.Platform.Core.Bus;
+using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.ExportImport;
@@ -82,16 +83,17 @@ namespace VirtoCommerce.MarketingModule.Web
             serviceCollection.AddTransient<IMarketingPromoEvaluator>(provider =>
             {
                 var settingsManager = provider.GetService<ISettingsManager>();
+                var platformMemoryCache = provider.GetService<IPlatformMemoryCache>();
                 var promotionService = provider.GetService<IPromotionSearchService>();
                 var promotionCombinePolicy = settingsManager.GetValue(ModuleConstants.Settings.General.CombinePolicy.Name, "BestReward");
 
                 if (promotionCombinePolicy.EqualsInvariant("CombineStackable"))
                 {
                     var promotionRewardEvaluator = provider.GetService<IPromotionRewardEvaluator>();
-                    return new CombineStackablePromotionPolicy(promotionService, promotionRewardEvaluator);
+                    return new CombineStackablePromotionPolicy(promotionService, promotionRewardEvaluator, platformMemoryCache);
                 }
 
-                return new BestRewardPromotionPolicy(promotionService);
+                return new BestRewardPromotionPolicy(promotionService, platformMemoryCache);
             });
 
             var snapshot = serviceCollection.BuildServiceProvider();

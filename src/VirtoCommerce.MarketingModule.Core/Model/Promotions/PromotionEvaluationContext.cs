@@ -1,9 +1,13 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using VirtoCommerce.CoreModule.Core.Common;
+using VirtoCommerce.Platform.Core.Caching;
+using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 {
-    public class PromotionEvaluationContext : EvaluationContextBase
+    public class PromotionEvaluationContext : EvaluationContextBase, ICacheKey
     {
         public string[] RefusedGiftIds { get; set; }
 
@@ -80,9 +84,49 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
         /// </summary>
         public ProductPromoEntry PromoEntry { get; set; }
 
+        public string GetCacheKey()
+        {
+            return string.Join("|", GetCacheKeyComponents().Select(x => x ?? "null").Select(x => x is ICacheKey cacheKey ? cacheKey.GetCacheKey() : x.ToString()));
+        }
 
+        public IEnumerable<object> GetCacheKeyComponents()
+        {
+            yield return Language;
+            yield return StoreId;
+            yield return Currency;
+            yield return CustomerId;
+            yield return CartTotal;
+            yield return Coupon;
 
+            yield return string.Join('&', UserGroups ?? Array.Empty<string>());
 
+            if (!PromoEntries.IsNullOrEmpty())
+            {
+                foreach (var entry in PromoEntries)
+                {
+                    yield return entry.Code;
+                    yield return entry.ProductId;
+                    yield return entry.Price;
+                    yield return entry.ListPrice;
+                    yield return entry.Discount;
+                    yield return entry.Quantity;
+                    yield return entry.InStockQuantity;
+                }
+            }
+
+            if (!PromoEntries.IsNullOrEmpty())
+            {
+                foreach (var entry in CartPromoEntries)
+                {
+                    yield return entry.Code;
+                    yield return entry.ProductId;
+                    yield return entry.Price;
+                    yield return entry.ListPrice;
+                    yield return entry.Discount;
+                    yield return entry.Quantity;
+                    yield return entry.InStockQuantity;
+                }
+            }
+        }
     }
-
 }
