@@ -1,47 +1,26 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Caching.Memory;
-using VirtoCommerce.CoreModule.Core.Common;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Search;
-using VirtoCommerce.MarketingModule.Core.Services;
-using VirtoCommerce.MarketingModule.Data.Caching;
+using VirtoCommerce.MarketingModule.Data.Services.EvaluationPolicies;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.MarketingModule.Data.Services
 {
-    public class BestRewardPromotionPolicy : IMarketingPromoEvaluator
+    public class BestRewardPromotionPolicy : BasePromotionPolicy
     {
         private readonly IPromotionSearchService _promotionSearchService;
-        private readonly IPlatformMemoryCache _platformMemoryCache;
 
         public BestRewardPromotionPolicy(IPromotionSearchService promotionSearchService, IPlatformMemoryCache platformMemoryCache)
+            : base(platformMemoryCache)
         {
             _promotionSearchService = promotionSearchService;
-            _platformMemoryCache = platformMemoryCache;
         }
 
-        public async Task<PromotionResult> EvaluatePromotionAsync(IEvaluationContext context)
-        {
-            var promoContext = GetPromotionEvaluationContext(context);
-
-            var cacheKey = CacheKey.With(GetType(), nameof(EvaluatePromotionAsync), string.Join("-", promoContext.GetCacheKey()));
-            var result = await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
-            {
-                cacheEntry.SlidingExpiration = TimeSpan.FromMinutes(1);
-                cacheEntry.AddExpirationToken(PromotionSearchCacheRegion.CreateChangeToken());
-
-                return await EvaluatePromotionCachelessAsync(promoContext);
-            });
-
-            return result;
-        }
-
-        protected virtual async Task<PromotionResult> EvaluatePromotionCachelessAsync(PromotionEvaluationContext promoContext)
+        protected override async Task<PromotionResult> EvaluatePromotionCachelessAsync(PromotionEvaluationContext promoContext)
         {
             var promotionSearchCriteria = AbstractTypeFactory<PromotionSearchCriteria>.TryCreateInstance();
             promotionSearchCriteria.PopulateFromEvalContext(promoContext);
@@ -158,21 +137,6 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             }
 
             return retVal;
-        }
-
-        private static PromotionEvaluationContext GetPromotionEvaluationContext(IEvaluationContext context)
-        {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            if (!(context is PromotionEvaluationContext promoContext))
-            {
-                throw new ArgumentException($"{nameof(context)} type {context.GetType()} must be derived from PromotionEvaluationContext");
-            }
-
-            return promoContext;
         }
     }
 }
