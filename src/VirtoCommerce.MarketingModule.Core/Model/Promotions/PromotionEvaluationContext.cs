@@ -96,35 +96,30 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
             yield return Currency;
             yield return CustomerId;
             yield return CartTotal;
-            yield return Coupon;
 
+            yield return ShipmentMethodCode;
+            yield return ShipmentMethodOption;
+            yield return ShipmentMethodPrice;
+
+            yield return PaymentMethodCode;
+            yield return PaymentMethodPrice;
+
+            yield return string.Join('&', Coupons ?? Array.Empty<string>());
             yield return string.Join('&', UserGroups ?? Array.Empty<string>());
 
             if (!PromoEntries.IsNullOrEmpty())
             {
                 foreach (var entry in PromoEntries)
                 {
-                    yield return entry.Code;
-                    yield return entry.ProductId;
-                    yield return entry.Price;
-                    yield return entry.ListPrice;
-                    yield return entry.Discount;
-                    yield return entry.Quantity;
-                    yield return entry.InStockQuantity;
+                    yield return entry;
                 }
             }
 
-            if (!PromoEntries.IsNullOrEmpty())
+            if (!CartPromoEntries.IsNullOrEmpty())
             {
                 foreach (var entry in CartPromoEntries)
                 {
-                    yield return entry.Code;
-                    yield return entry.ProductId;
-                    yield return entry.Price;
-                    yield return entry.ListPrice;
-                    yield return entry.Discount;
-                    yield return entry.Quantity;
-                    yield return entry.InStockQuantity;
+                    yield return entry;
                 }
             }
         }

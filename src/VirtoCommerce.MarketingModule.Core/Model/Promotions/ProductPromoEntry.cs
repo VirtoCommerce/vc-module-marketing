@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using VirtoCommerce.Platform.Core.Caching;
 
 namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 {
-    public class ProductPromoEntry : ICloneable
-	{
+    public class ProductPromoEntry : ICloneable, ICacheKey
+    {
 		public ProductPromoEntry()
 		{
 			Variations = new List<ProductPromoEntry>();
@@ -35,5 +36,20 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
             return result;
         }
 
+        public string GetCacheKey()
+        {
+            return string.Join("|", GetCacheKeyComponents().Select(x => x ?? "null").Select(x => x.ToString()));
+        }
+
+        public IEnumerable<object> GetCacheKeyComponents()
+        {
+            yield return Code;
+            yield return ProductId;
+            yield return Price;
+            yield return ListPrice;
+            yield return Discount;
+            yield return Quantity;
+            yield return InStockQuantity;
+        }
     }
 }
