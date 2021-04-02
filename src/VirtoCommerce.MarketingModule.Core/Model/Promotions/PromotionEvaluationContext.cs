@@ -97,15 +97,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
             yield return CustomerId;
             yield return CartTotal;
 
-            yield return ShipmentMethodCode;
-            yield return ShipmentMethodOption;
-            yield return ShipmentMethodPrice;
-
-            yield return PaymentMethodCode;
-            yield return PaymentMethodPrice;
-
             yield return string.Join('&', Coupons ?? Array.Empty<string>());
-            yield return string.Join('&', UserGroups ?? Array.Empty<string>());
 
             if (!PromoEntries.IsNullOrEmpty())
             {
