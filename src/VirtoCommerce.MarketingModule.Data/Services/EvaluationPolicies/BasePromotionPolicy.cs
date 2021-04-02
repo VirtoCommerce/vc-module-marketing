@@ -13,7 +13,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services.EvaluationPolicies
     {
         private readonly IPlatformMemoryCache _platformMemoryCache;
 
-        public BasePromotionPolicy(IPlatformMemoryCache platformMemoryCache)
+        protected BasePromotionPolicy(IPlatformMemoryCache platformMemoryCache)
         {
             _platformMemoryCache = platformMemoryCache;
         }
