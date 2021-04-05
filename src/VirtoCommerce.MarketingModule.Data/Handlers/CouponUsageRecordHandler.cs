@@ -39,7 +39,14 @@ namespace VirtoCommerce.MarketingModule.Data.Handlers
 
         public virtual Task Handle(OrderChangedEvent message)
         {
-            BackgroundJob.Enqueue(() => HandleCouponUsages(message));
+            if (message.ChangedEntries.Any())
+            {
+                var addedOrdersEvent = new OrderChangedEvent(message.ChangedEntries.Where(x => x.EntryState == EntryState.Added));
+                if (addedOrdersEvent.ChangedEntries.Any())
+                {
+                    BackgroundJob.Enqueue(() => HandleCouponUsages(addedOrdersEvent));
+                }
+            }
 
             return Task.CompletedTask;
         }
