@@ -9,11 +9,11 @@ using VirtoCommerce.Platform.Core.Caching;
 
 namespace VirtoCommerce.MarketingModule.Data.Services.EvaluationPolicies
 {
-    public abstract class BasePromotionPolicy : IMarketingPromoEvaluator
+    public abstract class PromotionPolicyBase : IMarketingPromoEvaluator
     {
         private readonly IPlatformMemoryCache _platformMemoryCache;
 
-        protected BasePromotionPolicy(IPlatformMemoryCache platformMemoryCache)
+        protected PromotionPolicyBase(IPlatformMemoryCache platformMemoryCache)
         {
             _platformMemoryCache = platformMemoryCache;
         }
@@ -28,13 +28,13 @@ namespace VirtoCommerce.MarketingModule.Data.Services.EvaluationPolicies
                 cacheEntry.SlidingExpiration = TimeSpan.FromMinutes(1);
                 cacheEntry.AddExpirationToken(PromotionSearchCacheRegion.CreateChangeToken());
 
-                return await EvaluatePromotionCachelessAsync(promoContext);
+                return await EvaluatePromotionWithoutCache(promoContext);
             });
 
             return result;
         }
 
-        protected abstract Task<PromotionResult> EvaluatePromotionCachelessAsync(PromotionEvaluationContext promoContext);
+        protected abstract Task<PromotionResult> EvaluatePromotionWithoutCache(PromotionEvaluationContext promoContext);
 
         private static PromotionEvaluationContext GetPromotionEvaluationContext(IEvaluationContext context)
         {

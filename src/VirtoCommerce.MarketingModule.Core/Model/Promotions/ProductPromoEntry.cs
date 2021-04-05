@@ -12,21 +12,22 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
             Variations = new List<ProductPromoEntry>();
             Attributes = new Dictionary<string, string>();
         }
-        public string Code { get; set; }
-        public int Quantity { get; set; }
-        public int InStockQuantity { get; set; }
-        public decimal Price { get; set; }
-        public decimal ListPrice { get; set; }
-        public decimal Discount { get; set; }
-        public string CatalogId { get; set; }
-        public string CategoryId { get; set; }
-        public string ProductId { get; set; }
-        public object Owner { get; set; }
-        public string Outline { get; set; }
 
-        public ICollection<ProductPromoEntry> Variations { get; set; }
+        public virtual string Code { get; set; }
+        public virtual int Quantity { get; set; }
+        public virtual int InStockQuantity { get; set; }
+        public virtual decimal Price { get; set; }
+        public virtual decimal ListPrice { get; set; }
+        public virtual decimal Discount { get; set; }
+        public virtual string CatalogId { get; set; }
+        public virtual string CategoryId { get; set; }
+        public virtual string ProductId { get; set; }
+        public virtual object Owner { get; set; }
+        public virtual string Outline { get; set; }
 
-        public Dictionary<string, string> Attributes { get; set; }
+        public virtual ICollection<ProductPromoEntry> Variations { get; set; }
+
+        public virtual Dictionary<string, string> Attributes { get; set; }
 
         public virtual object Clone()
         {
@@ -36,12 +37,12 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
             return result;
         }
 
-        public string GetCacheKey()
+        public virtual string GetCacheKey()
         {
             return string.Join("|", GetCacheKeyComponents().Select(x => x ?? "null").Select(x => x.ToString()));
         }
 
-        public IEnumerable<object> GetCacheKeyComponents()
+        public virtual IEnumerable<object> GetCacheKeyComponents()
         {
             yield return Code;
             yield return ProductId;

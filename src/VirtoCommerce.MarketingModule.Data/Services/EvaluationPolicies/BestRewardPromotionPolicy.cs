@@ -10,7 +10,7 @@ using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.MarketingModule.Data.Services
 {
-    public class BestRewardPromotionPolicy : BasePromotionPolicy
+    public class BestRewardPromotionPolicy : PromotionPolicyBase
     {
         private readonly IPromotionSearchService _promotionSearchService;
 
@@ -20,7 +20,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             _promotionSearchService = promotionSearchService;
         }
 
-        protected override async Task<PromotionResult> EvaluatePromotionCachelessAsync(PromotionEvaluationContext promoContext)
+        protected override async Task<PromotionResult> EvaluatePromotionWithoutCache(PromotionEvaluationContext promoContext)
         {
             var promotionSearchCriteria = AbstractTypeFactory<PromotionSearchCriteria>.TryCreateInstance();
             promotionSearchCriteria.PopulateFromEvalContext(promoContext);
