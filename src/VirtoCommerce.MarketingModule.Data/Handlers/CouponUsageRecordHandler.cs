@@ -9,6 +9,7 @@ using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Search;
 using VirtoCommerce.MarketingModule.Core.Services;
 using VirtoCommerce.OrdersModule.Core.Events;
+using VirtoCommerce.OrdersModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
 
@@ -39,7 +40,12 @@ namespace VirtoCommerce.MarketingModule.Data.Handlers
 
         public virtual Task Handle(OrderChangedEvent message)
         {
-            BackgroundJob.Enqueue(() => HandleCouponUsages(message));
+            var couponUsageJobArguments = message.ChangedEntries.Where(x => x.EntryState == EntryState.Added).Select(x=> GetJobArgumentsForCouponUsageRecord(x.NewEntry));
+
+            if (couponUsageJobArguments.Any())
+            {
+                BackgroundJob.Enqueue(() => HandleCouponUsages(couponUsageJobArguments.ToArray()));
+            }
 
             return Task.CompletedTask;
         }
@@ -53,16 +59,12 @@ namespace VirtoCommerce.MarketingModule.Data.Handlers
         // When the job is awaiting desired timeout for lock release, it stucks in "processing" anyway. (Therefore, you should not to set long timeouts (like 24*60*60), this will cause a lot of stucked jobs and performance degradation.)
         // Then, if timeout is over and the lock NOT acquired, the job falls into "scheduled" state (this is default fail-retry scenario).
         // Failed job goes to "Failed" state (by default) after retries exhausted.
-        public virtual async Task HandleCouponUsages(OrderChangedEvent message)
+        public virtual async Task HandleCouponUsages(CouponUsageRecordJobArgument[] jobArguments)
         {
-            foreach (var changedEntry in message.ChangedEntries)
+            foreach (var jobArgument in jobArguments)
             {
-                if (changedEntry.EntryState == EntryState.Added)
-                {
-                    var oldUsages = new List<PromotionUsage>();
-                    var newUsages = GetCouponUsages(changedEntry.NewEntry.Id, changedEntry.NewEntry, changedEntry.NewEntry.CustomerId, changedEntry.NewEntry.CustomerName);
-                    await RecordUsages(changedEntry.NewEntry.Id, oldUsages, newUsages);
-                }
+                var oldUsages = new List<PromotionUsage>();
+                await RecordUsages(jobArgument.OrderId, oldUsages, jobArgument.PromotionUsages);
             }
         }
 
@@ -100,8 +102,12 @@ namespace VirtoCommerce.MarketingModule.Data.Handlers
             }
         }
 
-        private List<PromotionUsage> GetCouponUsages(string objectId, IHasDiscounts hasDiscounts, string customerId, string customerName)
+        protected virtual CouponUsageRecordJobArgument GetJobArgumentsForCouponUsageRecord(CustomerOrder order)
         {
+            var objectId = order.Id;
+            IHasDiscounts hasDiscounts = order;
+            var customerId = order.CustomerId;
+            var customerName = order.CustomerName;
             var usageComparer = AnonymousComparer.Create((PromotionUsage x) => string.Join(":", x.PromotionId, x.CouponCode, x.ObjectId));
             var result = hasDiscounts.GetFlatObjectsListWithInterface<IHasDiscounts>()
                 .Where(x => x.Discounts != null)
@@ -116,10 +122,16 @@ namespace VirtoCommerce.MarketingModule.Data.Handlers
                     UserId = customerId,
                     UserName = customerName
                 })
-                .Distinct(usageComparer)
-                .ToList();
+                .Distinct(usageComparer);
 
-            return result;
+            return new CouponUsageRecordJobArgument() { OrderId = objectId, PromotionUsages = result.ToArray()};
         }
+    }
+
+    public class CouponUsageRecordJobArgument
+    {
+        public string OrderId { get; set; }
+
+        public PromotionUsage[] PromotionUsages { get; set; }
     }
 }
