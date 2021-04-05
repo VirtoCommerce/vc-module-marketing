@@ -9,53 +9,53 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 {
     public class PromotionEvaluationContext : EvaluationContextBase, ICacheKey
     {
-        public virtual string[] RefusedGiftIds { get; set; }
+        public string[] RefusedGiftIds { get; set; }
 
         public string StoreId { get; set; }
 
-        public virtual string Currency { get; set; }
+        public string Currency { get; set; }
 
         /// <summary>
         /// Customer id
         /// </summary>
-        public virtual string CustomerId { get; set; }
+        public string CustomerId { get; set; }
 
-        public virtual bool IsRegisteredUser { get; set; }
+        public bool IsRegisteredUser { get; set; }
 
         /// <summary>
         /// Has user made any orders
         /// </summary>
-        public virtual bool IsFirstTimeBuyer { get; set; }
+        public bool IsFirstTimeBuyer { get; set; }
 
-        public virtual bool IsEveryone { get; set; } = true;
+        public bool IsEveryone { get; set; } = true;
 
         //Cart subtotal (incorrect property name cannot change for back compatibility reasons)
-        public virtual decimal CartTotal { get; set; }
+        public decimal CartTotal { get; set; }
 
         /// <summary>
         /// Current shipment method
         /// </summary>
-        public virtual string ShipmentMethodCode { get; set; }
-        public virtual string ShipmentMethodOption { get; set; }
-        public virtual decimal ShipmentMethodPrice { get; set; }
-        public virtual string[] AvailableShipmentMethodCodes { get; set; }
+        public string ShipmentMethodCode { get; set; }
+        public string ShipmentMethodOption { get; set; }
+        public decimal ShipmentMethodPrice { get; set; }
+        public string[] AvailableShipmentMethodCodes { get; set; }
 
         /// <summary>
         /// Current payment method
         /// </summary>
-        public virtual string PaymentMethodCode { get; set; }
-        public virtual decimal PaymentMethodPrice { get; set; }
-        public virtual string[] AvailablePaymentMethodCodes { get; set; }
+        public string PaymentMethodCode { get; set; }
+        public decimal PaymentMethodPrice { get; set; }
+        public string[] AvailablePaymentMethodCodes { get; set; }
 
         /// <summary>
         /// Entered coupon
         /// </summary>
-        public virtual string Coupon { get; set; }
+        public string Coupon { get; set; }
         /// <summary>
         /// Entered multiple coupons
         /// </summary>
         private ICollection<string> _coupons;
-        public virtual ICollection<string> Coupons
+        public ICollection<string> Coupons
         {
             get
             {
@@ -73,15 +73,15 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
         /// <summary>
         /// List of product promo in cart
         /// </summary>
-        public virtual ICollection<ProductPromoEntry> CartPromoEntries { get; set; } = new List<ProductPromoEntry>();
+        public ICollection<ProductPromoEntry> CartPromoEntries { get; set; } = new List<ProductPromoEntry>();
         /// <summary>
         /// List of products for promo evaluation
         /// </summary>
-        public virtual ICollection<ProductPromoEntry> PromoEntries { get; set; } = new List<ProductPromoEntry>();
+        public ICollection<ProductPromoEntry> PromoEntries { get; set; } = new List<ProductPromoEntry>();
         /// <summary>
         /// Single catalog product promo entry 
         /// </summary>
-        public virtual ProductPromoEntry PromoEntry { get; set; }
+        public ProductPromoEntry PromoEntry { get; set; }
 
         public virtual string GetCacheKey()
         {

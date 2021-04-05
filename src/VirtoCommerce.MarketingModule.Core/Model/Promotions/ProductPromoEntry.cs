@@ -13,21 +13,21 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
             Attributes = new Dictionary<string, string>();
         }
 
-        public virtual string Code { get; set; }
-        public virtual int Quantity { get; set; }
-        public virtual int InStockQuantity { get; set; }
-        public virtual decimal Price { get; set; }
-        public virtual decimal ListPrice { get; set; }
-        public virtual decimal Discount { get; set; }
-        public virtual string CatalogId { get; set; }
-        public virtual string CategoryId { get; set; }
-        public virtual string ProductId { get; set; }
-        public virtual object Owner { get; set; }
-        public virtual string Outline { get; set; }
+        public string Code { get; set; }
+        public int Quantity { get; set; }
+        public int InStockQuantity { get; set; }
+        public decimal Price { get; set; }
+        public decimal ListPrice { get; set; }
+        public decimal Discount { get; set; }
+        public string CatalogId { get; set; }
+        public string CategoryId { get; set; }
+        public string ProductId { get; set; }
+        public object Owner { get; set; }
+        public string Outline { get; set; }
 
-        public virtual ICollection<ProductPromoEntry> Variations { get; set; }
+        public ICollection<ProductPromoEntry> Variations { get; set; }
 
-        public virtual Dictionary<string, string> Attributes { get; set; }
+        public Dictionary<string, string> Attributes { get; set; }
 
         public virtual object Clone()
         {
