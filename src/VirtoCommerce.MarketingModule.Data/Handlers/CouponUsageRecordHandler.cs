@@ -9,6 +9,7 @@ using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Search;
 using VirtoCommerce.MarketingModule.Core.Services;
 using VirtoCommerce.OrdersModule.Core.Events;
+using VirtoCommerce.OrdersModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
 
@@ -39,7 +40,7 @@ namespace VirtoCommerce.MarketingModule.Data.Handlers
 
         public virtual Task Handle(OrderChangedEvent message)
         {
-            var couponUsageJobArguments = message.ChangedEntries.Where(x => x.EntryState == EntryState.Added).Select(x=> GetJobArgumentsForCouponUsageRecord(x.NewEntry.Id, x.NewEntry, x.NewEntry.CustomerId, x.NewEntry.CustomerName));
+            var couponUsageJobArguments = message.ChangedEntries.Where(x => x.EntryState == EntryState.Added).Select(x=> GetJobArgumentsForCouponUsageRecord(x.NewEntry));
 
             if (couponUsageJobArguments.Any())
             {
@@ -101,8 +102,12 @@ namespace VirtoCommerce.MarketingModule.Data.Handlers
             }
         }
 
-        protected virtual CouponUsageRecordJobArgument GetJobArgumentsForCouponUsageRecord(string objectId, IHasDiscounts hasDiscounts, string customerId, string customerName)
+        protected virtual CouponUsageRecordJobArgument GetJobArgumentsForCouponUsageRecord(CustomerOrder order)
         {
+            var objectId = order.Id;
+            IHasDiscounts hasDiscounts = order;
+            var customerId = order.CustomerId;
+            var customerName = order.CustomerName;
             var usageComparer = AnonymousComparer.Create((PromotionUsage x) => string.Join(":", x.PromotionId, x.CouponCode, x.ObjectId));
             var result = hasDiscounts.GetFlatObjectsListWithInterface<IHasDiscounts>()
                 .Where(x => x.Discounts != null)
