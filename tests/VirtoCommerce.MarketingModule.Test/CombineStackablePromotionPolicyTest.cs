@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using Newtonsoft.Json;
 using VirtoCommerce.CoreModule.Core.Common;
@@ -15,6 +18,7 @@ using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.MarketingModule.Data.Services;
 using VirtoCommerce.MarketingModule.Test.CustomPromotion;
 using VirtoCommerce.MarketingModule.Test.CustomReward;
+using VirtoCommerce.Platform.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using Xunit;
 
@@ -397,6 +401,7 @@ namespace VirtoCommerce.MarketingModule.Test
             {
                 Results = promotions.ToList()
             };
+
             var promoSearchServiceMock = new Moq.Mock<IPromotionSearchService>();
             promoSearchServiceMock.Setup(x => x.SearchPromotionsAsync(It.IsAny<PromotionSearchCriteria>())).ReturnsAsync(result);
 
@@ -405,7 +410,10 @@ namespace VirtoCommerce.MarketingModule.Test
                 promotionRewardEvaluatorMock = GetPromotionRewardEvaluatorMock();
             }
 
-            return new CombineStackablePromotionPolicy(promoSearchServiceMock.Object, promotionRewardEvaluatorMock.Object);
+            var memoryCache = new MemoryCache(Options.Create(new MemoryCacheOptions()));
+            var platformMemoryCache = new PlatformMemoryCache(memoryCache, Options.Create(new CachingOptions()), new Mock<ILogger<PlatformMemoryCache>>().Object);
+
+            return new CombineStackablePromotionPolicy(promoSearchServiceMock.Object, promotionRewardEvaluatorMock.Object, platformMemoryCache);
         }
 
         private static Mock<IPromotionRewardEvaluator> GetPromotionRewardEvaluatorMock()

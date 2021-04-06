@@ -2,37 +2,37 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using VirtoCommerce.CoreModule.Core.Common;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Search;
 using VirtoCommerce.MarketingModule.Core.Services;
+using VirtoCommerce.MarketingModule.Data.Services.EvaluationPolicies;
+using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.MarketingModule.Data.Services
 {
-    public class CombineStackablePromotionPolicy : IMarketingPromoEvaluator
+    public class CombineStackablePromotionPolicy : PromotionPolicyBase
     {
         private readonly IPromotionSearchService _promotionSearchService;
         private readonly IPromotionRewardEvaluator _promotionRewardEvaluator;
 
-        public CombineStackablePromotionPolicy(IPromotionSearchService promotionSearchService, IPromotionRewardEvaluator promotionRewardEvaluator)
+        public CombineStackablePromotionPolicy(IPromotionSearchService promotionSearchService, IPromotionRewardEvaluator promotionRewardEvaluator, IPlatformMemoryCache platformMemoryCache)
+            : base(platformMemoryCache)
         {
             _promotionSearchService = promotionSearchService;
             _promotionRewardEvaluator = promotionRewardEvaluator;
         }
 
-        public async Task<PromotionResult> EvaluatePromotionAsync(IEvaluationContext context)
+        protected override async Task<PromotionResult> EvaluatePromotionWithoutCache(PromotionEvaluationContext promoContext)
         {
-            var promoContext = GetPromotionEvaluationContext(context);
-
             var promotionSearchCriteria = AbstractTypeFactory<PromotionSearchCriteria>.TryCreateInstance();
             promotionSearchCriteria.PopulateFromEvalContext(promoContext);
 
             promotionSearchCriteria.OnlyActive = true;
             promotionSearchCriteria.Take = int.MaxValue;
             promotionSearchCriteria.StoreIds = string.IsNullOrEmpty(promoContext.StoreId) ? null : new[] { promoContext.StoreId };
-           
+
             var promotions = await _promotionSearchService.SearchPromotionsAsync(promotionSearchCriteria);
 
             var result = new PromotionResult();
@@ -218,21 +218,6 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                     }
                 }
             }
-        }
-
-        private static PromotionEvaluationContext GetPromotionEvaluationContext(IEvaluationContext context)
-        {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            if (!(context is PromotionEvaluationContext promoContext))
-            {
-                throw new ArgumentException($"{nameof(context)} type {context.GetType()} must be derived from PromotionEvaluationContext");
-            }
-
-            return promoContext;
         }
     }
 }

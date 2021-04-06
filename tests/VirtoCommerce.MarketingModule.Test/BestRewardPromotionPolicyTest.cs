@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
@@ -7,6 +10,7 @@ using VirtoCommerce.MarketingModule.Core.Promotions;
 using VirtoCommerce.MarketingModule.Core.Search;
 using VirtoCommerce.MarketingModule.Core.Services;
 using VirtoCommerce.MarketingModule.Data.Services;
+using VirtoCommerce.Platform.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using Xunit;
 
@@ -85,7 +89,7 @@ namespace VirtoCommerce.MarketingModule.Test
                 PaymentMethodPrice = 5m,
                 PromoEntries = new[] { productA }
             };
-            
+
             //Act
             var rewards = evalPolicy.EvaluatePromotionAsync(context).GetAwaiter().GetResult().Rewards.OfType<PaymentReward>().ToList();
 
@@ -96,15 +100,18 @@ namespace VirtoCommerce.MarketingModule.Test
 
         private static IMarketingPromoEvaluator GetPromotionEvaluationPolicy(IEnumerable<Promotion> promotions)
         {
-
             var result = new PromotionSearchResult
             {
                 Results = promotions.ToList()
             };
-            var promoSearchServiceMock = new Moq.Mock<IPromotionSearchService>();
+
+            var promoSearchServiceMock = new Mock<IPromotionSearchService>();
             promoSearchServiceMock.Setup(x => x.SearchPromotionsAsync(It.IsAny<PromotionSearchCriteria>())).ReturnsAsync(result);
 
-            return new BestRewardPromotionPolicy(promoSearchServiceMock.Object);
+            var memoryCache = new MemoryCache(Options.Create(new MemoryCacheOptions()));
+            var platformMemoryCache = new PlatformMemoryCache(memoryCache, Options.Create(new CachingOptions()), new Mock<ILogger<PlatformMemoryCache>>().Object);
+
+            return new BestRewardPromotionPolicy(promoSearchServiceMock.Object, platformMemoryCache);
         }
 
         private static IEnumerable<Promotion> TestPromotions

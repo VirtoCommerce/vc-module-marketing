@@ -1,9 +1,13 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using VirtoCommerce.CoreModule.Core.Common;
+using VirtoCommerce.Platform.Core.Caching;
+using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 {
-    public class PromotionEvaluationContext : EvaluationContextBase
+    public class PromotionEvaluationContext : EvaluationContextBase, ICacheKey
     {
         public string[] RefusedGiftIds { get; set; }
 
@@ -43,7 +47,6 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
         public decimal PaymentMethodPrice { get; set; }
         public string[] AvailablePaymentMethodCodes { get; set; }
 
-
         /// <summary>
         /// Entered coupon
         /// </summary>
@@ -80,9 +83,59 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
         /// </summary>
         public ProductPromoEntry PromoEntry { get; set; }
 
+        public virtual string GetCacheKey()
+        {
+            return string.Join("|", GetCacheKeyComponents().Select(x => x ?? "null").Select(x => x is ICacheKey cacheKey ? cacheKey.GetCacheKey() : x.ToString()));
+        }
 
+        public virtual IEnumerable<object> GetCacheKeyComponents()
+        {
+            yield return IsRegisteredUser;
+            yield return IsFirstTimeBuyer;
+            yield return IsEveryone;
 
+            yield return Language;
+            yield return StoreId;
+            yield return Currency;
+            yield return CustomerId;
+            yield return CartTotal;
+            yield return Coupon;
 
+            yield return ShipmentMethodCode;
+            yield return ShipmentMethodOption;
+            yield return ShipmentMethodPrice;
+
+            yield return PaymentMethodCode;
+            yield return PaymentMethodPrice;
+
+            yield return string.Join('&', Coupons ?? Array.Empty<string>());
+            yield return string.Join('&', UserGroups ?? Array.Empty<string>());
+
+            if (!Attributes.IsNullOrEmpty())
+            {
+                foreach (var attribute in Attributes)
+                {
+                    yield return $"{attribute.Key}-{attribute.Value}";
+                }
+            }
+
+            yield return PromoEntry;
+
+            if (!PromoEntries.IsNullOrEmpty())
+            {
+                foreach (var entry in PromoEntries)
+                {
+                    yield return entry;
+                }
+            }
+
+            if (!CartPromoEntries.IsNullOrEmpty())
+            {
+                foreach (var entry in CartPromoEntries)
+                {
+                    yield return entry;
+                }
+            }
+        }
     }
-
 }
