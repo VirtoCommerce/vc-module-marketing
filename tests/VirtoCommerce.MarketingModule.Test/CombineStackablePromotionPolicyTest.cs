@@ -14,12 +14,12 @@ using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Promotions;
 using VirtoCommerce.MarketingModule.Core.Search;
 using VirtoCommerce.MarketingModule.Core.Services;
-using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.MarketingModule.Data.Services;
 using VirtoCommerce.MarketingModule.Test.CustomPromotion;
 using VirtoCommerce.MarketingModule.Test.CustomReward;
 using VirtoCommerce.Platform.Caching;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.JsonConverters;
 using Xunit;
 
 namespace VirtoCommerce.MarketingModule.Test
@@ -158,7 +158,7 @@ namespace VirtoCommerce.MarketingModule.Test
             {
                 CouponSearchService = couponSearchMockServiceMock.Object,
                 PromotionUsageSearchService = promotionUsageSearchMock.Object,
-                DynamicExpression = JsonConvert.DeserializeObject<PromotionConditionAndRewardTree>(promoConditionTree, new ConditionJsonConverter(), new RewardJsonConverter())
+                DynamicExpression = JsonConvert.DeserializeObject<PromotionConditionAndRewardTree>(promoConditionTree, new ConditionJsonConverter(), new PolymorphJsonConverter())
             } });
 
             var context = new PromotionEvaluationContext()

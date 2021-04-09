@@ -9,11 +9,11 @@ using VirtoCommerce.MarketingModule.Core.Model;
 using VirtoCommerce.MarketingModule.Core.Model.DynamicContent;
 using VirtoCommerce.MarketingModule.Core.Search;
 using VirtoCommerce.MarketingModule.Core.Services;
-using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.MarketingModule.Data.Services;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Domain;
+using VirtoCommerce.Platform.Core.JsonConverters;
 using Xunit;
 
 namespace VirtoCommerce.MarketingModule.Test
@@ -60,7 +60,7 @@ namespace VirtoCommerce.MarketingModule.Test
             {
                 new DynamicContentPublication
                 {
-                    DynamicExpression = JsonConvert.DeserializeObject<DynamicContentConditionTree>(GetConditionJson(), new ConditionJsonConverter(), new RewardJsonConverter()),
+                    DynamicExpression = JsonConvert.DeserializeObject<DynamicContentConditionTree>(GetConditionJson(), new ConditionJsonConverter(), new PolymorphJsonConverter()),
                     IsActive = true,
                     ContentItems = new ObservableCollection<DynamicContentItem> { dynamicContentItem },
                 }
