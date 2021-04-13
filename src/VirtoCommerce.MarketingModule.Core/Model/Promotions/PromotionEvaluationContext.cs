@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using VirtoCommerce.CoreModule.Core.Common;
 using VirtoCommerce.Platform.Core.Caching;
-using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 {
@@ -85,7 +84,11 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 
         public virtual string GetCacheKey()
         {
-            return string.Join("|", GetCacheKeyComponents().Select(x => x ?? "null").Select(x => x is ICacheKey cacheKey ? cacheKey.GetCacheKey() : x.ToString()));
+            var keyValues = GetCacheKeyComponents()
+                .Select(x => x is string ? $"'{x}'" : x)
+                .Select(x => x is ICacheKey cacheKey ? cacheKey.GetCacheKey() : x?.ToString());
+
+            return string.Join("|", keyValues);
         }
 
         public virtual IEnumerable<object> GetCacheKeyComponents()
@@ -110,31 +113,37 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 
             yield return string.Join('&', Coupons ?? Array.Empty<string>());
             yield return string.Join('&', UserGroups ?? Array.Empty<string>());
-
-            if (!Attributes.IsNullOrEmpty())
-            {
-                foreach (var attribute in Attributes)
-                {
-                    yield return $"{attribute.Key}-{attribute.Value}";
-                }
-            }
+            yield return string.Join('&', Attributes ?? new Dictionary<string, string>());
 
             yield return PromoEntry;
 
-            if (!PromoEntries.IsNullOrEmpty())
+            foreach (var entry in GetEntriesComponents(PromoEntries))
             {
-                foreach (var entry in PromoEntries)
-                {
-                    yield return entry;
-                }
+                yield return entry;
             }
 
-            if (!CartPromoEntries.IsNullOrEmpty())
+            foreach (var entry in GetEntriesComponents(CartPromoEntries))
             {
-                foreach (var entry in CartPromoEntries)
+                yield return entry;
+            }
+        }
+
+        public IEnumerable<object> GetEntriesComponents(ICollection<ProductPromoEntry> entries)
+        {
+            if (entries == null)
+            {
+                yield return null;
+            }
+            else
+            {
+                yield return '[';
+
+                foreach (var entry in entries)
                 {
                     yield return entry;
                 }
+
+                yield return ']';
             }
         }
     }
