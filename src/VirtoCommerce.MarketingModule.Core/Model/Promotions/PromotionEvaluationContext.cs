@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using VirtoCommerce.CoreModule.Core.Common;
@@ -111,24 +110,35 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
             yield return PaymentMethodCode;
             yield return PaymentMethodPrice;
 
-            yield return string.Join('&', Coupons ?? Array.Empty<string>());
-            yield return string.Join('&', UserGroups ?? Array.Empty<string>());
-            yield return string.Join('&', Attributes ?? new Dictionary<string, string>());
-
-            yield return PromoEntry;
-
-            foreach (var entry in GetEntriesComponents(PromoEntries))
+            foreach (var entry in GetCollectionComponents(Coupons))
             {
                 yield return entry;
             }
 
-            foreach (var entry in GetEntriesComponents(CartPromoEntries))
+            foreach (var entry in GetCollectionComponents(UserGroups))
+            {
+                yield return entry;
+            }
+
+            foreach (var entry in GetCollectionComponents(Attributes))
+            {
+                yield return entry;
+            }
+
+            yield return PromoEntry;
+
+            foreach (var entry in GetCollectionComponents(PromoEntries))
+            {
+                yield return entry;
+            }
+
+            foreach (var entry in GetCollectionComponents(CartPromoEntries))
             {
                 yield return entry;
             }
         }
 
-        public IEnumerable<object> GetEntriesComponents(ICollection<ProductPromoEntry> entries)
+        protected virtual IEnumerable<object> GetCollectionComponents<T>(IEnumerable<T> entries)
         {
             if (entries == null)
             {
