@@ -40,8 +40,8 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
         public virtual string GetCacheKey()
         {
             var keyValues = GetCacheKeyComponents()
-               .Select(x => x is string ? $"'{x}'" : x)
-               .Select(x => x?.ToString());
+                .Select(x => x is string ? $"'{x}'" : x)
+                .Select(x => x is ICacheKey cacheKey ? cacheKey.GetCacheKey() : x?.ToString());
 
             return string.Join("|", keyValues);
         }
