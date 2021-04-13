@@ -110,35 +110,35 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
             yield return PaymentMethodCode;
             yield return PaymentMethodPrice;
 
-            foreach (var entry in GetEntriesComponents(Coupons))
+            foreach (var entry in GetCollectionComponents(Coupons))
             {
                 yield return entry;
             }
 
-            foreach (var entry in GetEntriesComponents(UserGroups))
+            foreach (var entry in GetCollectionComponents(UserGroups))
             {
                 yield return entry;
             }
 
-            foreach (var entry in GetEntriesComponents(Attributes))
+            foreach (var entry in GetCollectionComponents(Attributes))
             {
                 yield return entry;
             }
 
             yield return PromoEntry;
 
-            foreach (var entry in GetEntriesComponents(PromoEntries))
+            foreach (var entry in GetCollectionComponents(PromoEntries))
             {
                 yield return entry;
             }
 
-            foreach (var entry in GetEntriesComponents(CartPromoEntries))
+            foreach (var entry in GetCollectionComponents(CartPromoEntries))
             {
                 yield return entry;
             }
         }
 
-        public IEnumerable<object> GetEntriesComponents<T>(ICollection<T> entries)
+        protected virtual IEnumerable<object> GetCollectionComponents<T>(IEnumerable<T> entries)
         {
             if (entries == null)
             {
