@@ -22,7 +22,7 @@ namespace VirtoCommerce.MarketingModule.Test
         [InlineData(9, 10, 0)]
         [InlineData(10, 10, 0)]
         [InlineData(11, 10, 1)]
-        public async void FindValidCoupon_UsesNumber(int maxUsesNumber, int totalUses, int expectedCouponsCount)
+        public async Task FindValidCoupon_UsesNumber(int maxUsesNumber, int totalUses, int expectedCouponsCount)
         {
             //Arrange
             var testCoupon = new Coupon() { Id = "1", Code = "1", MaxUsesNumber = maxUsesNumber, };
@@ -40,7 +40,7 @@ namespace VirtoCommerce.MarketingModule.Test
         [InlineData(9, 10, 0, "userId")]
         [InlineData(10, 10, 0, "userId")]
         [InlineData(11, 10, 1, "userId")]
-        public async void FindValidCoupon_UsesNumberWithUserId(int maxUsesNumber, int totalUses, int expectedCouponsCount,
+        public async Task FindValidCoupon_UsesNumberWithUserId(int maxUsesNumber, int totalUses, int expectedCouponsCount,
             string userId)
         {
             //Arrange
@@ -63,7 +63,7 @@ namespace VirtoCommerce.MarketingModule.Test
 
         [Theory]
         [MemberData(nameof(ExpirationDateData))]
-        public async void FindValidCoupon_ExpirationDate(DateTime expirationDate, int expectedCouponsCount)
+        public async Task FindValidCoupon_ExpirationDate(DateTime expirationDate, int expectedCouponsCount)
         {
             //Arrange
             var testCoupon = new Coupon() { Id = "1", Code = "1", ExpirationDate = expirationDate };
@@ -80,7 +80,6 @@ namespace VirtoCommerce.MarketingModule.Test
         [Fact]
         public void DynamicPromotion_Clone()
         {
-
             var blockCustomer = new BlockCustomerCondition()
                     .WithAvailConditions(
                         new ConditionIsRegisteredUser(),
@@ -122,17 +121,17 @@ namespace VirtoCommerce.MarketingModule.Test
                       new RewardItemForEveryNumOtherItemInGetOfRel() { Amount = 444, ForNthQuantity = 77, InEveryNthQuantity = 78, MaxLimit = 22, ItemLimit = 23, Product = new ProductContainer() { ProductId = "prodID", ProductName = "prodName" }, ConditionalProduct = new ProductContainer() { ProductId = "condProdID", ProductName = "condProdName" } }
                     );
 
-
             var dynamicPromotion = new DynamicPromotion
             {
                 DynamicExpression = AbstractTypeFactory<PromotionConditionAndRewardTree>.TryCreateInstance()
             };
+
             dynamicPromotion.DynamicExpression.WithChildrens(
                 blockCustomer,
                 blockCatalog,
                 blockCart,
                 blockReward
-                );
+            );
 
             dynamicPromotion.AssertCloneIndependency();
         }
@@ -160,10 +159,8 @@ namespace VirtoCommerce.MarketingModule.Test
 
         private class DynamicPromotionMoq : DynamicPromotion
         {
-            public new async Task<IEnumerable<Coupon>> FindValidCouponsAsync(ICollection<string> couponCodes, string userId)
-            {
-                return await base.FindValidCouponsAsync(couponCodes, userId);
-            }
+            public new Task<IEnumerable<Coupon>> FindValidCouponsAsync(ICollection<string> couponCodes, string userId)
+                => base.FindValidCouponsAsync(couponCodes, userId);
         }
     }
 }
