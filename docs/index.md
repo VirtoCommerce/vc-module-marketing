@@ -60,7 +60,7 @@ Information captured by the tags is stored in the user’s session while he shop
 
 A Marketer or other Manager user with granted Dynamic Content permissions, uses the tags when creating conditions that determine whether a customer will see a piece of Dynamic Content or not.
 
-[Publishing Conditions](/docs/publishing-conditions.md)
+[Publishing Conditions](publishing-conditions.md)
 
 ### Work with Dynamic Content
 
@@ -72,11 +72,11 @@ Creating **Content Publishing** specifies which Dynamic Content(s) to view and u
 
 **Important**: Dynamic Content won't be available on frontend until it's assigned to any of the Content Publishing item.
 
-[Manage Content Items](/docs/manage-content-items.md)
+[Manage Content Items](manage-content-items.md)
 
-[Manage Content Placeholders](/docs/manage-content-placeholders.md)
+[Manage Content Placeholders](manage-content-placeholders.md)
 
-[Manage Content Publishing](/docs/manage-content-publishing.md)
+[Manage Content Publishing](manage-content-publishing.md)
 
 ### Add Advertising Spot
 
@@ -109,11 +109,11 @@ A **Promotion** is a marketing tool used to increase sales. Promotions are store
 
 **Important**: In order to apply a promotion to multiple stores, the admin should manually re-create it for each applicable store.
 
-[Promotion Rules](/docs/promotion-rules.md)
+[Promotion Rules](promotion-rules.md)
 
-[Manage Promotions](/docs/manage-promotions.md)
+[Manage Promotions](manage-promotions.md)
 
-[Combine Active Promotions](/docs/combine-active-promotions.md)
+[Combine Active Promotions](combine-active-promotions.md)
 
 ## Documentation
 
@@ -125,6 +125,6 @@ Installing the module:
 * Manually: download module zip package from https://github.com/VirtoCommerce/vc-module-marketing/releases. In VC Manager go to Configuration -> Modules -> Advanced -> upload module package -> Install.
 
 ## Available resources
-* Module related service implementations as a <a href="https://www.nuget.org/packages/VirtoCommerce.MarketingModule.Data" target="_blank">NuGet package</a>
-* API client as a <a href="https://www.nuget.org/packages/VirtoCommerce.MarketingModule.Client" target="_blank">NuGet package</a>
-* API client documentation http://demo.virtocommerce.com/admin/docs/ui/index#!/Marketing_module
+* Module related service implementations as a <a href="https://www.nuget.org/packages?q=VirtoCommerce.Marketing" target="_blank">NuGet package</a>
+* API client as a <a href="https://www.nuget.org/packages?q=VirtoCommerce.Marketing" target="_blank">NuGet package</a>
+* API <a href="https://admin-demo.virtocommerce.com/docs/index.html?urls.primaryName=VirtoCommerce.Marketing" target="_blank">client documentation</a>
