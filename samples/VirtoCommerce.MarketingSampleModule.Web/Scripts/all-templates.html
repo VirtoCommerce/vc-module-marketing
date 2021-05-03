@@ -1,0 +1,16 @@
+<script type="text/ng-template" id="expression-BlockSampleCondition.html">
+    For condition evaluator with
+    <a class="__link" left-click-menu data-target="allAny_menu{{element.id}}">{{element.all | boolToValue:'all':'any'}}</a> of these sample values
+    <ul class="menu __context" role="menu" id="allAny_menu{{element.id}}">
+        <li class="menu-item" ng-click='element.all=true;'>all</li>
+        <li class="menu-item" ng-click='element.all=false;'>any</li>
+    </ul>
+</script>
+<script type="text/ng-template" id="expression-SampleCondition.html">
+    Sample condition is met: 
+    <a class="__link" left-click-menu data-target="yesNo_menu{{element1.id}}">{{element1.isSatisfied | boolToValue:'yes':'no'}}</a>
+    <ul class="menu __context" role="menu" id="yesNo_menu{{element1.id}}">
+        <li class="menu-item" ng-click='element1.isSatisfied=true;'>yes</li>
+        <li class="menu-item" ng-click='element1.isSatisfied=false;'>no</li>
+    </ul>
+</script>
