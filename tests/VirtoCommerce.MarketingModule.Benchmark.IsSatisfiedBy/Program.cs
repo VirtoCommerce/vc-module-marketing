@@ -1,8 +1,8 @@
-﻿using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Running;
 using System.Collections.Generic;
-using VirtoCommerce.MarketingModule.Core.Model.Promotions;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Running;
 using Newtonsoft.Json;
+using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 
 namespace IsSatisfiedByBench
 {
@@ -33,7 +33,7 @@ namespace IsSatisfiedByBench
     {
         static void Main()
         {
-            // new LINQvsPlainIsSatisfiedBy().IsSatisfiedByWithLINQ(); // Debug
+            //new LinqVsPlainIsSatisfiedBy().IsSatisfiedByWithLINQ(); // Debug
             BenchmarkRunner.Run<LinqVsPlainIsSatisfiedBy>(); // Test
         }
     }
