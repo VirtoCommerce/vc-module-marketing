@@ -47,7 +47,7 @@ namespace VirtoCommerce.MarketingModule.Test
             Assert.Equal(5, rewards.Count);
             Assert.Equal(35m, context.ShipmentMethodPrice);
             Assert.Equal(37.5m, productA.Price);
-            Assert.Equal(66.66m, productB.Price);
+            Assert.Equal(66.67m, Math.Round(productB.Price, 2));
         }
 
         [Fact]
