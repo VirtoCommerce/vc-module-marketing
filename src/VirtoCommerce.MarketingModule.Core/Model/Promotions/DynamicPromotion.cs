@@ -13,6 +13,8 @@ namespace VirtoCommerce.MarketingModule.Core.Promotions
 {
     public class DynamicPromotion : Promotion, ICloneable
     {
+        private static object _contextLock = new object();
+
         public DynamicPromotion()
         {
             Type = nameof(DynamicPromotion);
@@ -52,13 +54,17 @@ namespace VirtoCommerce.MarketingModule.Core.Promotions
             //Evaluate reward for all promoEntry in context
             foreach (var promoEntry in promoContext.PromoEntries)
             {
-                //Set current context promo entry for evaluation
-                promoContext.PromoEntry = promoEntry;
-
                 foreach (var reward in DynamicExpression?.GetRewards() ?? Array.Empty<PromotionReward>())
                 {
-                    var clonedReward = reward.Clone() as PromotionReward;
-                    EvaluateReward(promoContext, couponIsValid, clonedReward);
+                    PromotionReward clonedReward = reward.Clone() as PromotionReward;
+
+                    lock (_contextLock)
+                    {
+                        //Set current context promo entry for evaluation
+                        promoContext.PromoEntry = promoEntry;
+                        EvaluateReward(promoContext, couponIsValid, clonedReward);
+                    }
+
                     //Add coupon to reward only for case when promotion contains associated coupons
                     if (!validCoupons.IsNullOrEmpty())
                     {
