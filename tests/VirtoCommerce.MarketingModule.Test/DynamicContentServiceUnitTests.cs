@@ -49,9 +49,9 @@ namespace VirtoCommerce.MarketingModule.Test
             var items = new[] { mainFolder, childFolder1, childFolder2, childFolder3, childFolder4, singleFolder }.AsQueryable();
 
             _repositoryMock.Setup(o => o.Folders).Returns(() => items);
-            _repositoryMock.Setup(o => o.RemoveFoldersAsync(It.IsAny<string[]>())).Callback<string[]>(f =>
+            _repositoryMock.Setup(o => o.RemoveFoldersAsync(It.IsAny<DynamicContentFolderEntity[]>())).Callback<DynamicContentFolderEntity[]>(f =>
             {
-                var allFolders = _repositoryMock.Object.Folders.Where(x => !f.Contains(x.Id)).AsQueryable();
+                var allFolders = _repositoryMock.Object.Folders.Where(x => !f.Select(y=>y.Id).Contains(x.Id)).AsQueryable();
                 _repositoryMock.Setup(o => o.Folders).Returns(() => allFolders);
             });
 
