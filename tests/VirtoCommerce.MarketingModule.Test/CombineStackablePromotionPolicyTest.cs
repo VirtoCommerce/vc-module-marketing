@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using Newtonsoft.Json;
 using VirtoCommerce.CoreModule.Core.Common;
@@ -11,11 +14,12 @@ using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Promotions;
 using VirtoCommerce.MarketingModule.Core.Search;
 using VirtoCommerce.MarketingModule.Core.Services;
-using VirtoCommerce.MarketingModule.Data.Promotions;
 using VirtoCommerce.MarketingModule.Data.Services;
 using VirtoCommerce.MarketingModule.Test.CustomPromotion;
 using VirtoCommerce.MarketingModule.Test.CustomReward;
+using VirtoCommerce.Platform.Caching;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.JsonConverters;
 using Xunit;
 
 namespace VirtoCommerce.MarketingModule.Test
@@ -43,7 +47,7 @@ namespace VirtoCommerce.MarketingModule.Test
             Assert.Equal(5, rewards.Count);
             Assert.Equal(35m, context.ShipmentMethodPrice);
             Assert.Equal(37.5m, productA.Price);
-            Assert.Equal(66.66m, productB.Price);
+            Assert.Equal(66.67m, Math.Round(productB.Price, 2));
         }
 
         [Fact]
@@ -154,7 +158,7 @@ namespace VirtoCommerce.MarketingModule.Test
             {
                 CouponSearchService = couponSearchMockServiceMock.Object,
                 PromotionUsageSearchService = promotionUsageSearchMock.Object,
-                DynamicExpression = JsonConvert.DeserializeObject<PromotionConditionAndRewardTree>(promoConditionTree, new ConditionJsonConverter(), new RewardJsonConverter())
+                DynamicExpression = JsonConvert.DeserializeObject<PromotionConditionAndRewardTree>(promoConditionTree, new ConditionJsonConverter(), new PolymorphJsonConverter())
             } });
 
             var context = new PromotionEvaluationContext()
@@ -397,6 +401,7 @@ namespace VirtoCommerce.MarketingModule.Test
             {
                 Results = promotions.ToList()
             };
+
             var promoSearchServiceMock = new Moq.Mock<IPromotionSearchService>();
             promoSearchServiceMock.Setup(x => x.SearchPromotionsAsync(It.IsAny<PromotionSearchCriteria>())).ReturnsAsync(result);
 
@@ -405,7 +410,10 @@ namespace VirtoCommerce.MarketingModule.Test
                 promotionRewardEvaluatorMock = GetPromotionRewardEvaluatorMock();
             }
 
-            return new CombineStackablePromotionPolicy(promoSearchServiceMock.Object, promotionRewardEvaluatorMock.Object);
+            var memoryCache = new MemoryCache(Options.Create(new MemoryCacheOptions()));
+            var platformMemoryCache = new PlatformMemoryCache(memoryCache, Options.Create(new CachingOptions()), new Mock<ILogger<PlatformMemoryCache>>().Object);
+
+            return new CombineStackablePromotionPolicy(promoSearchServiceMock.Object, promotionRewardEvaluatorMock.Object, platformMemoryCache);
         }
 
         private static Mock<IPromotionRewardEvaluator> GetPromotionRewardEvaluatorMock()

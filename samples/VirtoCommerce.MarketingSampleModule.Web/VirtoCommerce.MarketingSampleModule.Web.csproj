@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <noWarn>1591</noWarn>
+        <OutputType>Library</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Remove="dist\**" />
+        <Compile Remove="node_modules\**" />
+        <EmbeddedResource Remove="dist\**" />
+        <EmbeddedResource Remove="node_modules\**" />
+        <None Remove="dist\**" />
+        <None Remove="node_modules\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\VirtoCommerce.MarketingModule.Core\VirtoCommerce.MarketingModule.Core.csproj" />
+    </ItemGroup>
+</Project>

@@ -1,9 +1,9 @@
-﻿angular.module('virtoCommerce.marketingModule')
+angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.itemsDynamicContentListController', ['$scope', 'platformWebApp.bladeUtils', 'platformWebApp.uiGridHelper', 'platformWebApp.dialogService', 'virtoCommerce.marketingModule.dynamicContent.folders', 'virtoCommerce.marketingModule.dynamicContent.contentItems',
 function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentFoldersApi, dynamicContentItemsApi) {
     var bladeNavigationService = bladeUtils.bladeNavigationService;
     var blade = $scope.blade;
-    blade.headIcon = 'fa-inbox';
+    blade.headIcon = 'fa fa-inbox';
     blade.chosenFolderId = 'ContentItem';
     blade.currentEntity = {};
 
@@ -82,7 +82,7 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentFolders
             executeMethod: blade.refresh,
             canExecuteMethod: function () { return true; }
         }, {
-            name: 'platform.commands.add', icon: 'fa fa-plus',
+            name: 'platform.commands.add', icon: 'fas fa-plus',
             executeMethod: blade.addNew,
             canExecuteMethod: function () { return true; }
         }, {

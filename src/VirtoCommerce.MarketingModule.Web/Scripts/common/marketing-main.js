@@ -23,7 +23,7 @@ angular.module('virtoCommerce.marketingModule')
         bladeNavigationService.showBlade(newBlade, $scope.blade);
     };
 
-    $scope.blade.headIcon = 'fa-flag';
+    $scope.blade.headIcon = 'fa fa-flag';
 
     initializeBlade();
 }]);

@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.marketingModule')
+angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.itemFolderDetailController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.folders', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', function ($scope, marketing_dynamicContents_res_folders, bladeNavigationService, dialogService) {
     var blade = $scope.blade;
     blade.updatePermission = 'marketing:update';
@@ -22,12 +22,12 @@
         }
     };
 
-    blade.headIcon = 'fa-inbox';
+    blade.headIcon = 'fa fa-inbox';
 
     if (!blade.isNew) {
         blade.toolbarCommands = [
             {
-                name: "platform.commands.save", icon: 'fa fa-save',
+                name: "platform.commands.save", icon: 'fas fa-save',
                 executeMethod: blade.saveChanges,
                 canExecuteMethod: function () {
                     return !angular.equals(blade.origEntity, blade.currentEntity) && !$scope.formScope.$invalid;
@@ -45,7 +45,7 @@
                 permission: blade.updatePermission
             },
             {
-                name: "platform.commands.delete", icon: 'fa fa-trash-o',
+                name: "platform.commands.delete", icon: 'fas fa-trash-alt',
                 executeMethod: function () {
                     var dialog = {
                         id: "confirmDeleteContentItem",

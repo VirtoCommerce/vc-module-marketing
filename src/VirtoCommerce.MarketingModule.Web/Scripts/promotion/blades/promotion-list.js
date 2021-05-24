@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.marketingModule')
+angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.promotionListController', ['$scope', '$localStorage', 'virtoCommerce.marketingModule.promotions', 'platformWebApp.dialogService', 'platformWebApp.bladeUtils', 'platformWebApp.uiGridHelper',
     function ($scope, $localStorage, promotions, dialogService, bladeUtils, uiGridHelper) {
         var blade = $scope.blade;
@@ -8,7 +8,7 @@
             blade.isLoading = true;
 
             var criteria = {
-                responseGroup: 'withPromotions',
+                responseGroup: 'none',
                 keyword: filter.keyword,
                 sort: uiGridHelper.getSortExpression($scope),
                 skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
@@ -31,7 +31,7 @@
 
             var newBlade = {
                 id: 'listItemChild',
-                currentEntityId: node.id,
+                currentEntity: node,
                 title: node.name,
                 subtitle: blade.subtitle,
                 controller: 'virtoCommerce.marketingModule.promotionDetailController',
@@ -62,7 +62,7 @@
             dialogService.showConfirmationDialog(dialog);
         };
 
-        blade.headIcon = 'fa-area-chart';
+        blade.headIcon = 'fa fa-area-chart';
 
         blade.toolbarCommands = [
             {
@@ -71,7 +71,7 @@
                 canExecuteMethod: function () { return true; }
             },
             {
-                name: "platform.commands.add", icon: 'fa fa-plus',
+                name: "platform.commands.add", icon: 'fas fa-plus',
                 executeMethod: function () {
                     bladeNavigationService.closeChildrenBlades(blade, function () {
                         var newBlade = {
@@ -79,6 +79,7 @@
                             title: 'marketing.blades.promotion-detail.title-new',
                             subtitle: blade.subtitle,
                             isNew: true,
+                            currentEntity: {},
                             controller: 'virtoCommerce.marketingModule.promotionDetailController',
                             template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/promotion/blades/promotion-detail.tpl.html'
                         };
@@ -89,7 +90,7 @@
                 permission: 'marketing:create'
             },
             {
-                name: "platform.commands.delete", icon: 'fa fa-trash-o',
+                name: "platform.commands.delete", icon: 'fas fa-trash-alt',
                 executeMethod: function () {
                     $scope.deleteList($scope.gridApi.selection.getSelectedRows());
                 },

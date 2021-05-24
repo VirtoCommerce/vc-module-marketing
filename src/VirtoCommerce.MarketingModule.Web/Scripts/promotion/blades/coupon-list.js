@@ -3,7 +3,7 @@ angular.module('virtoCommerce.marketingModule')
 function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promotionsApi) {
     var blade = $scope.blade;
     var bladeNavigationService = bladeUtils.bladeNavigationService;
-    blade.headIcon = 'fa-ticket';
+    blade.headIcon = 'fa fa-ticket';
     blade.isLoading = false;
 
     blade.refresh = function () {
@@ -34,7 +34,7 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
 
     blade.toolbarCommands = [{
         name: 'marketing.blades.coupons.toolbar.add',
-        icon: 'fa fa-plus',
+        icon: 'fas fa-plus',
         canExecuteMethod: function () {
             return true;
         },
@@ -55,7 +55,7 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
         executeMethod: blade.refresh
     }, {
         name: 'marketing.blades.coupons.toolbar.delete',
-        icon: 'fa fa-trash-o',
+        icon: 'fas fa-trash-alt',
         canExecuteMethod: function () {
             return $scope.gridApi && _.any($scope.gridApi.selection.getSelectedRows());
         },

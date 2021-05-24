@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.marketingModule')
+angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.filterDetailController', ['$scope', '$localStorage', '$translate', 'virtoCommerce.storeModule.stores',
     function ($scope, $localStorage, $translate, stores) {
         var blade = $scope.blade;
@@ -52,7 +52,7 @@
             return !angular.equals(blade.currentEntity, blade.origEntity);
         }
 
-        blade.headIcon = 'fa-filter';
+        blade.headIcon = 'fa fa-filter';
 
         blade.toolbarCommands = [
                 {
@@ -72,7 +72,7 @@
                     canExecuteMethod: isDirty
                 },
                 {
-                    name: "platform.commands.delete", icon: 'fa fa-trash-o',
+                    name: "platform.commands.delete", icon: 'fas fa-trash-alt',
                     executeMethod: deleteEntry,
                     canExecuteMethod: function () {
                         return !blade.isNew;

@@ -49,6 +49,8 @@ namespace VirtoCommerce.MarketingModule.Core.Promotions
             //Check coupon
             var couponIsValid = !HasCoupons || validCoupons.Any();
 
+            promoContext = promoContext.Clone();
+
             //Evaluate reward for all promoEntry in context
             foreach (var promoEntry in promoContext.PromoEntries)
             {

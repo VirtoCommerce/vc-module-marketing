@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 using VirtoCommerce.CoreModule.Core.Common;
+using VirtoCommerce.Platform.Core.Caching;
 
 namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 {
-    public class PromotionEvaluationContext : EvaluationContextBase
+    public class PromotionEvaluationContext : EvaluationContextBase, ICacheKey
     {
         public string[] RefusedGiftIds { get; set; }
 
@@ -43,7 +45,6 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
         public decimal PaymentMethodPrice { get; set; }
         public string[] AvailablePaymentMethodCodes { get; set; }
 
-
         /// <summary>
         /// Entered coupon
         /// </summary>
@@ -80,9 +81,85 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
         /// </summary>
         public ProductPromoEntry PromoEntry { get; set; }
 
+        public virtual string GetCacheKey()
+        {
+            var keyValues = GetCacheKeyComponents()
+                .Select(x => x is string ? $"'{x}'" : x)
+                .Select(x => x is ICacheKey cacheKey ? cacheKey.GetCacheKey() : x?.ToString());
 
+            return string.Join("|", keyValues);
+        }
 
+        public virtual IEnumerable<object> GetCacheKeyComponents()
+        {
+            yield return IsRegisteredUser;
+            yield return IsFirstTimeBuyer;
+            yield return IsEveryone;
 
+            yield return Language;
+            yield return StoreId;
+            yield return Currency;
+            yield return CustomerId;
+            yield return CartTotal;
+            yield return Coupon;
+
+            yield return ShipmentMethodCode;
+            yield return ShipmentMethodOption;
+            yield return ShipmentMethodPrice;
+
+            yield return PaymentMethodCode;
+            yield return PaymentMethodPrice;
+
+            foreach (var entry in GetCollectionComponents(Coupons))
+            {
+                yield return entry;
+            }
+
+            foreach (var entry in GetCollectionComponents(UserGroups))
+            {
+                yield return entry;
+            }
+
+            foreach (var entry in GetCollectionComponents(Attributes))
+            {
+                yield return entry;
+            }
+
+            yield return PromoEntry;
+
+            foreach (var entry in GetCollectionComponents(PromoEntries))
+            {
+                yield return entry;
+            }
+
+            foreach (var entry in GetCollectionComponents(CartPromoEntries))
+            {
+                yield return entry;
+            }
+        }
+
+        protected virtual IEnumerable<object> GetCollectionComponents<T>(IEnumerable<T> entries)
+        {
+            if (entries == null)
+            {
+                yield return null;
+            }
+            else
+            {
+                yield return '[';
+
+                foreach (var entry in entries)
+                {
+                    yield return entry;
+                }
+
+                yield return ']';
+            }
+        }
+
+        public virtual PromotionEvaluationContext Clone()
+        {
+            return MemberwiseClone() as PromotionEvaluationContext;
+        }
     }
-
 }

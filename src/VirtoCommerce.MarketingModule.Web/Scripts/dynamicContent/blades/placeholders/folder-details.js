@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.marketingModule')
+angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.addFolderPlaceholderController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.folders', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', function ($scope, marketing_dynamicContents_res_folders, bladeNavigationService, dialogService) {
     var blade = $scope.blade;
     blade.updatePermission = 'marketing:update';
@@ -27,7 +27,7 @@
     if (!blade.isNew) {
         blade.toolbarCommands = [
             {
-                name: "platform.commands.save", icon: 'fa fa-save',
+                name: "platform.commands.save", icon: 'fas fa-save',
                 executeMethod: function () {
                     blade.saveChanges();
                 },
@@ -47,7 +47,7 @@
                 permission: blade.updatePermission
             },
             {
-                name: "platform.commands.delete", icon: 'fa fa-trash-o',
+                name: "platform.commands.delete", icon: 'fas fa-trash-alt',
                 executeMethod: function () {
                     var dialog = {
                         id: "confirmDeleteContentPlaceholdersFolder",
@@ -79,7 +79,7 @@
 
     $scope.setForm = function (form) { $scope.formScope = form; };
 
-    blade.headIcon = 'fa-location-arrow';
+    blade.headIcon = 'fa fa-location-arrow';
 
     blade.initialize();
 }]);

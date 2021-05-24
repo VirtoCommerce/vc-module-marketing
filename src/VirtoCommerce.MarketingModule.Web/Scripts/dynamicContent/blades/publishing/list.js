@@ -1,9 +1,9 @@
-﻿angular.module('virtoCommerce.marketingModule')
+angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.publishingDynamicContentListController', ['$scope', 'platformWebApp.bladeUtils', 'platformWebApp.uiGridHelper', 'platformWebApp.dialogService', 'virtoCommerce.marketingModule.dynamicContent.contentPublications',
 function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentPublicationsApi) {
     var bladeNavigationService = bladeUtils.bladeNavigationService;
     var blade = $scope.blade;
-    blade.headIcon = 'fa-paperclip';
+    blade.headIcon = 'fa fa-paperclip';
     blade.isLoading = false;
 
     blade.initialize = function () {
@@ -47,7 +47,7 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentPublica
         canExecuteMethod: function () { return true; },
         executeMethod: blade.refresh
     }, {
-        name: 'platform.commands.add', icon: 'fa fa-plus',
+        name: 'platform.commands.add', icon: 'fas fa-plus',
         canExecuteMethod: function () { return true; },
         executeMethod: function () { $scope.selectNode({}, true); }
     }, {

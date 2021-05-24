@@ -1,29 +1,27 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using VirtoCommerce.CoreModule.Core.Common;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Search;
-using VirtoCommerce.MarketingModule.Core.Services;
+using VirtoCommerce.MarketingModule.Data.Services.EvaluationPolicies;
+using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.MarketingModule.Data.Services
 {
-    public class BestRewardPromotionPolicy : IMarketingPromoEvaluator
+    public class BestRewardPromotionPolicy : PromotionPolicyBase
     {
         private readonly IPromotionSearchService _promotionSearchService;
 
-        public BestRewardPromotionPolicy(IPromotionSearchService promotionSearchService)
+        public BestRewardPromotionPolicy(IPromotionSearchService promotionSearchService, IPlatformMemoryCache platformMemoryCache)
+            : base(platformMemoryCache)
         {
             _promotionSearchService = promotionSearchService;
         }
 
-        public async Task<PromotionResult> EvaluatePromotionAsync(IEvaluationContext context)
+        protected override async Task<PromotionResult> EvaluatePromotionWithoutCache(PromotionEvaluationContext promoContext)
         {
-            var promoContext = GetPromotionEvaluationContext(context);
-
             var promotionSearchCriteria = AbstractTypeFactory<PromotionSearchCriteria>.TryCreateInstance();
             promotionSearchCriteria.PopulateFromEvalContext(promoContext);
 
@@ -34,7 +32,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             var promotions = await _promotionSearchService.SearchPromotionsAsync(promotionSearchCriteria);
 
             var result = new PromotionResult();
-            var evalPromtionTasks = promotions.Results.Select(x => x.EvaluatePromotionAsync(context)).ToArray();
+            var evalPromtionTasks = promotions.Results.Select(x => x.EvaluatePromotionAsync(promoContext)).ToArray();
             await Task.WhenAll(evalPromtionTasks);
             var rewards = evalPromtionTasks.SelectMany(x => x.Result).Where(x => x.IsValid).ToArray();
 
@@ -139,21 +137,6 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             }
 
             return retVal;
-        }
-
-        private static PromotionEvaluationContext GetPromotionEvaluationContext(IEvaluationContext context)
-        {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            if (!(context is PromotionEvaluationContext promoContext))
-            {
-                throw new ArgumentException($"{nameof(context)} type {context.GetType()} must be derived from PromotionEvaluationContext");
-            }
-
-            return promoContext;
         }
     }
 }
