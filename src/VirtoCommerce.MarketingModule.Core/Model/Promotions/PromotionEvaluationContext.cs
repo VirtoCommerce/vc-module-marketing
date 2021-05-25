@@ -156,5 +156,10 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
                 yield return ']';
             }
         }
+
+        public virtual PromotionEvaluationContext Clone()
+        {
+            return MemberwiseClone() as PromotionEvaluationContext;
+        }
     }
 }
