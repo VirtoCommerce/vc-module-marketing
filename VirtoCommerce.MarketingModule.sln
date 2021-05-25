@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.MarketingModu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.MarketingModule.Benchmark.PromoConditions", "tests\VirtoCommerce.MarketingModule.Benchmark.PromoConditions\VirtoCommerce.MarketingModule.Benchmark.PromoConditions.csproj", "{7EA3B683-3AA2-42E8-8BA6-2C73C5BE9B38}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtoCommerce.MarketingModule.Benchmark.PromoPolicies", "tests\VirtoCommerce.MarketingModule.Benchmark.PromoPolicies\VirtoCommerce.MarketingModule.Benchmark.PromoPolicies.csproj", "{B7065F4D-FA85-4EB1-AE2B-3C548FA35C1B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{7EA3B683-3AA2-42E8-8BA6-2C73C5BE9B38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EA3B683-3AA2-42E8-8BA6-2C73C5BE9B38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EA3B683-3AA2-42E8-8BA6-2C73C5BE9B38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7065F4D-FA85-4EB1-AE2B-3C548FA35C1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7065F4D-FA85-4EB1-AE2B-3C548FA35C1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7065F4D-FA85-4EB1-AE2B-3C548FA35C1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7065F4D-FA85-4EB1-AE2B-3C548FA35C1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +75,7 @@ Global
 		{FFC92E11-BA48-420A-8D5E-80FB7F5213E8} = {1A16DBC4-AC51-4A0C-B48A-6FA32D2AD3E7}
 		{264F3232-CF01-48D2-BFD3-8361073AF680} = {CBFB96BB-7AA9-405D-A51C-CB00C515F77F}
 		{7EA3B683-3AA2-42E8-8BA6-2C73C5BE9B38} = {CBFB96BB-7AA9-405D-A51C-CB00C515F77F}
+		{B7065F4D-FA85-4EB1-AE2B-3C548FA35C1B} = {CBFB96BB-7AA9-405D-A51C-CB00C515F77F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE4DCB79-295A-4FFC-BCC2-A8CE510CAA2C}
