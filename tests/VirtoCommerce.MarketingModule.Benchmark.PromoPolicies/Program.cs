@@ -2,9 +2,9 @@ using BenchmarkDotNet.Running;
 
 namespace VirtoCommerce.MarketingModule.Benchmark.PromoPolicies
 {
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             /*
             new PolicyBenchmark().EvaluateBestReward(); // Debug
