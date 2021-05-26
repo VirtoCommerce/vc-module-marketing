@@ -54,6 +54,10 @@ namespace VirtoCommerce.MarketingModule.Benchmark.PromoPolicies
             pCtx = MockPromotionEvaluationContext();
 
             // Mock promotions from promotions_mock.json file
+            // If you want to have jsons like this from live system to benchmark different promotions combination, just call
+            // in marketing module debug:
+            // JsonConvert.SerializeObject(dynamicPromotion.DynamicExpression, new ConditionJsonConverter(doNotSerializeAvailCondition: true))
+            // in immediate or watch
             promoSearchServiceMock = new Moq.Mock<IPromotionSearchService>();
             promoSearchServiceMock.Setup(x => x.SearchPromotionsAsync(It.IsAny<PromotionSearchCriteria>())).ReturnsAsync(MockPromotionSearchResult());
 
