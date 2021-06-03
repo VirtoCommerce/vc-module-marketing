@@ -39,10 +39,11 @@ angular.module('virtoCommerce.marketingModule')
             if (!result) {
                 result = angular.equals(_.omit(blade.origEntity, ['dynamicProperties']), _.omit(blade.currentEntity, ['dynamicProperties']));
                 // Check possibility they are really equivalent but have a different representation of dynamic property value
-                if (blade.origEntity.dynamicProperties && blade.currentEntity.dynamicProperties &&
+                if (result &&
+                    blade.origEntity.dynamicProperties && blade.currentEntity.dynamicProperties &&
                     blade.origEntity.dynamicProperties.length > 0 && blade.currentEntity.dynamicProperties.length > 0 &&
                     blade.origEntity.dynamicProperties[0].values.length > 0 && blade.currentEntity.dynamicProperties[0].values.length > 0) {
-                    result = result && isDynamicPropertiesEqual(blade.origEntity.dynamicProperties, blade.currentEntity.dynamicProperties);
+                    result = isDynamicPropertiesEqual(blade.origEntity.dynamicProperties, blade.currentEntity.dynamicProperties);
                 }
             }
             return !result;
@@ -57,17 +58,12 @@ angular.module('virtoCommerce.marketingModule')
         }
 
         function isDynamicPropertiesEqual(left, right) {
-            let result = true;
-            _.forEach(right, (rightProp, index) => {
+            return !_.some(right, (rightProp) => {
                 let leftProperty = _.find(left, leftProp => leftProp.name === rightProp.name);
-                let isEqual = _.isEqual(rightProp.values[0], leftProperty.values[0]);
+                let isEqual = _.isEqual(rightProp.values, leftProperty.values);
                 if (!isEqual) isEqual = isValueIdEqual(leftProperty.values[0], rightProp.values[0]);
-                if (!isEqual) {
-                    result = isEqual;
-                    return false;
-                }
-            });
-            return result;
+                return !isEqual;
+            })
         }
        
         blade.initialize = function () {
