@@ -34,45 +34,44 @@ angular.module('virtoCommerce.marketingModule')
                 // Changes check method ensures the fact of different presentation way of dynamic properties:
                 // In the whole object and dynamic properties thru va-generic-value-input template directive
                 // First check objects for full equivalence
-                let notEquals = !angular.equals(blade.origEntity, blade.currentEntity);
-                if (notEquals) {
-                    // Check possibility they are really equivalent but have a different representation of dynamic property value
-                    notEquals = !angular.equals(_.omit(blade.origEntity, ['dynamicProperties']), _.omit(blade.currentEntity, ['dynamicProperties']));
+                let equals = angular.equals(blade.origEntity, blade.currentEntity);
+                if (equals) return !equals;
 
-                    if (blade.origEntity.dynamicProperties && blade.currentEntity.dynamicProperties &&
-                        blade.origEntity.dynamicProperties.length && blade.currentEntity.dynamicProperties.length) {
-                        for (var origEntityDynamicProperty of blade.origEntity.dynamicProperties) {
-                            let currEntityDynamicProperty = blade.currentEntity.dynamicProperties.find(x => x.name == origEntityDynamicProperty.name);
+                // Check possibility they are really equivalent but have a different representation of dynamic property value
+                equals = angular.equals(_.omit(blade.origEntity, ['dynamicProperties']), _.omit(blade.currentEntity, ['dynamicProperties']));
+                if (!blade.origEntity.dynamicProperties || !blade.currentEntity.dynamicProperties ||
+                    !blade.origEntity.dynamicProperties.length || !blade.currentEntity.dynamicProperties.length) return !equals;
 
-                            if (origEntityDynamicProperty.isDictionary) {
-                                // dictionaries comparison
-                                // Case when both orig and current values are empty,
-                                // dictionary field clearing (press 'Backspace') after selection is reason to currEntityDynamicProperty undefined value.
-                                let currDictionaryValuesIds = currEntityDynamicProperty.values.filter(x => x.value != undefined).map(x => x.value.id);
-                                // 'Every' func require length check
-                                notEquals = origEntityDynamicProperty.values.length
-                                    ? !origEntityDynamicProperty.values.every(x => currDictionaryValuesIds.includes(x.valueId))
-                                    : currDictionaryValuesIds.length;
-                            }
-                            else if (origEntityDynamicProperty.isArray &&
-                                origEntityDynamicProperty.values.length && currEntityDynamicProperty.values.length) {
-                                // arrays comparison
-                                // Check arrays equality (adding an element after the same element deletation)
-                                let origValues = origEntityDynamicProperty.values.map(x => x.value);
-                                let currValues = currEntityDynamicProperty.values.map(x => x.value);
-                                notEquals = !origValues.every(x => currValues.includes(x));
-                            } else {
-                                // simple types comparison
-                                // !!AND EMPTY ARRAYS!!
-                                notEquals = !angular.equals(origEntityDynamicProperty.values, currEntityDynamicProperty.values.filter(x => x.value != ""));
-                            }
+                for (var origEntityDynamicProperty of blade.origEntity.dynamicProperties) {
+                    let currEntityDynamicProperty = blade.currentEntity.dynamicProperties.find(x => x.name == origEntityDynamicProperty.name);
 
-                            if (notEquals)
-                                break;
-                        }
+                    if (origEntityDynamicProperty.isDictionary) {
+                        // dictionaries comparison
+                        // Case when both orig and current values are empty,
+                        // dictionary field clearing (press 'Backspace') after selection is reason to currEntityDynamicProperty undefined value.
+                        let currDictionaryValuesIds = currEntityDynamicProperty.values.filter(x => x.value != undefined).map(x => x.value.id);
+                        // 'Every' func require length check
+                        equals = origEntityDynamicProperty.values.length
+                            ? origEntityDynamicProperty.values.every(x => currDictionaryValuesIds.includes(x.valueId))
+                            : !currDictionaryValuesIds.length;
                     }
+                    else if (origEntityDynamicProperty.isArray &&
+                        origEntityDynamicProperty.values.length && currEntityDynamicProperty.values.length) {
+                        // arrays comparison
+                        // Check arrays equality (adding an element after the same element deletation)
+                        let origValues = origEntityDynamicProperty.values.map(x => x.value);
+                        let currValues = currEntityDynamicProperty.values.map(x => x.value);
+                        equals = origEntityDynamicProperty.values.length == currEntityDynamicProperty.values.length && origValues.every(x => currValues.includes(x));
+                    } else {
+                        // simple types comparison
+                        // !!AND EMPTY ARRAYS!!
+                        equals = angular.equals(origEntityDynamicProperty.values, currEntityDynamicProperty.values.filter(x => x.value != ""));
+                    }
+
+                    if (!equals)
+                        break;
                 }
-                return notEquals;
+                return !equals;
             };
 
             blade.initialize = function () {
