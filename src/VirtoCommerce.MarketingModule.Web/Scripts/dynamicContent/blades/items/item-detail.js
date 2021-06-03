@@ -34,10 +34,10 @@ angular.module('virtoCommerce.marketingModule')
                 // Changes check method ensures the fact of different presentation way of dynamic properties:
                 // In the whole object and dynamic properties thru va-generic-value-input template directive
                 // First check objects for full equivalence
-                let equals = angular.equals(blade.origEntity, blade.currentEntity);
-                if (!equals) {
+                let notEquals = !angular.equals(blade.origEntity, blade.currentEntity);
+                if (notEquals) {
                     // Check possibility they are really equivalent but have a different representation of dynamic property value
-                    equals = angular.equals(_.omit(blade.origEntity, ['dynamicProperties']), _.omit(blade.currentEntity, ['dynamicProperties']));
+                    notEquals = !angular.equals(_.omit(blade.origEntity, ['dynamicProperties']), _.omit(blade.currentEntity, ['dynamicProperties']));
 
                     if (blade.origEntity.dynamicProperties && blade.currentEntity.dynamicProperties &&
                         blade.origEntity.dynamicProperties.length && blade.currentEntity.dynamicProperties.length) {
@@ -50,9 +50,9 @@ angular.module('virtoCommerce.marketingModule')
                                 // dictionary field clearing (press 'Backspace') after selection is reason to currEntityDynamicProperty undefined value.
                                 let currDictionaryValuesIds = currEntityDynamicProperty.values.filter(x => x.value != undefined).map(x => x.value.id);
                                 // 'Every' func require length check
-                                equals = origEntityDynamicProperty.values.length
-                                    ? origEntityDynamicProperty.values.every(x => currDictionaryValuesIds.includes(x.valueId))
-                                    : !currDictionaryValuesIds.length;
+                                notEquals = origEntityDynamicProperty.values.length
+                                    ? !origEntityDynamicProperty.values.every(x => currDictionaryValuesIds.includes(x.valueId))
+                                    : currDictionaryValuesIds.length;
                             }
                             else if (origEntityDynamicProperty.isArray &&
                                 origEntityDynamicProperty.values.length && currEntityDynamicProperty.values.length) {
@@ -60,19 +60,19 @@ angular.module('virtoCommerce.marketingModule')
                                 // Check arrays equality (adding an element after the same element deletation)
                                 let origValues = origEntityDynamicProperty.values.map(x => x.value);
                                 let currValues = currEntityDynamicProperty.values.map(x => x.value);
-                                equals = origValues.every(x => currValues.includes(x));
+                                notEquals = !origValues.every(x => currValues.includes(x));
                             } else {
                                 // simple types comparison
                                 // !!AND EMPTY ARRAYS!!
-                                equals = angular.equals(origEntityDynamicProperty.values, currEntityDynamicProperty.values);
+                                notEquals = !angular.equals(origEntityDynamicProperty.values, currEntityDynamicProperty.values.filter(x => x.value != ""));
                             }
 
-                            if (!equals)
+                            if (notEquals)
                                 break;
                         }
                     }
                 }
-                return !equals;
+                return notEquals;
             };
 
             blade.initialize = function () {
