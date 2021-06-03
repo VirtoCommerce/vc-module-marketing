@@ -37,16 +37,38 @@ angular.module('virtoCommerce.marketingModule')
             // First check objects for full equivalence
             var result = angular.equals(blade.origEntity, blade.currentEntity);
             if (!result) {
-                // Check possibility they are really equivalent but have a different representation of dynamic property value
                 result = angular.equals(_.omit(blade.origEntity, ['dynamicProperties']), _.omit(blade.currentEntity, ['dynamicProperties']));
+                // Check possibility they are really equivalent but have a different representation of dynamic property value
                 if (blade.origEntity.dynamicProperties && blade.currentEntity.dynamicProperties &&
                     blade.origEntity.dynamicProperties.length > 0 && blade.currentEntity.dynamicProperties.length > 0 &&
-                    blade.origEntity.dynamicProperties[0].values.length > 0 && blade.currentEntity.dynamicProperties[0].values.length > 0 ) {
-                    result = result && blade.origEntity.dynamicProperties[0].values[0].valueId == blade.currentEntity.dynamicProperties[0].values[0].value.id;
+                    blade.origEntity.dynamicProperties[0].values.length > 0 && blade.currentEntity.dynamicProperties[0].values.length > 0) {
+                    result = result && isDynamicPropertiesEqual(blade.origEntity.dynamicProperties, blade.currentEntity.dynamicProperties);
                 }
             }
             return !result;
         };
+
+        function isValueIdEqual(left, right) {
+            if (!left && right.value === "")
+                return true;
+            else if (left)
+                return right.propertyId === left.value.id;
+            return false;
+        }
+
+        function isDynamicPropertiesEqual(left, right) {
+            let result = true;
+            _.forEach(right, (rightProp, index) => {
+                let leftProperty = _.find(left, leftProp => leftProp.name === rightProp.name);
+                let isEqual = _.isEqual(rightProp.values[0], leftProperty.values[0]);
+                if (!isEqual) isEqual = isValueIdEqual(leftProperty.values[0], rightProp.values[0]);
+                if (!isEqual) {
+                    result = isEqual;
+                    return false;
+                }
+            });
+            return result;
+        }
        
         blade.initialize = function () {
             blade.toolbarCommands = [];
@@ -127,7 +149,6 @@ angular.module('virtoCommerce.marketingModule')
         
         blade.saveChanges = function () {
             blade.isLoading = true;
-
             if (blade.isNew) {
                 dynamicContentItemsApi.save(blade.currentEntity, function (data) {
                     blade.parentBlade.initializeBlade();
