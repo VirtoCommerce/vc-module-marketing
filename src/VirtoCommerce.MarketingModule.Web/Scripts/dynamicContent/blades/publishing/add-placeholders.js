@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.marketingModule')
+angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.addPublishingPlaceholdersStepController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.contentPlaces', 'platformWebApp.bladeNavigationService', 'platformWebApp.bladeUtils', 'platformWebApp.uiGridHelper', function ($scope, contentPlacesApi, bladeNavigationService, bladeUtils, uiGridHelper) {
     var blade = $scope.blade;
     blade.chosenFolder = 'ContentPlace';
@@ -80,7 +80,7 @@
             }
             blade.breadcrumbs = breadcrumbs;
         } else {
-            blade.breadcrumbs = [(generateBreadcrumb({ id: 'ContentPlace', name: 'Placeholders' }))];
+            blade.breadcrumbs = [(generateBreadcrumb({ id: 'ContentPlace', name: 'marketing.blades.publishing.add-placeholders.bread-crumb-top' }))];
         }
     }
 

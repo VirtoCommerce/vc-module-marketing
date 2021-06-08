@@ -37,8 +37,8 @@ angular.module(moduleName, [])
         };
     })
 
-    .run(['$http', '$compile', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', 'platformWebApp.toolbarService', '$state', 'platformWebApp.authService', 'virtoCommerce.storeModule.stores', 'platformWebApp.permissionScopeResolver', 'platformWebApp.bladeNavigationService', 'virtoCommerce.coreModule.common.dynamicExpressionService', 'virtoCommerce.marketingModule.marketingMenuItemService'
-        , function ($http, $compile, mainMenuService, widgetService, toolbarService, $state, authService, stores, permissionScopeResolver, bladeNavigationService, dynamicExpressionService, marketingMenuItemService) {
+    .run(['$http', '$compile', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', 'platformWebApp.toolbarService', 'platformWebApp.breadcrumbHistoryService', '$state', 'platformWebApp.authService', 'virtoCommerce.storeModule.stores', 'platformWebApp.permissionScopeResolver', 'platformWebApp.bladeNavigationService', 'virtoCommerce.coreModule.common.dynamicExpressionService', 'virtoCommerce.marketingModule.marketingMenuItemService'
+        , function ($http, $compile, mainMenuService, widgetService, toolbarService, breadcrumbHistoryService, $state, authService, stores, permissionScopeResolver, bladeNavigationService, dynamicExpressionService, marketingMenuItemService) {
             //Register module in main menu
             var menuItem = {
                 path: 'browse/marketing',
@@ -49,10 +49,16 @@ angular.module(moduleName, [])
                 permission: 'marketing:access'
             };
             mainMenuService.addMenuItem(menuItem);
-            // Register marketing main blade items
 
+            // Register marketing main blade items
             marketingMenuItemService.register({ id: '1', name: 'Promotions', entityName: 'promotion', icon: 'fa-area-chart' });
             marketingMenuItemService.register({ id: '2', name: 'Dynamic content', entityName: 'dynamicContent', icon: 'fa-calendar-o' });
+
+            // register back-button
+            toolbarService.register(breadcrumbHistoryService.getBackButtonInstance(), 'virtoCommerce.marketingModule.itemsDynamicContentListController');
+            toolbarService.register(breadcrumbHistoryService.getBackButtonInstance(), 'virtoCommerce.marketingModule.placeholdersDynamicContentListController');
+            toolbarService.register(breadcrumbHistoryService.getBackButtonInstance(), 'virtoCommerce.marketingModule.addPublishingContentItemsStepController');
+            toolbarService.register(breadcrumbHistoryService.getBackButtonInstance(), 'virtoCommerce.marketingModule.addPublishingPlaceholdersStepController');
 
             widgetService.registerWidget({
                 controller: 'virtoCommerce.marketingModule.couponsWidgetController',
