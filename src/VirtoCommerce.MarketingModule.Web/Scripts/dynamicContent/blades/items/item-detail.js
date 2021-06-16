@@ -44,7 +44,7 @@ angular.module('virtoCommerce.marketingModule')
                     !blade.currentEntity.dynamicProperties ||
                     !blade.origEntity.dynamicProperties.length ||
                     !blade.currentEntity.dynamicProperties.length)
-                    return false;
+                    return equals;
 
                 for (var originalEntityDynamicProperty of blade.origEntity.dynamicProperties) {
                     let currentEntityDynamicProperty = blade.currentEntity.dynamicProperties.find(x => x.name == originalEntityDynamicProperty.name);
@@ -59,8 +59,7 @@ angular.module('virtoCommerce.marketingModule')
                             ? originalEntityDynamicProperty.values.every(x => currDictionaryValuesIds.includes(x.valueId))
                             : !currDictionaryValuesIds.length;
                     }
-                    else if (originalEntityDynamicProperty.isArray &&
-                        originalEntityDynamicProperty.values.length && currentEntityDynamicProperty.values.length) {
+                    else if (originalEntityDynamicProperty.isArray) {
                         // arrays comparison
                         // Check arrays equality (adding an element after the same element deletation)
                         let originalValues = originalEntityDynamicProperty.values.map(x => x.value);
@@ -68,8 +67,10 @@ angular.module('virtoCommerce.marketingModule')
                         equals = originalEntityDynamicProperty.values.length == currentEntityDynamicProperty.values.length && originalValues.every(x => currentValues.includes(x));
                     } else {
                         // simple types
-                        // and empty arrays comparison
-                        equals = angular.equals(originalEntityDynamicProperty.values, currentEntityDynamicProperty.values.filter(x => x.value != ""));
+                        currentEntityDynamicProperty.values = originalEntityDynamicProperty.values.length == 0
+                            ? currentEntityDynamicProperty.values.filter(x => x.value != '')
+                            : currentEntityDynamicProperty.values;
+                        equals = angular.equals(originalEntityDynamicProperty.values, currentEntityDynamicProperty.values);
                     }
 
                     if (!equals)
