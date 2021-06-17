@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.marketingModule')
+angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.addPublishingContentItemsStepController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.contentItems', 'platformWebApp.bladeNavigationService', 'platformWebApp.bladeUtils', 'platformWebApp.uiGridHelper', function ($scope, dynamicContentItemsApi, bladeNavigationService, bladeUtils, uiGridHelper) {
     var blade = $scope.blade;
     blade.chosenFolder = 'ContentItem';
@@ -81,7 +81,7 @@
             }
             blade.breadcrumbs = breadcrumbs;
         } else {
-            blade.breadcrumbs = [(generateBreadcrumb({ id: 'ContentItem', name: 'Items' }))];
+            blade.breadcrumbs = [(generateBreadcrumb({ id: 'ContentItem', name: 'marketing.blades.publishing.add-content-items.bread-crumb-top' }))];
         }
     }
 
