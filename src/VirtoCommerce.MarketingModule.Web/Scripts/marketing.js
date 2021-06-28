@@ -97,6 +97,20 @@ angular.module(moduleName, [])
                 displayName: 'Apply only to full price items and not sales items'
             });
 
+            var catalogGroupName = "Catalog ";
+            dynamicExpressionService.registerExpression({
+                groupName: catalogGroupName,
+                id: 'DynamicContentConditionCategoryIs',
+                templateURL: 'expression-ConditionCategoryIs.html',
+                displayName: 'Category is []'
+            });
+            dynamicExpressionService.registerExpression({
+                groupName: catalogGroupName,
+                id: 'DynamicContentConditionProductIs',
+                templateURL: 'expression-ConditionEntryIs.html',
+                displayName: 'Product is []'
+            });
+
             $http.get('Modules/$(VirtoCommerce.Marketing)/Scripts/dynamicConditions/templates.html').then(function (response) {
                 // compile the response, which will put stuff into the cache
                 $compile(response.data);
