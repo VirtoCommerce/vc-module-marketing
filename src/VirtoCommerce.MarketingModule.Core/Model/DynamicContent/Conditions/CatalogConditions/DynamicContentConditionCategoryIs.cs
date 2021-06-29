@@ -12,7 +12,8 @@ namespace VirtoCommerce.MarketingModule.Core.Model.DynamicContent.Conditions.Cat
         public override bool IsSatisfiedBy(IEvaluationContext context)
         {
             return context is DynamicContentEvaluationContext dynamicContentContext
-                && (CategoryId.EqualsInvariant(dynamicContentContext.CategoryId));
+                && !dynamicContentContext.CategoryId.IsNullOrEmpty()
+                && CategoryId.EqualsInvariant(dynamicContentContext.CategoryId);
         }
     }
 }
