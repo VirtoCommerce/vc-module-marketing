@@ -97,7 +97,7 @@ angular.module(moduleName, [])
                 displayName: 'Apply only to full price items and not sales items'
             });
 
-            var catalogGroupName = "Catalog ";
+            var catalogGroupName = "Catalog";
             dynamicExpressionService.registerExpression({
                 groupName: catalogGroupName,
                 id: 'DynamicContentConditionCategoryIs',
