@@ -2,6 +2,7 @@ using System.Linq;
 using VirtoCommerce.CoreModule.Core.Conditions;
 using VirtoCommerce.CoreModule.Core.Conditions.Browse;
 using VirtoCommerce.CoreModule.Core.Conditions.GeoConditions;
+using VirtoCommerce.MarketingModule.Core.Model.DynamicContent.Conditions.CatalogConditions;
 
 namespace VirtoCommerce.MarketingModule.Core.Model.DynamicContent
 {
@@ -21,7 +22,9 @@ namespace VirtoCommerce.MarketingModule.Core.Model.DynamicContent
                      new ConditionGeoCountry(),
                      new ConditionGeoState(),
                      new ConditionLanguageIs(),
-                     new UserGroupsContainsCondition()
+                     new UserGroupsContainsCondition(),
+                     new DynamicContentConditionCategoryIs(),
+                     new DynamicContentConditionProductIs()
                    )
              );
             Children = AvailableChildren.ToList();

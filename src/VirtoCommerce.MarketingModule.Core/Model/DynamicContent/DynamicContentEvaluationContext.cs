@@ -25,7 +25,8 @@ namespace VirtoCommerce.MarketingModule.Core.Model
 
         public DateTime ToDate { get; set; }
 
+        public string CategoryId { get; set; }
 
-
+        public string ProductId { get; set; }
     }
 }
