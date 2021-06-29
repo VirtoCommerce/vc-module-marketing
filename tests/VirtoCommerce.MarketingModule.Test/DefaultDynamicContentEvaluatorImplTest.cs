@@ -50,13 +50,13 @@ namespace VirtoCommerce.MarketingModule.Test
 
         [Theory]
         [MemberData(nameof(GetDynamicContentExpressionData))]
-        public async Task EvaluateItemsAsync(DynamicContentEvaluationContext context, DynamicContentConditionTree exression, bool expectedResult)
+        public async Task EvaluateItemsAsync(DynamicContentEvaluationContext context, DynamicContentConditionTree expression, bool expectedResult)
         {
             // Arrange
             var dynamicContentItem = new DynamicContentItem { Id = Guid.NewGuid().ToString() };
             var dynamicContentItems = new DynamicContentItem[] { dynamicContentItem };
 
-            var evaluator = GetEvaluator(dynamicContentItem, dynamicContentItems, exression);
+            var evaluator = GetEvaluator(dynamicContentItem, dynamicContentItems, expression);
 
             // Act
             var results = await evaluator.EvaluateItemsAsync(context);
