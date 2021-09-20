@@ -30,10 +30,10 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
         #region ICouponService members
 
-        public async Task<Coupon[]> GetByIdsAsync(string[] ids)
+        public Task<Coupon[]> GetByIdsAsync(string[] ids)
         {
             var cacheKey = CacheKey.With(GetType(), "GetByIdsAsync", string.Join("-", ids));
-            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
+            return _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
                 cacheEntry.AddExpirationToken(CouponCacheRegion.CreateChangeToken());
                 using (var repository = _repositoryFactory())

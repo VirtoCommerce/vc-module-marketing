@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
@@ -7,6 +8,7 @@ namespace VirtoCommerce.MarketingModule.Web.Model
     /// <summary>
     /// need to backward compatibility with v.2
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class PromotionReward
     {
         /// <summary>
