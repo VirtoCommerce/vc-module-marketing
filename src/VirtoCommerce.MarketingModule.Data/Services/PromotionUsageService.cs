@@ -30,10 +30,10 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
         #region IMarketingUsageService Members
 
-        public virtual async Task<PromotionUsage[]> GetByIdsAsync(string[] ids)
+        public virtual Task<PromotionUsage[]> GetByIdsAsync(string[] ids)
         {
             var cacheKey = CacheKey.With(GetType(), nameof(GetByIdsAsync), string.Join("-", ids));
-            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
+            return _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
                 using (var repository = _repositoryFactory())
                 {
