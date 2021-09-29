@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CsvHelper;
+using CsvHelper.Configuration;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Services;
 using VirtoCommerce.Platform.Core.ExportImport;
@@ -30,10 +32,14 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
             };
             progressCallback(progressInfo);
 
-            using (var reader = new CsvReader(new StreamReader(inputStream)))
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
-                reader.Configuration.Delimiter = delimiter;
-                reader.Configuration.HasHeaderRecord = false;
+                Delimiter = delimiter,
+                HasHeaderRecord = false
+            };
+
+            using (var reader = new CsvReader(new StreamReader(inputStream), config))
+            {
                 while (reader.Read())
                 {
                     coupons.Add(new Coupon
