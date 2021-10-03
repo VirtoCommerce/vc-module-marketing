@@ -125,20 +125,6 @@ namespace VirtoCommerce.MarketingModule.Test
         }
 
         [Fact]
-        public void GetNewDynamicPromotion_TypeCheck_ReturnDynamicPromotion()
-        {
-            //Arrange
-            _mockPromotion.Setup(x => x.GetPromotionsByIdsAsync(It.IsAny<string[]>())).ReturnsAsync(TestPromotions.ToArray());
-
-            //Act
-            var actual = _controller.GetNewDynamicPromotion();
-            var result = actual.ExtractFromOkResult();
-
-            //Assert
-            Assert.Equal("DynamicPromotion", result.Type);
-        }
-
-        [Fact]
         public async Task SearchCoupons_CouponFound_ReturnCouponSearchResult()
         {
             //Arrange
