@@ -23,26 +23,27 @@ namespace VirtoCommerce.MarketingModule.Web.Authorization
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, MarketingAuthorizationRequirement requirement)
         {
             await base.HandleRequirementAsync(context, requirement);
-            if (!context.HasSucceeded)
+            if (context.HasSucceeded)
             {
-                var userPermission = context.User.FindPermission(requirement.Permission, _jsonOptions.SerializerSettings);
-                if (userPermission != null)
-                {
-                    var storeSelectedScopes = userPermission.AssignedScopes.OfType<MarketingStoreSelectedScope>();
-                    var allowedStoreIds = storeSelectedScopes.Select(x => x.StoreId).Distinct().ToArray();
-                    if (context.Resource is PromotionSearchCriteria criteria)
-                    {
-                        criteria.StoreIds = allowedStoreIds;
-                        context.Succeed(requirement);                        
-                    }
-                    if (context.Resource is DynamicPromotion promotion)
-                    {
-                        if (promotion.StoreIds.IsNullOrEmpty() || promotion.StoreIds.Any(x=> allowedStoreIds.Contains(x)))
-                        {
-                            context.Succeed(requirement);
-                        }
-                    }                 
-                }
+                return;
+            }
+
+            var userPermission = context.User.FindPermission(requirement.Permission, _jsonOptions.SerializerSettings);
+            if (userPermission == null)
+            {
+                return;
+            }
+
+            var storeSelectedScopes = userPermission.AssignedScopes.OfType<MarketingStoreSelectedScope>();
+            var allowedStoreIds = storeSelectedScopes.Select(x => x.StoreId).Distinct().ToArray();
+            if (context.Resource is PromotionSearchCriteria criteria)
+            {
+                criteria.StoreIds = allowedStoreIds;
+                context.Succeed(requirement);
+            }
+            if (context.Resource is DynamicPromotion promotion && (promotion.StoreIds.IsNullOrEmpty() || promotion.StoreIds.Any(x => allowedStoreIds.Contains(x))))
+            {
+                context.Succeed(requirement);
             }
         }
     }
