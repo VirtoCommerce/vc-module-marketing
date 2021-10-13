@@ -12,7 +12,7 @@ using VirtoCommerce.MarketingModule.Core.Search;
 using System.Security.Claims;
 using VirtoCommerce.MarketingModule.Core.Services;
 using VirtoCommerce.Platform.Core.PushNotifications;
-using VirtoCommerce.Platform.Core.Assets;
+using VirtoCommerce.AssetsModule.Core.Assets;
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
