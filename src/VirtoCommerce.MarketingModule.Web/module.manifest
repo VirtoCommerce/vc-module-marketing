@@ -26,7 +26,7 @@
     <dependency id="VirtoCommerce.Orders" version="3.0.0" />
     <dependency id="VirtoCommerce.Shipping" version="3.4.0" />
     <dependency id="VirtoCommerce.Payment" version="3.4.0" />
-    <dependency id="VirtoCommerce.Assets" version="3.0.0" />
+    <dependency id="VirtoCommerce.Assets" version="1.0.0" />
   </dependencies>
   <groups>
     <group>commerce</group>
