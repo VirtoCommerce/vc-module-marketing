@@ -66,7 +66,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                         var targetEntity = existEntities.FirstOrDefault(x => x.Id == promotion.Id);
                         if (targetEntity != null)
                         {
-                            changedEntries.Add(new GenericChangedEntry<Promotion>(promotion, sourceEntity.ToModel(AbstractTypeFactory<Promotion>.TryCreateInstance()), EntryState.Modified));
+                            changedEntries.Add(new GenericChangedEntry<Promotion>(promotion, targetEntity.ToModel(AbstractTypeFactory<Promotion>.TryCreateInstance()), EntryState.Modified));
                             sourceEntity.Patch(targetEntity);
                         }
                         else
@@ -87,16 +87,18 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
         public virtual async Task DeletePromotionsAsync(string[] ids)
         {
+            var models = await GetPromotionsByIdsAsync(ids);
+
             using (var repository = _repositoryFactory())
             {
+
                 await repository.RemovePromotionsAsync(ids);
                 await repository.UnitOfWork.CommitAsync();
                 var changedEntries = new List<GenericChangedEntry<Promotion>>();
-                foreach (var id in ids)
+
+                foreach (var model in models)
                 {
-                    var emptyPromotion = AbstractTypeFactory<Promotion>.TryCreateInstance();
-                    emptyPromotion.Id = id;
-                    changedEntries.Add(new GenericChangedEntry<Promotion>(emptyPromotion, EntryState.Deleted));
+                    changedEntries.Add(new GenericChangedEntry<Promotion>(model, EntryState.Deleted));
                 }
 
                 ClearCache(ids);
@@ -108,7 +110,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
         #endregion
 
-        private static void ClearCache(string[] promotionIds)
+        protected virtual void ClearCache(string[] promotionIds)
         {
             PromotionSearchCacheRegion.ExpireRegion();
             PromotionCacheRegion.ExpirePromotions(promotionIds);
