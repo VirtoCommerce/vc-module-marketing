@@ -8,7 +8,7 @@ angular.module('virtoCommerce.marketingModule')
         var uploader = $scope.uploader = new FileUploader({
             scope: $scope,
             headers: { Accept: 'application/json' },
-            url: 'api/platform/assets?folderUrl=tmp',
+            url: 'api/assets?folderUrl=tmp',
             method: 'POST',
             autoUpload: true,
             removeAfterUpload: true
