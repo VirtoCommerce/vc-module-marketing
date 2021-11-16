@@ -3,7 +3,7 @@
   <id>VirtoCommerce.Marketing</id>
   <version>3.30.0</version>
   <version-tag />
-  <platformVersion>3.61.0-alpha.11922</platformVersion>
+  <platformVersion>3.81.0</platformVersion>
   <title>Marketing module</title>
   <description>Marketing system with dynamic contents and promotions management</description>
   <authors>
@@ -26,6 +26,7 @@
     <dependency id="VirtoCommerce.Orders" version="3.0.0" />
     <dependency id="VirtoCommerce.Shipping" version="3.4.0" />
     <dependency id="VirtoCommerce.Payment" version="3.4.0" />
+    <dependency id="VirtoCommerce.Assets" version="1.0.0" />
   </dependencies>
   <groups>
     <group>commerce</group>
