@@ -37,47 +37,49 @@ angular.module('virtoCommerce.marketingModule')
                 let equals = angular.equals(blade.origEntity, blade.currentEntity);
                 if (equals)
                     return false;
+                else if (blade.origEntity.name !== blade.currentEntity.name || blade.origEntity.description !== blade.currentEntity.description)
+                    return true;
+                // This validation logic is only needed for dynamic properties
+                else {
+                    // Check possibility they are really equivalent but have a different representation of dynamic property value
+                    equals = angular.equals(_.omit(blade.origEntity, ['dynamicProperties']), _.omit(blade.currentEntity, ['dynamicProperties']));
+                    if (!blade.origEntity.dynamicProperties ||
+                        !blade.currentEntity.dynamicProperties ||
+                        !blade.origEntity.dynamicProperties.length ||
+                        !blade.currentEntity.dynamicProperties.length)
+                        return equals;
 
-                // Check possibility they are really equivalent but have a different representation of dynamic property value
-                equals = angular.equals(_.omit(blade.origEntity, ['dynamicProperties']), _.omit(blade.currentEntity, ['dynamicProperties']));
-                if (!blade.origEntity.dynamicProperties ||
-                    !blade.currentEntity.dynamicProperties ||
-                    !blade.origEntity.dynamicProperties.length ||
-                    !blade.currentEntity.dynamicProperties.length)
-                    return equals;
+                    for (var originalEntityDynamicProperty of blade.origEntity.dynamicProperties) {
+                        let currentEntityDynamicProperty = blade.currentEntity.dynamicProperties.find(x => x.name == originalEntityDynamicProperty.name);
 
-                for (var originalEntityDynamicProperty of blade.origEntity.dynamicProperties) {
-                    let currentEntityDynamicProperty = blade.currentEntity.dynamicProperties.find(x => x.name == originalEntityDynamicProperty.name);
-
-                    if (originalEntityDynamicProperty.isDictionary) {
-                        // dictionaries comparison
-                        // Case when both orig and current values are empty,
-                        // dictionary field clearing (press 'Backspace') after selection is reason to currentEntityDynamicProperty undefined value.
-                        let currDictionaryValuesIds = currentEntityDynamicProperty.values.filter(x => x.value != undefined).map(x => x.value.id);
-                        // 'Every' func require length check
-                        equals = originalEntityDynamicProperty.values.length
-                            ? originalEntityDynamicProperty.values.every(x => currDictionaryValuesIds.includes(x.valueId))
-                            : !currDictionaryValuesIds.length;
+                        if (originalEntityDynamicProperty.isDictionary) {
+                            // dictionaries comparison
+                            // Case when both orig and current values are empty,
+                            // dictionary field clearing (press 'Backspace') after selection is reason to currentEntityDynamicProperty undefined value.
+                            let currDictionaryValuesIds = currentEntityDynamicProperty.values.filter(x => x.value != undefined).map(x => x.value.id);
+                            // 'Every' func require length check
+                            equals = originalEntityDynamicProperty.values.length
+                                ? originalEntityDynamicProperty.values.every(x => currDictionaryValuesIds.includes(x.valueId))
+                                : !currDictionaryValuesIds.length;
+                        }
+                        else if (originalEntityDynamicProperty.isArray) {
+                            // arrays comparison
+                            // Check arrays equality (adding an element after the same element deletation)
+                            let originalValues = originalEntityDynamicProperty.values.map(x => x.value);
+                            let currentValues = currentEntityDynamicProperty.values.map(x => x.value);
+                            equals = originalEntityDynamicProperty.values.length == currentEntityDynamicProperty.values.length && originalValues.every(x => currentValues.includes(x));
+                        } else {
+                            // simple types
+                            currentEntityDynamicProperty.values = originalEntityDynamicProperty.values.length == 0
+                                ? currentEntityDynamicProperty.values.filter(x => x.value != '')
+                                : currentEntityDynamicProperty.values;
+                            equals = angular.equals(originalEntityDynamicProperty.values, currentEntityDynamicProperty.values);
+                        }
+                        if (!equals)
+                            break;
                     }
-                    else if (originalEntityDynamicProperty.isArray) {
-                        // arrays comparison
-                        // Check arrays equality (adding an element after the same element deletation)
-                        let originalValues = originalEntityDynamicProperty.values.map(x => x.value);
-                        let currentValues = currentEntityDynamicProperty.values.map(x => x.value);
-                        equals = originalEntityDynamicProperty.values.length == currentEntityDynamicProperty.values.length && originalValues.every(x => currentValues.includes(x));
-                    } else {
-                        // simple types
-                        currentEntityDynamicProperty.values = originalEntityDynamicProperty.values.length == 0
-                            ? currentEntityDynamicProperty.values.filter(x => x.value != '')
-                            : currentEntityDynamicProperty.values;
-                        equals = angular.equals(originalEntityDynamicProperty.values, currentEntityDynamicProperty.values);
-                    }
-
-                    if (!equals)
-                        break;
+                    return !equals;
                 }
-
-                return !equals;
             };
 
             blade.initialize = function () {
