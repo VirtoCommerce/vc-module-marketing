@@ -63,8 +63,7 @@
           "max-uses-number-description": "Specify the number of times this coupon may be redeemed. If you do not want to set any limit, put 0.",
           "max-uses-per-user-description": "Specify the number of times this coupon may be redeemed by a single user. If you do not want to set any limit, put 0.",
           "reservation-expiration-date": "Coupon expiration date",
-          "reservation-expiration-date-description": "The date until which the coupon is valid. Leave blank in case it is the same as the promotion expiration date.",
-          "delimiter-description": "CSV delimiter",
+          "reservation-expiration-date-description": "Leave this field blank in case it is the same as the promotion expiration date.",
           "upload-description": "The CSV file containing coupon data must have the following format: [coupon_code][delimiter][max_use_number] (remove square brackets). If you do not want to set any use number limit, set max_use_number at 0.",
           "enter-value": "Please specify a value",
           "select-date": "Please provide a date..."
