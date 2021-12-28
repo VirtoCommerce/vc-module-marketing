@@ -396,7 +396,7 @@
   },
   "settings": {
     "Marketing.Promotion.CombinePolicy": {
-      "description": "Best Reward: Select promotion rewards that most appeal to the shoppers. Multiple Offers Valid: If your store has multiple active promotions, shoppers \"may qualify for multiple promotions at a time. ",
+      "description": "Best Reward: Select promotion rewards that most appeal to the shoppers. Multiple Offers Valid: If your store has multiple active promotions, shoppers may qualify for multiple promotions at a time. ",
       "title": "Selected policy of using multiple active promotions"
     },
     "Marketing.ExportImport.Description": {
