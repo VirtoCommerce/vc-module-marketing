@@ -14,39 +14,39 @@
       "promotion-detail": {
         "title-new": "New Promotion",
         "labels": {
-          "is-active": "Is active",
+          "is-active": "Active",
           "exclusivity": "Exclusivity",
-          "is-combine-with-self": "Combine with self",
+          "is-combine-with-self": "Can be redeemed more than once",
           "priority": "Priority",
           "promotion-name": "Promotion name",
           "description": "Description",
           "store": "Stores",
           "start-date": "Start date",
-          "usage-limit": "Usage limit",
+          "usage-limit": "Use limit",
           "coupons": "Coupons",
           "expiration-date": "Expiration date",
-          "per-customer-limit": "Per customer limit",
+          "per-customer-limit": "Limitations for individual customers",
           "promotion-conditions": "Promotion conditions",
-          "combined-with-others": "Can be combined with others",
+          "combined-with-others": "Valid with other offers",
           "exclusive": "Globally exclusive"
         },
         "descr": {
-          "promotion-name": "Type a name that uniquely identifies the promotion. This name is displayed in the promotions list to identify the promotion.",
-          "store": "Stores in which this promotion will be active",
-          "is-active": "Flag controls Active/Inactive the promotion",
-          "start-date": "If you do not specify a start date, the promotion is will active immediately after saving.",
-          "expiration-date": "If you do not specify an end date, the promotion is in effect until you deactivate it.",
+          "promotion-name": "Give your promotion a unique name  that will be displayed in the promotion list.",
+          "store": "Stores this promotion will apply to",
+          "is-active": "Use this button to enable or disable your promotion",
+          "start-date": "If you do not specify a start date, the promotion will become active immediately once you save it.",
+          "expiration-date": "If you do not specify an end date, the promotion will be active until you deactivate it.",
           "priority": "The promotion with the highest priority is applied first.",
-          "exclusivity": "If a 'Globally exclusive' is selected, no other promotions with less priority can be applied to the order.",
-          "is-combine-with-self": "Specialty for the case when several coupons are defined for a promotion and their simultaneous action is required."
+          "exclusivity": "If you select 'Globally Exclusive', your customers will be unable to apply any other promotions with lower priority to the order.",
+          "is-combine-with-self": "Enable this option in case multiple coupons are required to redeem the offer."
         },
         "placeholders": {
-          "promotion-name": "Please enter name...",
-          "description": "Enter description...",
+          "promotion-name": "Type your promotion name here...",
+          "description": "Type your description here...",
           "store": "Select...",
-          "start-date": "Please choose date...",
+          "start-date": "Please provide a date...",
           "coupons": "Enter coupon codes...",
-          "expiration-date": "Please choose date..."
+          "expiration-date": "Please provide a date..."
         },
         "toolbar": {
           "coupons": "Coupons"
@@ -57,23 +57,23 @@
         "title": "Coupon",
         "labels": {
           "coupon-code": "Code",
-          "code-description": "A correct coupon code can contain numbers and alphabetic symbols",
-          "max-uses-number": "Maximum uses number",
-          "max-uses-per-user": "Maximum uses per user",
-          "max-uses-number-description": "A coupon can be applied several times, 0 value means that a coupon can be applied an infinite number of times",
-          "max-uses-per-user-description": "A coupon can be applied several times by one user, 0 value means that a coupon can be applied an infinite number of times for one user",
-          "reservation-expiration-date": "A coupon expiration date",
-          "reservation-expiration-date-description": "The date, until the coupon is valid, leave blank for use value from promotion",
-          "delimiter-description": "CSV record delimiter",
-          "upload-description": "A CSV file with coupon records in next format: [coupon_code][delimiter][max_uses_number] (without square brackets). MaxUsesNumber 0 value means a coupon can be applied an infinite number of times",
-          "enter-value": "Enter a value",
-          "select-date": "Select a date"
+          "code-description": "Coupon code may contain only alphanumeric characters",
+          "max-uses-number": "Maximum use number",
+          "max-uses-per-user": "Maximum uses per customer",
+          "max-uses-number-description": "Specify the number of times this coupon may be redeemed. If you do not want to set any limit, put 0.",
+          "max-uses-per-user-description": "Specify the number of times this coupon may be redeemed by a single user. If you do not want to set any limit, put 0.",
+          "reservation-expiration-date": "Coupon expiration date",
+          "reservation-expiration-date-description": "The date until which the coupon is valid. Leave blank in case it is the same as the promotion expiration date.",
+          "delimiter-description": "CSV delimiter",
+          "upload-description": "The CSV file containing coupon data must have the following format: [coupon_code][delimiter][max_use_number] (remove square brackets). If you do not want to set any use number limit, set max_use_number at 0.",
+          "enter-value": "Please specify a value",
+          "select-date": "Please provide a date..."
         }
       },
       "promotion-list": {
         "labels": {
           "name": "Name",
-          "isActive": "Is active",
+          "isActive": "Active",
           "last-modified": "Modified"
         },
         "new-filter": "Add new filter",
@@ -88,16 +88,16 @@
         "unnamed-filter": "Unnamed filter",
         "labels": {
           "name": "Filter name",
-          "name_": "How will you call this filter?",
-          "active": "Only active"
+          "name_": "Please give this filter a name",
+          "active": "Active only"
         },
         "placeholders": {
-          "all": "Not specified"
+          "all": "Unspecified"
         }
       },
       "catalog-items-select": {
-        "title-product": "Pick Product for promotion condition",
-        "title-category": "Pick Category for promotion condition"
+        "title-product": "Select Product for Promotion Condition",
+        "title-category": "Select Category for Promotion Condition"
       },
       "catalog-entries": {
         "title-product": "Selected items"
@@ -106,38 +106,38 @@
         "menu": {
           "items": {
             "title": "Content items",
-            "description": "Content items description"
+            "description": "Content item description"
           },
           "placeholders": {
             "title": "Content placeholders",
-            "description": "Placeholders description"
+            "description": "Placeholder description"
           },
           "publishing": {
-            "title": "Content publishing",
-            "description": "Publishing description"
+            "title": "Published content",
+            "description": "Published content description"
           }
         }
       },
       "items": {
         "add": {
-          "title": "New content items element",
-          "subtitle": "Add new content items element",
+          "title": "New Content Item",
+          "subtitle": "Add a new content item",
           "menu": {
             "folder": {
-              "title": "Content items folder",
-              "description": "A container for content items."
+              "title": "Content item folder",
+              "description": "Create a folder to house content items"
             },
             "item": {
               "title": "Content item",
-              "description": "Content item."
+              "description": "Create a content item"
             }
           }
         },
         "content-item-details": {
-          "title": "Edit content item element",
-          "subtitle": "Edit content item element",
-          "title-new": "New content item element",
-          "subtitle-new": "Add new content item element",
+          "title": "Edit content item",
+          "subtitle": "Modify your content item",
+          "title-new": "New Content Item",
+          "subtitle-new": "Add a new content item",
           "labels": {
             "content-item-name": "Content item name",
             "content-item-description": "Content item description",
@@ -149,10 +149,10 @@
           }
         },
         "folder-details": {
-          "title": "Edit content items folder element",
-          "subtitle": "Edit content items folder element",
-          "title-new": "New content items folder element",
-          "subtitle-new": "Add new content items folder element",
+          "title": "Edit Content Item Folder",
+          "subtitle": "Modify your content item folder",
+          "title-new": "New Content Item Folder",
+          "subtitle-new": "Add a new content folder",
           "labels": {
             "folder-name": "Folder name",
             "folder-description": "Folder description"
@@ -163,70 +163,70 @@
           }
         },
         "list": {
-          "title": "Content items",
-          "subtitle": "Content items list",
+          "title": "Content Items",
+          "subtitle": "Content item list",
           "bread-crumb-top": "All items",
           "labels": {
-            "picture": "Pic",
+            "picture": "Image",
             "name": "Name",
             "description": "Description",
             "no-data": "No data"
           },
-          "noItemsMessage": "There are no content items yet"
+          "noItemsMessage": "You do not have any content items yet"
         }
       },
       "placeholders": {
         "add": {
-          "title": "New placeholders element",
-          "subtitle": "Add new placeholders element",
+          "title": "New Placeholder",
+          "subtitle": "Add a new placeholder",
           "menu": {
             "folder": {
-              "title": "Placeholders folder",
-              "description": "A container for placeholders."
+              "title": "Placeholder Folder",
+              "description": "Create a folder to house placeholders"
             },
             "item": {
               "title": "Placeholder",
-              "description": "A container for content items."
+              "description": "Create a folder to house content items"
             }
           }
         },
         "placeholder-details": {
-          "title": "New placeholders element",
-          "subtitle": "Add new placeholders element",
-          "title-new": "Edit placeholders element",
-          "subtitle-new": "Edit placeholders element",
+          "title": "New Placeholder",
+          "subtitle": "Add a new placeholder",
+          "title-new": "Edit Placeholder",
+          "subtitle-new": "Modify your placeholder",
           "labels": {
             "placeholder-name": "Placeholder name",
             "placeholder-description": "Placeholder description",
             "placeholder-image-description": "Placeholder image description",
-            "image-note": "Drag and drop image here",
+            "image-note": "Drag and drop your image here",
             "progress": "Progress"
           },
           "placeholders": {
-            "placeholder-name": "Enter placeholder name",
-            "placeholder-description": "Enter placeholder description"
+            "placeholder-name": "Specify placeholder name",
+            "placeholder-description": "Specify placeholder description"
           }
         },
         "folder-details": {
-          "title": "Edit placeholders folder",
-          "subtitle": "Edit placeholders folder",
-          "title-new": "New placeholders folder",
-          "subtitle-new": "Add new placeholders folder",
+          "title": "Edit Placeholder Folder",
+          "subtitle": "Modify your placeholder folder",
+          "title-new": "New Placeholder Folder",
+          "subtitle-new": "Add a new placeholder folder",
           "labels": {
             "folder-name": "Folder name",
             "folder-description": "Folder description"
           },
           "placeholders": {
-            "folder-name": "Enter folder name",
-            "folder-description": "Enter folder description"
+            "folder-name": "Specify folder name",
+            "folder-description": "Specify folder description"
           }
         },
         "list": {
-          "title": "Content placeholders",
-          "subtitle": "Content placeholders list",
+          "title": "Content Placeholders",
+          "subtitle": "List of your content placeholders",
           "bread-crumb-top": "All placeholders",
           "labels": {
-            "picture": "Pic",
+            "picture": "Image",
             "name": "Name",
             "description": "Description",
             "no-data": "No data"
@@ -235,12 +235,12 @@
       },
       "publishing": {
         "add-content-items": {
-          "title": "Add content items elements",
-          "subtitle": "Add content items elements",
+          "title": "Add Content Items",
+          "subtitle": "Select which content items to add",
           "bread-crumb-top": "All items",
           "labels": {
-            "chosen-content-items": "Chosen content items",
-            "content-items": "Content items",
+            "chosen-content-items": "Selected content items",
+            "content-items": "Content Items",
             "picture": "Pic",
             "name": "Name",
             "description": "Description",
@@ -248,67 +248,67 @@
           }
         },
         "add-placeholders": {
-          "title": "Add placeholders elements",
-          "subtitle": "Add placeholders elements",
+          "title": "Add Placeholders",
+          "subtitle": "Select which placeholders to add",
           "bread-crumb-top": "All placeholders",
           "labels": {
-            "chosen-placeholders": "Chosen placeholders",
+            "chosen-placeholders": "Selected placeholders",
             "content-placeholders": "Content placeholders",
-            "picture": "Pic",
+            "picture": "Image",
             "name": "Name",
             "description": "Description",
             "no-data": "No data"
           }
         },
         "publishing-main-step": {
-          "title": "Edit publishing element",
-          "subtitle": "Edit publishing element",
-          "title-new": "New publishing element",
-          "subtitle-new": "New publishing element",
+          "title": "Edit Published Content Element",
+          "subtitle": "Modify your published content element",
+          "title-new": "New Published Content Element",
+          "subtitle-new": "Add a new published content element",
           "labels": {
             "name": "Name",
             "description": "Description",
             "store": "Store",
-            "is-active": "Is active",
+            "is-active": "Active",
             "start-date": "Start date",
             "end-date": "End date",
-            "publishing-conditions": "Publishing conditions"
+            "publishing-conditions": "Publish Conditions"
           },
           "placeholders": {
-            "name": "Enter publishing name",
-            "description": "Enter publishing description",
+            "name": "Specify published content element name",
+            "description": "Specify published content element description",
             "store": "Select...",
-            "start-date": "Enter value",
-            "end-date": "Enter value"
+            "start-date": "Please specify a value",
+            "end-date": "Please specify a value"
           },
           "menu": {
             "placeholders": {
-              "title": "Placeholders",
-              "description": "Chosen {{quantity}} placeholders"
+              "title": "Placeholder",
+              "description": "{{quantity}} placeholders selected"
             },
             "content-items": {
-              "title": "Content items",
-              "description": "Chosen {{quantity}} content items"
+              "title": "Content Items",
+              "description": "{{quantity}} content items selected"
             }
           }
         },
         "list": {
-          "title": "Content publishing",
-          "subtitle": "Content publishing list",
-          "noItemsMessage": "There are no content publishings yet",
+          "title": "Published content",
+          "subtitle": "List of your published content elements",
+          "noItemsMessage": "You do not have any published content yet",
           "labels": {
             "picture": "Icon",
             "name": "Name",
             "description": "Description",
-            "no-data": "No Publishings yet"
+            "no-data": "No Published Content"
           }
         }
       },
       "coupons": {
         "code": "Code",
-        "total-uses-count": "Total uses count",
-        "max-uses-number": "Max uses number",
-        "max-uses-per-user": "Max uses per user",
+        "total-uses-count": "Total use count",
+        "max-uses-number": "Maximum use number",
+        "max-uses-per-user": "Maximum uses per customer",
         "toolbar": {
           "add": "Add",
           "import": "Import",
@@ -316,10 +316,10 @@
           "delete": "Delete",
           "delete-all": "Delete all"
         },
-        "no-coupons-message": "There are no coupons yet"
+        "no-coupons-message": "You do not have any coupons yet"
       },
       "coupons-import": {
-        "title": "Import coupons",
+        "title": "Import Coupons",
         "labels": {
           "delimiter": "CSV column delimiter",
           "upload": "Upload CSV file",
@@ -331,7 +331,7 @@
           "end": "End",
           "total": "Total count",
           "processed": "Processed count",
-          "errors-count": "Errors count",
+          "errors-count": "Error count",
           "errors": "Errors",
           "tab": "Tab"
         },
@@ -340,50 +340,50 @@
         }
       },
       "coupons-import-processing": {
-        "title": "Coupon import processing"
+        "title": "Importing Coupons"
       }
     },
     "dialogs": {
       "content-item-delete": {
-        "title": "Delete confirmation",
+        "title": "Confirm Delete",
         "message": "Are you sure you want to delete this content item?"
       },
       "placeholders-folder-delete": {
-        "title": "Delete confirmation",
-        "message": "Are you sure you want to delete this content placeholders folder?"
+        "title": "Confirm Delete",
+        "message": "Are you sure you want to delete this content placeholder folder?"
       },
       "content-item-folder-delete": {
-        "title": "Delete confirmation",
-        "message": "Are you sure you want to delete this content items folder?"
+        "title": "Confirm Delete",
+        "message": "Are you sure you want to delete this content item folder?"
       },
       "content-folder-delete": {
-        "title": "Delete confirmation",
+        "title": "Confirm Delete",
         "message": "Are you sure you want to delete this folder?"
       },
       "publication-delete": {
-        "title": "Delete confirmation",
+        "title": "Confirm Delete",
         "message": "Are you sure you want to delete this publication?"
       },
       "content-placeholder-delete": {
-        "title": "Delete confirmation",
+        "title": "Confirm Delete",
         "message": "Are you sure you want to delete this content placeholder?"
       },
       "promotions-delete": {
-        "title": "Delete confirmation",
-        "message": "Are you sure you want to delete selected Promotions?"
+        "title": "Confirm Delete",
+        "message": "Are you sure you want to delete the selected promotions?"
       },
       "promotion-save": {
         "title": "Save changes",
         "message": "The promotion has been modified. Do you want to save changes?"
       },
       "coupon-delete": {
-        "title": "Delete confirmation",
-        "message": "Are you sure you want to delete selected coupons?",
-        "message-all": "Are you sure you want to delete all of the coupons?"
+        "title": "Confirm Delete",
+        "message": "Are you sure you want to delete the selected coupons?",
+        "message-all": "Are you sure you want to delete all coupons?"
       }
     },
     "commands": {
-      "manage-type-properties": "Manage type properties",
+      "manage-type-properties": "Manage property types",
       "edit-folder": "Edit folder",
       "start-import": "Start import"
     }
@@ -397,17 +397,17 @@
   },
   "settings": {
     "Marketing.Promotion.CombinePolicy": {
-      "description": "BestReward - select the promotion rewards that benefits the shoppers the most. CombineStackable - If your store has multiple active promotions, shoppers can qualify for multiple promotions at a time. ",
-      "title": "Selected policy of combining active promotions"
+      "description": "Best Reward: Select promotion rewards that most appeal to the shoppers. Multiple Offers Valid: If your store has multiple active promotions, shoppers \"may qualify for multiple promotions at a time. ",
+      "title": "Selected policy of using multiple active promotions"
     },
     "Marketing.ExportImport.Description": {
-      "description": "Export/Import promotions and dynamic contents (places, contents, publications)",
-      "title": "Export/Import description"
+      "description": "Export and import promotions and dynamic content (places, content, publications)",
+      "title": "Export/import description"
     }
   },
   "module": {
     "VirtoCommerce.Marketing": {
-      "description": "Export/Import promotions and dynamic contents (places, contents, publications)"
+      "description": "Export and import promotions and dynamic content (places, content, publications)"
     }
   }
 }
