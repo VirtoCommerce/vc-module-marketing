@@ -102,13 +102,13 @@ angular.module(moduleName, [])
                 groupName: catalogGroupName,
                 id: 'DynamicContentConditionCategoryIs',
                 templateURL: 'expression-ConditionCategoryIs.html',
-                displayName: 'Category is []'
+                displayName: 'Specific category'
             });
             dynamicExpressionService.registerExpression({
                 groupName: catalogGroupName,
                 id: 'DynamicContentConditionProductIs',
                 templateURL: 'expression-ConditionEntryIs.html',
-                displayName: 'Product is []'
+                displayName: 'Specific product'
             });
 
             $http.get('Modules/$(VirtoCommerce.Marketing)/Scripts/dynamicConditions/templates.html').then(function (response) {
