@@ -25,7 +25,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
             modelBuilder.Entity<CouponEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
             modelBuilder.Entity<CouponEntity>().HasOne(x => x.Promotion).WithMany()
                 .HasForeignKey(x => x.PromotionId).OnDelete(DeleteBehavior.Cascade).IsRequired();
-            modelBuilder.Entity<CouponEntity>().HasIndex(i => new { i.Code, i.PromotionId }).IsUnique().HasName("IX_CodeAndPromotionId");
+            modelBuilder.Entity<CouponEntity>().HasIndex(i => new { i.Code, i.PromotionId }).IsUnique().HasDatabaseName("IX_CodeAndPromotionId");
 
             #endregion
 
@@ -132,7 +132,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<DynamicContentItemDynamicPropertyObjectValueEntity>().HasIndex(x => new { x.ObjectType, x.ObjectId })
                 .IsUnique(false)
-                .HasName("IX_ObjectType_ObjectId");
+                .HasDatabaseName("IX_ObjectType_ObjectId");
 
             #endregion
 
