@@ -29,10 +29,10 @@ namespace VirtoCommerce.MarketingModule.Data.Search
             _platformMemoryCache = platformMemoryCache;
         }
 
-        public virtual async Task<PromotionSearchResult> SearchPromotionsAsync(PromotionSearchCriteria criteria)
+        public virtual Task<PromotionSearchResult> SearchPromotionsAsync(PromotionSearchCriteria criteria)
         {
             var cacheKey = CacheKey.With(GetType(), nameof(SearchPromotionsAsync), criteria.GetCacheKey());
-            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
+            return _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
                 cacheEntry.AddExpirationToken(PromotionSearchCacheRegion.CreateChangeToken());
 
