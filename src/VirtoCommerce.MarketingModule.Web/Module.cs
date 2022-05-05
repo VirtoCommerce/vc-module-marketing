@@ -123,8 +123,8 @@ namespace VirtoCommerce.MarketingModule.Web
             permissionsRegistrar.WithAvailabeScopesForPermissions(new[] { ModuleConstants.Security.Permissions.Read }, new MarketingStoreSelectedScope());
 
             // Register DynamicPromotion override
-            var couponSearchService = appBuilder.ApplicationServices.GetService<ICouponSearchService>();
-            var promotionUsageSearchService = appBuilder.ApplicationServices.GetService<IPromotionUsageSearchService>();
+            var couponSearchService = appBuilder.ApplicationServices.GetRequiredService<ICouponSearchService>();
+            var promotionUsageSearchService = appBuilder.ApplicationServices.GetRequiredService<IPromotionUsageSearchService>();
             AbstractTypeFactory<Promotion>.RegisterType<DynamicPromotion>().WithSetupAction((promotion) =>
             {
                 var dynamicPromotion = promotion as DynamicPromotion;
