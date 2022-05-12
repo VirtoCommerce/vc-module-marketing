@@ -95,16 +95,6 @@ namespace VirtoCommerce.MarketingModule.Web
                 return new BestRewardPromotionPolicy(promotionService, platformMemoryCache);
             });
 
-            var snapshot = serviceCollection.BuildServiceProvider();
-            var couponSearchService = snapshot.GetService<ICouponSearchService>();
-            var promotionUsageSearchService = snapshot.GetService<IPromotionUsageSearchService>();
-            AbstractTypeFactory<Promotion>.RegisterType<DynamicPromotion>().WithSetupAction((promotion) =>
-            {
-                var dynamicPromotion = promotion as DynamicPromotion;
-                dynamicPromotion.CouponSearchService = couponSearchService;
-                dynamicPromotion.PromotionUsageSearchService = promotionUsageSearchService;
-            });
-
             serviceCollection.AddTransient<LogChangesChangedEventHandler>();
             serviceCollection.AddTransient<MarketingExportImport>();
             serviceCollection.AddTransient<CouponUsageRecordHandler>();
@@ -132,6 +122,15 @@ namespace VirtoCommerce.MarketingModule.Web
             AbstractTypeFactory<PermissionScope>.RegisterType<MarketingStoreSelectedScope>();
             permissionsRegistrar.WithAvailabeScopesForPermissions(new[] { ModuleConstants.Security.Permissions.Read }, new MarketingStoreSelectedScope());
 
+            // Register DynamicPromotion override
+            var couponSearchService = appBuilder.ApplicationServices.GetRequiredService<ICouponSearchService>();
+            var promotionUsageSearchService = appBuilder.ApplicationServices.GetRequiredService<IPromotionUsageSearchService>();
+            AbstractTypeFactory<Promotion>.RegisterType<DynamicPromotion>().WithSetupAction((promotion) =>
+            {
+                var dynamicPromotion = promotion as DynamicPromotion;
+                dynamicPromotion.CouponSearchService = couponSearchService;
+                dynamicPromotion.PromotionUsageSearchService = promotionUsageSearchService;
+            });
 
             var eventHandlerRegistrar = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
             //Create order observer. record order coupon usage
