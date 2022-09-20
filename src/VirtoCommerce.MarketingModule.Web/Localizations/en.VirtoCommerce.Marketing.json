@@ -12,7 +12,7 @@
         "title": "Marketing"
       },
       "promotion-detail": {
-        "title-new": "New Promotion",
+        "title-new": "New promotion",
         "labels": {
           "is-active": "Active",
           "exclusivity": "Exclusivity",
@@ -95,8 +95,8 @@
         }
       },
       "catalog-items-select": {
-        "title-product": "Select Product for Promotion Condition",
-        "title-category": "Select Category for Promotion Condition"
+        "title-product": "Select product for promotion condition",
+        "title-category": "Select category for promotion condition"
       },
       "catalog-entries": {
         "title-product": "Selected items"
@@ -105,21 +105,21 @@
         "menu": {
           "items": {
             "title": "Content items",
-            "description": "Content item description"
+            "description": "Manage dynamic content items"
           },
           "placeholders": {
             "title": "Content placeholders",
-            "description": "Placeholder description"
+            "description": "Manage placeholders that house content items"
           },
           "publishing": {
             "title": "Published content",
-            "description": "Published content description"
+            "description": "Set conditions for displaying your content"
           }
         }
       },
       "items": {
         "add": {
-          "title": "New Content Item",
+          "title": "New content item",
           "subtitle": "Add a new content item",
           "menu": {
             "folder": {
@@ -148,9 +148,9 @@
           }
         },
         "folder-details": {
-          "title": "Edit Content Item Folder",
+          "title": "Edit content item folder",
           "subtitle": "Modify your content item folder",
-          "title-new": "New Content Item Folder",
+          "title-new": "New content item folder",
           "subtitle-new": "Add a new content folder",
           "labels": {
             "folder-name": "Folder name",
@@ -162,7 +162,7 @@
           }
         },
         "list": {
-          "title": "Content Items",
+          "title": "Content items",
           "subtitle": "Content item list",
           "bread-crumb-top": "All items",
           "labels": {
@@ -176,11 +176,11 @@
       },
       "placeholders": {
         "add": {
-          "title": "New Placeholder",
+          "title": "New placeholder",
           "subtitle": "Add a new placeholder",
           "menu": {
             "folder": {
-              "title": "Placeholder Folder",
+              "title": "Placeholder folder",
               "description": "Create a folder to house placeholders"
             },
             "item": {
@@ -190,9 +190,9 @@
           }
         },
         "placeholder-details": {
-          "title": "New Placeholder",
+          "title": "New placeholder",
           "subtitle": "Add a new placeholder",
-          "title-new": "Edit Placeholder",
+          "title-new": "Edit placeholder",
           "subtitle-new": "Modify your placeholder",
           "labels": {
             "placeholder-name": "Placeholder name",
@@ -207,9 +207,9 @@
           }
         },
         "folder-details": {
-          "title": "Edit Placeholder Folder",
+          "title": "Edit placeholder folder",
           "subtitle": "Modify your placeholder folder",
-          "title-new": "New Placeholder Folder",
+          "title-new": "New placeholder folder",
           "subtitle-new": "Add a new placeholder folder",
           "labels": {
             "folder-name": "Folder name",
@@ -221,7 +221,7 @@
           }
         },
         "list": {
-          "title": "Content Placeholders",
+          "title": "Content placeholders",
           "subtitle": "List of your content placeholders",
           "bread-crumb-top": "All placeholders",
           "labels": {
@@ -234,12 +234,12 @@
       },
       "publishing": {
         "add-content-items": {
-          "title": "Add Content Items",
+          "title": "Add content items",
           "subtitle": "Select which content items to add",
           "bread-crumb-top": "All items",
           "labels": {
             "chosen-content-items": "Selected content items",
-            "content-items": "Content Items",
+            "content-items": "Content items",
             "picture": "Pic",
             "name": "Name",
             "description": "Description",
@@ -247,7 +247,7 @@
           }
         },
         "add-placeholders": {
-          "title": "Add Placeholders",
+          "title": "Add placeholders",
           "subtitle": "Select which placeholders to add",
           "bread-crumb-top": "All placeholders",
           "labels": {
@@ -260,9 +260,9 @@
           }
         },
         "publishing-main-step": {
-          "title": "Edit Published Content Element",
+          "title": "Edit published content element",
           "subtitle": "Modify your published content element",
-          "title-new": "New Published Content Element",
+          "title-new": "New published content element",
           "subtitle-new": "Add a new published content element",
           "labels": {
             "name": "Name",
@@ -283,11 +283,11 @@
           "menu": {
             "placeholders": {
               "title": "Placeholder",
-              "description": "{{quantity}} placeholders selected"
+              "description": "{{quantity}} placeholder(s) selected"
             },
             "content-items": {
               "title": "Content Items",
-              "description": "{{quantity}} content items selected"
+              "description": "{{quantity}} content item(s) selected"
             }
           }
         },
@@ -299,7 +299,7 @@
             "picture": "Icon",
             "name": "Name",
             "description": "Description",
-            "no-data": "No Published Content"
+            "no-data": "No published content"
           }
         }
       },
@@ -318,7 +318,7 @@
         "no-coupons-message": "You do not have any coupons yet"
       },
       "coupons-import": {
-        "title": "Import Coupons",
+        "title": "Import coupons",
         "labels": {
           "delimiter": "CSV column delimiter",
           "upload": "Upload CSV file",

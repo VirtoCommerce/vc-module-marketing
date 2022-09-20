@@ -43,7 +43,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services.EvaluationPolicies
                 throw new ArgumentNullException(nameof(context));
             }
 
-            if (!(context is PromotionEvaluationContext promoContext))
+            if (context is not PromotionEvaluationContext promoContext)
             {
                 throw new ArgumentException($"{nameof(context)} type {context.GetType()} must be derived from PromotionEvaluationContext");
             }
