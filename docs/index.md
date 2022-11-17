@@ -127,4 +127,4 @@ Installing the module:
 ## Available resources
 * Module related service implementations as a <a href="https://www.nuget.org/packages?q=VirtoCommerce.Marketing" target="_blank">NuGet package</a>
 * API client as a <a href="https://www.nuget.org/packages?q=VirtoCommerce.Marketing" target="_blank">NuGet package</a>
-* API <a href="https://admin-demo.virtocommerce.com/docs/index.html?urls.primaryName=VirtoCommerce.Marketing" target="_blank">client documentation</a>
+* API <a href="https://virtocommerce.com/request-demo" target="_blank">client documentation</a>
