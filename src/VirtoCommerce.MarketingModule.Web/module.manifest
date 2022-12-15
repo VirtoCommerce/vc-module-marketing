@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <id>VirtoCommerce.Marketing</id>
   <version>3.202.0</version>
@@ -8,6 +8,7 @@
   <description>Marketing system with dynamic contents and promotions management</description>
   <authors>
     <author>Virto Commerce</author>
+    <author>Evgeny Okhrimenko</author>
   </authors>
   <owners>
     <owner>Virto Commerce</owner>
@@ -21,12 +22,13 @@
   <assemblyFile>VirtoCommerce.MarketingModule.Web.dll</assemblyFile>
   <moduleType>VirtoCommerce.MarketingModule.Web.Module, VirtoCommerce.MarketingModule.Web</moduleType>
   <dependencies>
-    <dependency id="VirtoCommerce.Core" version="3.200.0" />
-    <dependency id="VirtoCommerce.Store" version="3.200.0" />
-    <dependency id="VirtoCommerce.Orders" version="3.200.0" />
-    <dependency id="VirtoCommerce.Shipping" version="3.200.0" />
-    <dependency id="VirtoCommerce.Payment" version="3.200.0" />
     <dependency id="VirtoCommerce.Assets" version="3.200.0" />
+    <dependency id="VirtoCommerce.Core" version="3.200.0" />
+    <dependency id="VirtoCommerce.ExperienceApi" version="3.233.0" />
+    <dependency id="VirtoCommerce.Orders" version="3.200.0" />
+    <dependency id="VirtoCommerce.Payment" version="3.200.0" />
+    <dependency id="VirtoCommerce.Shipping" version="3.200.0" />
+    <dependency id="VirtoCommerce.Store" version="3.200.0" />
   </dependencies>
   <groups>
     <group>commerce</group>
