@@ -20,12 +20,12 @@
   <ItemGroup>
     <PackageReference Include="Hangfire" Version="1.7.14" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.2" />
-    <PackageReference Include="VirtoCommerce.CoreModule.Core" Version="3.200.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Security" Version="3.200.0" />
+    <PackageReference Include="VirtoCommerce.CoreModule.Core" Version="3.203.0" />
     <PackageReference Include="VirtoCommerce.AssetsModule.Core" Version="3.200.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.MarketingModule.Core\VirtoCommerce.MarketingModule.Core.csproj" />
     <ProjectReference Include="..\VirtoCommerce.MarketingModule.Data\VirtoCommerce.MarketingModule.Data.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.MarketingModule.ExperienceApi\VirtoCommerce.MarketingModule.ExperienceApi.csproj" />
   </ItemGroup>
 </Project>

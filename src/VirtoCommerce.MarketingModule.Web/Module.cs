@@ -3,12 +3,17 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using GraphQL.Server;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VirtoCommerce.CoreModule.Core.Conditions;
+using VirtoCommerce.ExperienceApiModule.Core.Extensions;
+using VirtoCommerce.ExperienceApiModule.Core.Infrastructure;
 using VirtoCommerce.MarketingModule.Core;
 using VirtoCommerce.MarketingModule.Core.Events;
 using VirtoCommerce.MarketingModule.Core.Model;
@@ -22,6 +27,7 @@ using VirtoCommerce.MarketingModule.Data.Handlers;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.MarketingModule.Data.Search;
 using VirtoCommerce.MarketingModule.Data.Services;
+using VirtoCommerce.MarketingModule.ExperienceApi;
 using VirtoCommerce.MarketingModule.Web.Authorization;
 using VirtoCommerce.MarketingModule.Web.ExportImport;
 using VirtoCommerce.OrdersModule.Core.Events;
@@ -100,6 +106,15 @@ namespace VirtoCommerce.MarketingModule.Web
             serviceCollection.AddTransient<CouponUsageRecordHandler>();
 
             serviceCollection.AddTransient<IAuthorizationHandler, MarketingAuthorizationHandler>();
+
+            // GraphQL
+            var assemblyMarker = typeof(AssemblyMarker);
+            var graphQlBuilder = new CustomGraphQLBuilder(serviceCollection);
+            graphQlBuilder.AddGraphTypes(assemblyMarker);
+            serviceCollection.AddMediatR(assemblyMarker);
+            serviceCollection.AddAutoMapper(assemblyMarker);
+            serviceCollection.AddSchemaBuilders(assemblyMarker);
+            //serviceCollection.AddSingleton<IAuthorizationHandler, QuoteAuthorizationHandler>();
         }
 
         public void PostInitialize(IApplicationBuilder appBuilder)
