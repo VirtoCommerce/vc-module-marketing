@@ -24,7 +24,6 @@
   <dependencies>
     <dependency id="VirtoCommerce.Assets" version="3.200.0" />
     <dependency id="VirtoCommerce.Core" version="3.200.0" />
-    <dependency id="VirtoCommerce.ExperienceApi" version="3.233.0" />
     <dependency id="VirtoCommerce.Orders" version="3.200.0" />
     <dependency id="VirtoCommerce.Payment" version="3.200.0" />
     <dependency id="VirtoCommerce.Shipping" version="3.200.0" />
