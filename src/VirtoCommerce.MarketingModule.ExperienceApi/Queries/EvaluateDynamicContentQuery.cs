@@ -28,7 +28,7 @@ namespace VirtoCommerce.MarketingModule.ExperienceApi.Queries
             yield return Argument<StringGraphType>(nameof(ProductId));
             yield return Argument<StringGraphType>(nameof(CultureName));
 
-            yield return Argument<DateGraphType>(nameof(ToDate));
+            yield return Argument<DateTimeGraphType>(nameof(ToDate));
 
             yield return Argument<ListGraphType<StringGraphType>>(nameof(Tags));
             yield return Argument<ListGraphType<StringGraphType>>(nameof(UserGroups));
