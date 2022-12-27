@@ -90,14 +90,9 @@ namespace VirtoCommerce.MarketingModule.Data.Search
                 query = query.Where(x => x.IsActive == true);
             }
 
-            if (criteria.StartDate != null)
+            if (criteria.ToDate != null)
             {
-                query = query.Where(x => x.StartDate == null || criteria.StartDate >= x.StartDate);
-            }
-
-            if (criteria.EndDate != null)
-            {
-                query = query.Where(x => x.EndDate == null || x.EndDate >= criteria.EndDate);
+                query = query.Where(x => x.StartDate == null || (criteria.ToDate >= x.StartDate && criteria.ToDate <= x.EndDate));
             }
 
             if (!string.IsNullOrEmpty(criteria.PlaceName))
