@@ -1,7 +1,6 @@
-﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace VirtoCommerce.MarketingModule.Data.Migrations
+namespace VirtoCommerce.MarketingModule.Data.SqlServer.Migrations
 {
     public partial class InitialMarketing : Migration
     {
