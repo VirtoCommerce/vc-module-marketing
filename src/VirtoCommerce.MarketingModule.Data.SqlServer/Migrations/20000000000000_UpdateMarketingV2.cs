@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace VirtoCommerce.MarketingModule.Data.Migrations
+namespace VirtoCommerce.MarketingModule.Data.SqlServer.Migrations
 {
     public partial class UpdateMarketingV2 : Migration
     {
