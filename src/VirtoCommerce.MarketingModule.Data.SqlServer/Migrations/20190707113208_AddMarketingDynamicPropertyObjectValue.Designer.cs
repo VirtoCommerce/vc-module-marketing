@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 
-namespace VirtoCommerce.MarketingModule.Data.Migrations
+namespace VirtoCommerce.MarketingModule.Data.SqlServer.Migrations
 {
     [DbContext(typeof(MarketingDbContext))]
-    [Migration("20000000000000_UpdateMarketingV2")]
-    partial class UpdateMarketingV2
+    [Migration("20190707113208_AddMarketingDynamicPropertyObjectValue")]
+    partial class AddMarketingDynamicPropertyObjectValue
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,6 +44,9 @@ namespace VirtoCommerce.MarketingModule.Data.Migrations
                         .HasMaxLength(64);
 
                     b.Property<DateTime?>("ModifiedDate");
+
+                    b.Property<string>("OuterId")
+                        .HasMaxLength(128);
 
                     b.Property<string>("PromotionId")
                         .IsRequired();
@@ -93,6 +96,68 @@ namespace VirtoCommerce.MarketingModule.Data.Migrations
                     b.HasIndex("ParentFolderId");
 
                     b.ToTable("DynamicContentFolder");
+                });
+
+            modelBuilder.Entity("VirtoCommerce.MarketingModule.Data.Model.DynamicContentItemDynamicPropertyObjectValueEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(128);
+
+                    b.Property<bool?>("BooleanValue");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(64);
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<DateTime?>("DateTimeValue");
+
+                    b.Property<decimal?>("DecimalValue")
+                        .HasColumnType("decimal(18,5)");
+
+                    b.Property<string>("DictionaryItemId")
+                        .HasMaxLength(128);
+
+                    b.Property<int?>("IntegerValue");
+
+                    b.Property<string>("Locale")
+                        .HasMaxLength(64);
+
+                    b.Property<string>("LongTextValue");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(64);
+
+                    b.Property<DateTime?>("ModifiedDate");
+
+                    b.Property<string>("ObjectId")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("ObjectType")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("PropertyId")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("PropertyName")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("ShortTextValue")
+                        .HasMaxLength(512);
+
+                    b.Property<string>("ValueType")
+                        .IsRequired()
+                        .HasMaxLength(64);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ObjectId");
+
+                    b.HasIndex("ObjectType", "ObjectId")
+                        .HasName("IX_ObjectType_ObjectId");
+
+                    b.ToTable("DynamicContentItemDynamicPropertyObjectValue");
                 });
 
             modelBuilder.Entity("VirtoCommerce.MarketingModule.Data.Model.DynamicContentItemEntity", b =>
@@ -199,6 +264,9 @@ namespace VirtoCommerce.MarketingModule.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(128);
 
+                    b.Property<string>("OuterId")
+                        .HasMaxLength(128);
+
                     b.Property<string>("PredicateVisualTreeSerialized");
 
                     b.Property<int>("Priority");
@@ -245,6 +313,9 @@ namespace VirtoCommerce.MarketingModule.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(128);
+
+                    b.Property<string>("OuterId")
                         .HasMaxLength(128);
 
                     b.Property<int>("PerCustomerLimit");
@@ -406,6 +477,14 @@ namespace VirtoCommerce.MarketingModule.Data.Migrations
                     b.HasOne("VirtoCommerce.MarketingModule.Data.Model.DynamicContentFolderEntity", "ParentFolder")
                         .WithMany()
                         .HasForeignKey("ParentFolderId");
+                });
+
+            modelBuilder.Entity("VirtoCommerce.MarketingModule.Data.Model.DynamicContentItemDynamicPropertyObjectValueEntity", b =>
+                {
+                    b.HasOne("VirtoCommerce.MarketingModule.Data.Model.DynamicContentItemEntity", "DynamicContentItem")
+                        .WithMany("DynamicPropertyObjectValues")
+                        .HasForeignKey("ObjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("VirtoCommerce.MarketingModule.Data.Model.DynamicContentItemEntity", b =>
