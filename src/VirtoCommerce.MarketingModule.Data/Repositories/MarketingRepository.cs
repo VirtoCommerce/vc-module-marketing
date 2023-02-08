@@ -46,7 +46,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
         public virtual async Task<PromotionEntity[]> GetPromotionsByIdsAsync(string[] ids)
         {
             var propmotions = await Promotions.Where(x => ids.Contains(x.Id)).ToArrayAsync();
-            await PromotionStores.Where(x => ids.Contains(x.PromotionId)).ToArrayAsync();
+            await PromotionStores.Where(x => ids.Contains(x.PromotionId)).LoadAsync();
             var promotionsIdsWithCoupons = await Coupons.Where(x => ids.Contains(x.PromotionId)).Select(x => x.PromotionId).Distinct().ToArrayAsync();
             foreach (var promotion in propmotions)
             {
@@ -124,7 +124,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
             return GenericMassRemove<DynamicContentFolderEntity>(ids);
         }
 
-        public Task RemoveFoldersAsync(DynamicContentFolderEntity[] folders )
+        public Task RemoveFoldersAsync(DynamicContentFolderEntity[] folders)
         {
             DbContext.RemoveRange(folders);
 
