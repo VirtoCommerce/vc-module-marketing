@@ -191,7 +191,7 @@ namespace VirtoCommerce.MarketingModule.Data.MySql.Migrations
                     b.HasIndex("ObjectId");
 
                     b.HasIndex("ObjectType", "ObjectId")
-                        .HasDatabaseName("IX_ObjectType_ObjectId");
+                        .HasDatabaseName("IX_DynamicContentItemDynamicProperty_ObjectType_ObjectId");
 
                     b.ToTable("DynamicContentItemDynamicPropertyObjectValue", (string)null);
                 });

@@ -133,7 +133,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<DynamicContentItemDynamicPropertyObjectValueEntity>().HasIndex(x => new { x.ObjectType, x.ObjectId })
                 .IsUnique(false)
-                .HasDatabaseName("IX_ObjectType_ObjectId");
+                .HasDatabaseName("IX_DynamicContentItemDynamicProperty_ObjectType_ObjectId");
 
             #endregion
 
