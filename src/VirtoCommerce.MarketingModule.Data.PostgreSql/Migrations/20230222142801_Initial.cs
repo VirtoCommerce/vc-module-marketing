@@ -329,14 +329,14 @@ namespace VirtoCommerce.MarketingModule.Data.PostgreSql.Migrations
                 column: "FolderId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DynamicContentItemDynamicProperty_ObjectType_ObjectId",
+                table: "DynamicContentItemDynamicPropertyObjectValue",
+                columns: new[] { "ObjectType", "ObjectId" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DynamicContentItemDynamicPropertyObjectValue_ObjectId",
                 table: "DynamicContentItemDynamicPropertyObjectValue",
                 column: "ObjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ObjectType_ObjectId",
-                table: "DynamicContentItemDynamicPropertyObjectValue",
-                columns: new[] { "ObjectType", "ObjectId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_DynamicContentPlace_FolderId",
