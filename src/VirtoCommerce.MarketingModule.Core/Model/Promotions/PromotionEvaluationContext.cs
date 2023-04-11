@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using VirtoCommerce.CoreModule.Core.Common;
@@ -15,9 +14,9 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
         public string Currency { get; set; }
 
         /// <summary>
-        /// User ID
+        /// Contains User Id.
+        /// This property will be deleted after update to .NET8. Use UserId property instead.
         /// </summary>
-        [Obsolete("Property will be deleted after update to .NET8. Use UserId property.")]
         public string CustomerId { get; set; }
 
         private string _userId;
