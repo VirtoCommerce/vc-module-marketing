@@ -66,7 +66,13 @@
           "reservation-expiration-date-description": "Leave this field blank in case it is the same as the promotion expiration date.",
           "upload-description": "The CSV file containing coupon data must have the following format: [coupon_code][delimiter][max_use_number] (remove square brackets). If you do not want to set any use number limit, set max_use_number at 0.",
           "enter-value": "Please specify a value",
-          "select-date": "Please provide a date..."
+          "select-date": "Please provide a date...",
+          "member": "Customer",
+          "coupon-usages": "Coupon Usages",
+          "coupon-info": "Info"
+        },
+        "placeholders": {
+          "member": "Select a customer or organization..."
         }
       },
       "promotion-list": {

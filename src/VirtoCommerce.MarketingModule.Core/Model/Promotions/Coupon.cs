@@ -29,6 +29,11 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
         public long TotalUsesCount { get; set; }
         public string OuterId { get; set; }
 
+        /// <summary>
+        /// Register coupon for a specific customer or organization
+        /// </summary>
+        public string MemberId { get; set; }
+
         #region ICloneable members
 
         public virtual object Clone()

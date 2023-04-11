@@ -46,8 +46,9 @@ namespace VirtoCommerce.MarketingModule.Web.ExportImport
                     {
                         Code = reader.GetField<string>(0),
                         MaxUsesNumber = reader.GetField<int>(1),
+                        MemberId = reader.GetField<string>(2),
                         PromotionId = promotionId,
-                        ExpirationDate = expirationDate
+                        ExpirationDate = expirationDate,
                     });
                 }
             }
