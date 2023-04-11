@@ -160,7 +160,7 @@ namespace VirtoCommerce.MarketingModule.Test
         private class DynamicPromotionMoq : DynamicPromotion
         {
             public new Task<IEnumerable<Coupon>> FindValidCouponsAsync(ICollection<string> couponCodes, string userId)
-                => base.FindValidCouponsAsync(couponCodes, userId);
+                => base.FindValidCouponsAsync(new PromotionEvaluationContext { Coupons = couponCodes, UserId = userId });
         }
     }
 }

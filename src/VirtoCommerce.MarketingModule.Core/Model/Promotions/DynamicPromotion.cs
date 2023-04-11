@@ -144,7 +144,6 @@ namespace VirtoCommerce.MarketingModule.Core.Promotions
 
                 if (!couponCodes.IsNullOrEmpty())
                 {
-                    var userId = promoContext.UserId;
                     var coupons = await CouponSearchService.SearchCouponsAsync(new CouponSearchCriteria { Codes = couponCodes, PromotionId = Id });
 
                     foreach (var coupon in coupons.Results.OrderBy(x => x.TotalUsesCount))
@@ -161,9 +160,9 @@ namespace VirtoCommerce.MarketingModule.Core.Promotions
                             couponIsValid = usage.TotalCount < coupon.MaxUsesNumber;
                         }
 
-                        if (couponIsValid && coupon.MaxUsesPerUser > 0 && !string.IsNullOrWhiteSpace(userId))
+                        if (couponIsValid && coupon.MaxUsesPerUser > 0 && !string.IsNullOrWhiteSpace(promoContext.UserId))
                         {
-                            var usage = await PromotionUsageSearchService.SearchUsagesAsync(new PromotionUsageSearchCriteria { PromotionId = Id, CouponCode = coupon.Code, UserId = userId, Take = int.MaxValue });
+                            var usage = await PromotionUsageSearchService.SearchUsagesAsync(new PromotionUsageSearchCriteria { PromotionId = Id, CouponCode = coupon.Code, UserId = promoContext.UserId, Take = int.MaxValue });
                             couponIsValid = usage.TotalCount < coupon.MaxUsesPerUser;
                         }
 
@@ -179,9 +178,9 @@ namespace VirtoCommerce.MarketingModule.Core.Promotions
                     }
                 }
             }
+
             return result;
         }
-
 
         #region ICloneable members
 

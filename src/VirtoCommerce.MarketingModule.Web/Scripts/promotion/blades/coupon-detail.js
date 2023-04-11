@@ -74,6 +74,7 @@ angular.module('virtoCommerce.marketingModule')
                     criteria.memberTypes = [
                         "Organization", "Contact"
                     ];
+                    criteria.deepSearch = true;
 
                     return membersApi.search(criteria);
                 }
