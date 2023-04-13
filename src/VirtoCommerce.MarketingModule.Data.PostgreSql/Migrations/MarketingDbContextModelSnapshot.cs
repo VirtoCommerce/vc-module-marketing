@@ -50,6 +50,10 @@ namespace VirtoCommerce.MarketingModule.Data.PostgreSql.Migrations
                     b.Property<int>("MaxUsesPerUser")
                         .HasColumnType("integer");
 
+                    b.Property<string>("MemberId")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(64)
                         .HasColumnType("character varying(64)");
