@@ -14,9 +14,31 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
         public string Currency { get; set; }
 
         /// <summary>
-        /// Customer id
+        /// Contains User Id.
+        /// This property will be deleted after update to .NET8. Use UserId property instead.
         /// </summary>
         public string CustomerId { get; set; }
+
+        private string _userId;
+        public string UserId
+        {
+            get
+            {
+                if (_userId is null && CustomerId is not null)
+                {
+                    _userId = CustomerId;
+                }
+
+                return _userId;
+            }
+            set
+            {
+                _userId = value;
+            }
+        }
+
+        public string ContactId { get; set; }
+        public string OrganizaitonId { get; set; }
 
         public bool IsRegisteredUser { get; set; }
 
@@ -99,7 +121,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
             yield return Language;
             yield return StoreId;
             yield return Currency;
-            yield return CustomerId;
+            yield return UserId;
             yield return CartTotal;
             yield return Coupon;
 
