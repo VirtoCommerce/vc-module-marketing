@@ -44,7 +44,7 @@ namespace VirtoCommerce.MarketingModule.Core.Promotions
             IEnumerable<Coupon> validCoupons = null;
             if (HasCoupons)
             {
-                validCoupons = await FindValidCouponsAsync(promoContext.Coupons, promoContext.CustomerId);
+                validCoupons = await FindValidCouponsAsync(promoContext);
             }
             //Check coupon
             var couponIsValid = !HasCoupons || validCoupons.Any();
@@ -95,6 +95,7 @@ namespace VirtoCommerce.MarketingModule.Core.Promotions
             }
         }
 
+        [Obsolete("Not being called. Use FindValidCouponsAsync(PromotionEvaluationContext promoContext) instead.")]
         protected virtual async Task<IEnumerable<Coupon>> FindValidCouponsAsync(ICollection<string> couponCodes, string userId)
         {
             var result = new List<Coupon>();
@@ -129,6 +130,55 @@ namespace VirtoCommerce.MarketingModule.Core.Promotions
                     }
                 }
             }
+            return result;
+        }
+
+        protected virtual async Task<IEnumerable<Coupon>> FindValidCouponsAsync(PromotionEvaluationContext promoContext)
+        {
+            var result = new List<Coupon>();
+
+            if (!promoContext.Coupons.IsNullOrEmpty())
+            {
+                //Remove empty codes from input list
+                var couponCodes = promoContext.Coupons.Where(x => !string.IsNullOrEmpty(x)).ToList();
+
+                if (!couponCodes.IsNullOrEmpty())
+                {
+                    var coupons = await CouponSearchService.SearchCouponsAsync(new CouponSearchCriteria { Codes = couponCodes, PromotionId = Id });
+
+                    foreach (var coupon in coupons.Results.OrderBy(x => x.TotalUsesCount))
+                    {
+                        var couponIsValid = true;
+                        if (coupon.ExpirationDate != null)
+                        {
+                            couponIsValid = coupon.ExpirationDate > DateTime.UtcNow;
+                        }
+
+                        if (couponIsValid && coupon.MaxUsesNumber > 0)
+                        {
+                            var usage = await PromotionUsageSearchService.SearchUsagesAsync(new PromotionUsageSearchCriteria { PromotionId = Id, CouponCode = coupon.Code, Take = 0 });
+                            couponIsValid = usage.TotalCount < coupon.MaxUsesNumber;
+                        }
+
+                        if (couponIsValid && coupon.MaxUsesPerUser > 0 && !string.IsNullOrWhiteSpace(promoContext.UserId))
+                        {
+                            var usage = await PromotionUsageSearchService.SearchUsagesAsync(new PromotionUsageSearchCriteria { PromotionId = Id, CouponCode = coupon.Code, UserId = promoContext.UserId, Take = int.MaxValue });
+                            couponIsValid = usage.TotalCount < coupon.MaxUsesPerUser;
+                        }
+
+                        if (couponIsValid && !string.IsNullOrWhiteSpace(coupon.MemberId))
+                        {
+                            couponIsValid = coupon.MemberId == promoContext.ContactId || coupon.MemberId == promoContext.OrganizaitonId;
+                        }
+
+                        if (couponIsValid)
+                        {
+                            result.Add(coupon);
+                        }
+                    }
+                }
+            }
+
             return result;
         }
 

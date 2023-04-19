@@ -24,6 +24,9 @@ namespace VirtoCommerce.MarketingModule.Data.Model
         [StringLength(128)]
         public string OuterId { get; set; }
 
+        [StringLength(128)]
+        public string MemberId { get; set; }
+
         #region Navigation Properties
 
         public string PromotionId { get; set; }
@@ -50,6 +53,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             coupon.PromotionId = PromotionId;
             coupon.TotalUsesCount = TotalUsesCount;
             coupon.MaxUsesPerUser = MaxUsesPerUser;
+            coupon.MemberId = MemberId;
 
             return coupon;
         }
@@ -75,6 +79,8 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             MaxUsesNumber = coupon.MaxUsesNumber;
             PromotionId = coupon.PromotionId;
             TotalUsesCount = coupon.TotalUsesCount;
+            MemberId = coupon.MemberId;
+
             return this;
         }
 
@@ -87,6 +93,7 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             target.ExpirationDate = ExpirationDate;
             target.MaxUsesNumber = MaxUsesNumber;
             target.MaxUsesPerUser = MaxUsesPerUser;
+            target.MemberId = MemberId;
         }
     }
 }

@@ -47,6 +47,10 @@ namespace VirtoCommerce.MarketingModule.Data.MySql.Migrations
                     b.Property<int>("MaxUsesPerUser")
                         .HasColumnType("int");
 
+                    b.Property<string>("MemberId")
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(64)
                         .HasColumnType("varchar(64)");
