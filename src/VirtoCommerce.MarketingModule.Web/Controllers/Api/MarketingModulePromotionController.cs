@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.MarketingModule.Core;
 using VirtoCommerce.MarketingModule.Core.Model;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
@@ -15,7 +16,6 @@ using VirtoCommerce.MarketingModule.Core.Services;
 using VirtoCommerce.MarketingModule.Data.Authorization;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.MarketingModule.Web.ExportImport;
-using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.PushNotifications;
@@ -77,7 +77,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
             var authorizationResult = await _authorizationService.AuthorizeAsync(User, criteria, new MarketingAuthorizationRequirement(ModuleConstants.Security.Permissions.Read));
             if (!authorizationResult.Succeeded)
             {
-                return Unauthorized();
+                return Forbid();
             }
             var result = await _promoSearchService.SearchPromotionsAsync(criteria);
 
@@ -90,7 +90,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         /// <param name="context">Promotion evaluation context</param>
         [HttpPost]
         [Route("evaluate")]
-        public async Task<ActionResult<webModel.PromotionReward[]>> EvaluatePromotions([FromBody]PromotionEvaluationContext context)
+        public async Task<ActionResult<webModel.PromotionReward[]>> EvaluatePromotions([FromBody] PromotionEvaluationContext context)
         {
             var promotionResult = await _promoEvaluator.EvaluatePromotionAsync(context);
             //This dynamic casting is used here for duck-type casting class hierarchy into flat type
@@ -115,7 +115,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
                 var authorizationResult = await _authorizationService.AuthorizeAsync(User, result, new MarketingAuthorizationRequirement(ModuleConstants.Security.Permissions.Read));
                 if (!authorizationResult.Succeeded)
                 {
-                    return Unauthorized();
+                    return Forbid();
                 }
                 if (result is DynamicPromotion dynamicPromotion)
                 {
@@ -152,7 +152,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [HttpPost]
         [Route("")]
         [Authorize(ModuleConstants.Security.Permissions.Create)]
-        public async Task<ActionResult<Promotion>> CreatePromotion([FromBody]Promotion promotion)
+        public async Task<ActionResult<Promotion>> CreatePromotion([FromBody] Promotion promotion)
         {
             await _promotionService.SavePromotionsAsync(new[] { promotion });
             return await GetPromotionById(promotion.Id);
@@ -165,7 +165,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [HttpPut]
         [Route("")]
         [Authorize(ModuleConstants.Security.Permissions.Update)]
-        public async Task<ActionResult> UpdatePromotions([FromBody]Promotion promotion)
+        public async Task<ActionResult> UpdatePromotions([FromBody] Promotion promotion)
         {
             await _promotionService.SavePromotionsAsync(new[] { promotion });
             return NoContent();
@@ -186,7 +186,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
 
         [HttpPost]
         [Route("coupons/search")]
-        public async Task<ActionResult<CouponSearchResult>> SearchCoupons([FromBody]CouponSearchCriteria criteria)
+        public async Task<ActionResult<CouponSearchResult>> SearchCoupons([FromBody] CouponSearchCriteria criteria)
         {
             var searchResult = await _couponSearchService.SearchCouponsAsync(criteria);
             // actualize coupon totalUsage field 
@@ -215,7 +215,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [HttpPost]
         [Route("coupons/add")]
         [Authorize(ModuleConstants.Security.Permissions.Update)]
-        public async Task<ActionResult> AddCoupons([FromBody]Coupon[] coupons)
+        public async Task<ActionResult> AddCoupons([FromBody] Coupon[] coupons)
         {
             await _couponService.SaveCouponsAsync(coupons);
 
@@ -235,7 +235,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [HttpPost]
         [Route("coupons/import")]
         [Authorize(ModuleConstants.Security.Permissions.Update)]
-        public async Task<ActionResult<ImportNotification>> ImportCouponsAsync([FromBody]ImportRequest request)
+        public async Task<ActionResult<ImportNotification>> ImportCouponsAsync([FromBody] ImportRequest request)
         {
             var notification = new ImportNotification(_userNameResolver.GetCurrentUserName())
             {
