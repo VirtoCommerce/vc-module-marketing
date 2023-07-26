@@ -12,7 +12,6 @@ using VirtoCommerce.MarketingModule.Core.Search;
 using VirtoCommerce.MarketingModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
-using VirtoCommerce.Platform.Data.ExportImport;
 
 namespace VirtoCommerce.MarketingModule.Data.ExportImport
 {
@@ -70,11 +69,11 @@ namespace VirtoCommerce.MarketingModule.Data.ExportImport
 
                 await writer.WritePropertyNameAsync("Promotions");
 
-                await writer.SerializeJsonArrayWithPagingAsync(_jsonSerializer, _batchSize, async (skip, take) =>
+                await writer.SerializeArrayWithPagingAsync(_jsonSerializer, _batchSize, async (skip, take) =>
                     (GenericSearchResult<Promotion>)await LoadPromotionsPageAsync(skip, take, options, progressCallback)
                 , (processedCount, totalCount) =>
                 {
-                    progressInfo.Description = $"{ processedCount } of { totalCount } promotions have been exported";
+                    progressInfo.Description = $"{processedCount} of {totalCount} promotions have been exported";
                     progressCallback(progressInfo);
                 }, cancellationToken);
 
@@ -82,7 +81,7 @@ namespace VirtoCommerce.MarketingModule.Data.ExportImport
                 progressCallback(progressInfo);
 
                 await writer.WritePropertyNameAsync("DynamicContentFolders");
-                await writer.SerializeJsonArrayWithPagingAsync(_jsonSerializer, _batchSize, async (skip, take) =>
+                await writer.SerializeArrayWithPagingAsync(_jsonSerializer, _batchSize, async (skip, take) =>
                 {
                     var searchResult = AbstractTypeFactory<DynamicContentFolderSearchResult>.TryCreateInstance();
                     var result = await LoadFoldersRecursiveAsync(null);
@@ -91,7 +90,7 @@ namespace VirtoCommerce.MarketingModule.Data.ExportImport
                     return (GenericSearchResult<DynamicContentFolder>)searchResult;
                 }, (processedCount, totalCount) =>
                 {
-                    progressInfo.Description = $"{ processedCount } of { totalCount } dynamic content folders have been exported";
+                    progressInfo.Description = $"{processedCount} of {totalCount} dynamic content folders have been exported";
                     progressCallback(progressInfo);
                 }, cancellationToken);
 
@@ -99,11 +98,11 @@ namespace VirtoCommerce.MarketingModule.Data.ExportImport
                 progressCallback(progressInfo);
 
                 await writer.WritePropertyNameAsync("DynamicContentItems");
-                await writer.SerializeJsonArrayWithPagingAsync(_jsonSerializer, _batchSize, async (skip, take) =>
+                await writer.SerializeArrayWithPagingAsync(_jsonSerializer, _batchSize, async (skip, take) =>
                     (GenericSearchResult<DynamicContentItem>)await _contentItemsSearchService.SearchContentItemsAsync(new DynamicContentItemSearchCriteria { Skip = skip, Take = take })
                 , (processedCount, totalCount) =>
                 {
-                    progressInfo.Description = $"{ processedCount } of { totalCount } dynamic content items have been exported";
+                    progressInfo.Description = $"{processedCount} of {totalCount} dynamic content items have been exported";
                     progressCallback(progressInfo);
                 }, cancellationToken);
 
@@ -111,11 +110,11 @@ namespace VirtoCommerce.MarketingModule.Data.ExportImport
                 progressCallback(progressInfo);
 
                 await writer.WritePropertyNameAsync("DynamicContentPlaces");
-                await writer.SerializeJsonArrayWithPagingAsync(_jsonSerializer, _batchSize, async (skip, take) =>
+                await writer.SerializeArrayWithPagingAsync(_jsonSerializer, _batchSize, async (skip, take) =>
                     (GenericSearchResult<DynamicContentPlace>)await _contentPlacesSearchService.SearchContentPlacesAsync(new DynamicContentPlaceSearchCriteria { Skip = skip, Take = take })
                 , (processedCount, totalCount) =>
                 {
-                    progressInfo.Description = $"{ processedCount } of { totalCount } dynamic content places have been exported";
+                    progressInfo.Description = $"{processedCount} of {totalCount} dynamic content places have been exported";
                     progressCallback(progressInfo);
                 }, cancellationToken);
 
@@ -123,13 +122,13 @@ namespace VirtoCommerce.MarketingModule.Data.ExportImport
                 progressCallback(progressInfo);
 
                 await writer.WritePropertyNameAsync("DynamicContentPublications");
-                await writer.SerializeJsonArrayWithPagingAsync(_jsonSerializer, _batchSize, async (skip, take) =>
+                await writer.SerializeArrayWithPagingAsync(_jsonSerializer, _batchSize, async (skip, take) =>
                 {
                     var searchResult = await _contentPublicationsSearchService.SearchContentPublicationsAsync(new DynamicContentPublicationSearchCriteria { Skip = skip, Take = take });
                     return (GenericSearchResult<DynamicContentPublication>)searchResult;
                 }, (processedCount, totalCount) =>
                 {
-                    progressInfo.Description = $"{ processedCount } of { totalCount } dynamic content publications have been exported";
+                    progressInfo.Description = $"{processedCount} of {totalCount} dynamic content publications have been exported";
                     progressCallback(progressInfo);
                 }, cancellationToken);
 
@@ -137,10 +136,10 @@ namespace VirtoCommerce.MarketingModule.Data.ExportImport
                 progressCallback(progressInfo);
 
                 await writer.WritePropertyNameAsync("Coupons");
-                await writer.SerializeJsonArrayWithPagingAsync(_jsonSerializer, _batchSize, async (skip, take) =>
+                await writer.SerializeArrayWithPagingAsync(_jsonSerializer, _batchSize, async (skip, take) =>
                   (GenericSearchResult<Coupon>)await _couponSearchService.SearchCouponsAsync(new CouponSearchCriteria { Skip = skip, Take = take }), (processedCount, totalCount) =>
                 {
-                    progressInfo.Description = $"{ processedCount } of { totalCount } coupons have been exported";
+                    progressInfo.Description = $"{processedCount} of {totalCount} coupons have been exported";
                     progressCallback(progressInfo);
                 }, cancellationToken);
 
@@ -148,11 +147,11 @@ namespace VirtoCommerce.MarketingModule.Data.ExportImport
                 progressCallback(progressInfo);
 
                 await writer.WritePropertyNameAsync("Usages");
-                await writer.SerializeJsonArrayWithPagingAsync(_jsonSerializer, _batchSize, async (skip, take) =>
+                await writer.SerializeArrayWithPagingAsync(_jsonSerializer, _batchSize, async (skip, take) =>
                 (GenericSearchResult<PromotionUsage>)await _promotionUsageSearchService.SearchUsagesAsync(new PromotionUsageSearchCriteria { Skip = skip, Take = take })
                 , (processedCount, totalCount) =>
                 {
-                    progressInfo.Description = $"{ processedCount } of { totalCount } usages have been exported";
+                    progressInfo.Description = $"{processedCount} of {totalCount} usages have been exported";
                     progressCallback(progressInfo);
                 }, cancellationToken);
 
@@ -171,64 +170,66 @@ namespace VirtoCommerce.MarketingModule.Data.ExportImport
             using (var streamReader = new StreamReader(inputStream))
             using (var reader = new JsonTextReader(streamReader))
             {
-                while (reader.Read())
+                while (await reader.ReadAsync())
                 {
                     if (reader.TokenType == JsonToken.PropertyName)
                     {
-                        if (reader.Value.ToString() == "Promotions")
+                        var readerValueString = reader.Value?.ToString();
+
+                        if (readerValueString == "Promotions")
                         {
-                            await reader.DeserializeJsonArrayWithPagingAsync<Promotion>(_jsonSerializer, _batchSize, items => SavePromotionsAsync(items.ToArray(), options, progressCallback), processedCount =>
+                            await reader.DeserializeArrayWithPagingAsync<Promotion>(_jsonSerializer, _batchSize, items => SavePromotionsAsync(items.ToArray(), options, progressCallback), processedCount =>
                             {
-                                progressInfo.Description = $"{ processedCount } promotions have been imported";
+                                progressInfo.Description = $"{processedCount} promotions have been imported";
                                 progressCallback(progressInfo);
                             }, cancellationToken);
 
                         }
-                        else if (reader.Value.ToString() == "DynamicContentFolders")
+                        else if (readerValueString == "DynamicContentFolders")
                         {
-                            await reader.DeserializeJsonArrayWithPagingAsync<DynamicContentFolder>(_jsonSerializer, _batchSize, items => _dynamicContentService.SaveFoldersAsync(items.ToArray()), processedCount =>
+                            await reader.DeserializeArrayWithPagingAsync<DynamicContentFolder>(_jsonSerializer, _batchSize, items => _dynamicContentService.SaveFoldersAsync(items.ToArray()), processedCount =>
                             {
-                                progressInfo.Description = $"{ processedCount } dynamic content items have been imported";
+                                progressInfo.Description = $"{processedCount} dynamic content items have been imported";
                                 progressCallback(progressInfo);
                             }, cancellationToken);
                         }
-                        else if (reader.Value.ToString() == "DynamicContentItems")
+                        else if (readerValueString == "DynamicContentItems")
                         {
-                            await reader.DeserializeJsonArrayWithPagingAsync<DynamicContentItem>(_jsonSerializer, _batchSize, items => _dynamicContentService.SaveContentItemsAsync(items.ToArray()), processedCount =>
+                            await reader.DeserializeArrayWithPagingAsync<DynamicContentItem>(_jsonSerializer, _batchSize, items => _dynamicContentService.SaveContentItemsAsync(items.ToArray()), processedCount =>
                             {
-                                progressInfo.Description = $"{ processedCount } dynamic content items have been imported";
+                                progressInfo.Description = $"{processedCount} dynamic content items have been imported";
                                 progressCallback(progressInfo);
                             }, cancellationToken);
                         }
-                        else if (reader.Value.ToString() == "DynamicContentPlaces")
+                        else if (readerValueString == "DynamicContentPlaces")
                         {
-                            await reader.DeserializeJsonArrayWithPagingAsync<DynamicContentPlace>(_jsonSerializer, _batchSize, items => _dynamicContentService.SavePlacesAsync(items.ToArray()), processedCount =>
+                            await reader.DeserializeArrayWithPagingAsync<DynamicContentPlace>(_jsonSerializer, _batchSize, items => _dynamicContentService.SavePlacesAsync(items.ToArray()), processedCount =>
                             {
-                                progressInfo.Description = $"{ processedCount } dynamic content places have been imported";
+                                progressInfo.Description = $"{processedCount} dynamic content places have been imported";
                                 progressCallback(progressInfo);
                             }, cancellationToken);
                         }
-                        else if (reader.Value.ToString() == "DynamicContentPublications")
+                        else if (readerValueString == "DynamicContentPublications")
                         {
-                            await reader.DeserializeJsonArrayWithPagingAsync<DynamicContentPublication>(_jsonSerializer, _batchSize, items => _dynamicContentService.SavePublicationsAsync(items.ToArray()), processedCount =>
+                            await reader.DeserializeArrayWithPagingAsync<DynamicContentPublication>(_jsonSerializer, _batchSize, items => _dynamicContentService.SavePublicationsAsync(items.ToArray()), processedCount =>
                             {
-                                progressInfo.Description = $"{ processedCount } dynamic content publications have been imported";
+                                progressInfo.Description = $"{processedCount} dynamic content publications have been imported";
                                 progressCallback(progressInfo);
                             }, cancellationToken);
                         }
-                        else if (reader.Value.ToString() == "Coupons")
+                        else if (readerValueString == "Coupons")
                         {
-                            await reader.DeserializeJsonArrayWithPagingAsync<Coupon>(_jsonSerializer, _batchSize, items => _couponService.SaveCouponsAsync(items.ToArray()), processedCount =>
+                            await reader.DeserializeArrayWithPagingAsync<Coupon>(_jsonSerializer, _batchSize, items => _couponService.SaveCouponsAsync(items.ToArray()), processedCount =>
                             {
-                                progressInfo.Description = $"{ processedCount } coupons have been imported";
+                                progressInfo.Description = $"{processedCount} coupons have been imported";
                                 progressCallback(progressInfo);
                             }, cancellationToken);
                         }
-                        else if (reader.Value.ToString() == "Usages")
+                        else if (readerValueString == "Usages")
                         {
-                            await reader.DeserializeJsonArrayWithPagingAsync<PromotionUsage>(_jsonSerializer, _batchSize, items => _promotionUsageService.SaveUsagesAsync(items.ToArray()), processedCount =>
+                            await reader.DeserializeArrayWithPagingAsync<PromotionUsage>(_jsonSerializer, _batchSize, items => _promotionUsageService.SaveUsagesAsync(items.ToArray()), processedCount =>
                             {
-                                progressInfo.Description = $"{ processedCount } usages have been imported";
+                                progressInfo.Description = $"{processedCount} usages have been imported";
                                 progressCallback(progressInfo);
                             }, cancellationToken);
                         }
@@ -237,9 +238,9 @@ namespace VirtoCommerce.MarketingModule.Data.ExportImport
             }
         }
 
-        protected virtual Task<PromotionSearchResult>  LoadPromotionsPageAsync(int skip, int take, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback)
+        protected virtual Task<PromotionSearchResult> LoadPromotionsPageAsync(int skip, int take, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback)
         {
-            return  _promotionSearchService.SearchPromotionsAsync(new PromotionSearchCriteria { Skip = skip, Take = take });
+            return _promotionSearchService.SearchPromotionsAsync(new PromotionSearchCriteria { Skip = skip, Take = take });
         }
 
         protected virtual Task SavePromotionsAsync(Promotion[] promotions, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback)

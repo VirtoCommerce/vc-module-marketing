@@ -45,13 +45,13 @@ namespace VirtoCommerce.MarketingModule.Web
     public class Module : IModule, IExportSupport, IImportSupport, IHasConfiguration
     {
         private IApplicationBuilder _appBuilder;
+
         public ManifestModuleInfo ModuleInfo { get; set; }
         public IConfiguration Configuration { get; set; }
 
-
         public void Initialize(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddDbContext<MarketingDbContext>((provider, options) =>
+            serviceCollection.AddDbContext<MarketingDbContext>(options =>
             {
                 var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
                 var connectionString = Configuration.GetConnectionString(ModuleInfo.Id) ?? Configuration.GetConnectionString("VirtoCommerce");
@@ -73,18 +73,12 @@ namespace VirtoCommerce.MarketingModule.Web
             serviceCollection.AddTransient<IMarketingRepository, MarketingRepository>();
             serviceCollection.AddTransient<Func<IMarketingRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<IMarketingRepository>());
 
-            #region Services
-
             serviceCollection.AddTransient<IPromotionService, PromotionService>();
             serviceCollection.AddTransient<ICouponService, CouponService>();
             serviceCollection.AddTransient<IPromotionUsageService, PromotionUsageService>();
             serviceCollection.AddTransient<IMarketingDynamicContentEvaluator, DefaultDynamicContentEvaluator>();
             serviceCollection.AddTransient<IDynamicContentService, DynamicContentService>();
             serviceCollection.AddTransient<IPromotionRewardEvaluator, DefaultPromotionRewardEvaluator>();
-
-            #endregion
-
-            #region Search
 
             serviceCollection.AddTransient<IContentItemsSearchService, ContentItemsSearchService>();
             serviceCollection.AddTransient<IContentPlacesSearchService, ContentPlacesSearchService>();
@@ -94,8 +88,6 @@ namespace VirtoCommerce.MarketingModule.Web
             serviceCollection.AddTransient<IPromotionSearchService, PromotionSearchService>();
             serviceCollection.AddTransient<IPromotionUsageSearchService, PromotionUsageSearchService>();
 
-            #endregion
-
             serviceCollection.AddTransient<CsvCouponImporter>();
 
             serviceCollection.AddTransient<IMarketingPromoEvaluator>(provider =>
@@ -103,7 +95,7 @@ namespace VirtoCommerce.MarketingModule.Web
                 var settingsManager = provider.GetService<ISettingsManager>();
                 var platformMemoryCache = provider.GetService<IPlatformMemoryCache>();
                 var promotionService = provider.GetService<IPromotionSearchService>();
-                var promotionCombinePolicy = settingsManager.GetValue(ModuleConstants.Settings.General.CombinePolicy.Name, "BestReward");
+                var promotionCombinePolicy = settingsManager.GetValue<string>(ModuleConstants.Settings.General.CombinePolicy);
 
                 if (promotionCombinePolicy.EqualsInvariant("CombineStackable"))
                 {
@@ -129,13 +121,7 @@ namespace VirtoCommerce.MarketingModule.Web
             settingsRegistrar.RegisterSettings(ModuleConstants.Settings.General.AllSettings, ModuleInfo.Id);
 
             var permissionsRegistrar = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
-            permissionsRegistrar.RegisterPermissions(ModuleConstants.Security.Permissions.AllPermissions.Select(x =>
-                new Permission()
-                {
-                    GroupName = "Marketing",
-                    ModuleId = ModuleInfo.Id,
-                    Name = x
-                }).ToArray());
+            permissionsRegistrar.RegisterPermissions(ModuleInfo.Id, "Marketing", ModuleConstants.Security.Permissions.AllPermissions);
 
             //Register Permission scopes
             AbstractTypeFactory<PermissionScope>.RegisterType<MarketingStoreSelectedScope>();
@@ -144,19 +130,18 @@ namespace VirtoCommerce.MarketingModule.Web
             // Register DynamicPromotion override
             var couponSearchService = appBuilder.ApplicationServices.GetRequiredService<ICouponSearchService>();
             var promotionUsageSearchService = appBuilder.ApplicationServices.GetRequiredService<IPromotionUsageSearchService>();
-            AbstractTypeFactory<Promotion>.RegisterType<DynamicPromotion>().WithSetupAction((promotion) =>
+            AbstractTypeFactory<Promotion>.RegisterType<DynamicPromotion>().WithSetupAction(promotion =>
             {
-                var dynamicPromotion = promotion as DynamicPromotion;
+                var dynamicPromotion = (DynamicPromotion)promotion;
                 dynamicPromotion.CouponSearchService = couponSearchService;
                 dynamicPromotion.PromotionUsageSearchService = promotionUsageSearchService;
             });
 
-            var eventHandlerRegistrar = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
+            var handlerRegistrar = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
             //Create order observer. record order coupon usage
-            eventHandlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<CouponUsageRecordHandler>().Handle(message));
-
-            eventHandlerRegistrar.RegisterHandler<PromotionChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<LogChangesChangedEventHandler>().Handle(message));
-            eventHandlerRegistrar.RegisterHandler<CouponChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<LogChangesChangedEventHandler>().Handle(message));
+            handlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetService<CouponUsageRecordHandler>().Handle(message));
+            handlerRegistrar.RegisterHandler<PromotionChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetService<LogChangesChangedEventHandler>().Handle(message));
+            handlerRegistrar.RegisterHandler<CouponChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetService<LogChangesChangedEventHandler>().Handle(message));
 
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
             {
@@ -174,7 +159,7 @@ namespace VirtoCommerce.MarketingModule.Web
             dynamicPropertyRegistrar.RegisterType<DynamicContentItem>();
 
             var dynamicContentService = appBuilder.ApplicationServices.GetService<IDynamicContentService>();
-            foreach (var id in new[] { ModuleConstants.MarketingConstants.ContentPlacesRootFolderId, ModuleConstants.MarketingConstants.CotentItemRootFolderId })
+            foreach (var id in new[] { ModuleConstants.MarketingConstants.ContentPlacesRootFolderId, ModuleConstants.MarketingConstants.ContentItemRootFolderId })
             {
                 var folders = dynamicContentService.GetFoldersByIdsAsync(new[] { id }).GetAwaiter().GetResult();
                 var rootFolder = folders.FirstOrDefault();
@@ -221,14 +206,12 @@ namespace VirtoCommerce.MarketingModule.Web
             // Method intentionally left empty.
         }
 
-        public Task ExportAsync(Stream outStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback,
-            ICancellationToken cancellationToken)
+        public Task ExportAsync(Stream outStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
         {
             return _appBuilder.ApplicationServices.GetRequiredService<MarketingExportImport>().DoExportAsync(outStream, options, progressCallback, cancellationToken);
         }
 
-        public Task ImportAsync(Stream inputStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback,
-            ICancellationToken cancellationToken)
+        public Task ImportAsync(Stream inputStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
         {
             return _appBuilder.ApplicationServices.GetRequiredService<MarketingExportImport>().DoImportAsync(inputStream, options, progressCallback, cancellationToken);
         }
