@@ -17,7 +17,7 @@ namespace VirtoCommerce.MarketingModule.Core
                 public const string Access = "marketing:access";
                 public const string Delete = "marketing:delete";
 
-                public static string[] AllPermissions = new[] { Read, Create, Update, Access, Delete };
+                public static string[] AllPermissions = { Read, Create, Update, Access, Delete };
             }
         }
 
@@ -25,13 +25,13 @@ namespace VirtoCommerce.MarketingModule.Core
         {
             public static class General
             {
-                public static SettingDescriptor CombinePolicy = new SettingDescriptor
+                public static SettingDescriptor CombinePolicy { get; } = new()
                 {
                     Name = "Marketing.Promotion.CombinePolicy",
                     ValueType = SettingValueType.ShortText,
                     GroupName = "Marketing|General",
                     DefaultValue = "BestReward",
-                    AllowedValues = new[] { "BestReward", "CombineStackable" }
+                    AllowedValues = new object[] { "BestReward", "CombineStackable" },
                 };
 
 
@@ -48,7 +48,7 @@ namespace VirtoCommerce.MarketingModule.Core
         public static class MarketingConstants
         {
             public const string ContentPlacesRootFolderId = "ContentPlace";
-            public const string CotentItemRootFolderId = "ContentItem";
+            public const string ContentItemRootFolderId = "ContentItem";
         }
     }
 }
