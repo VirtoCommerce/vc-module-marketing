@@ -96,7 +96,7 @@ namespace VirtoCommerce.MarketingModule.Data.Search
             if (criteria.OnlyActive)
             {
                 var now = DateTime.UtcNow;
-                query = query.Where(x => x.IsActive && (x.StartDate == null || now >= x.StartDate) && (x.EndDate == null || x.EndDate >= now));
+                query = query.Where(x => x.IsActive && now >= x.StartDate && (x.EndDate == null || x.EndDate >= now));
             }
 
             if (!string.IsNullOrEmpty(criteria.Keyword))
