@@ -15,7 +15,8 @@ VirtoCommerce.Marketing module represents a marketing management system.
 * [Marketing module document ](/docs/index.md)
 * [View on GitHub](https://github.com/VirtoCommerce/vc-module-marketing)
 
-* Developer guide: <a href="https://virtocommerce.com/docs/vc2devguide/working-with-platform-manager/extending-functionality/composing-dynamic-conditions" target="_blank">Composing dynamic conditions</a>
+
+* Developer guide: <a href="https://docs.virtocommerce.org/new/dev_docs/Extensibility/extending-dynamic-expression-tree/#defining-new-class-for-expression-tree-prototype" target="_blank">Composing dynamic conditions</a>
 
 ## Installation
 Installing the module:

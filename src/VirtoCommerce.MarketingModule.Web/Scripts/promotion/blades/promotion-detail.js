@@ -40,6 +40,10 @@ angular.module('virtoCommerce.marketingModule')
                 if (blade.isNew) {
                     if (blade.isCloning) {
                         blade.data.id = null;
+                        blade.data.createdDate = null;
+                        blade.data.createdBy = null;
+                        blade.data.modifiedBy = null;
+                        blade.data.modifiedDate = null;
                         blade.data.name = null;
                         initializeBlade(blade.data);
                     } else {
