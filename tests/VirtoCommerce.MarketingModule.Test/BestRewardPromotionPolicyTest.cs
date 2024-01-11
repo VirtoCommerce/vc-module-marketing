@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -24,7 +25,7 @@ namespace VirtoCommerce.MarketingModule.Test
         private const string promoGet_25_offFor1of2 = "Get 25% off for every 1 of 2 on ProductA";
 
         [Fact]
-        public void EvaluateRewards_ShippingMethodNotSpecified_Counted()
+        public async Task EvaluateRewards_ShippingMethodNotSpecified_Counted()
         {
             //Arrange            
             var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("FedEx Get 30% Off", "Any shipment 70% Off"));
@@ -36,12 +37,12 @@ namespace VirtoCommerce.MarketingModule.Test
                 PromoEntries = new[] { productA }
             };
             //Act
-            var rewards = evalPolicy.EvaluatePromotionAsync(context).GetAwaiter().GetResult().Rewards.OfType<ShipmentReward>().ToList();
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards.OfType<ShipmentReward>().ToList();
 
             //Assert
             Assert.Equal(2, rewards.Count);
-            Assert.Equal(30m, rewards.FirstOrDefault(x => x.Promotion.Id.EqualsInvariant("FedEx Get 30% Off")).Amount);
-            Assert.Equal(70m, rewards.FirstOrDefault(x => x.Promotion.Id.EqualsInvariant("Any shipment 70% Off")).Amount);
+            Assert.Equal(30m, rewards.First(x => x.Promotion.Id.EqualsInvariant("FedEx Get 30% Off")).Amount);
+            Assert.Equal(70m, rewards.First(x => x.Promotion.Id.EqualsInvariant("Any shipment 70% Off")).Amount);
         }
 
         [Theory]
@@ -53,7 +54,7 @@ namespace VirtoCommerce.MarketingModule.Test
         [InlineData(3, 10, promoGet_10_off, promoGet_25_offFor1of2)]
         [InlineData(4, 25, promoGet_10_off, promoGet_25_offFor1of2)]
         [InlineData(7, 25, promoGet_10_off, promoGet_25_offFor1of2)]
-        public void EvaluateRewards_PickBestRelativeDiscount(int quantity, decimal expectedReward, params string[] promotions)
+        public async Task EvaluateRewards_PickBestRelativeDiscount(int quantity, decimal expectedReward, params string[] promotions)
         {
             //Arrange            
             var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions(promotions));
@@ -63,15 +64,15 @@ namespace VirtoCommerce.MarketingModule.Test
                 PromoEntries = new[] { productA }
             };
             //Act
-            var rewards = evalPolicy.EvaluatePromotionAsync(context).GetAwaiter().GetResult().Rewards.OfType<CatalogItemAmountReward>().ToList();
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards.OfType<CatalogItemAmountReward>().ToList();
 
             //Assert
             Assert.Single(rewards);
-            Assert.Equal(expectedReward, rewards.First().Amount);
+            Assert.Equal(expectedReward, rewards[0].Amount);
         }
 
         [Fact]
-        public void EvaluatePromotion_GetBestPaymentReward()
+        public async Task EvaluatePromotion_GetBestPaymentReward()
         {
             //Agganre
             var blockReward = new BlockReward().WithChildrens(new RewardPaymentGetOfAbs() { Amount = 10m, PaymentMethod = "PayTest" });
@@ -91,11 +92,11 @@ namespace VirtoCommerce.MarketingModule.Test
             };
 
             //Act
-            var rewards = evalPolicy.EvaluatePromotionAsync(context).GetAwaiter().GetResult().Rewards.OfType<PaymentReward>().ToList();
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards.OfType<PaymentReward>().ToList();
 
             //Assert
-            Assert.Equal(10m, rewards.First().Amount);
-            Assert.True(rewards.First().IsValid);
+            Assert.Equal(10m, rewards[0].Amount);
+            Assert.True(rewards[0].IsValid);
         }
 
         private static IMarketingPromoEvaluator GetPromotionEvaluationPolicy(IEnumerable<Promotion> promotions)
