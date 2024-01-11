@@ -28,7 +28,7 @@ namespace VirtoCommerce.MarketingModule.Test
     public class CombineStackablePromotionPolicyTest
     {
         [Fact]
-        public void EvaluateRewards_CombineByPriorityOrder()
+        public async Task EvaluateRewards_CombineByPriorityOrder()
         {
             //Arrange            
             var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("FedEx Get 50% Off", "FedEx Get 30% Off", "ProductA and ProductB Get 2 With 50% Off", "Get ProductA With 25$ Off"));
@@ -41,7 +41,7 @@ namespace VirtoCommerce.MarketingModule.Test
                 PromoEntries = new[] { productA, productB }
             };
             //Act
-            var rewards = evalPolicy.EvaluatePromotionAsync(context).GetAwaiter().GetResult().Rewards;
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards;
 
             //Assert
             Assert.Equal(5, rewards.Count);
@@ -51,7 +51,7 @@ namespace VirtoCommerce.MarketingModule.Test
         }
 
         [Fact]
-        public void EvaluateRewards_OnlySingleExclusivePromotion()
+        public async Task EvaluateRewards_OnlySingleExclusivePromotion()
         {
             //Arrange            
             var evalPolicy = GetPromotionEvaluationPolicy(TestPromotions);
@@ -64,7 +64,7 @@ namespace VirtoCommerce.MarketingModule.Test
                 PromoEntries = new[] { productA, productB }
             };
             //Act
-            var rewards = evalPolicy.EvaluatePromotionAsync(context).GetAwaiter().GetResult().Rewards;
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards;
 
             //Assert
             Assert.Single(rewards);
@@ -72,7 +72,7 @@ namespace VirtoCommerce.MarketingModule.Test
         }
 
         [Fact]
-        public void EvaluateRewards_SkipRewardsMakingPriceNegative()
+        public async Task EvaluateRewards_SkipRewardsMakingPriceNegative()
         {
             //Arrange            
             var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("Get ProductA Free", "Get ProductA With 25$ Off"));
@@ -82,7 +82,7 @@ namespace VirtoCommerce.MarketingModule.Test
                 PromoEntries = new[] { productA }
             };
             //Act
-            var rewards = evalPolicy.EvaluatePromotionAsync(context).GetAwaiter().GetResult().Rewards;
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards;
 
             //Assert
             Assert.Single(rewards);
@@ -91,7 +91,7 @@ namespace VirtoCommerce.MarketingModule.Test
         }
 
         [Fact]
-        public void EvaluateRewards_ShippingMethodNotSpecified_Counted()
+        public async Task EvaluateRewards_ShippingMethodNotSpecified_Counted()
         {
             //Arrange            
             var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("Any shipment 50% Off"));
@@ -103,16 +103,16 @@ namespace VirtoCommerce.MarketingModule.Test
                 PromoEntries = new[] { productA }
             };
             //Act
-            var rewards = evalPolicy.EvaluatePromotionAsync(context).GetAwaiter().GetResult().Rewards;
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards;
 
             //Assert
-            Assert.Equal(1, rewards.Count);
+            Assert.Single(rewards);
             Assert.Equal(50m, context.ShipmentMethodPrice);
             Assert.Equal(100m, productA.Price);
         }
 
         [Fact]
-        public void EvaluateRewards_BuyProductWithTag_Counted()
+        public async Task EvaluateRewards_BuyProductWithTag_Counted()
         {
             //Arrange 
             var evalPolicy = GetPromotionEvaluationPolicy(new List<BuyProductWithTagPromotion>()
@@ -126,14 +126,14 @@ namespace VirtoCommerce.MarketingModule.Test
             };
 
             //Act
-            var rewards = evalPolicy.EvaluatePromotionAsync(context).GetAwaiter().GetResult().Rewards;
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards;
 
             //Assert
-            Assert.Equal(1, rewards.Count);
+            Assert.Single(rewards);
         }
 
         [Fact]
-        public void EvaluateRewards_DynamicPromotions()
+        public async Task EvaluateRewards_DynamicPromotions()
         {
             //Arrange 
             var couponSearchMockServiceMock = new Mock<ICouponSearchService>();
@@ -171,10 +171,10 @@ namespace VirtoCommerce.MarketingModule.Test
             };
 
             //Act
-            var rewards = evalPolicy.EvaluatePromotionAsync(context).GetAwaiter().GetResult().Rewards;
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards;
 
             //Assert
-            Assert.Equal(1, rewards.Count);
+            Assert.Single(rewards);
         }
 
         [Theory]
@@ -328,7 +328,7 @@ namespace VirtoCommerce.MarketingModule.Test
         }
 
         [Fact]
-        public void EvaluateRewards_NonHandledReward_Throws()
+        public Task EvaluateRewards_NonHandledReward_Throws()
         {
             //Arrange            
             var evalPolicy = GetPromotionEvaluationPolicy(GetPromotions("Reward non handled by the policy"));
@@ -341,7 +341,7 @@ namespace VirtoCommerce.MarketingModule.Test
             //Act
 
             //Assert
-            Assert.ThrowsAsync<NotSupportedException>(() => evalPolicy.EvaluatePromotionAsync(context));
+            return Assert.ThrowsAsync<NotSupportedException>(() => evalPolicy.EvaluatePromotionAsync(context));
         }
 
         [Fact]
