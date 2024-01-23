@@ -43,7 +43,6 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 rewards = rewards.Where(x => x.Promotion == firstOrderExclusiveReward.Promotion).ToArray();
             }
             //best shipment promotion
-            var shipmentReward = GetShipmentRewards(promoContext, rewards);
             var curShipmentAmount = promoContext.ShipmentMethodCode != null ? promoContext.ShipmentMethodPrice : 0m;
             var allShipmentRewards = rewards.OfType<ShipmentReward>().ToArray();
             var groupedByShippingMethodRewards = allShipmentRewards.GroupBy(x => x.ShippingMethod);
@@ -100,22 +99,6 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             rewards.OfType<SpecialOfferReward>().ToList().ForEach(x => result.Rewards.Add(x));
 
             return result;
-        }
-
-        private PromotionReward GetShipmentRewards(PromotionEvaluationContext promoContext, IEnumerable<PromotionReward> rewards)
-        {
-            var curShipmentAmount = promoContext.ShipmentMethodCode != null ? promoContext.ShipmentMethodPrice : 0m;
-            var allShipmentRewards = rewards.OfType<ShipmentReward>().ToArray();
-            var groupedByShippingMethodRewards = allShipmentRewards.GroupBy(x => x.ShippingMethod);
-            foreach (var shipmentRewards in groupedByShippingMethodRewards)
-            {
-                var result = GetBestAmountReward(curShipmentAmount, shipmentRewards);
-                if (result != null)
-                {
-                    return result;
-                }
-            }
-            return null;
         }
 
         protected virtual AmountBasedReward GetBestAmountReward(decimal currentAmount, IEnumerable<AmountBasedReward> reward)
