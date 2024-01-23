@@ -32,76 +32,90 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             var promotions = await _promotionSearchService.SearchPromotionsAsync(promotionSearchCriteria);
 
             var result = new PromotionResult();
-            var evalPromtionTasks = promotions.Results.Select(x => x.EvaluatePromotionAsync(promoContext)).ToArray();
-            await Task.WhenAll(evalPromtionTasks);
-            var rewards = evalPromtionTasks.SelectMany(x => x.Result).Where(x => x.IsValid).ToArray();
+            var evalPromotionTasks = promotions.Results.Select(x => x.EvaluatePromotionAsync(promoContext)).ToArray();
+            await Task.WhenAll(evalPromotionTasks);
+            var rewards = evalPromotionTasks.SelectMany(x => x.Result).Where(x => x.IsValid).ToArray();
 
             var firstOrderExclusiveReward = rewards.FirstOrDefault(x => x.Promotion.IsExclusive);
             if (firstOrderExclusiveReward != null)
             {
                 //Add only rewards from exclusive promotion
-                result.Rewards.AddRange(rewards.Where(x => x.Promotion == firstOrderExclusiveReward.Promotion));
+                rewards = rewards.Where(x => x.Promotion == firstOrderExclusiveReward.Promotion).ToArray();
             }
-            else
+            //best shipment promotion
+            var shipmentReward = GetShipmentRewards(promoContext, rewards);
+            var curShipmentAmount = promoContext.ShipmentMethodCode != null ? promoContext.ShipmentMethodPrice : 0m;
+            var allShipmentRewards = rewards.OfType<ShipmentReward>().ToArray();
+            var groupedByShippingMethodRewards = allShipmentRewards.GroupBy(x => x.ShippingMethod);
+            foreach (var shipmentRewards in groupedByShippingMethodRewards)
             {
-                //best shipment promotion
-                var curShipmentAmount = promoContext.ShipmentMethodCode != null ? promoContext.ShipmentMethodPrice : 0m;
-                var allShipmentRewards = rewards.OfType<ShipmentReward>().ToArray();
-                var groupedByShippingMethodRewards = allShipmentRewards.GroupBy(x => x.ShippingMethod);
-                foreach (var shipmentRewards in groupedByShippingMethodRewards)
+                var bestShipmentReward = GetBestAmountReward(curShipmentAmount, shipmentRewards);
+                if (bestShipmentReward != null)
                 {
-                    var bestShipmentReward = GetBestAmountReward(curShipmentAmount, shipmentRewards);
-                    if (bestShipmentReward != null)
-                    {
-                        result.Rewards.Add(bestShipmentReward);
-                    }
+                    result.Rewards.Add(bestShipmentReward);
                 }
-
-                //best payment promotion
-                var currentPaymentAmount = promoContext.PaymentMethodCode != null ? promoContext.PaymentMethodPrice : 0m;
-                var allPaymentRewards = rewards.OfType<PaymentReward>().ToArray();
-                var groupedByPaymentMethodRewards = allPaymentRewards.GroupBy(x => x.PaymentMethod);
-                foreach (var paymentRewards in groupedByPaymentMethodRewards)
-                {
-                    var bestPaymentReward = GetBestAmountReward(currentPaymentAmount, paymentRewards);
-                    if (bestPaymentReward != null)
-                    {
-                        result.Rewards.Add(bestPaymentReward);
-                    }
-                }
-
-                //best catalog item promotion
-                var allItemsRewards = rewards.OfType<CatalogItemAmountReward>().ToArray();
-                var groupRewards = allItemsRewards.GroupBy(x => x.ProductId).Where(x => x.Key != null);
-                foreach (var groupReward in groupRewards)
-                {
-                    var item = promoContext.PromoEntries.FirstOrDefault(x => x.ProductId == groupReward.Key);
-                    if (item != null)
-                    {
-                        var bestItemReward = GetBestAmountReward(item.Price, item.Quantity, groupReward);
-                        if (bestItemReward != null)
-                        {
-                            result.Rewards.Add(bestItemReward);
-                        }
-                    }
-                }
-
-                //best order promotion 
-                var cartSubtotalRewards = rewards.OfType<CartSubtotalReward>().Where(x => x.IsValid).OrderByDescending(x => x.GetRewardAmount(promoContext.CartTotal, 1));
-                var cartSubtotalReward = cartSubtotalRewards.FirstOrDefault(x => !string.IsNullOrEmpty(x.Coupon)) ?? cartSubtotalRewards.FirstOrDefault();
-                if (cartSubtotalReward != null)
-                {
-                    result.Rewards.Add(cartSubtotalReward);
-                }
-
-                //Gifts
-                rewards.OfType<GiftReward>().ToList().ForEach(x => result.Rewards.Add(x));
-
-                //Special offer
-                rewards.OfType<SpecialOfferReward>().ToList().ForEach(x => result.Rewards.Add(x));
             }
+
+            //best payment promotion
+            var currentPaymentAmount = promoContext.PaymentMethodCode != null ? promoContext.PaymentMethodPrice : 0m;
+            var allPaymentRewards = rewards.OfType<PaymentReward>().ToArray();
+            var groupedByPaymentMethodRewards = allPaymentRewards.GroupBy(x => x.PaymentMethod);
+            foreach (var paymentRewards in groupedByPaymentMethodRewards)
+            {
+                var bestPaymentReward = GetBestAmountReward(currentPaymentAmount, paymentRewards);
+                if (bestPaymentReward != null)
+                {
+                    result.Rewards.Add(bestPaymentReward);
+                }
+            }
+
+            //best catalog item promotion
+            var allItemsRewards = rewards.OfType<CatalogItemAmountReward>().ToArray();
+            var groupRewards = allItemsRewards.GroupBy(x => x.ProductId).Where(x => x.Key != null);
+            foreach (var groupReward in groupRewards)
+            {
+                var item = promoContext.PromoEntries.FirstOrDefault(x => x.ProductId == groupReward.Key);
+                if (item != null)
+                {
+                    var bestItemReward = GetBestAmountReward(item.Price, item.Quantity, groupReward);
+                    if (bestItemReward != null)
+                    {
+                        result.Rewards.Add(bestItemReward);
+                    }
+                }
+            }
+
+            //best order promotion 
+            var cartSubtotalRewards = rewards.OfType<CartSubtotalReward>().Where(x => x.IsValid).OrderByDescending(x => x.GetRewardAmount(promoContext.CartTotal, 1));
+            var cartSubtotalReward = cartSubtotalRewards.FirstOrDefault(x => !string.IsNullOrEmpty(x.Coupon)) ?? cartSubtotalRewards.FirstOrDefault();
+            if (cartSubtotalReward != null)
+            {
+                result.Rewards.Add(cartSubtotalReward);
+            }
+
+            //Gifts
+            rewards.OfType<GiftReward>().ToList().ForEach(x => result.Rewards.Add(x));
+
+            //Special offer
+            rewards.OfType<SpecialOfferReward>().ToList().ForEach(x => result.Rewards.Add(x));
 
             return result;
+        }
+
+        private PromotionReward GetShipmentRewards(PromotionEvaluationContext promoContext, IEnumerable<PromotionReward> rewards)
+        {
+            var curShipmentAmount = promoContext.ShipmentMethodCode != null ? promoContext.ShipmentMethodPrice : 0m;
+            var allShipmentRewards = rewards.OfType<ShipmentReward>().ToArray();
+            var groupedByShippingMethodRewards = allShipmentRewards.GroupBy(x => x.ShippingMethod);
+            foreach (var shipmentRewards in groupedByShippingMethodRewards)
+            {
+                var result = GetBestAmountReward(curShipmentAmount, shipmentRewards);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+            return null;
         }
 
         protected virtual AmountBasedReward GetBestAmountReward(decimal currentAmount, IEnumerable<AmountBasedReward> reward)
