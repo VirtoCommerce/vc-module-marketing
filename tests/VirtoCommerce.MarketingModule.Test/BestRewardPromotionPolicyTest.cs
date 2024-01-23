@@ -92,7 +92,7 @@ namespace VirtoCommerce.MarketingModule.Test
             };
 
             //Act
-            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards.OfType<PaymentReward>().ToList();
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards.OfType<CartSubtotalReward>().ToList();
 
             //Assert
             Assert.Equal(10m, rewards[0].Amount);
