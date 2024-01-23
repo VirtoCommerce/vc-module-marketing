@@ -15,7 +15,8 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
                         new ConditionIsRegisteredUser(),
                         new ConditionIsEveryone(),
                         new ConditionIsFirstTimeBuyer(),
-                        new UserGroupsContainsCondition()
+                        new UserGroupsContainsCondition(),
+                        new UserGroupIsCondition()
                      );
             var blockCatalog = new BlockCatalogCondition()
                     .WithAvailConditions(
