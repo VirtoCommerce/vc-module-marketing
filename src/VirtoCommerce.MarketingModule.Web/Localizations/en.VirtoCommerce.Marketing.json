@@ -50,7 +50,8 @@
         },
         "toolbar": {
           "coupons": "Coupons"
-        }
+        },
+        "cant-be-saved": "You are currently limited to the scope of the stores and the selected promotion is assigned to multiple stores. Editing this promotion is not allowed."
       },
       "coupon-detail": {
         "new-title": "New coupon",

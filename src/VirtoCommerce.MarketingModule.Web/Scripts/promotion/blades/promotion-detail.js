@@ -8,6 +8,10 @@ angular.module('virtoCommerce.marketingModule')
         blade.expressionTreeTemplateUrl = dynamicExpressionService.expressionTreeTemplateUrl;
 
         blade.showPriority = false;
+        $scope.showErrorStoreStateMessage = bladeNavigationService.checkPermission() // isAdmin
+            ? false
+            : null;
+
         settings.get({ id: 'Marketing.Promotion.CombinePolicy' }, function (data) {
             blade.showPriority = data.value === 'CombineStackable';
         });
@@ -119,7 +123,8 @@ angular.module('virtoCommerce.marketingModule')
         $scope.isValid = function () {
             return isDirty()
                 && $scope.formScope
-                && $scope.formScope.$valid;
+                && $scope.formScope.$valid
+                && $scope.validateStores();
             //&& (!blade.currentEntity.dynamicExpression;
             //    || (blade.currentEntity.dynamicExpression.children[0].children.length > 0
             //        && blade.currentEntity.dynamicExpression.children[3].children.length > 0));
@@ -283,7 +288,7 @@ angular.module('virtoCommerce.marketingModule')
 
             return $q.resolve();
         }
-
+        
         $scope.fetchNextStores = ($select) => {
             $select.page = $select.page || 0;
 
@@ -312,6 +317,19 @@ angular.module('virtoCommerce.marketingModule')
             }
 
             return $q.resolve();
+        };
+
+        $scope.validateStores = function () {
+            const unknownStores = _.difference(blade.currentEntity.storeIds, _.pluck($scope.stores, 'id'));
+            if (unknownStores.length) {
+                $("#storesContainer .ui-select-container").addClass("ng-invalid");
+                if ($scope.showErrorStoreStateMessage === null) {
+                    $scope.showErrorStoreStateMessage = true;
+                }
+            } else {
+                $("#storesContainer .ui-select-container").removeClass("ng-invalid");
+            }
+            return !unknownStores.length && !$scope.showErrorStoreStateMessage;
         };
 
         function joinStores(newItems) {
