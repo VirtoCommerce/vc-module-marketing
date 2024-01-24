@@ -1,12 +1,12 @@
 {
   "profiles": {
-    "VirtoCommerce.MarketingModule.Web": {
+    "VirtoCommerce.MarketingSampleModule.Web": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:61931;http://localhost:61932"
+      "applicationUrl": "https://localhost:60866;http://localhost:60867"
     }
   }
 }

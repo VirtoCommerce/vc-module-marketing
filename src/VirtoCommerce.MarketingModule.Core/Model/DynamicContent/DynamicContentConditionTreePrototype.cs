@@ -23,6 +23,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.DynamicContent
                      new ConditionGeoState(),
                      new ConditionLanguageIs(),
                      new UserGroupsContainsCondition(),
+                     new UserGroupIsCondition(),
                      new DynamicContentConditionCategoryIs(),
                      new DynamicContentConditionProductIs()
                    )
