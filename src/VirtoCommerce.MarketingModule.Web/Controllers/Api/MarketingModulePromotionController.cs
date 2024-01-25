@@ -167,6 +167,11 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Authorize(ModuleConstants.Security.Permissions.Update)]
         public async Task<ActionResult> UpdatePromotions([FromBody] Promotion promotion)
         {
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, promotion, new MarketingAuthorizationRequirement(ModuleConstants.Security.Permissions.Read));
+            if (!authorizationResult.Succeeded)
+            {
+                return Forbid();
+            }
             await _promotionService.SavePromotionsAsync(new[] { promotion });
             return NoContent();
         }

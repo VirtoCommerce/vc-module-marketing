@@ -41,7 +41,7 @@ namespace VirtoCommerce.MarketingModule.Web.Authorization
                 criteria.StoreIds = allowedStoreIds;
                 context.Succeed(requirement);
             }
-            if (context.Resource is DynamicPromotion promotion && (promotion.StoreIds.IsNullOrEmpty() || promotion.StoreIds.Any(x => allowedStoreIds.Contains(x))))
+            if (context.Resource is DynamicPromotion promotion && (promotion.StoreIds.IsNullOrEmpty() || promotion.StoreIds.All(x => allowedStoreIds.Contains(x))))
             {
                 context.Succeed(requirement);
             }
