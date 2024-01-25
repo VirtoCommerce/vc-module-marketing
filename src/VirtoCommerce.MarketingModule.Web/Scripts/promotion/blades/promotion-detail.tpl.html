@@ -80,7 +80,11 @@
                     <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.store' | translate }}</label>
                     <div class="form-input" id="storesContainer">
                       <ui-select on-select="validateStores()" on-remove="validateStores()" multiple ng-model="blade.currentEntity.storeIds" ng-class="{disabled: stores.length === 0}">
-                        <ui-select-match placeholder="{{'marketing.blades.promotion-detail.placeholders.store' | translate}}">{{stores.length > 0 ? ($item.name || 'UNKNOWN') : 'Loading...'}}</ui-select-match>
+                        <ui-select-match placeholder="{{'marketing.blades.promotion-detail.placeholders.store' | translate}}">
+                          <span ng-if="stores.length && $item.name">{{$item.name}}</span>
+                          <span style="color: #f50000;font-weight: bold;" ng-if="stores.length && !$item.name">UNKNOWN</span>
+                          <span ng-if="!stores.length">Loading...</span>
+                        </ui-select-match>
                         <ui-select-choices repeat="x.id as x in stores | filter: { name: $select.search }" refresh="fetchStores($select)" refresh-delay="300" when-scrolled="fetchNextStores($select)">
                           <span ng-bind-html="x.name | highlight: $select.search" ng-show='stores.length > 0'></span>
                         </ui-select-choices>
