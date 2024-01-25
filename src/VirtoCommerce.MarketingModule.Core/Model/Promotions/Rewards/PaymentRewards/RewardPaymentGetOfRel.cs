@@ -13,10 +13,11 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 
         public PromotionReward[] GetRewards()
         {
-            var retVal = new CartSubtotalReward
+            var retVal = new PaymentReward
             {
                 Amount = Amount,
                 AmountType = RewardAmountType.Relative,
+                PaymentMethod = PaymentMethod,
                 MaxLimit = MaxLimit
             };
             return new PromotionReward[] { retVal };
