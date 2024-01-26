@@ -74,7 +74,7 @@ namespace VirtoCommerce.MarketingModule.Test
         [Fact]
         public async Task EvaluatePromotion_GetBestPaymentReward()
         {
-            //Agganre
+            //Arrange
             var blockReward = new BlockReward().WithChildrens(new RewardPaymentGetOfAbs() { Amount = 10m, PaymentMethod = "PayTest" });
             var dynamicPromotion = new DynamicPromotion
             {
@@ -92,7 +92,7 @@ namespace VirtoCommerce.MarketingModule.Test
             };
 
             //Act
-            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards.OfType<CartSubtotalReward>().ToList();
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards.OfType<PaymentReward>().ToList();
 
             //Assert
             Assert.Equal(10m, rewards[0].Amount);
