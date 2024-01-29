@@ -32,7 +32,7 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
         blade.refresh();
     });
 
-    var hasPlarformAssetsPermission = bladeNavigationService.checkPermission('platform:assets:read');
+    var hasPlarformAssetsPermission = bladeNavigationService.checkPermission('platform:asset:read');
 
     blade.toolbarCommands = [{
         name: 'marketing.blades.coupons.toolbar.add',
