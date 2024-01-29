@@ -63,27 +63,35 @@ namespace VirtoCommerce.MarketingModule.Web.Authorization
 
                     break;
                 case PermissionResourceModel resource:
+                    if (await IsCouponsInScope(resource.CouponIds, allowedStoreIds, requirement.CheckAllScopes)
+                        || await IsPromotionsInScope(resource.PromotionIds, allowedStoreIds, requirement.CheckAllScopes))
                     {
-                        if (!resource.CouponIds.IsNullOrEmpty())
-                        {
-                            var coupons = await _couponService.GetByIdsAsync(resource.CouponIds);
-                            if (await IsCouponsInScope(coupons, allowedStoreIds, requirement.CheckAllScopes))
-                            {
-                                context.Succeed(requirement);
-                            }
-                        }
-                        else if (!resource.PromotionIds.IsNullOrEmpty())
-                        {
-                            var promotions = await _promotionService.GetPromotionsByIdsAsync(resource.PromotionIds);
-                            var storeIds = promotions.SelectMany(x => x.StoreIds).ToArray();
-                            if (IsStoreInScope(storeIds, allowedStoreIds, requirement.CheckAllScopes))
-                            {
-                                context.Succeed(requirement);
-                            }
-                        }
+                        context.Succeed(requirement);
                     }
                     break;
             }
+        }
+
+        private async Task<bool> IsCouponsInScope(string[] couponIds, string[] allowedStoreIds, bool checkAllScopes)
+        {
+            if (couponIds.IsNullOrEmpty())
+            {
+                return false;
+            }
+
+            var coupons = await _couponService.GetByIdsAsync(couponIds);
+            return await IsCouponsInScope(coupons, allowedStoreIds, checkAllScopes);
+        }
+
+        private async Task<bool> IsPromotionsInScope(string[] promotionIds, string[] allowedStoreIds, bool checkAllScopes)
+        {
+            if (promotionIds.IsNullOrEmpty())
+            {
+                return false;
+            }
+            var promotions = await _promotionService.GetPromotionsByIdsAsync(promotionIds);
+            var storeIds = promotions.SelectMany(x => x.StoreIds).ToArray();
+            return IsStoreInScope(storeIds, allowedStoreIds, checkAllScopes);
         }
 
         private async Task<bool> IsCouponsInScope(IEnumerable<Coupon> coupons, string[] allowedStoreIds, bool checkAllScopes)
