@@ -31,6 +31,8 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
                         new ConditionAtNumItemsInCart(),
                         new ConditionAtNumItemsInCategoryAreInCart(),
                         new ConditionAtNumItemsOfEntryAreInCart(),
+                        new PaymentIsCondition(),
+                        new ShippingIsCondition(),
                         new ConditionCartSubtotalLeast()
                      );
             var blockReward = new BlockReward()
