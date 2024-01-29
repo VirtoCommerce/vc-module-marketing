@@ -18,7 +18,6 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions.Conditions
         /// </summary>
         public override bool IsSatisfiedBy(IEvaluationContext context)
         {
-
             if (ProductId == null && ProductIds == null)
             {
                 throw new ArgumentException($"{nameof(ProductId)} and {nameof(ProductIds)} cannot be null.");
@@ -31,7 +30,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions.Conditions
                 {
                     result = promotionEvaluationContext.IsItemInProducts(ProductIds);
                 }
-                else if(ProductId != null)
+                else if (ProductId != null)
                 {
                     result = promotionEvaluationContext.IsItemInProduct(ProductId);
                 }
