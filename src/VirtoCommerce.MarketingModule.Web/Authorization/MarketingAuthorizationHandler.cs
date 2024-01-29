@@ -84,9 +84,9 @@ namespace VirtoCommerce.MarketingModule.Web.Authorization
 
         private static bool IsStoreInScope(string[] currentStoreIds, string[] allowedStoreIds, bool checkAllScopes)
         {
-            return currentStoreIds.IsNullOrEmpty()
-                   || (checkAllScopes && currentStoreIds.All(allowedStoreIds.Contains))
-                   || (!checkAllScopes && currentStoreIds.Any(allowedStoreIds.Contains));
+            return currentStoreIds.IsNullOrEmpty() || CheckAll() || CheckAny();
+            bool CheckAll() => checkAllScopes && currentStoreIds.All(allowedStoreIds.Contains);
+            bool CheckAny() => !checkAllScopes && currentStoreIds.Any(allowedStoreIds.Contains);
         }
     }
 }
