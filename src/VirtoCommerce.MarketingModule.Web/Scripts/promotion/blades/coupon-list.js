@@ -32,18 +32,20 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
         blade.refresh();
     });
 
+    var hasPlarformAssetsPermission = bladeNavigationService.checkPermission('platform:assets:read');
+
     blade.toolbarCommands = [{
         name: 'marketing.blades.coupons.toolbar.add',
         icon: 'fas fa-plus',
         canExecuteMethod: function () {
-            return true;
+            return blade.parentBlade.showErrorStoreStateMessage !== true;
         },
         executeMethod: showAddCouponBlade
     }, {
         name: 'marketing.blades.coupons.toolbar.import',
         icon: 'fa fa-download',
         canExecuteMethod: function () {
-            return true;
+            return hasPlarformAssetsPermission && blade.parentBlade.showErrorStoreStateMessage !== true;
         },
         executeMethod: showCouponImportBlade
     }, {

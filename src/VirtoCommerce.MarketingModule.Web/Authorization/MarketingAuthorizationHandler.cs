@@ -71,6 +71,16 @@ namespace VirtoCommerce.MarketingModule.Web.Authorization
                         }
                     }
                     break;
+                case string promotionId:
+                    {
+                        var promotions = await _promotionService.GetPromotionsByIdsAsync(new[] { promotionId });
+                        var storeIds = promotions.SelectMany(x => x.StoreIds).ToArray();
+                        if (IsStoreInScope(storeIds, allowedStoreIds, requirement.CheckAllScopes))
+                        {
+                            context.Succeed(requirement);
+                        }
+                    }
+                    break;
             }
         }
 

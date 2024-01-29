@@ -254,6 +254,12 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Authorize(ModuleConstants.Security.Permissions.Update)]
         public async Task<ActionResult<ImportNotification>> ImportCouponsAsync([FromBody] ImportRequest request)
         {
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, request.PromotionId, new MarketingAuthorizationRequirement(ModuleConstants.Security.Permissions.Read, true));
+            if (!authorizationResult.Succeeded)
+            {
+                return Forbid();
+            }
+
             var notification = new ImportNotification(_userNameResolver.GetCurrentUserName())
             {
                 Title = "Import coupons from CSV",
