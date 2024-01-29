@@ -111,6 +111,16 @@ angular.module(moduleName, [])
                 displayName: 'Specific product'
             });
 
+            dynamicExpressionService.registerExpression({
+                id: 'PaymentIsCondition',
+                displayName: 'Payment type is...',
+            });
+
+            dynamicExpressionService.registerExpression({
+                id: 'ShippingIsCondition',
+                displayName: 'Shipping type is...',
+            });
+
             $http.get('Modules/$(VirtoCommerce.Marketing)/Scripts/dynamicConditions/templates.html').then(function (response) {
                 // compile the response, which will put stuff into the cache
                 $compile(response.data);
