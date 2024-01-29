@@ -62,22 +62,24 @@ namespace VirtoCommerce.MarketingModule.Web.Authorization
                     }
 
                     break;
-                case string[] couponIds:
+                case PermissionResourceModel resource:
                     {
-                        var coupons = await _couponService.GetByIdsAsync(couponIds);
-                        if (await IsCouponsInScope(coupons, allowedStoreIds, requirement.CheckAllScopes))
+                        if (!resource.CouponIds.IsNullOrEmpty())
                         {
-                            context.Succeed(requirement);
+                            var coupons = await _couponService.GetByIdsAsync(resource.CouponIds);
+                            if (await IsCouponsInScope(coupons, allowedStoreIds, requirement.CheckAllScopes))
+                            {
+                                context.Succeed(requirement);
+                            }
                         }
-                    }
-                    break;
-                case string promotionId:
-                    {
-                        var promotions = await _promotionService.GetPromotionsByIdsAsync(new[] { promotionId });
-                        var storeIds = promotions.SelectMany(x => x.StoreIds).ToArray();
-                        if (IsStoreInScope(storeIds, allowedStoreIds, requirement.CheckAllScopes))
+                        else if (!resource.PromotionIds.IsNullOrEmpty())
                         {
-                            context.Succeed(requirement);
+                            var promotions = await _promotionService.GetPromotionsByIdsAsync(resource.PromotionIds);
+                            var storeIds = promotions.SelectMany(x => x.StoreIds).ToArray();
+                            if (IsStoreInScope(storeIds, allowedStoreIds, requirement.CheckAllScopes))
+                            {
+                                context.Succeed(requirement);
+                            }
                         }
                     }
                     break;
