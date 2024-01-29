@@ -286,7 +286,7 @@ angular.module('virtoCommerce.marketingModule')
 
             return $q.resolve();
         }
-        
+
         $scope.fetchNextStores = ($select) => {
             $select.page = $select.page || 0;
 
@@ -318,7 +318,9 @@ angular.module('virtoCommerce.marketingModule')
         };
 
         $scope.validateStores = function () {
-            if (!$scope.stores.length) { return true; }
+            if (!$scope.stores.length) {
+                return true;
+            }
             const unknownStores = _.difference(blade.currentEntity.storeIds, _.pluck($scope.stores, 'id'));
             if (unknownStores.length) {
                 $("#storesContainer .ui-select-container").addClass("ng-invalid");
