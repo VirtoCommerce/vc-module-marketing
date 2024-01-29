@@ -222,6 +222,12 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Authorize(ModuleConstants.Security.Permissions.Update)]
         public async Task<ActionResult> AddCoupons([FromBody] Coupon[] coupons)
         {
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, coupons, new MarketingAuthorizationRequirement(ModuleConstants.Security.Permissions.Read, true));
+            if (!authorizationResult.Succeeded)
+            {
+                return Forbid();
+            }
+
             await _couponService.SaveCouponsAsync(coupons);
 
             return NoContent();
@@ -232,6 +238,12 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Authorize(ModuleConstants.Security.Permissions.Delete)]
         public async Task<ActionResult> DeleteCoupons([FromQuery] string[] ids)
         {
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, ids, new MarketingAuthorizationRequirement(ModuleConstants.Security.Permissions.Read, true));
+            if (!authorizationResult.Succeeded)
+            {
+                return Forbid();
+            }
+
             await _couponService.DeleteCouponsAsync(ids);
 
             return NoContent();

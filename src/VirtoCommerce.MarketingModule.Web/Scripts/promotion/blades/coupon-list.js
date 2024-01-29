@@ -100,6 +100,7 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
             id: 'couponDetail',
             originalEntity: angular.copy(node),
             currentEntity: angular.copy(node),
+            showErrorStoreStateMessage: blade.parentBlade.showErrorStoreStateMessage,
             title: 'Coupon "' + node.code + '"',
             controller: 'virtoCommerce.marketingModule.couponDetailController',
             template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/promotion/blades/coupon-detail.tpl.html'

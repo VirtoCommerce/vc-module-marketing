@@ -8,7 +8,7 @@ angular.module('virtoCommerce.marketingModule')
         blade.expressionTreeTemplateUrl = dynamicExpressionService.expressionTreeTemplateUrl;
 
         blade.showPriority = false;
-        $scope.showErrorStoreStateMessage = null;
+        blade.showErrorStoreStateMessage = null;
 
         settings.get({ id: 'Marketing.Promotion.CombinePolicy' }, function (data) {
             blade.showPriority = data.value === 'CombineStackable';
@@ -322,13 +322,13 @@ angular.module('virtoCommerce.marketingModule')
             const unknownStores = _.difference(blade.currentEntity.storeIds, _.pluck($scope.stores, 'id'));
             if (unknownStores.length) {
                 $("#storesContainer .ui-select-container").addClass("ng-invalid");
-                if ($scope.showErrorStoreStateMessage === null) {
-                    $scope.showErrorStoreStateMessage = true;
+                if (blade.showErrorStoreStateMessage === null) {
+                    blade.showErrorStoreStateMessage = true;
                 }
             } else {
                 $("#storesContainer .ui-select-container").removeClass("ng-invalid");
             }
-            return !unknownStores.length && !$scope.showErrorStoreStateMessage;
+            return !unknownStores.length && !blade.showErrorStoreStateMessage;
         };
 
         function joinStores(newItems) {
@@ -346,7 +346,7 @@ angular.module('virtoCommerce.marketingModule')
         }
 
         function initStoreStateErrorMessage() {
-            $scope.showErrorStoreStateMessage = bladeNavigationService.checkPermission() // isAdmin
+            blade.showErrorStoreStateMessage = bladeNavigationService.checkPermission() // isAdmin
                 ? false
                 : null;
         }
