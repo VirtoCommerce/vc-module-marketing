@@ -47,7 +47,8 @@ angular.module('virtoCommerce.marketingModule')
                 $scope.isValid = function () {
                     return isDirty()
                         && $scope.formCoupon
-                        && $scope.formCoupon.$valid;
+                        && $scope.formCoupon.$valid
+                        && blade.showErrorStoreStateMessage !== true;
                 };
 
                 $scope.saveChanges = function () {

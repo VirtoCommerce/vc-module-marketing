@@ -15,7 +15,8 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
                         new ConditionIsRegisteredUser(),
                         new ConditionIsEveryone(),
                         new ConditionIsFirstTimeBuyer(),
-                        new UserGroupsContainsCondition()
+                        new UserGroupsContainsCondition(),
+                        new UserGroupIsCondition()
                      );
             var blockCatalog = new BlockCatalogCondition()
                     .WithAvailConditions(
@@ -31,6 +32,8 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
                         new ConditionAtNumItemsInCart(),
                         new ConditionAtNumItemsInCategoryAreInCart(),
                         new ConditionAtNumItemsOfEntryAreInCart(),
+                        new PaymentIsCondition(),
+                        new ShippingIsCondition(),
                         new ConditionCartSubtotalLeast()
                      );
             var blockReward = new BlockReward()

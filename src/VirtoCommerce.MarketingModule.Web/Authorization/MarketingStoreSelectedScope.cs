@@ -7,6 +7,6 @@ namespace VirtoCommerce.MarketingModule.Web.Authorization
     /// </summary>
     public sealed class MarketingStoreSelectedScope : PermissionScope
     {
-        public string StoreId => Scope; 
+        public string StoreId => Scope;
     }
 }
