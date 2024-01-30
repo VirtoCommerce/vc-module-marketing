@@ -48,7 +48,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Authorize(ModuleConstants.Security.Permissions.Read)]
         [HttpPost]
         [Route("contentplaces/listentries/search")]
-        public async Task<ActionResult<DynamicContentListEntrySearchResult>> DynamicContentPlaceListEntriesSearch([FromBody]coreModel.DynamicContentPlaceSearchCriteria criteria)
+        public async Task<ActionResult<DynamicContentListEntrySearchResult>> DynamicContentPlaceListEntriesSearch([FromBody] coreModel.DynamicContentPlaceSearchCriteria criteria)
         {
             var result = AbstractTypeFactory<DynamicContentListEntrySearchResult>.TryCreateInstance();
 
@@ -84,7 +84,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [HttpPost]
         [Authorize(ModuleConstants.Security.Permissions.Read)]
         [Route("contentplaces/search")]
-        public async Task<ActionResult<DynamicContentPlaceSearchResult>> DynamicContentPlacesSearch([FromBody]coreModel.DynamicContentPlaceSearchCriteria criteria)
+        public async Task<ActionResult<DynamicContentPlaceSearchResult>> DynamicContentPlacesSearch([FromBody] coreModel.DynamicContentPlaceSearchCriteria criteria)
         {
             var placesSearchResult = await _contentPlacesSearchService.SearchContentPlacesAsync(criteria);
             return Ok(placesSearchResult);
@@ -97,7 +97,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [HttpPost]
         [Authorize(ModuleConstants.Security.Permissions.Read)]
         [Route("contentitems/listentries/search")]
-        public async Task<ActionResult<DynamicContentListEntrySearchResult>> DynamicContentItemsEntriesSearch([FromBody]coreModel.DynamicContentItemSearchCriteria criteria)
+        public async Task<ActionResult<DynamicContentListEntrySearchResult>> DynamicContentItemsEntriesSearch([FromBody] coreModel.DynamicContentItemSearchCriteria criteria)
         {
             var result = AbstractTypeFactory<DynamicContentListEntrySearchResult>.TryCreateInstance();
 
@@ -124,7 +124,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [HttpPost]
         [Authorize(ModuleConstants.Security.Permissions.Read)]
         [Route("contentitems/search")]
-        public async Task<ActionResult<DynamicContentItemSearchResult>> DynamicContentItemsSearch([FromBody]coreModel.DynamicContentItemSearchCriteria criteria)
+        public async Task<ActionResult<DynamicContentItemSearchResult>> DynamicContentItemsSearch([FromBody] coreModel.DynamicContentItemSearchCriteria criteria)
         {
             var itemsSearchResult = await _contentItemsSearchService.SearchContentItemsAsync(criteria);
             return Ok(itemsSearchResult);
@@ -137,7 +137,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [HttpPost]
         [Authorize(ModuleConstants.Security.Permissions.Read)]
         [Route("contentpublications/search")]
-        public async Task<ActionResult<DynamicContentPublicationSearchResult>> DynamicContentPublicationsSearch([FromBody]coreModel.DynamicContentPublicationSearchCriteria criteria)
+        public async Task<ActionResult<DynamicContentPublicationSearchResult>> DynamicContentPublicationsSearch([FromBody] coreModel.DynamicContentPublicationSearchCriteria criteria)
         {
             var publicationSearchResult = await _contentPublicationsSearchService.SearchContentPublicationsAsync(criteria);
             return Ok(publicationSearchResult);
@@ -149,7 +149,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [HttpPost]
         [Authorize(ModuleConstants.Security.Permissions.Read)]
         [Route("contentitems/evaluate")]
-        public async Task<ActionResult<coreModel.DynamicContentItem[]>> EvaluateDynamicContent([FromBody]coreModel.DynamicContentEvaluationContext evalContext)
+        public async Task<ActionResult<coreModel.DynamicContentItem[]>> EvaluateDynamicContent([FromBody] coreModel.DynamicContentEvaluationContext evalContext)
         {
             var items = await _dynamicContentEvaluator.EvaluateItemsAsync(evalContext);
             return Ok(items);
@@ -181,7 +181,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [HttpPost]
         [Route("contentitems")]
         [Authorize(ModuleConstants.Security.Permissions.Create)]
-        public async Task<ActionResult<coreModel.DynamicContentItem>> CreateDynamicContent([FromBody]coreModel.DynamicContentItem contentItem)
+        public async Task<ActionResult<coreModel.DynamicContentItem>> CreateDynamicContent([FromBody] coreModel.DynamicContentItem contentItem)
         {
             await _dynamicContentService.SaveContentItemsAsync(new[] { contentItem });
             return await GetDynamicContentById(contentItem.Id);
@@ -195,7 +195,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Route("contentitems")]
         [Authorize(ModuleConstants.Security.Permissions.Update)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
-        public ActionResult UpdateDynamicContent([FromBody]coreModel.DynamicContentItem contentItem)
+        public ActionResult UpdateDynamicContent([FromBody] coreModel.DynamicContentItem contentItem)
         {
             _dynamicContentService.SaveContentItemsAsync(new[] { contentItem });
             return NoContent();
@@ -241,7 +241,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [HttpPost]
         [Route("contentplaces")]
         [Authorize(ModuleConstants.Security.Permissions.Create)]
-        public async Task<ActionResult<coreModel.DynamicContentPlace>> CreateDynamicContentPlace([FromBody]coreModel.DynamicContentPlace contentPlace)
+        public async Task<ActionResult<coreModel.DynamicContentPlace>> CreateDynamicContentPlace([FromBody] coreModel.DynamicContentPlace contentPlace)
         {
             await _dynamicContentService.SavePlacesAsync(new[] { contentPlace });
             return await GetDynamicContentPlaceById(contentPlace.Id);
@@ -255,7 +255,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Route("contentplaces")]
         [Authorize(ModuleConstants.Security.Permissions.Update)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> UpdateDynamicContentPlace([FromBody]coreModel.DynamicContentPlace contentPlace)
+        public async Task<ActionResult> UpdateDynamicContentPlace([FromBody] coreModel.DynamicContentPlace contentPlace)
         {
             await _dynamicContentService.SavePlacesAsync(new[] { contentPlace });
             return NoContent();
@@ -319,7 +319,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [HttpPost]
         [Route("contentpublications")]
         [Authorize(ModuleConstants.Security.Permissions.Create)]
-        public async Task<ActionResult<coreModel.DynamicContentPublication>> CreateDynamicContentPublication([FromBody]coreModel.DynamicContentPublication publication)
+        public async Task<ActionResult<coreModel.DynamicContentPublication>> CreateDynamicContentPublication([FromBody] coreModel.DynamicContentPublication publication)
         {
             await _dynamicContentService.SavePublicationsAsync(new[] { publication });
             return await GetDynamicContentPublicationById(publication.Id);
@@ -333,7 +333,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Route("contentpublications")]
         [Authorize(ModuleConstants.Security.Permissions.Update)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> UpdateDynamicContentPublication([FromBody]coreModel.DynamicContentPublication publication)
+        public async Task<ActionResult> UpdateDynamicContentPublication([FromBody] coreModel.DynamicContentPublication publication)
         {
             await _dynamicContentService.SavePublicationsAsync(new[] { publication });
             return NoContent();
@@ -378,7 +378,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [HttpPost]
         [Route("contentfolders")]
         [Authorize(ModuleConstants.Security.Permissions.Create)]
-        public async Task<ActionResult<coreModel.DynamicContentFolder>> CreateDynamicContentFolder([FromBody]coreModel.DynamicContentFolder folder)
+        public async Task<ActionResult<coreModel.DynamicContentFolder>> CreateDynamicContentFolder([FromBody] coreModel.DynamicContentFolder folder)
         {
             await _dynamicContentService.SaveFoldersAsync(new[] { folder });
             return await GetDynamicContentFolderById(folder.Id);
@@ -392,7 +392,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Route("contentfolders")]
         [Authorize(ModuleConstants.Security.Permissions.Update)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> UpdateDynamicContentFolder([FromBody]coreModel.DynamicContentFolder folder)
+        public async Task<ActionResult> UpdateDynamicContentFolder([FromBody] coreModel.DynamicContentFolder folder)
         {
             await _dynamicContentService.SaveFoldersAsync(new[] { folder });
             return NoContent();
