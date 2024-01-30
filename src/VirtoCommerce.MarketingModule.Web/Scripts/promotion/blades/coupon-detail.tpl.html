@@ -5,7 +5,16 @@
     <div class="blade-inner">
         <div class="inner-block">
             <form class="form" method="post" name="formCoupon" novalidate="novalidate">
-
+                <div class="form-group clearfix" ng-if="blade.showErrorStoreStateMessage">
+                    <div class="form-error">
+                        <div class="vc-alert vc-alert--warning">
+                            <svg class="vc-alert__icon">
+                                <use href="/images/error.svg#icon"></use>
+                            </svg>
+                            <div class="vc-alert__text">{{ 'marketing.blades.promotion-detail.cannot-be-saved' | translate }}</div>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group clearfix" ng-init="setForm(formCoupon)">
                     <div class="column">
                         <div class="form-group __info list">

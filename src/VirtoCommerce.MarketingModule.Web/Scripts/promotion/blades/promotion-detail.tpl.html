@@ -6,6 +6,16 @@
         <div class="inner-block">
           <form class="form" name="formScope">
             <fieldset ng-init="setForm(formScope)">
+              <div class="form-group clearfix" ng-if="blade.showErrorStoreStateMessage">
+                <div class="form-error">
+                  <div class="vc-alert vc-alert--warning">
+                    <svg class="vc-alert__icon">
+                      <use href="/images/error.svg#icon"></use>
+                    </svg>
+                    <div class="vc-alert__text">{{ 'marketing.blades.promotion-detail.cannot-be-saved' | translate }}</div>
+                  </div>
+                </div>
+              </div>
               <div class="form-group clearfix">
                 <div class="column">
                   <div class="form-group __info list">
@@ -68,9 +78,13 @@
                 <div class="column">
                   <div class="form-group __info list">
                     <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.store' | translate }}</label>
-                    <div class="form-input">
-                      <ui-select multiple ng-model="blade.currentEntity.storeIds" ng-class="{disabled: stores.length === 0}">
-                        <ui-select-match placeholder="{{'marketing.blades.promotion-detail.placeholders.store' | translate}}">{{stores.length > 0 ? $item.name : 'Loading...'}}</ui-select-match>
+                    <div class="form-input" id="storesContainer">
+                      <ui-select on-select="validateStores()" on-remove="validateStores()" multiple ng-model="blade.currentEntity.storeIds" ng-class="{disabled: stores.length === 0}">
+                        <ui-select-match placeholder="{{'marketing.blades.promotion-detail.placeholders.store' | translate}}">
+                          <span ng-if="stores.length && $item.name">{{$item.name}}</span>
+                          <span style="color: #f50000;font-weight: bold;" ng-if="stores.length && !$item.name">UNKNOWN</span>
+                          <span ng-if="!stores.length">Loading...</span>
+                        </ui-select-match>
                         <ui-select-choices repeat="x.id as x in stores | filter: { name: $select.search }" refresh="fetchStores($select)" refresh-delay="300" when-scrolled="fetchNextStores($select)">
                           <span ng-bind-html="x.name | highlight: $select.search" ng-show='stores.length > 0'></span>
                         </ui-select-choices>
@@ -86,7 +100,6 @@
 
 
             <va-widget-container group="promotionDetail" blade="blade" data="blade.currentEntity" gridster-opts="{width: 526}"></va-widget-container>
-            <!--ui-validate=" 'promotionExpressionValidator(blade.isExpresionValid)' " ng-model="blade.isExpresionValid"-->
             <fieldset ng-if="blade.currentEntity.dynamicExpression && blade.currentEntity.type==='DynamicPromotion'">
               <legend>{{ 'marketing.blades.promotion-detail.labels.promotion-conditions' | translate }}</legend>
               <div class="dynamic-expression">

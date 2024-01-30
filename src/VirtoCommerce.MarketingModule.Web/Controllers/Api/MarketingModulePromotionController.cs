@@ -15,11 +15,13 @@ using VirtoCommerce.MarketingModule.Core.Search;
 using VirtoCommerce.MarketingModule.Core.Services;
 using VirtoCommerce.MarketingModule.Data.Authorization;
 using VirtoCommerce.MarketingModule.Data.Repositories;
+using VirtoCommerce.MarketingModule.Web.Authorization;
 using VirtoCommerce.MarketingModule.Web.ExportImport;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.PushNotifications;
 using VirtoCommerce.Platform.Core.Security;
+using Permissions = VirtoCommerce.MarketingModule.Core.ModuleConstants.Security.Permissions;
 using webModel = VirtoCommerce.MarketingModule.Web.Model;
 
 namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
@@ -74,7 +76,8 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         public async Task<ActionResult<PromotionSearchResult>> PromotionsSearch([FromBody] PromotionSearchCriteria criteria)
         {
             //Scope bound ACL filtration
-            var authorizationResult = await _authorizationService.AuthorizeAsync(User, criteria, new MarketingAuthorizationRequirement(ModuleConstants.Security.Permissions.Read));
+            var authorizationResult = await _authorizationService.AuthorizeAsync(
+                User, criteria, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
             if (!authorizationResult.Succeeded)
             {
                 return Forbid();
@@ -112,7 +115,8 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
             var result = promotions.FirstOrDefault();
             if (result != null)
             {
-                var authorizationResult = await _authorizationService.AuthorizeAsync(User, result, new MarketingAuthorizationRequirement(ModuleConstants.Security.Permissions.Read));
+                var authorizationResult = await _authorizationService.AuthorizeAsync(
+                    User, result, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: false));
                 if (!authorizationResult.Succeeded)
                 {
                     return Forbid();
@@ -167,6 +171,12 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Authorize(ModuleConstants.Security.Permissions.Update)]
         public async Task<ActionResult> UpdatePromotions([FromBody] Promotion promotion)
         {
+            var authorizationResult = await _authorizationService.AuthorizeAsync(
+                User, promotion, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
+            if (!authorizationResult.Succeeded)
+            {
+                return Forbid();
+            }
             await _promotionService.SavePromotionsAsync(new[] { promotion });
             return NoContent();
         }
@@ -180,6 +190,13 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Authorize(ModuleConstants.Security.Permissions.Delete)]
         public async Task<ActionResult> DeletePromotions([FromQuery] string[] ids)
         {
+            var permissionResource = new PermissionResourceModel { PromotionIds = ids };
+            var authorizationResult = await _authorizationService.AuthorizeAsync(
+                User, permissionResource, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
+            if (!authorizationResult.Succeeded)
+            {
+                return Forbid();
+            }
             await _promotionService.DeletePromotionsAsync(ids);
             return NoContent();
         }
@@ -217,6 +234,13 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Authorize(ModuleConstants.Security.Permissions.Update)]
         public async Task<ActionResult> AddCoupons([FromBody] Coupon[] coupons)
         {
+            var authorizationResult = await _authorizationService.AuthorizeAsync(
+                User, coupons, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
+            if (!authorizationResult.Succeeded)
+            {
+                return Forbid();
+            }
+
             await _couponService.SaveCouponsAsync(coupons);
 
             return NoContent();
@@ -227,6 +251,14 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Authorize(ModuleConstants.Security.Permissions.Delete)]
         public async Task<ActionResult> DeleteCoupons([FromQuery] string[] ids)
         {
+            var permissionResource = new PermissionResourceModel { CouponIds = ids };
+            var authorizationResult = await _authorizationService.AuthorizeAsync(
+                User, permissionResource, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
+            if (!authorizationResult.Succeeded)
+            {
+                return Forbid();
+            }
+
             await _couponService.DeleteCouponsAsync(ids);
 
             return NoContent();
@@ -237,6 +269,14 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Authorize(ModuleConstants.Security.Permissions.Update)]
         public async Task<ActionResult<ImportNotification>> ImportCouponsAsync([FromBody] ImportRequest request)
         {
+            var permissionResource = new PermissionResourceModel { PromotionIds = new[] { request.PromotionId } };
+            var authorizationResult = await _authorizationService.AuthorizeAsync(
+                User, permissionResource, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
+            if (!authorizationResult.Succeeded)
+            {
+                return Forbid();
+            }
+
             var notification = new ImportNotification(_userNameResolver.GetCurrentUserName())
             {
                 Title = "Import coupons from CSV",

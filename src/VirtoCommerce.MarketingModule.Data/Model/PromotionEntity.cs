@@ -78,7 +78,6 @@ namespace VirtoCommerce.MarketingModule.Data.Model
 
             promotion.StartDate = StartDate;
             promotion.EndDate = EndDate;
-            promotion.Store = StoreId;
             promotion.Name = Name;
             promotion.Description = Description;
             promotion.IsActive = IsActive;
@@ -93,6 +92,10 @@ namespace VirtoCommerce.MarketingModule.Data.Model
             if (Stores != null)
             {
                 promotion.StoreIds = Stores.Select(x => x.StoreId).ToList();
+
+#pragma warning disable VC0008 // Type or member is obsolete
+                promotion.Store = string.Join(", ", Stores.Select(x => x.StoreId));
+#pragma warning restore VC0008 // Type or member is obsolete
             }
             if (promotion is DynamicPromotion dynamicPromotion)
             {
@@ -124,14 +127,13 @@ namespace VirtoCommerce.MarketingModule.Data.Model
 
             StartDate = promotion.StartDate ?? DateTime.UtcNow;
             EndDate = promotion.EndDate;
-            StoreId = promotion.Store;
             Name = promotion.Name;
             Description = promotion.Description;
             IsActive = promotion.IsActive;
             EndDate = promotion.EndDate;
             Priority = promotion.Priority;
             IsExclusive = promotion.IsExclusive;
-        
+
             PerCustomerLimit = promotion.MaxPersonalUsageCount;
             TotalLimit = promotion.MaxUsageCount;
             PerCustomerLimit = promotion.MaxPersonalUsageCount;
@@ -180,6 +182,6 @@ namespace VirtoCommerce.MarketingModule.Data.Model
                 var comparer = AnonymousComparer.Create((PromotionStoreEntity entity) => entity.StoreId);
                 Stores.Patch(target.Stores, comparer, (sourceEntity, targetEntity) => targetEntity.StoreId = sourceEntity.StoreId);
             }
-        }        
+        }
     }
 }

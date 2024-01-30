@@ -32,18 +32,20 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
         blade.refresh();
     });
 
+    var hasPlarformAssetsPermission = bladeNavigationService.checkPermission('platform:asset:create');
+
     blade.toolbarCommands = [{
         name: 'marketing.blades.coupons.toolbar.add',
         icon: 'fas fa-plus',
         canExecuteMethod: function () {
-            return true;
+            return blade.parentBlade.showErrorStoreStateMessage !== true;
         },
         executeMethod: showAddCouponBlade
     }, {
         name: 'marketing.blades.coupons.toolbar.import',
         icon: 'fa fa-download',
         canExecuteMethod: function () {
-            return true;
+            return hasPlarformAssetsPermission && blade.parentBlade.showErrorStoreStateMessage !== true;
         },
         executeMethod: showCouponImportBlade
     }, {
@@ -100,6 +102,7 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
             id: 'couponDetail',
             originalEntity: angular.copy(node),
             currentEntity: angular.copy(node),
+            showErrorStoreStateMessage: blade.parentBlade.showErrorStoreStateMessage,
             title: 'Coupon "' + node.code + '"',
             controller: 'virtoCommerce.marketingModule.couponDetailController',
             template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/promotion/blades/coupon-detail.tpl.html'

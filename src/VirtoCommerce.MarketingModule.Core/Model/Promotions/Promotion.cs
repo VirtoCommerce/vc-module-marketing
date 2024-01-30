@@ -13,6 +13,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
             IsActive = true;
         }
 
+        [Obsolete("Use StoreIds", DiagnosticId = "VC0008", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
         public string Store { get; set; }
 
         public IList<string> StoreIds { get; set; }

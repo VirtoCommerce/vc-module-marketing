@@ -8,6 +8,8 @@ angular.module('virtoCommerce.marketingModule')
         blade.expressionTreeTemplateUrl = dynamicExpressionService.expressionTreeTemplateUrl;
 
         blade.showPriority = false;
+        blade.showErrorStoreStateMessage = null;
+
         settings.get({ id: 'Marketing.Promotion.CombinePolicy' }, function (data) {
             blade.showPriority = data.value === 'CombineStackable';
         });
@@ -119,7 +121,8 @@ angular.module('virtoCommerce.marketingModule')
         $scope.isValid = function () {
             return isDirty()
                 && $scope.formScope
-                && $scope.formScope.$valid;
+                && $scope.formScope.$valid
+                && $scope.validateStores();
             //&& (!blade.currentEntity.dynamicExpression;
             //    || (blade.currentEntity.dynamicExpression.children[0].children.length > 0
             //        && blade.currentEntity.dynamicExpression.children[3].children.length > 0));
@@ -314,6 +317,22 @@ angular.module('virtoCommerce.marketingModule')
             return $q.resolve();
         };
 
+        $scope.validateStores = function () {
+            if (!$scope.stores.length) {
+                return true;
+            }
+            const unknownStores = _.difference(blade.currentEntity.storeIds, _.pluck($scope.stores, 'id'));
+            if (unknownStores.length) {
+                $("#storesContainer .ui-select-container").addClass("ng-invalid");
+                if (blade.showErrorStoreStateMessage === null) {
+                    blade.showErrorStoreStateMessage = true;
+                }
+            } else {
+                $("#storesContainer .ui-select-container").removeClass("ng-invalid");
+            }
+            return !unknownStores.length && !blade.showErrorStoreStateMessage;
+        };
+
         function joinStores(newItems) {
             newItems = _.reject(newItems, x => _.any($scope.stores, y => y.id === x.id));
 
@@ -324,6 +343,14 @@ angular.module('virtoCommerce.marketingModule')
             });
 
             $scope.stores = $scope.stores.concat(newItems);
+            initStoreStateErrorMessage();
+            $scope.validateStores();
+        }
+
+        function initStoreStateErrorMessage() {
+            blade.showErrorStoreStateMessage = bladeNavigationService.checkPermission() // isAdmin
+                ? false
+                : null;
         }
 
         blade.refresh(false);

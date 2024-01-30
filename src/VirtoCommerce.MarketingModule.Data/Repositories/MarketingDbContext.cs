@@ -1,5 +1,4 @@
 using System.Reflection;
-using EntityFrameworkCore.Triggers;
 using Microsoft.EntityFrameworkCore;
 using VirtoCommerce.MarketingModule.Data.Model;
 using VirtoCommerce.Platform.Data.Infrastructure;
