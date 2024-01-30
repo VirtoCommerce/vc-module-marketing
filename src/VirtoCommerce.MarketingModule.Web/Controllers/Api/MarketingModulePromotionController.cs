@@ -21,6 +21,7 @@ using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.PushNotifications;
 using VirtoCommerce.Platform.Core.Security;
+using Permissions = VirtoCommerce.MarketingModule.Core.ModuleConstants.Security.Permissions;
 using webModel = VirtoCommerce.MarketingModule.Web.Model;
 
 namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
@@ -168,7 +169,7 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Authorize(ModuleConstants.Security.Permissions.Update)]
         public async Task<ActionResult> UpdatePromotions([FromBody] Promotion promotion)
         {
-            var authorizationResult = await _authorizationService.AuthorizeAsync(User, promotion, new MarketingAuthorizationRequirement(ModuleConstants.Security.Permissions.Read, true));
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, promotion, new MarketingAuthorizationRequirement(Permissions.Read, true));
             if (!authorizationResult.Succeeded)
             {
                 return Forbid();
@@ -187,7 +188,8 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         public async Task<ActionResult> DeletePromotions([FromQuery] string[] ids)
         {
             var permissionResource = new PermissionResourceModel { PromotionIds = ids };
-            var authorizationResult = await _authorizationService.AuthorizeAsync(User, permissionResource, new MarketingAuthorizationRequirement(ModuleConstants.Security.Permissions.Read, true));
+            var authorizationResult = await _authorizationService.AuthorizeAsync(
+                User, permissionResource, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
             if (!authorizationResult.Succeeded)
             {
                 return Forbid();
@@ -229,7 +231,8 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Authorize(ModuleConstants.Security.Permissions.Update)]
         public async Task<ActionResult> AddCoupons([FromBody] Coupon[] coupons)
         {
-            var authorizationResult = await _authorizationService.AuthorizeAsync(User, coupons, new MarketingAuthorizationRequirement(ModuleConstants.Security.Permissions.Read, true));
+            var authorizationResult = await _authorizationService.AuthorizeAsync(
+                User, coupons, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
             if (!authorizationResult.Succeeded)
             {
                 return Forbid();
@@ -246,7 +249,8 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         public async Task<ActionResult> DeleteCoupons([FromQuery] string[] ids)
         {
             var permissionResource = new PermissionResourceModel { CouponIds = ids };
-            var authorizationResult = await _authorizationService.AuthorizeAsync(User, permissionResource, new MarketingAuthorizationRequirement(ModuleConstants.Security.Permissions.Read, true));
+            var authorizationResult = await _authorizationService.AuthorizeAsync(
+                User, permissionResource, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
             if (!authorizationResult.Succeeded)
             {
                 return Forbid();
@@ -263,7 +267,8 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         public async Task<ActionResult<ImportNotification>> ImportCouponsAsync([FromBody] ImportRequest request)
         {
             var permissionResource = new PermissionResourceModel { PromotionIds = new[] { request.PromotionId } };
-            var authorizationResult = await _authorizationService.AuthorizeAsync(User, permissionResource, new MarketingAuthorizationRequirement(ModuleConstants.Security.Permissions.Read, true));
+            var authorizationResult = await _authorizationService.AuthorizeAsync(
+                User, permissionResource, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
             if (!authorizationResult.Succeeded)
             {
                 return Forbid();

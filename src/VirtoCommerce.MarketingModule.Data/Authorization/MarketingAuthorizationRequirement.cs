@@ -6,7 +6,8 @@ namespace VirtoCommerce.MarketingModule.Data.Authorization
     {
         public bool CheckAllScopes { get; }
 
-        public MarketingAuthorizationRequirement(string permission) : this(permission, false)
+        public MarketingAuthorizationRequirement(string permission)
+            : this(permission, false)
         {
         }
 

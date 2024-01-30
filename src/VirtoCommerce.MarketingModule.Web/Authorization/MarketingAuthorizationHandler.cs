@@ -20,7 +20,10 @@ namespace VirtoCommerce.MarketingModule.Web.Authorization
         private readonly IPromotionService _promotionService;
         private readonly ICouponService _couponService;
         private readonly MvcNewtonsoftJsonOptions _jsonOptions;
-        public MarketingAuthorizationHandler(IOptions<MvcNewtonsoftJsonOptions> jsonOptions, IPromotionService promotionService, ICouponService couponService)
+        public MarketingAuthorizationHandler(
+            IOptions<MvcNewtonsoftJsonOptions> jsonOptions,
+            IPromotionService promotionService,
+            ICouponService couponService)
         {
             _promotionService = promotionService;
             _couponService = couponService;
@@ -50,21 +53,21 @@ namespace VirtoCommerce.MarketingModule.Web.Authorization
                     context.Succeed(requirement);
                     break;
                 case DynamicPromotion promotion:
-                    if ((IsStoreInScope(promotion.StoreIds.ToArray(), allowedStoreIds, requirement.CheckAllScopes)))
+                    if (StoreInScope(promotion.StoreIds.ToArray(), allowedStoreIds, requirement.CheckAllScopes))
                     {
                         context.Succeed(requirement);
                     }
                     break;
                 case IEnumerable<Coupon> coupons:
-                    if (await IsCouponsInScope(coupons, allowedStoreIds, requirement.CheckAllScopes))
+                    if (await CouponsInScope(coupons, allowedStoreIds, requirement.CheckAllScopes))
                     {
                         context.Succeed(requirement);
                     }
 
                     break;
                 case PermissionResourceModel resource:
-                    if (await IsCouponsInScope(resource.CouponIds, allowedStoreIds, requirement.CheckAllScopes)
-                        || await IsPromotionsInScope(resource.PromotionIds, allowedStoreIds, requirement.CheckAllScopes))
+                    if (await CouponsInScope(resource.CouponIds, allowedStoreIds, requirement.CheckAllScopes)
+                        || await PromotionsInScope(resource.PromotionIds, allowedStoreIds, requirement.CheckAllScopes))
                     {
                         context.Succeed(requirement);
                     }
@@ -72,7 +75,7 @@ namespace VirtoCommerce.MarketingModule.Web.Authorization
             }
         }
 
-        private async Task<bool> IsCouponsInScope(string[] couponIds, string[] allowedStoreIds, bool checkAllScopes)
+        private async Task<bool> CouponsInScope(string[] couponIds, string[] allowedStoreIds, bool checkAllScopes)
         {
             if (couponIds.IsNullOrEmpty())
             {
@@ -80,18 +83,18 @@ namespace VirtoCommerce.MarketingModule.Web.Authorization
             }
 
             var coupons = await _couponService.GetByIdsAsync(couponIds);
-            return await IsCouponsInScope(coupons, allowedStoreIds, checkAllScopes);
+            return await CouponsInScope(coupons, allowedStoreIds, checkAllScopes);
         }
 
-        private async Task<bool> IsCouponsInScope(IEnumerable<Coupon> coupons, string[] allowedStoreIds, bool checkAllScopes)
+        private async Task<bool> CouponsInScope(IEnumerable<Coupon> coupons, string[] allowedStoreIds, bool checkAllScopes)
         {
             var promotionIds = coupons.Select(x => x.PromotionId).Distinct().ToArray();
             var promotions = await _promotionService.GetPromotionsByIdsAsync(promotionIds);
             var storesIds = promotions.SelectMany(x => x.StoreIds).ToArray();
-            return IsStoreInScope(storesIds, allowedStoreIds, checkAllScopes);
+            return StoreInScope(storesIds, allowedStoreIds, checkAllScopes);
         }
 
-        private async Task<bool> IsPromotionsInScope(string[] promotionIds, string[] allowedStoreIds, bool checkAllScopes)
+        private async Task<bool> PromotionsInScope(string[] promotionIds, string[] allowedStoreIds, bool checkAllScopes)
         {
             if (promotionIds.IsNullOrEmpty())
             {
@@ -99,10 +102,10 @@ namespace VirtoCommerce.MarketingModule.Web.Authorization
             }
             var promotions = await _promotionService.GetPromotionsByIdsAsync(promotionIds);
             var storeIds = promotions.SelectMany(x => x.StoreIds).ToArray();
-            return IsStoreInScope(storeIds, allowedStoreIds, checkAllScopes);
+            return StoreInScope(storeIds, allowedStoreIds, checkAllScopes);
         }
 
-        private static bool IsStoreInScope(string[] currentStoreIds, string[] allowedStoreIds, bool checkAllScopes)
+        private static bool StoreInScope(string[] currentStoreIds, string[] allowedStoreIds, bool checkAllScopes)
         {
             return currentStoreIds.IsNullOrEmpty() || CheckAll() || CheckAny();
             bool CheckAll() => checkAllScopes && currentStoreIds.All(allowedStoreIds.Contains);
