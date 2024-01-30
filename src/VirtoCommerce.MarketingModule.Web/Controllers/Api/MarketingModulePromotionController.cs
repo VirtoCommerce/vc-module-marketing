@@ -76,7 +76,8 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         public async Task<ActionResult<PromotionSearchResult>> PromotionsSearch([FromBody] PromotionSearchCriteria criteria)
         {
             //Scope bound ACL filtration
-            var authorizationResult = await _authorizationService.AuthorizeAsync(User, criteria, new MarketingAuthorizationRequirement(ModuleConstants.Security.Permissions.Read, true));
+            var authorizationResult = await _authorizationService.AuthorizeAsync(
+                User, criteria, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
             if (!authorizationResult.Succeeded)
             {
                 return Forbid();
@@ -114,7 +115,8 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
             var result = promotions.FirstOrDefault();
             if (result != null)
             {
-                var authorizationResult = await _authorizationService.AuthorizeAsync(User, result, new MarketingAuthorizationRequirement(ModuleConstants.Security.Permissions.Read, false));
+                var authorizationResult = await _authorizationService.AuthorizeAsync(
+                    User, result, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: false));
                 if (!authorizationResult.Succeeded)
                 {
                     return Forbid();
@@ -169,7 +171,8 @@ namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
         [Authorize(ModuleConstants.Security.Permissions.Update)]
         public async Task<ActionResult> UpdatePromotions([FromBody] Promotion promotion)
         {
-            var authorizationResult = await _authorizationService.AuthorizeAsync(User, promotion, new MarketingAuthorizationRequirement(Permissions.Read, true));
+            var authorizationResult = await _authorizationService.AuthorizeAsync(
+                User, promotion, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
             if (!authorizationResult.Succeeded)
             {
                 return Forbid();
