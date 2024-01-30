@@ -83,6 +83,14 @@ namespace VirtoCommerce.MarketingModule.Web.Authorization
             return await IsCouponsInScope(coupons, allowedStoreIds, checkAllScopes);
         }
 
+        private async Task<bool> IsCouponsInScope(IEnumerable<Coupon> coupons, string[] allowedStoreIds, bool checkAllScopes)
+        {
+            var promotionIds = coupons.Select(x => x.PromotionId).Distinct().ToArray();
+            var promotions = await _promotionService.GetPromotionsByIdsAsync(promotionIds);
+            var storesIds = promotions.SelectMany(x => x.StoreIds).ToArray();
+            return IsStoreInScope(storesIds, allowedStoreIds, checkAllScopes);
+        }
+
         private async Task<bool> IsPromotionsInScope(string[] promotionIds, string[] allowedStoreIds, bool checkAllScopes)
         {
             if (promotionIds.IsNullOrEmpty())
@@ -92,14 +100,6 @@ namespace VirtoCommerce.MarketingModule.Web.Authorization
             var promotions = await _promotionService.GetPromotionsByIdsAsync(promotionIds);
             var storeIds = promotions.SelectMany(x => x.StoreIds).ToArray();
             return IsStoreInScope(storeIds, allowedStoreIds, checkAllScopes);
-        }
-
-        private async Task<bool> IsCouponsInScope(IEnumerable<Coupon> coupons, string[] allowedStoreIds, bool checkAllScopes)
-        {
-            var promotionIds = coupons.Select(x => x.PromotionId).Distinct().ToArray();
-            var promotions = await _promotionService.GetPromotionsByIdsAsync(promotionIds);
-            var storesIds = promotions.SelectMany(x => x.StoreIds).ToArray();
-            return IsStoreInScope(storesIds, allowedStoreIds, checkAllScopes);
         }
 
         private static bool IsStoreInScope(string[] currentStoreIds, string[] allowedStoreIds, bool checkAllScopes)
