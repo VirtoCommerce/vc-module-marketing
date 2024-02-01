@@ -55,105 +55,102 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 return;
             }
 
-            var firstOrderExlusiveReward = rewards.FirstOrDefault(x => x.Promotion.IsExclusive);
-            if (firstOrderExlusiveReward != null)
+            var firstOrderExclusiveReward = rewards.FirstOrDefault(x => x.Promotion.IsExclusive);
+            if (firstOrderExclusiveReward != null)
             {
                 //Leave only exclusive promotion rewards even if they appeared as a result of other promotion with highest priority
                 resultRewards.Clear();
                 //Add only rewards from exclusive promotion
-                resultRewards.AddRange(rewards.Where(x => x.Promotion == firstOrderExlusiveReward.Promotion));
+                rewards = rewards.Where(x => x.Promotion == firstOrderExclusiveReward.Promotion).ToList();
             }
-            else
+            var promotionsByRewards = rewards
+                .GroupBy(x => x.Promotion.Priority)
+                .OrderByDescending(x => x.Key);
+            var highestPriorityPromotions = promotionsByRewards.First().ToList();
+            var newRewards = new List<PromotionReward>();
+
+            //catalog item rewards
+            var groupedByProductRewards = highestPriorityPromotions.OfType<CatalogItemAmountReward>()
+                                                 .GroupBy(x => x.ProductId);
+            foreach (var productRewards in groupedByProductRewards)
             {
-                var promotionsByRewards = rewards
-                    .GroupBy(x => x.Promotion.Priority)
-                    .OrderByDescending(x => x.Key);
-                var highestPriorityPromotions = promotionsByRewards.First().ToList();
-                var newRewards = new List<PromotionReward>();
-
-                //catalog item rewards
-                var groupedByProductRewards = highestPriorityPromotions.OfType<CatalogItemAmountReward>()
-                                                     .GroupBy(x => x.ProductId);
-                foreach (var productRewards in groupedByProductRewards)
+                //Need to take one reward from first prioritized promotion for each product rewards group
+                var productPriorityReward = productRewards.FirstOrDefault();
+                if (productPriorityReward != null)
                 {
-                    //Need to take one reward from first prioritized promotion for each product rewards group
-                    var productPriorityReward = productRewards.FirstOrDefault();
-                    if (productPriorityReward != null)
-                    {
-                        newRewards.Add(productPriorityReward);
-                        rewards.Remove(productPriorityReward);
-                    }
+                    newRewards.Add(productPriorityReward);
+                    rewards.Remove(productPriorityReward);
+                }
+            }
+
+            //cart subtotal rewards
+            var cartPriorityReward = highestPriorityPromotions.OfType<CartSubtotalReward>().FirstOrDefault();
+            if (cartPriorityReward != null)
+            {
+                newRewards.Add(cartPriorityReward);
+                rewards.Remove(cartPriorityReward);
+            }
+
+            //shipment rewards
+            var groupedByShipmentMethodRewards = highestPriorityPromotions.OfType<ShipmentReward>()
+                                                        .GroupBy(x => x.ShippingMethod);
+            foreach (var shipmentMethodRewards in groupedByShipmentMethodRewards)
+            {
+                //Need to take one reward from first prioritized promotion for each shipment method group
+                var shipmentPriorityReward = shipmentMethodRewards.FirstOrDefault();
+                if (shipmentPriorityReward != null)
+                {
+                    newRewards.Add(shipmentPriorityReward);
+                    rewards.Remove(shipmentPriorityReward);
+                }
+            }
+
+            //payment method rewards
+            var groupedByPaymentMethodRewards = highestPriorityPromotions.OfType<PaymentReward>()
+                                                        .GroupBy(x => x.PaymentMethod);
+            foreach (var paymentMethodRewards in groupedByPaymentMethodRewards)
+            {
+                //Need to take one reward from first prioritized promotion for each payment method group
+                var paymentPriorityReward = paymentMethodRewards.FirstOrDefault();
+                if (paymentPriorityReward != null)
+                {
+                    newRewards.Add(paymentPriorityReward);
+                    rewards.Remove(paymentPriorityReward);
+                }
+            }
+
+            //Gifts
+            var giftRewards = highestPriorityPromotions.OfType<GiftReward>();
+            foreach (var giftReward in giftRewards)
+            {
+                newRewards.Add(giftReward);
+                rewards.Remove(giftReward);
+            }
+
+            //Special offer
+            var specialOfferRewards = highestPriorityPromotions.OfType<SpecialOfferReward>();
+            foreach (var specialOfferReward in specialOfferRewards)
+            {
+                newRewards.Add(specialOfferReward);
+                rewards.Remove(specialOfferReward);
+            }
+
+            //Apply new rewards to the evaluation context to influent for conditions in the  next evaluation iteration
+            ApplyRewardsToContext(context, newRewards, skippedRewards);
+            resultRewards.AddRange(newRewards.Except(skippedRewards));
+            //If there any other rewards left need to cycle new iteration
+            if (rewards.Any())
+            {
+                // Throw exception if there are non-handled rewards. They could cause cycling otherwise.
+                if (!newRewards.Any())
+                {
+                    var notSupportedRewards = highestPriorityPromotions.Select(x => x.GetType().Name).ToArray();
+
+                    throw new NotSupportedException($"Some reward types are not handled by the promotion policy: {string.Join(",", notSupportedRewards)}");
                 }
 
-                //cart subtotal rewards
-                var cartPriorityReward = highestPriorityPromotions.OfType<CartSubtotalReward>().FirstOrDefault();
-                if (cartPriorityReward != null)
-                {
-                    newRewards.Add(cartPriorityReward);
-                    rewards.Remove(cartPriorityReward);
-                }
-
-                //shipment rewards
-                var groupedByShipmentMethodRewards = highestPriorityPromotions.OfType<ShipmentReward>()
-                                                            .GroupBy(x => x.ShippingMethod);
-                foreach (var shipmentMethodRewards in groupedByShipmentMethodRewards)
-                {
-                    //Need to take one reward from first prioritized promotion for each shipment method group
-                    var shipmentPriorityReward = shipmentMethodRewards.FirstOrDefault();
-                    if (shipmentPriorityReward != null)
-                    {
-                        newRewards.Add(shipmentPriorityReward);
-                        rewards.Remove(shipmentPriorityReward);
-                    }
-                }
-
-                //payment method rewards
-                var groupedByPaymentMethodRewards = highestPriorityPromotions.OfType<PaymentReward>()
-                                                            .GroupBy(x => x.PaymentMethod);
-                foreach (var paymentMethodRewards in groupedByPaymentMethodRewards)
-                {
-                    //Need to take one reward from first prioritized promotion for each payment method group
-                    var paymentPriorityReward = paymentMethodRewards.FirstOrDefault();
-                    if (paymentPriorityReward != null)
-                    {
-                        newRewards.Add(paymentPriorityReward);
-                        rewards.Remove(paymentPriorityReward);
-                    }
-                }
-
-                //Gifts
-                var giftRewards = highestPriorityPromotions.OfType<GiftReward>();
-                foreach (var giftReward in giftRewards)
-                {
-                    newRewards.Add(giftReward);
-                    rewards.Remove(giftReward);
-                }
-
-                //Special offer
-                var specialOfferRewards = highestPriorityPromotions.OfType<SpecialOfferReward>();
-                foreach (var specialOfferReward in specialOfferRewards)
-                {
-                    newRewards.Add(specialOfferReward);
-                    rewards.Remove(specialOfferReward);
-                }
-
-                //Apply new rewards to the evaluation context to influent for conditions in the  next evaluation iteration
-                ApplyRewardsToContext(context, newRewards, skippedRewards);
-                resultRewards.AddRange(newRewards.Except(skippedRewards));
-                //If there any other rewards left need to cycle new iteration
-                if (rewards.Any())
-                {
-                    // Throw exception if there are non-handled rewards. They could cause cycling otherwise.
-                    if (!newRewards.Any())
-                    {
-                        var notSupportedRewards = highestPriorityPromotions.Select(x => x.GetType().Name).ToArray();
-
-                        throw new NotSupportedException($"Some reward types are not handled by the promotion policy: {string.Join(",", notSupportedRewards)}");
-                    }
-
-                    //Call recursively
-                    await EvalAndCombineRewardsRecursivelyAsync(context, promotions, resultRewards, skippedRewards);
-                }
+                //Call recursively
+                await EvalAndCombineRewardsRecursivelyAsync(context, promotions, resultRewards, skippedRewards);
             }
         }
 
