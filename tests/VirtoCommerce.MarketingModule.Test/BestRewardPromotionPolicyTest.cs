@@ -1,10 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
+using VirtoCommerce.MarketingModule.Core.Model.Promotions.Conditions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Promotions;
 using VirtoCommerce.MarketingModule.Core.Search;
@@ -71,7 +74,133 @@ namespace VirtoCommerce.MarketingModule.Test
         }
 
         [Fact]
-        public void EvaluatePromotion_GetBestPaymentReward()
+        public async Task EvaluatePaymentCondition_AcceptablePaymentType()
+        {
+            // Arrange
+            var condition = new BlockCartCondition()
+                .WithChildrens(new PaymentIsCondition { PaymentMethod = "acceptable" });
+            var reward = new BlockReward().WithChildrens(new RewardCartGetOfAbsSubtotal { Amount = 10m });
+
+            var promotion = new DynamicPromotion
+            {
+                DynamicExpression = AbstractTypeFactory<PromotionConditionAndRewardTree>.TryCreateInstance()
+            };
+
+            promotion.DynamicExpression.WithChildrens(condition, reward);
+
+            var evalPolicy = GetPromotionEvaluationPolicy(new[] { promotion });
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
+
+            var context = new PromotionEvaluationContext
+            {
+                PaymentMethodCode = "acceptable",
+                PromoEntries = new[] { productA }
+            };
+
+            // Act
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards.OfType<CartSubtotalReward>().ToList();
+
+            // Assert
+            Assert.Equal(10m, rewards[0].Amount);
+            Assert.True(rewards[0].IsValid);
+        }
+
+        [Fact]
+        public async Task EvaluatePaymentCondition_NonAcceptablePaymentType()
+        {
+            // Arrange
+            var condition = new BlockCartCondition()
+                .WithChildrens(new PaymentIsCondition { PaymentMethod = "acceptable" });
+            var reward = new BlockReward().WithChildrens(new RewardCartGetOfAbsSubtotal { Amount = 10m });
+
+            var promotion = new DynamicPromotion
+            {
+                DynamicExpression = AbstractTypeFactory<PromotionConditionAndRewardTree>.TryCreateInstance()
+            };
+
+            promotion.DynamicExpression.WithChildrens(condition, reward);
+
+            var evalPolicy = GetPromotionEvaluationPolicy(new[] { promotion });
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
+
+            var context = new PromotionEvaluationContext
+            {
+                PaymentMethodCode = "non-acceptable",
+                PromoEntries = new[] { productA }
+            };
+
+            // Act
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards.OfType<CartSubtotalReward>().ToList();
+
+            // Assert
+            Assert.Empty(rewards);
+        }
+
+        [Fact]
+        public async Task EvaluatePaymentCondition_AcceptableShippingType()
+        {
+            // Arrange
+            var condition = new BlockCartCondition()
+                .WithChildrens(new ShippingIsCondition { ShippingMethod = "acceptable" });
+            var reward = new BlockReward().WithChildrens(new RewardCartGetOfAbsSubtotal { Amount = 10m });
+
+            var promotion = new DynamicPromotion
+            {
+                DynamicExpression = AbstractTypeFactory<PromotionConditionAndRewardTree>.TryCreateInstance()
+            };
+
+            promotion.DynamicExpression.WithChildrens(condition, reward);
+
+            var evalPolicy = GetPromotionEvaluationPolicy(new[] { promotion });
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
+
+            var context = new PromotionEvaluationContext
+            {
+                ShipmentMethodCode = "acceptable",
+                PromoEntries = new[] { productA }
+            };
+
+            // Act
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards.OfType<CartSubtotalReward>().ToList();
+
+            // Assert
+            Assert.Equal(10m, rewards[0].Amount);
+            Assert.True(rewards[0].IsValid);
+        }
+
+        [Fact]
+        public async Task EvaluatePaymentCondition_NonAcceptableShippingType()
+        {
+            // Arrange
+            var condition = new BlockCartCondition()
+                .WithChildrens(new ShippingIsCondition { ShippingMethod = "acceptable" });
+            var reward = new BlockReward().WithChildrens(new RewardCartGetOfAbsSubtotal { Amount = 10m });
+
+            var promotion = new DynamicPromotion
+            {
+                DynamicExpression = AbstractTypeFactory<PromotionConditionAndRewardTree>.TryCreateInstance()
+            };
+
+            promotion.DynamicExpression.WithChildrens(condition, reward);
+
+            var evalPolicy = GetPromotionEvaluationPolicy(new[] { promotion });
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
+
+            var context = new PromotionEvaluationContext
+            {
+                ShipmentMethodCode = "non-acceptable",
+                PromoEntries = new[] { productA }
+            };
+
+            // Act
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards.OfType<CartSubtotalReward>().ToList();
+
+            // Assert
+            Assert.Empty(rewards);
+        }
+
+        [Fact]
+        public async Task EvaluatePromotion_GetBestPaymentReward()
         {
             //Arrange
             var blockReward = new BlockReward().WithChildrens(new RewardPaymentGetOfAbs() { Amount = 10m, PaymentMethod = "PayTest" });
@@ -91,11 +220,57 @@ namespace VirtoCommerce.MarketingModule.Test
             };
 
             //Act
-            var rewards = evalPolicy.EvaluatePromotionAsync(context).GetAwaiter().GetResult().Rewards.OfType<PaymentReward>().ToList();
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards.OfType<PaymentReward>().ToList();
 
             //Assert
             Assert.Equal(10m, rewards.First().Amount);
             Assert.True(rewards.First().IsValid);
+        }
+
+        [Fact]
+        public async Task ChooseTheBestExclusivePromotion()
+        {
+            //Arrange
+
+            DynamicPromotion CreatePromotion(bool isExclusive, decimal shippingDiscount, decimal cartDiscount)
+            {
+                var blockReward = new BlockReward().WithChildrens(
+                    new RewardShippingGetOfAbsShippingMethod { Amount = shippingDiscount, ShippingMethod = "Shipping" },
+                    new RewardCartGetOfAbsSubtotal { Amount = cartDiscount }
+                );
+                var result = new DynamicPromotion
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    DynamicExpression = AbstractTypeFactory<PromotionConditionAndRewardTree>.TryCreateInstance(),
+                    IsExclusive = isExclusive
+                };
+                result.DynamicExpression.WithChildrens(blockReward);
+                return result;
+            }
+
+            var exclusivePromotion = CreatePromotion(true, 5m, 7m);
+            var ordinalPromotion = CreatePromotion(false, 10m, 2m);
+
+            var evalPolicy = GetPromotionEvaluationPolicy(new[] { exclusivePromotion, ordinalPromotion });
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
+            var context = new PromotionEvaluationContext
+            {
+                ShipmentMethodCode = "Shipping",
+                ShipmentMethodPrice = 20m,
+                PromoEntries = new[] { productA }
+            };
+
+            //Act
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards.ToList();
+            var shipment = rewards.OfType<ShipmentReward>().First();
+            var subTotal = rewards.OfType<CartSubtotalReward>().First();
+
+            //Assert
+            Assert.Equal(5m, shipment.Amount);
+            Assert.True(shipment.IsValid);
+
+            Assert.Equal(7m, subTotal.Amount);
+            Assert.True(subTotal.IsValid);
         }
 
         private static IMarketingPromoEvaluator GetPromotionEvaluationPolicy(IEnumerable<Promotion> promotions)
