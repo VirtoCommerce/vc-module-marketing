@@ -395,6 +395,52 @@ namespace VirtoCommerce.MarketingModule.Test
             Assert.Equal(10m, productB.Price);
         }
 
+        [Fact]
+        public async Task ChooseTheFirstExclusivePromotions()
+        {
+            //Arrange
+
+            DynamicPromotion CreatePromotion(bool isExclusive, decimal shippingDiscount, decimal cartDiscount)
+            {
+                var blockReward = new BlockReward().WithChildrens(
+                    new RewardShippingGetOfAbsShippingMethod { Amount = shippingDiscount, ShippingMethod = "Shipping" },
+                    new RewardCartGetOfAbsSubtotal { Amount = cartDiscount }
+                );
+                var result = new DynamicPromotion
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    DynamicExpression = AbstractTypeFactory<PromotionConditionAndRewardTree>.TryCreateInstance(),
+                    IsExclusive = isExclusive
+                };
+                result.DynamicExpression.WithChildrens(blockReward);
+                return result;
+            }
+
+            var firstPromotion = CreatePromotion(true, 5m, 7m);
+            var secondPromotion = CreatePromotion(true, 10m, 2m);
+
+            var evalPolicy = GetPromotionEvaluationPolicy(new[] { firstPromotion, secondPromotion });
+            var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
+            var context = new PromotionEvaluationContext
+            {
+                ShipmentMethodCode = "Shipping",
+                ShipmentMethodPrice = 20m,
+                PromoEntries = new[] { productA }
+            };
+
+            //Act
+            var rewards = (await evalPolicy.EvaluatePromotionAsync(context)).Rewards.ToList();
+            var shipment = rewards.OfType<ShipmentReward>().First();
+            var subTotal = rewards.OfType<CartSubtotalReward>().First();
+
+            //Assert
+            Assert.Equal(5m, shipment.Amount);
+            Assert.True(shipment.IsValid);
+
+            Assert.Equal(7m, subTotal.Amount);
+            Assert.True(subTotal.IsValid);
+        }
+
         private static IMarketingPromoEvaluator GetPromotionEvaluationPolicy(IEnumerable<Promotion> promotions, Mock<IPromotionRewardEvaluator> promotionRewardEvaluatorMock = null)
         {
             var result = new PromotionSearchResult
