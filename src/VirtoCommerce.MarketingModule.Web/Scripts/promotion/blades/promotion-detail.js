@@ -67,20 +67,25 @@ angular.module('virtoCommerce.marketingModule')
                 blade.title = data.name;
             }
 
-            // transform simple string to complex object. Simple string isn't editable.
-            data.coupons = _.map(data.coupons, function (x) { return { text: x }; });
-
             blade.expressionPromises = [];
-            if (data.dynamicExpression) {
-                _.each(data.dynamicExpression.children, extendElementBlock);
-            }
 
-            $q.all(blade.expressionPromises).then(function (allData) {
+            blade.prepareData(data).then(function () {
                 blade.currentEntity = angular.copy(data);
                 blade.origEntity = data;
             }).finally(function () {
                 blade.isLoading = false;
             });
+        }
+
+        blade.prepareData = function (data) {
+            // transform simple string to complex object. Simple string isn't editable.
+            data.coupons = _.map(data.coupons, function (x) { return { text: x }; });
+
+            if (data.dynamicExpression) {
+                _.each(data.dynamicExpression.children, extendElementBlock);
+            }
+
+            return $q.all(blade.expressionPromises);
         }
 
         function isDirty() {
