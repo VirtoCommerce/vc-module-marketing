@@ -99,8 +99,10 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentFolders
         if (blade.breadcrumbs) {
             var breadcrumb = _.find(blade.breadcrumbs, function (b) { return b.id === blade.currentEntity.id; });
             if (!breadcrumb) {
-                breadcrumb = generateBreadcrumb(blade.currentEntity);
-                blade.breadcrumbs.push(breadcrumb);
+                if (blade.currentEntity.id) {
+                    breadcrumb = generateBreadcrumb(blade.currentEntity);
+                    blade.breadcrumbs.push(breadcrumb);
+                }
             } else {
                 var position = blade.breadcrumbs.indexOf(breadcrumb);
                 blade.breadcrumbs = blade.breadcrumbs.slice(0, position + 1);
