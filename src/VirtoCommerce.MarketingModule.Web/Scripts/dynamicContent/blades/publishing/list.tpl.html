@@ -1,4 +1,4 @@
-<div class="blade-static">
+﻿<div class="blade-static">
     <div class="form-group">
         <div class="form-input __other">
             <input placeholder="{{ 'platform.placeholders.search-keyword' | translate }}" ng-model="blade.searchKeyword" ng-keyup="$event.which === 13 && blade.refresh()" />
@@ -20,7 +20,7 @@
                 rowTemplate: 'publishing.row.html',
                 columnDefs: [
                      { name: 'actions', displayName: '', enableColumnResizing: false, enableSorting: false, width: 30, cellTemplate: 'list-actions.cell.html', pinnedLeft: true },
-                     { name: 'icon', displayName: 'marketing.blades.publishing.list.labels.picture', cellTemplate: 'publishing-content-icon.cell.html', enableColumnResizing: false, enableSorting: false, width: 60 },
+                     { name: 'icon', displayName: 'marketing.blades.publishing.list.labels.picture', cellTemplate: 'dynamic-content-icon.cell.html', enableColumnResizing: false, enableSorting: false, width: 60 },
                      { name: 'name', displayName: 'marketing.blades.publishing.list.labels.name' }
                  ]})">
                 <div ui-grid="gridOptions" ui-grid-auto-resize ui-grid-save-state ui-grid-selection ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-height></div>
@@ -44,7 +44,7 @@
     </div>
 </script>
 
-<script id="publishing-content-icon.cell.html" type="text/ng-template">
+<script id="dynamic-content-icon.cell.html" type="text/ng-template">
     <div class="ui-grid-cell-contents">
         <div class="product-img">
             <i class="table-ico fa fa-bookmark-o"></i>

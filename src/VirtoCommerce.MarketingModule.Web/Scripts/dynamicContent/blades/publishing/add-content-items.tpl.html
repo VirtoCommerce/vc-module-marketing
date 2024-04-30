@@ -24,7 +24,7 @@
                     rowTemplate: 'add-item.row.html',
                     rowHeight: 50,
                     columnDefs: [
-                     { name: 'icon', displayName: 'marketing.blades.publishing.add-content-items.labels.picture', cellTemplate: 'add-publishing-content-icon.cell.html', enableColumnResizing: false, enableSorting: false, width: 60 },
+                     { name: 'icon', displayName: 'marketing.blades.publishing.add-content-items.labels.picture', cellTemplate: 'dynamic-content-icon.cell.html', enableColumnResizing: false, enableSorting: false, width: 60 },
                      { name: 'name', displayName: 'marketing.blades.publishing.add-content-items.labels.name' },
                      { name: 'description', displayName: 'marketing.blades.publishing.add-content-items.labels.description'}
                      ]})">
@@ -42,7 +42,7 @@
     <div ng-click='grid.appScope.blade.selectNode(row.entity)' ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.uid" ui-grid-one-bind-id-grid="rowRenderIndex + '-' + col.uid + '-cell'" class="ui-grid-cell" ng-class="{'ui-grid-row-header-cell': col.isRowHeader}" role="{{col.isRowHeader ? 'rowheader' : 'gridcell' }}" ui-grid-cell></div>
 </script>
 
-<script id="add-publishing-content-icon.cell.html" type="text/ng-template">
+<script id="dynamic-content-icon.cell.html" type="text/ng-template">
     <div class="ui-grid-cell-contents">
         <div class="product-img">
             <i class="table-ico fa" ng-class="row.entity.isFolder ? 'fa-folder' : 'fa-location-arrow'"></i>
