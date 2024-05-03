@@ -18,10 +18,10 @@
                 data: 'listEntries',
                 useExternalSorting: true,
                 rowHeight: 50,
-                rowTemplate: 'dynamic-content-placeholder.row.html',
+                rowTemplate: 'placeholder-content-placeholder.row.html',
                 columnDefs: [
-                 { name: 'actions', displayName: '', enableColumnResizing: false, enableSorting: false, width: 30, cellTemplate: 'list-actions.cell.html', pinnedLeft: true }, 
-                 { name: 'imageUrl', displayName: 'marketing.blades.placeholders.list.labels.picture', cellTemplate: 'dynamic-content-icon.cell.html', enableColumnResizing: false, enableSorting: false, width: 60 }, 
+                 { name: 'actions', displayName: '', enableColumnResizing: false, enableSorting: false, width: 30, cellTemplate: 'placeholder-list-actions.cell.html', pinnedLeft: true }, 
+                 { name: 'imageUrl', displayName: 'marketing.blades.placeholders.list.labels.picture', cellTemplate: 'placeholder-content-icon.cell.html', enableColumnResizing: false, enableSorting: false, width: 60 }, 
                  { name: 'name', displayName: 'marketing.blades.placeholders.list.labels.name' }, 
                  { name: 'description', displayNAme: 'marketing.blades.placeholders.list.labels.description' }
                  ]})">
@@ -39,17 +39,17 @@
     </div>
 </div>
 
-<script id="dynamic-content-placeholder.row.html" type="text/ng-template">
+<script id="placeholder-content-placeholder.row.html" type="text/ng-template">
     <div ng-click='grid.appScope.selectNode(row.entity)' ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.uid" ui-grid-one-bind-id-grid="rowRenderIndex + '-' + col.uid + '-cell'" class="ui-grid-cell" ng-class="{'ui-grid-row-header-cell': col.isRowHeader, '__hovered': grid.appScope.contextMenuEntity === row.entity, '__selected': row.entity.id === grid.appScope.selectedNodeId}" role="{{col.isRowHeader ? 'rowheader' : 'gridcell' }}" ui-grid-cell context-menu="grid.appScope.contextMenuEntity = row.entity" data-target="prl_menu"></div>
 </script>
 
-<script id="list-actions.cell.html" type="text/ng-template">
+<script id="placeholder-list-actions.cell.html" type="text/ng-template">
     <div class="ui-grid-actions" left-click-menu="grid.appScope.contextMenuEntity = row.entity" data-target="prl_menu">
         <i class="fa fa-ellipsis-v"></i>
     </div>
 </script>
 
-<script id="dynamic-content-icon.cell.html" type="text/ng-template">
+<script id="placeholder-content-icon.cell.html" type="text/ng-template">
     <div class="ui-grid-cell-contents">
         <div class="product-img">
             <i class="table-ico fa fa-folder" ng-if="row.entity.isFolder"></i>
