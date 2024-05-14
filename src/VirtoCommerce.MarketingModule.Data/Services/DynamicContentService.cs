@@ -220,14 +220,14 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         public async Task DeletePublicationsAsync(string[] ids)
         {
             using (var repository = _repositoryFactory())
-            { 
+            {
                 await repository.RemoveContentPublicationsAsync(ids);
                 await repository.UnitOfWork.CommitAsync();
             }
 
             DynamicContentPublicationCacheRegion.ExpireRegion();
         }
-      
+
         #endregion
 
         #region DynamicContentFolder methods
@@ -286,8 +286,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             using (var repository = _repositoryFactory())
             {
                 var itemsToDelete = repository.Folders.Where(x => ids.Contains(x.Id)).ToArray();
-                await RemoveChildren(itemsToDelete, repository); 
-                await repository.RemoveFoldersAsync(itemsToDelete);
+                await RemoveChildren(itemsToDelete, repository);
                 await repository.UnitOfWork.CommitAsync();
             }
 
@@ -296,18 +295,22 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
         private async Task RemoveChildren(DynamicContentFolderEntity[] folders, IMarketingRepository repository)
         {
-                var childrenIds  = repository.Folders
-                    .Where(x => folders
-                        .Select(q=>q.Id)
-                        .Contains(x.ParentFolderId))
-                    .ToArray();
+            var foldersIds = folders.Select(x => x.Id).ToArray();
+            var childrenIds = repository.Folders
+                .Where(x => foldersIds.Contains(x.ParentFolderId))
+                .ToArray();
 
-                if (!childrenIds.IsNullOrEmpty())
-                {
-                    await RemoveChildren(childrenIds, repository);
-                }
+            if (!childrenIds.IsNullOrEmpty())
+            {
+                await RemoveChildren(childrenIds, repository);
+            }
 
-                await repository.RemoveFoldersAsync(folders);
+            var items = repository.Items
+                .Where(x => foldersIds.Contains(x.FolderId))
+                .Select(x => x.Id)
+                .ToArray();
+            await repository.RemoveContentItemsAsync(items);
+            await repository.RemoveFoldersAsync(folders);
         }
 
         #endregion
