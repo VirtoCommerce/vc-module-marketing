@@ -38,6 +38,9 @@ using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.Extensions;
+using VirtoCommerce.Platform.Data.MySql.Extensions;
+using VirtoCommerce.Platform.Data.PostgreSql.Extensions;
+using VirtoCommerce.Platform.Data.SqlServer.Extensions;
 
 namespace VirtoCommerce.MarketingModule.Web
 {
@@ -59,13 +62,13 @@ namespace VirtoCommerce.MarketingModule.Web
                 switch (databaseProvider)
                 {
                     case "MySql":
-                        options.UseMySqlDatabase(connectionString);
+                        options.UseMySqlDatabase(connectionString, typeof(MySqlDataAssemblyMarker), Configuration);
                         break;
                     case "PostgreSql":
-                        options.UsePostgreSqlDatabase(connectionString);
+                        options.UsePostgreSqlDatabase(connectionString, typeof(PostgreSqlDataAssemblyMarker), Configuration);
                         break;
                     default:
-                        options.UseSqlServerDatabase(connectionString);
+                        options.UseSqlServerDatabase(connectionString, typeof(SqlServerDataAssemblyMarker), Configuration);
                         break;
                 }
             });
@@ -125,7 +128,7 @@ namespace VirtoCommerce.MarketingModule.Web
 
             //Register Permission scopes
             AbstractTypeFactory<PermissionScope>.RegisterType<MarketingStoreSelectedScope>();
-            permissionsRegistrar.WithAvailabeScopesForPermissions(new[] { ModuleConstants.Security.Permissions.Read }, new MarketingStoreSelectedScope());
+            permissionsRegistrar.WithAvailabeScopesForPermissions([ModuleConstants.Security.Permissions.Read], new MarketingStoreSelectedScope());
 
             // Register DynamicPromotion override
             var couponSearchService = appBuilder.ApplicationServices.GetRequiredService<ICouponSearchService>();
@@ -160,7 +163,7 @@ namespace VirtoCommerce.MarketingModule.Web
             var dynamicContentService = appBuilder.ApplicationServices.GetService<IDynamicContentService>();
             foreach (var id in new[] { ModuleConstants.MarketingConstants.ContentPlacesRootFolderId, ModuleConstants.MarketingConstants.ContentItemRootFolderId })
             {
-                var folders = dynamicContentService.GetFoldersByIdsAsync(new[] { id }).GetAwaiter().GetResult();
+                var folders = dynamicContentService.GetFoldersByIdsAsync([id]).GetAwaiter().GetResult();
                 var rootFolder = folders.FirstOrDefault();
                 if (rootFolder == null)
                 {
@@ -169,7 +172,7 @@ namespace VirtoCommerce.MarketingModule.Web
                         Id = id,
                         Name = id
                     };
-                    dynamicContentService.SaveFoldersAsync(new[] { rootFolder }).GetAwaiter().GetResult();
+                    dynamicContentService.SaveFoldersAsync([rootFolder]).GetAwaiter().GetResult();
                 }
             }
 
@@ -185,7 +188,7 @@ namespace VirtoCommerce.MarketingModule.Web
                 CreatedBy = "Auto",
             };
 
-            dynamicPropertyService.SaveDynamicPropertiesAsync(new[] { contentItemTypeProperty }).GetAwaiter().GetResult();
+            dynamicPropertyService.SaveDynamicPropertiesAsync([contentItemTypeProperty]).GetAwaiter().GetResult();
 
             PolymorphJsonConverter.RegisterTypeForDiscriminator(typeof(PromotionReward), nameof(PromotionReward.Id));
 

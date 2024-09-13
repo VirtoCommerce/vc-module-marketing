@@ -14,9 +14,9 @@
     <PackageReference Include="CsvHelper" Version="30.0.1" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
     <PackageReference Include="VirtoCommerce.OrdersModule.Core" Version="3.800.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.825.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.825.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Security" Version="3.825.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.832.3" />
+    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.832.3" />
+    <PackageReference Include="VirtoCommerce.Platform.Security" Version="3.832.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.MarketingModule.Core\VirtoCommerce.MarketingModule.Core.csproj" />
