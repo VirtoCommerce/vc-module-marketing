@@ -1,0 +1,419 @@
+{
+  "marketing": {
+    "main-menu-title": "营销",
+    "widgets": {
+      "couponsWidget": {
+        "title": "优惠券",
+        "newPromotion": "保存促销活动后，您可以添加优惠券"
+      }
+    },
+    "blades": {
+      "marketing-main": {
+        "title": "营销"
+      },
+      "promotion-detail": {
+        "title-new": "新促销活动",
+        "labels": {
+          "is-active": "活动",
+          "exclusivity": "排他性",
+          "is-combine-with-self": "可多次兑换",
+          "priority": "优先级",
+          "promotion-name": "促销名称",
+          "description": "描述",
+          "store": "商店",
+          "start-date": "开始日期",
+          "usage-limit": "使用限制",
+          "coupons": "优惠券",
+          "expiration-date": "到期日期",
+          "per-customer-limit": "单个客户限制",
+          "promotion-conditions": "促销条件",
+          "combined-with-others": "可与其他优惠同时使用",
+          "exclusive": "全局独占"
+        },
+        "descr": {
+          "promotion-name": "为您的促销活动起一个独特的名称，该名称将显示在促销列表中",
+          "store": "此促销适用的商店",
+          "is-active": "使用此按钮启用或禁用您的促销活动",
+          "start-date": "如果您不指定开始日期，促销活动将在保存后立即生效",
+          "expiration-date": "如果您不指定结束日期，促销活动将一直有效，直到您将其停用",
+          "priority": "优先级最高的促销活动将首先应用",
+          "exclusivity": "如果您选择\"全局独占\"，您的客户将无法将任何其他优先级较低的促销应用于订单",
+          "is-combine-with-self": "如果需要多个优惠券来兑换优惠，请启用此选项"
+        },
+        "placeholders": {
+          "promotion-name": "在此输入您的促销名称...",
+          "description": "在此输入您的描述...",
+          "store": "选择...",
+          "start-date": "提供日期...",
+          "coupons": "输入优惠券代码...",
+          "expiration-date": "提供日期..."
+        },
+        "toolbar": {
+          "coupons": "优惠券"
+        },
+        "cannot-be-saved": "您当前受限于商店范围，所选促销活动已分配给多个商店。不允许编辑此促销活动"
+      },
+      "coupon-detail": {
+        "new-title": "新优惠券",
+        "title": "优惠券",
+        "labels": {
+          "coupon-code": "代码",
+          "code-description": "优惠券代码只能包含字母数字字符",
+          "max-uses-number": "最大使用次数",
+          "max-uses-per-user": "每位客户最大使用次数",
+          "max-uses-number-description": "指定此优惠券可以兑换的次数。如果您不想设置任何限制，请输入0",
+          "max-uses-per-user-description": "指定单个用户可以兑换此优惠券的次数。如果您不想设置任何限制，请输入0",
+          "reservation-expiration-date": "优惠券到期日期",
+          "reservation-expiration-date-description": "如果与促销到期日期相同，请将此字段留空",
+          "upload-description": "包含优惠券数据的CSV文件必须具有以下格式：[优惠券代码][分隔符][最大使用次数][分隔符][会员ID]（去掉方括号）。如果您不想设置任何使用次数限制，请将最大使用次数设置为0",
+          "enter-value": "指定一个值",
+          "select-date": "提供日期...",
+          "member": "客户",
+          "coupon-usages": "优惠券使用情况",
+          "coupon-info": "信息"
+        },
+        "placeholders": {
+          "member": "选择客户或组织..."
+        }
+      },
+      "promotion-list": {
+        "labels": {
+          "name": "名称",
+          "isActive": "活动",
+          "last-modified": "修改时间"
+        },
+        "new-filter": "添加新筛选器",
+        "placeholders": {
+          "select-filter": "选择筛选器"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "编辑筛选器",
+        "new-title": "新筛选器",
+        "new-subtitle": "创建新筛选器",
+        "unnamed-filter": "未命名筛选器",
+        "labels": {
+          "name": "筛选器名称",
+          "name_": "命名此筛选器",
+          "active": "仅活动"
+        },
+        "placeholders": {
+          "all": "未指定"
+        }
+      },
+      "catalog-items-select": {
+        "title-product": "选择促销条件的产品",
+        "title-category": "选择促销条件的类别"
+      },
+      "catalog-entries": {
+        "title-product": "已选项目"
+      },
+      "dynamicContent-list": {
+        "menu": {
+          "items": {
+            "title": "内容项目",
+            "description": "管理动态内容项目"
+          },
+          "placeholders": {
+            "title": "内容占位符",
+            "description": "管理容纳内容项目的占位符"
+          },
+          "publishing": {
+            "title": "已发布内容",
+            "description": "设置显示内容的条件"
+          }
+        }
+      },
+      "items": {
+        "add": {
+          "title": "新内容项目",
+          "subtitle": "添加新内容项目",
+          "menu": {
+            "folder": {
+              "title": "内容项目文件夹",
+              "description": "创建文件夹以容纳内容项目"
+            },
+            "item": {
+              "title": "内容项目",
+              "description": "创建内容项目"
+            }
+          }
+        },
+        "content-item-details": {
+          "title": "编辑内容项目",
+          "subtitle": "修改您的内容项目",
+          "title-new": "新内容项目",
+          "subtitle-new": "添加新内容项目",
+          "labels": {
+            "content-item-name": "内容项目名称",
+            "content-item-description": "内容项目描述",
+            "none": "无"
+          },
+          "placeholders": {
+            "content-item-name": "输入内容项目名称",
+            "content-item-description": "输入内容项目描述"
+          }
+        },
+        "folder-details": {
+          "title": "编辑内容项目文件夹",
+          "subtitle": "修改您的内容项目文件夹",
+          "title-new": "新内容项目文件夹",
+          "subtitle-new": "添加新内容文件夹",
+          "labels": {
+            "folder-name": "文件夹名称",
+            "folder-description": "文件夹描述"
+          },
+          "placeholders": {
+            "folder-name": "输入文件夹名称",
+            "folder-description": "输入文件夹描述"
+          }
+        },
+        "list": {
+          "title": "内容项目",
+          "subtitle": "内容项目列表",
+          "bread-crumb-top": "所有项目",
+          "labels": {
+            "picture": "图片",
+            "name": "名称",
+            "description": "描述",
+            "no-data": "无数据"
+          },
+          "noItemsMessage": "您还没有任何内容项目"
+        }
+      },
+      "placeholders": {
+        "add": {
+          "title": "新占位符",
+          "subtitle": "添加新占位符",
+          "menu": {
+            "folder": {
+              "title": "占位符文件夹",
+              "description": "创建文件夹以容纳占位符"
+            },
+            "item": {
+              "title": "占位符",
+              "description": "创建文件夹以容纳内容项目"
+            }
+          }
+        },
+        "placeholder-details": {
+          "title": "新占位符",
+          "subtitle": "添加新占位符",
+          "title-new": "编辑占位符",
+          "subtitle-new": "修改您的占位符",
+          "labels": {
+            "placeholder-name": "占位符名称",
+            "placeholder-description": "占位符描述",
+            "placeholder-image-description": "占位符图片描述",
+            "image-note": "将您的图片拖放到此处",
+            "progress": "进度"
+          },
+          "placeholders": {
+            "placeholder-name": "指定占位符名称",
+            "placeholder-description": "指定占位符描述"
+          }
+        },
+        "folder-details": {
+          "title": "编辑占位符文件夹",
+          "subtitle": "修改您的占位符文件夹",
+          "title-new": "新占位符文件夹",
+          "subtitle-new": "添加新占位符文件夹",
+          "labels": {
+            "folder-name": "文件夹名称",
+            "folder-description": "文件夹描述"
+          },
+          "placeholders": {
+            "folder-name": "指定文件夹名称",
+            "folder-description": "指定文件夹描述"
+          }
+        },
+        "list": {
+          "title": "内容占位符",
+          "subtitle": "内容占位符列表",
+          "bread-crumb-top": "所有占位符",
+          "labels": {
+            "picture": "图片",
+            "name": "名称",
+            "description": "描述",
+            "no-data": "无数据"
+          }
+        }
+      },
+      "publishing": {
+        "add-content-items": {
+          "title": "添加内容项目",
+          "subtitle": "选择要添加的内容项目",
+          "bread-crumb-top": "所有项目",
+          "labels": {
+            "chosen-content-items": "已选内容项目",
+            "content-items": "内容项目",
+            "picture": "图片",
+            "name": "名称",
+            "description": "描述",
+            "no-data": "无数据"
+          }
+        },
+        "add-placeholders": {
+          "title": "添加占位符",
+          "subtitle": "选择要添加的占位符",
+          "bread-crumb-top": "所有占位符",
+          "labels": {
+            "chosen-placeholders": "已选占位符",
+            "content-placeholders": "内容占位符",
+            "picture": "图片",
+            "name": "名称",
+            "description": "描述",
+            "no-data": "无数据"
+          }
+        },
+        "publishing-main-step": {
+          "title": "编辑已发布内容元素",
+          "subtitle": "修改您的已发布内容元素",
+          "title-new": "新发布内容元素",
+          "subtitle-new": "添加新发布内容元素",
+          "labels": {
+            "name": "名称",
+            "description": "描述",
+            "store": "商店",
+            "is-active": "活动",
+            "start-date": "开始日期",
+            "end-date": "结束日期",
+            "publishing-conditions": "发布条件"
+          },
+          "placeholders": {
+            "name": "指定已发布内容元素名称",
+            "description": "指定已发布内容元素描述",
+            "store": "选择...",
+            "start-date": "指定一个值",
+            "end-date": "指定一个值"
+          },
+          "menu": {
+            "placeholders": {
+              "title": "占位符",
+              "description": "已选择 {{quantity}} 个占位符"
+            },
+            "content-items": {
+              "title": "内容项目",
+              "description": "已选择 {{quantity}} 个内容项目"
+            }
+          }
+        },
+        "list": {
+          "title": "已发布内容",
+          "subtitle": "已发布内容元素列表",
+          "noItemsMessage": "您还没有任何已发布内容",
+          "labels": {
+            "picture": "图标",
+            "name": "名称",
+            "description": "描述",
+            "no-data": "无已发布内容"
+          }
+        }
+      },
+      "coupons": {
+        "code": "代码",
+        "total-uses-count": "总使用次数",
+        "max-uses-number": "最大使用次数",
+        "max-uses-per-user": "每位客户最大使用次数",
+        "toolbar": {
+          "add": "添加",
+          "import": "导入",
+          "refresh": "刷新",
+          "delete": "删除",
+          "delete-all": "删除所有"
+        },
+        "no-coupons-message": "您还没有任何优惠券"
+      },
+      "coupons-import": {
+        "title": "导入优惠券",
+        "labels": {
+          "delimiter": "CSV列分隔符",
+          "upload": "上传CSV文件",
+          "upload-progress": "上传进度",
+          "space": "空格",
+          "comma": "逗号",
+          "semicolon": "分号",
+          "start": "开始",
+          "end": "结束",
+          "total": "总计",
+          "processed": "已处理数量",
+          "errors-count": "错误数量",
+          "errors": "错误",
+          "tab": "制表符"
+        },
+        "placeholders": {
+          "delimiter": "选择..."
+        }
+      },
+      "coupons-import-processing": {
+        "title": "正在导入优惠券"
+      }
+    },
+    "dialogs": {
+      "content-item-delete": {
+        "title": "确认删除",
+        "message": "您确定要删除此内容项目吗？"
+      },
+      "placeholders-folder-delete": {
+        "title": "确认删除",
+        "message": "您确定要删除此内容占位符文件夹吗？"
+      },
+      "content-item-folder-delete": {
+        "title": "确认删除",
+        "message": "您确定要删除此内容项目文件夹吗？"
+      },
+      "content-folder-delete": {
+        "title": "确认删除",
+        "message": "您确定要删除此文件夹吗？"
+      },
+      "publication-delete": {
+        "title": "确认删除",
+        "message": "您确定要删除此发布内容吗？"
+      },
+      "content-placeholder-delete": {
+        "title": "确认删除",
+        "message": "您确定要删除此内容占位符吗？"
+      },
+      "promotions-delete": {
+        "title": "确认删除",
+        "message": "您确定要删除所选促销活动吗？"
+      },
+      "promotion-save": {
+        "title": "保存更改",
+        "message": "促销活动已被修改。您想保存更改吗？"
+      },
+      "coupon-delete": {
+        "title": "确认删除",
+        "message": "您确定要删除所选优惠券吗？",
+        "message-all": "您确定要删除所有优惠券吗？"
+      }
+    },
+    "commands": {
+      "manage-type-properties": "管理属性类型",
+      "edit-folder": "编辑文件夹",
+      "start-import": "开始导入"
+    }
+  },
+  "permissions": {
+    "marketing:read": "查看营销数据",
+    "marketing:create": "创建营销数据",
+    "marketing:update": "更新营销数据",
+    "marketing:delete": "删除营销数据",
+    "marketing:access": "打开营销菜单"
+  },
+  "settings": {
+    "Marketing.Promotion.CombinePolicy": {
+      "description": "最佳奖励：选择最能吸引购物者的促销奖励。多重优惠有效：如果您的商店有多个活动促销，购物者可以同时获得多个促销资格",
+      "title": "使用多个活动促销的选定策略"
+    },
+    "Marketing.ExportImport.Description": {
+      "description": "导出和导入促销活动和动态内容（位置、内容、发布）",
+      "title": "导出/导入描述"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Marketing": {
+      "description": "导出和导入促销活动和动态内容（位置、内容、发布）"
+    }
+  }
+}
