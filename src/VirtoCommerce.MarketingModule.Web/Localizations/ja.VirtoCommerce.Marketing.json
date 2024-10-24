@@ -307,92 +307,91 @@
           "property-name": "プロパティ名",
           "property-type": "プロパティタイプ",
           "property-value": "値"
-          }
         }
-      },
-      "coupons": {
-        "code": "コード",
-        "total-uses-count": "総使用回数",
-        "max-uses-number": "最大使用回数",
-        "max-uses-per-user": "顧客ごとの最大使用回数",
-        "toolbar": {
-          "add": "追加",
-          "import": "インポート",
-          "refresh": "更新",
-          "delete": "削除",
-          "delete-all": "すべて削除"
-        },
-        "no-coupons-message": "クーポンがまだありません"
-      },
-      "coupons-import": {
-        "title": "クーポンをインポート",
-        "labels": {
-          "delimiter": "CSV列区切り文字",
-          "upload": "CSVファイルをアップロード",
-          "upload-progress": "アップロード進捗",
-          "space": "スペース",
-          "comma": "カンマ",
-          "semicolon": "セミコロン",
-          "start": "開始",
-          "end": "終了",
-          "total": "合計数",
-          "processed": "処理済み数",
-          "errors-count": "エラー数",
-          "errors": "エラー",
-          "tab": "タブ"
-        },
-        "placeholders": {
-          "delimiter": "選択..."
-        }
-      },
-      "coupons-import-processing": {
-        "title": "クーポンをインポート中"
       }
     },
-    "dialogs": {
-      "content-item-delete": {
-        "title": "削除の確認",
-        "message": "このコンテンツ項目を削除してもよろしいですか？"
+    "coupons": {
+      "code": "コード",
+      "total-uses-count": "総使用回数",
+      "max-uses-number": "最大使用回数",
+      "max-uses-per-user": "顧客ごとの最大使用回数",
+      "toolbar": {
+        "add": "追加",
+        "import": "インポート",
+        "refresh": "更新",
+        "delete": "削除",
+        "delete-all": "すべて削除"
       },
-      "placeholders-folder-delete": {
-        "title": "削除の確認",
-        "message": "このコンテンツプレースホルダーフォルダを削除してもよろしいですか？"
+      "no-coupons-message": "クーポンがまだありません"
+    },
+    "coupons-import": {
+      "title": "クーポンをインポート",
+      "labels": {
+        "delimiter": "CSV列区切り文字",
+        "upload": "CSVファイルをアップロード",
+        "upload-progress": "アップロード進捗",
+        "space": "スペース",
+        "comma": "カンマ",
+        "semicolon": "セミコロン",
+        "start": "開始",
+        "end": "終了",
+        "total": "合計数",
+        "processed": "処理済み数",
+        "errors-count": "エラー数",
+        "errors": "エラー",
+        "tab": "タブ"
       },
-      "content-item-folder-delete": {
-        "title": "削除の確認",
-        "message": "このコンテンツ項目フォルダを削除してもよろしいですか？"
-      },
-      "content-folder-delete": {
-        "title": "削除の確認",
-        "message": "このフォルダを削除してもよろしいですか？"
-      },
-      "publication-delete": {
-        "title": "削除の確認",
-        "message": "この公開を削除してもよろしいですか？"
-      },
-      "content-placeholder-delete": {
-        "title": "削除の確認",
-        "message": "このコンテンツプレースホルダーを削除してもよろしいですか？"
-      },
-      "promotions-delete": {
-        "title": "削除の確認",
-        "message": "選択したプロモーションを削除してもよろしいですか？"
-      },
-      "promotion-save": {
-        "title": "変更を保存",
-        "message": "プロモーションが変更されました。変更を保存しますか？"
-      },
-      "coupon-delete": {
-        "title": "削除の確認",
-        "message": "選択したクーポンを削除してもよろしいですか？",
-        "message-all": "すべてのクーポンを削除してもよろしいですか？"
+      "placeholders": {
+        "delimiter": "選択..."
       }
     },
-    "commands": {
-      "manage-type-properties": "プロパティタイプを管理",
-      "edit-folder": "フォルダを編集",
-      "start-import": "インポートを開始"
+    "coupons-import-processing": {
+      "title": "クーポンをインポート中"
     }
+  },
+  "dialogs": {
+    "content-item-delete": {
+      "title": "削除の確認",
+      "message": "このコンテンツ項目を削除してもよろしいですか？"
+    },
+    "placeholders-folder-delete": {
+      "title": "削除の確認",
+      "message": "このコンテンツプレースホルダーフォルダを削除してもよろしいですか？"
+    },
+    "content-item-folder-delete": {
+      "title": "削除の確認",
+      "message": "このコンテンツ項目フォルダを削除してもよろしいですか？"
+    },
+    "content-folder-delete": {
+      "title": "削除の確認",
+      "message": "このフォルダを削除してもよろしいですか？"
+    },
+    "publication-delete": {
+      "title": "削除の確認",
+      "message": "この公開を削除してもよろしいですか？"
+    },
+    "content-placeholder-delete": {
+      "title": "削除の確認",
+      "message": "このコンテンツプレースホルダーを削除してもよろしいですか？"
+    },
+    "promotions-delete": {
+      "title": "削除の確認",
+      "message": "選択したプロモーションを削除してもよろしいですか？"
+    },
+    "promotion-save": {
+      "title": "変更を保存",
+      "message": "プロモーションが変更されました。変更を保存しますか？"
+    },
+    "coupon-delete": {
+      "title": "削除の確認",
+      "message": "選択したクーポンを削除してもよろしいですか？",
+      "message-all": "すべてのクーポンを削除してもよろしいですか？"
+    }
+  },
+  "commands": {
+    "manage-type-properties": "プロパティタイプを管理",
+    "edit-folder": "フォルダを編集",
+    "start-import": "インポートを開始"
   },
   "permissions": {
     "marketing:read": "マーケティングデータを表示",
