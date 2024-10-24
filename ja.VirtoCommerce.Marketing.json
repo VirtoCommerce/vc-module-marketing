@@ -1,0 +1,419 @@
+{
+  "marketing": {
+    "main-menu-title": "マーケティング",
+    "widgets": {
+      "couponsWidget": {
+        "title": "クーポン",
+        "newPromotion": "プロモーションを保存した後、クーポンを追加できます"
+      }
+    },
+    "blades": {
+      "marketing-main": {
+        "title": "マーケティング"
+      },
+      "promotion-detail": {
+        "title-new": "新規プロモーション",
+        "labels": {
+          "is-active": "アクティブ",
+          "exclusivity": "排他性",
+          "is-combine-with-self": "複数回使用可能",
+          "priority": "優先度",
+          "promotion-name": "プロモーション名",
+          "description": "説明",
+          "store": "ストア",
+          "start-date": "開始日",
+          "usage-limit": "使用制限",
+          "coupons": "クーポン",
+          "expiration-date": "有効期限",
+          "per-customer-limit": "顧客ごとの制限",
+          "promotion-conditions": "プロモーション条件",
+          "combined-with-others": "他のオファーと併用可能",
+          "exclusive": "グローバル排他的"
+        },
+        "descr": {
+          "promotion-name": "プロモーションリストに表示される一意の名前を付けてください",
+          "store": "このプロモーションが適用されるストア",
+          "is-active": "このボタンを使用してプロモーションを有効または無効にします",
+          "start-date": "開始日を指定しない場合、プロモーションは保存後すぐに有効になります",
+          "expiration-date": "終了日を指定しない場合、プロモーションは無効にするまで有効です",
+          "priority": "優先度が最も高いプロモーションが最初に適用されます",
+          "exclusivity": "「グローバル排他的」を選択すると、顧客は優先度の低い他のプロモーションを注文に適用できなくなります",
+          "is-combine-with-self": "オファーを利用するために複数のクーポンが必要な場合、このオプションを有効にします"
+        },
+        "placeholders": {
+          "promotion-name": "ここにプロモーション名を入力してください...",
+          "description": "ここに説明を入力してください...",
+          "store": "選択...",
+          "start-date": "日付を入力...",
+          "coupons": "クーポンコードを入力...",
+          "expiration-date": "日付を入力..."
+        },
+        "toolbar": {
+          "coupons": "クーポン"
+        },
+        "cannot-be-saved": "現在、ストアの範囲に制限されており、選択されたプロモーションは複数のストアに割り当てられています。このプロモーションの編集は許可されていません"
+      },
+      "coupon-detail": {
+        "new-title": "新規クーポン",
+        "title": "クーポン",
+        "labels": {
+          "coupon-code": "コード",
+          "code-description": "クーポンコードには英数字のみを含めることができます",
+          "max-uses-number": "最大使用回数",
+          "max-uses-per-user": "顧客ごとの最大使用回数",
+          "max-uses-number-description": "このクーポンを使用できる回数を指定します。制限を設けない場合は0を入力してください",
+          "max-uses-per-user-description": "1人のユーザーがこのクーポンを使用できる回数を指定します。制限を設けない場合は0を入力してください",
+          "reservation-expiration-date": "クーポン有効期限",
+          "reservation-expiration-date-description": "プロモーションの有効期限と同じ場合は、このフィールドを空白のままにしてください",
+          "upload-description": "クーポンデータを含むCSVファイルは次の形式である必要があります：[クーポンコード][区切り文字][最大使用回数][区切り文字][メンバーID]（角括弧を削除）。使用回数制限を設定しない場合は、最大使用回数を0に設定してください",
+          "enter-value": "値を指定",
+          "select-date": "日付を入力...",
+          "member": "顧客",
+          "coupon-usages": "クーポン使用状況",
+          "coupon-info": "情報"
+        },
+        "placeholders": {
+          "member": "顧客または組織を選択..."
+        }
+      },
+      "promotion-list": {
+        "labels": {
+          "name": "名前",
+          "isActive": "アクティブ",
+          "last-modified": "最終更新"
+        },
+        "new-filter": "新規フィルターを追加",
+        "placeholders": {
+          "select-filter": "フィルターを選択"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "フィルターを編集",
+        "new-title": "新規フィルター",
+        "new-subtitle": "新規フィルターを作成",
+        "unnamed-filter": "名称未設定フィルター",
+        "labels": {
+          "name": "フィルター名",
+          "name_": "このフィルターに名前を付ける",
+          "active": "アクティブのみ"
+        },
+        "placeholders": {
+          "all": "未指定"
+        }
+      },
+      "catalog-items-select": {
+        "title-product": "プロモーション条件の商品を選択",
+        "title-category": "プロモーション条件のカテゴリを選択"
+      },
+      "catalog-entries": {
+        "title-product": "選択された項目"
+      },
+      "dynamicContent-list": {
+        "menu": {
+          "items": {
+            "title": "コンテンツ項目",
+            "description": "動的コンテンツ項目を管理"
+          },
+          "placeholders": {
+            "title": "コンテンツプレースホルダー",
+            "description": "コンテンツ項目を格納するプレースホルダーを管理"
+          },
+          "publishing": {
+            "title": "公開されたコンテンツ",
+            "description": "コンテンツの表示条件を設定"
+          }
+        }
+      },
+      "items": {
+        "add": {
+          "title": "新規コンテンツ項目",
+          "subtitle": "新規コンテンツ項目を追加",
+          "menu": {
+            "folder": {
+              "title": "コンテンツ項目フォルダ",
+              "description": "コンテンツ項目を格納するフォルダを作成"
+            },
+            "item": {
+              "title": "コンテンツ項目",
+              "description": "コンテンツ項目を作成"
+            }
+          }
+        },
+        "content-item-details": {
+          "title": "コンテンツ項目を編集",
+          "subtitle": "コンテンツ項目を変更",
+          "title-new": "新規コンテンツ項目",
+          "subtitle-new": "新規コンテンツ項目を追加",
+          "labels": {
+            "content-item-name": "コンテンツ項目名",
+            "content-item-description": "コンテンツ項目の説明",
+            "none": "なし"
+          },
+          "placeholders": {
+            "content-item-name": "コンテンツ項目名を入力",
+            "content-item-description": "コンテンツ項目の説明を入力"
+          }
+        },
+        "folder-details": {
+          "title": "コンテンツ項目フォルダを編集",
+          "subtitle": "コンテンツ項目フォルダを変更",
+          "title-new": "新規コンテンツ項目フォルダ",
+          "subtitle-new": "新規コンテンツフォルダを追加",
+          "labels": {
+            "folder-name": "フォルダ名",
+            "folder-description": "フォルダの説明"
+          },
+          "placeholders": {
+            "folder-name": "フォルダ名を入力",
+            "folder-description": "フォルダの説明を入力"
+          }
+        },
+        "list": {
+          "title": "コンテンツ項目",
+          "subtitle": "コンテンツ項目リスト",
+          "bread-crumb-top": "すべての項目",
+          "labels": {
+            "picture": "画像",
+            "name": "名前",
+            "description": "説明",
+            "no-data": "データなし"
+          },
+          "noItemsMessage": "コンテンツ項目がまだありません"
+        }
+      },
+      "placeholders": {
+        "add": {
+          "title": "新規プレースホルダー",
+          "subtitle": "新規プレースホルダーを追加",
+          "menu": {
+            "folder": {
+              "title": "プレースホルダーフォルダ",
+              "description": "プレースホルダーを格納するフォルダを作成"
+            },
+            "item": {
+              "title": "プレースホルダー",
+              "description": "コンテンツ項目を格納するフォルダを作成"
+            }
+          }
+        },
+        "placeholder-details": {
+          "title": "プレースホルダーを編集",
+          "subtitle": "プレースホルダーを変更",
+          "title-new": "新規プレースホルダー",
+          "subtitle-new": "新規プレースホルダーを追加",
+          "labels": {
+            "placeholder-name": "プレースホルダー名",
+            "placeholder-description": "プレースホルダーの説明"
+          },
+          "placeholders": {
+            "placeholder-name": "プレースホルダー名を入力",
+            "placeholder-description": "プレースホルダーの説明を入力"
+          }
+        },
+        "folder-details": {
+          "title": "プレースホルダーフォルダを編集",
+          "subtitle": "プレースホルダーフォルダを変更",
+          "title-new": "新規プレースホルダーフォルダ",
+          "subtitle-new": "新規プレースホルダーフォルダを追加",
+          "labels": {
+            "folder-name": "フォルダ名",
+            "folder-description": "フォルダの説明"
+          },
+          "placeholders": {
+            "folder-name": "フォルダ名を入力",
+            "folder-description": "フォルダの説明を入力"
+          }
+        },
+        "list": {
+          "title": "プレースホルダー",
+          "subtitle": "プレースホルダーリスト",
+          "bread-crumb-top": "すべてのプレースホルダー",
+          "labels": {
+            "picture": "画像",
+            "name": "名前",
+            "description": "説明",
+            "no-data": "データなし"
+          },
+          "noItemsMessage": "プレースホルダーがまだありません"
+        }
+      },
+      "publishing": {
+        "main-blade": {
+          "title": "公開されたコンテンツ",
+          "subtitle": "公開されたコンテンツリスト"
+        },
+        "add": {
+          "title": "新規公開",
+          "subtitle": "新規公開を追加"
+        },
+        "detail": {
+          "title": "公開を編集",
+          "subtitle": "公開を変更",
+          "title-new": "新規公開",
+          "subtitle-new": "新規公開を追加",
+          "labels": {
+            "publication-name": "公開名",
+            "publication-description": "公開の説明",
+            "publishing-status": "公開ステータス",
+            "store": "ストア",
+            "content-type": "コンテンツタイプ",
+            "content-item": "コンテンツ項目",
+            "content-place": "コンテンツ場所",
+            "start-date": "開始日",
+            "end-date": "終了日",
+            "is-active": "アクティブ",
+            "priority": "優先度"
+          },
+          "placeholders": {
+            "publication-name": "公開名を入力",
+            "publication-description": "公開の説明を入力",
+            "store": "選択...",
+            "content-type": "選択...",
+            "content-item": "選択...",
+            "content-place": "選択...",
+            "start-date": "日付を入力...",
+            "end-date": "日付を入力..."
+          }
+        },
+        "list": {
+          "labels": {
+            "name": "名前",
+            "content-type": "コンテンツタイプ",
+            "start-date": "開始日",
+            "end-date": "終了日",
+            "status": "ステータス",
+            "no-data": "データなし"
+          },
+          "noItemsMessage": "公開されたコンテンツがまだありません"
+        }
+      },
+      "contentType": {
+        "title": "コンテンツタイプ",
+        "subtitle": "コンテンツタイプを選択"
+      },
+      "contentPlace": {
+        "title": "コンテンツ場所",
+        "subtitle": "コンテンツ場所を選択"
+      },
+      "contentItem": {
+        "title": "コンテンツ項目",
+        "subtitle": "コンテンツ項目を選択"
+      },
+      "dynamicProperty": {
+        "title": "動的プロパティ",
+        "subtitle": "動的プロパティを管理",
+        "noItemsMessage": "動的プロパティがまだありません",
+        "labels": {
+          "property-name": "プロパティ名",
+          "property-type": "プロパティタイプ",
+          "property-value": "値"
+          }
+        }
+      },
+      "coupons": {
+        "code": "コード",
+        "total-uses-count": "総使用回数",
+        "max-uses-number": "最大使用回数",
+        "max-uses-per-user": "顧客ごとの最大使用回数",
+        "toolbar": {
+          "add": "追加",
+          "import": "インポート",
+          "refresh": "更新",
+          "delete": "削除",
+          "delete-all": "すべて削除"
+        },
+        "no-coupons-message": "クーポンがまだありません"
+      },
+      "coupons-import": {
+        "title": "クーポンをインポート",
+        "labels": {
+          "delimiter": "CSV列区切り文字",
+          "upload": "CSVファイルをアップロード",
+          "upload-progress": "アップロード進捗",
+          "space": "スペース",
+          "comma": "カンマ",
+          "semicolon": "セミコロン",
+          "start": "開始",
+          "end": "終了",
+          "total": "合計数",
+          "processed": "処理済み数",
+          "errors-count": "エラー数",
+          "errors": "エラー",
+          "tab": "タブ"
+        },
+        "placeholders": {
+          "delimiter": "選択..."
+        }
+      },
+      "coupons-import-processing": {
+        "title": "クーポンをインポート中"
+      }
+    },
+    "dialogs": {
+      "content-item-delete": {
+        "title": "削除の確認",
+        "message": "このコンテンツ項目を削除してもよろしいですか？"
+      },
+      "placeholders-folder-delete": {
+        "title": "削除の確認",
+        "message": "このコンテンツプレースホルダーフォルダを削除してもよろしいですか？"
+      },
+      "content-item-folder-delete": {
+        "title": "削除の確認",
+        "message": "このコンテンツ項目フォルダを削除してもよろしいですか？"
+      },
+      "content-folder-delete": {
+        "title": "削除の確認",
+        "message": "このフォルダを削除してもよろしいですか？"
+      },
+      "publication-delete": {
+        "title": "削除の確認",
+        "message": "この公開を削除してもよろしいですか？"
+      },
+      "content-placeholder-delete": {
+        "title": "削除の確認",
+        "message": "このコンテンツプレースホルダーを削除してもよろしいですか？"
+      },
+      "promotions-delete": {
+        "title": "削除の確認",
+        "message": "選択したプロモーションを削除してもよろしいですか？"
+      },
+      "promotion-save": {
+        "title": "変更を保存",
+        "message": "プロモーションが変更されました。変更を保存しますか？"
+      },
+      "coupon-delete": {
+        "title": "削除の確認",
+        "message": "選択したクーポンを削除してもよろしいですか？",
+        "message-all": "すべてのクーポンを削除してもよろしいですか？"
+      }
+    },
+    "commands": {
+      "manage-type-properties": "プロパティタイプを管理",
+      "edit-folder": "フォルダを編集",
+      "start-import": "インポートを開始"
+    }
+  },
+  "permissions": {
+    "marketing:read": "マーケティングデータを表示",
+    "marketing:create": "マーケティングデータを作成",
+    "marketing:update": "マーケティングデータを更新",
+    "marketing:delete": "マーケティングデータを削除",
+    "marketing:access": "マーケティングメニューを開く"
+  },
+  "settings": {
+    "Marketing.Promotion.CombinePolicy": {
+      "description": "最適な報酬：買い物客に最も魅力的なプロモーション報酬を選択します。複数のオファーが有効：ストアに複数のアクティブなプロモーションがある場合、買い物客は同時に複数のプロモーションの対象となることができます",
+      "title": "複数のアクティブなプロモーションを使用する選択されたポリシー"
+    },
+    "Marketing.ExportImport.Description": {
+      "description": "プロモーションとダイナミックコンテンツ（場所、コンテンツ、公開）をエクスポートおよびインポート",
+      "title": "エクスポート/インポートの説明"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Marketing": {
+      "description": "プロモーションとダイナミックコンテンツ（場所、コンテンツ、公開）をエクスポートおよびインポート"
+    }
+  }
+}
