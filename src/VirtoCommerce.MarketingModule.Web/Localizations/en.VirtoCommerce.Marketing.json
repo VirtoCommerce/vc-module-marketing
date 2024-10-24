@@ -31,27 +31,27 @@
           "exclusive": "Globally exclusive"
         },
         "descr": {
-          "promotion-name": "Give your promotion a unique name  that will be displayed in the promotion list.",
-          "store": "Stores this promotion will apply to",
+          "promotion-name": "Give your promotion a unique name that will be displayed in the promotion list",
+          "store": "Stores where this promotion applies",
           "is-active": "Use this button to enable or disable your promotion",
-          "start-date": "If you do not specify a start date, the promotion will become active immediately once you save it.",
-          "expiration-date": "If you do not specify an end date, the promotion will be active until you deactivate it.",
-          "priority": "The promotion with the highest priority is applied first.",
-          "exclusivity": "If you select 'Globally Exclusive', your customers will be unable to apply any other promotions with lower priority to the order.",
-          "is-combine-with-self": "Enable this option in case multiple coupons are required to redeem the offer."
+          "start-date": "If you do not specify a start date, the promotion will become active immediately after you save it",
+          "expiration-date": "If you do not specify an end date, the promotion will be active until you deactivate it",
+          "priority": "The promotion with the highest priority is applied first",
+          "exclusivity": "If you select 'Globally Exclusive', your customers will be unable to apply any other promotions with lower priority to the order",
+          "is-combine-with-self": "Enable this option if multiple coupons are required to redeem the offer"
         },
         "placeholders": {
           "promotion-name": "Type your promotion name here...",
           "description": "Type your description here...",
           "store": "Select...",
-          "start-date": "Please provide a date...",
+          "start-date": "Provide a date...",
           "coupons": "Enter coupon codes...",
-          "expiration-date": "Please provide a date..."
+          "expiration-date": "Provide a date..."
         },
         "toolbar": {
           "coupons": "Coupons"
         },
-        "cannot-be-saved": "You are currently limited to the scope of the stores and the selected promotion is assigned to multiple stores. Editing this promotion is not allowed."
+        "cannot-be-saved": "You are currently limited to the scope of the stores and the selected promotion is assigned to multiple stores. Editing this promotion is not allowed"
       },
       "coupon-detail": {
         "new-title": "New coupon",
@@ -61,15 +61,15 @@
           "code-description": "Coupon code may contain only alphanumeric characters",
           "max-uses-number": "Maximum use number",
           "max-uses-per-user": "Maximum uses per customer",
-          "max-uses-number-description": "Specify the number of times this coupon may be redeemed. If you do not want to set any limit, put 0.",
-          "max-uses-per-user-description": "Specify the number of times this coupon may be redeemed by a single user. If you do not want to set any limit, put 0.",
+          "max-uses-number-description": "Specify the number of times this coupon may be redeemed. If you do not want to set any limit, put 0",
+          "max-uses-per-user-description": "Specify the number of times this coupon may be redeemed by a single user. If you do not want to set any limit, put 0",
           "reservation-expiration-date": "Coupon expiration date",
-          "reservation-expiration-date-description": "Leave this field blank in case it is the same as the promotion expiration date.",
-          "upload-description": "The CSV file containing coupon data must have the following format: [coupon_code][delimiter][max_use_number][delimiter][member_id] (remove square brackets). If you do not want to set any use number limit, set max_use_number at 0.",
-          "enter-value": "Please specify a value",
-          "select-date": "Please provide a date...",
+          "reservation-expiration-date-description": "Leave this field blank in case it is the same as the promotion expiration date",
+          "upload-description": "The CSV file containing coupon data must have the following format: [coupon_code][delimiter][max_use_number][delimiter][member_id] (remove square brackets). If you do not want to set any use number limit, set max_use_number at 0",
+          "enter-value": "Specify a value",
+          "select-date": "Provide a date...",
           "member": "Customer",
-          "coupon-usages": "Coupon Usages",
+          "coupon-usages": "Coupon usages",
           "coupon-info": "Info"
         },
         "placeholders": {
@@ -94,7 +94,7 @@
         "unnamed-filter": "Unnamed filter",
         "labels": {
           "name": "Filter name",
-          "name_": "Please give this filter a name",
+          "name_": "Name this filter",
           "active": "Active only"
         },
         "placeholders": {
@@ -142,7 +142,7 @@
         "content-item-details": {
           "title": "Edit content item",
           "subtitle": "Modify your content item",
-          "title-new": "New Content Item",
+          "title-new": "New content Item",
           "subtitle-new": "Add a new content item",
           "labels": {
             "content-item-name": "Content item name",
@@ -278,14 +278,14 @@
             "is-active": "Active",
             "start-date": "Start date",
             "end-date": "End date",
-            "publishing-conditions": "Publish Conditions"
+            "publishing-conditions": "Publish conditions"
           },
           "placeholders": {
             "name": "Specify published content element name",
             "description": "Specify published content element description",
             "store": "Select...",
-            "start-date": "Please specify a value",
-            "end-date": "Please specify a value"
+            "start-date": "Specify a value",
+            "end-date": "Specify a value"
           },
           "menu": {
             "placeholders": {
@@ -293,7 +293,7 @@
               "description": "{{quantity}} placeholder(s) selected"
             },
             "content-items": {
-              "title": "Content Items",
+              "title": "Content items",
               "description": "{{quantity}} content item(s) selected"
             }
           }
@@ -301,7 +301,7 @@
         "list": {
           "title": "Published content",
           "subtitle": "List of your published content elements",
-          "noItemsMessage": "You do not have any published content yet",
+          "noItemsMessage": "You have no published content yet",
           "labels": {
             "picture": "Icon",
             "name": "Name",
@@ -351,31 +351,31 @@
     },
     "dialogs": {
       "content-item-delete": {
-        "title": "Confirm Delete",
+        "title": "Confirm delete",
         "message": "Are you sure you want to delete this content item?"
       },
       "placeholders-folder-delete": {
-        "title": "Confirm Delete",
+        "title": "Confirm delete",
         "message": "Are you sure you want to delete this content placeholder folder?"
       },
       "content-item-folder-delete": {
-        "title": "Confirm Delete",
+        "title": "Confirm delete",
         "message": "Are you sure you want to delete this content item folder?"
       },
       "content-folder-delete": {
-        "title": "Confirm Delete",
+        "title": "Confirm delete",
         "message": "Are you sure you want to delete this folder?"
       },
       "publication-delete": {
-        "title": "Confirm Delete",
+        "title": "Confirm delete",
         "message": "Are you sure you want to delete this publication?"
       },
       "content-placeholder-delete": {
-        "title": "Confirm Delete",
+        "title": "Confirm delete",
         "message": "Are you sure you want to delete this content placeholder?"
       },
       "promotions-delete": {
-        "title": "Confirm Delete",
+        "title": "Confirm delete",
         "message": "Are you sure you want to delete the selected promotions?"
       },
       "promotion-save": {
@@ -383,7 +383,7 @@
         "message": "The promotion has been modified. Do you want to save changes?"
       },
       "coupon-delete": {
-        "title": "Confirm Delete",
+        "title": "Confirm delete",
         "message": "Are you sure you want to delete the selected coupons?",
         "message-all": "Are you sure you want to delete all coupons?"
       }
@@ -403,7 +403,7 @@
   },
   "settings": {
     "Marketing.Promotion.CombinePolicy": {
-      "description": "Best Reward: Select promotion rewards that most appeal to the shoppers. Multiple Offers Valid: If your store has multiple active promotions, shoppers may qualify for multiple promotions at a time. ",
+      "description": "Best reward: Select promotion rewards that will appeal most to the shoppers. Multiple offers valid: If your store has multiple active promotions, shoppers can qualify for multiple promotions at a time",
       "title": "Selected policy of using multiple active promotions"
     },
     "Marketing.ExportImport.Description": {

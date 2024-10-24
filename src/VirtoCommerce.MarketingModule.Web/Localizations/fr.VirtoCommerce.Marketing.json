@@ -1,0 +1,419 @@
+{
+  "marketing": {
+    "main-menu-title": "Marketing",
+    "widgets": {
+      "couponsWidget": {
+        "title": "Coupons",
+        "newPromotion": "Vous pouvez ajouter des coupons après avoir enregistré une promotion"
+      }
+    },
+    "blades": {
+      "marketing-main": {
+        "title": "Marketing"
+      },
+      "promotion-detail": {
+        "title-new": "Nouvelle promotion",
+        "labels": {
+          "is-active": "Actif",
+          "exclusivity": "Exclusivité",
+          "is-combine-with-self": "Peut être utilisé plus d'une fois",
+          "priority": "Priorité",
+          "promotion-name": "Nom de la promotion",
+          "description": "Description",
+          "store": "Magasins",
+          "start-date": "Date de début",
+          "usage-limit": "Limite d'utilisation",
+          "coupons": "Coupons",
+          "expiration-date": "Date d'expiration",
+          "per-customer-limit": "Limites par client",
+          "promotion-conditions": "Conditions de la promotion",
+          "combined-with-others": "Valide avec d'autres offres",
+          "exclusive": "Exclusivité mondiale"
+        },
+        "descr": {
+          "promotion-name": "Donnez à votre promotion un nom unique qui apparaîtra dans la liste des promotions",
+          "store": "Magasins où cette promotion s'applique",
+          "is-active": "Utilisez ce bouton pour activer ou désactiver votre promotion",
+          "start-date": "Si vous ne spécifiez pas de date de début, la promotion sera active dès que vous l'aurez enregistrée",
+          "expiration-date": "Si vous ne spécifiez pas de date de fin, la promotion restera active jusqu'à ce que vous la désactiviez",
+          "priority": "La promotion avec la plus haute priorité est appliquée en premier",
+          "exclusivity": "Si vous sélectionnez 'Exclusivité mondiale', vos clients ne pourront pas appliquer d'autres promotions avec une priorité inférieure à la commande",
+          "is-combine-with-self": "Activez cette option si plusieurs coupons sont nécessaires pour obtenir l'offre"
+        },
+        "placeholders": {
+          "promotion-name": "Tapez le nom de votre promotion ici...",
+          "description": "Tapez votre description ici...",
+          "store": "Sélectionnez...",
+          "start-date": "Indiquez une date...",
+          "coupons": "Entrez les codes de coupons...",
+          "expiration-date": "Indiquez une date..."
+        },
+        "toolbar": {
+          "coupons": "Coupons"
+        },
+        "cannot-be-saved": "Votre portée actuelle est limitée aux magasins, et la promotion sélectionnée est assignée à plusieurs magasins. La modification de cette promotion n'est pas autorisée"
+      },
+      "coupon-detail": {
+        "new-title": "Nouveau coupon",
+        "title": "Coupon",
+        "labels": {
+          "coupon-code": "Code",
+          "code-description": "Le code du coupon ne peut contenir que des caractères alphanumériques",
+          "max-uses-number": "Nombre maximum d'utilisations",
+          "max-uses-per-user": "Utilisations maximales par client",
+          "max-uses-number-description": "Spécifiez le nombre de fois où ce coupon peut être utilisé. Si vous ne souhaitez pas fixer de limite, mettez 0",
+          "max-uses-per-user-description": "Spécifiez le nombre de fois où ce coupon peut être utilisé par un même client. Si vous ne souhaitez pas fixer de limite, mettez 0",
+          "reservation-expiration-date": "Date d'expiration du coupon",
+          "reservation-expiration-date-description": "Laissez ce champ vide si la date est la même que la date d'expiration de la promotion",
+          "upload-description": "Le fichier CSV contenant les données du coupon doit être au format suivant : [coupon_code][délimiteur][max_use_number][délimiteur][member_id] (retirez les crochets). Si vous ne souhaitez pas fixer de limite au nombre d'utilisations, définissez max_use_number à 0",
+          "enter-value": "Indiquez une valeur",
+          "select-date": "Indiquez une date...",
+          "member": "Client",
+          "coupon-usages": "Utilisations du coupon",
+          "coupon-info": "Informations"
+        },
+        "placeholders": {
+          "member": "Sélectionnez un client ou une organisation..."
+        }
+      },
+      "promotion-list": {
+        "labels": {
+          "name": "Nom",
+          "isActive": "Actif",
+          "last-modified": "Modifié"
+        },
+        "new-filter": "Ajouter un nouveau filtre",
+        "placeholders": {
+          "select-filter": "Sélectionnez un filtre"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Modifier le filtre",
+        "new-title": "Nouveau filtre",
+        "new-subtitle": "Créer un nouveau filtre",
+        "unnamed-filter": "Filtre sans nom",
+        "labels": {
+          "name": "Nom du filtre",
+          "name_": "Nommer ce filtre",
+          "active": "Actif uniquement"
+        },
+        "placeholders": {
+          "all": "Non spécifié"
+        }
+      },
+      "catalog-items-select": {
+        "title-product": "Sélectionner un produit pour la condition de promotion",
+        "title-category": "Sélectionner une catégorie pour la condition de promotion"
+      },
+      "catalog-entries": {
+        "title-product": "Articles sélectionnés"
+      },
+      "dynamicContent-list": {
+        "menu": {
+          "items": {
+            "title": "Éléments de contenu",
+            "description": "Gérer les éléments de contenu dynamique"
+          },
+          "placeholders": {
+            "title": "Espaces de contenu",
+            "description": "Gérer les espaces qui contiennent des éléments de contenu"
+          },
+          "publishing": {
+            "title": "Contenu publié",
+            "description": "Définir les conditions de publication de votre contenu"
+          }
+        }
+      },
+      "items": {
+        "add": {
+          "title": "Nouvel élément de contenu",
+          "subtitle": "Ajouter un nouvel élément de contenu",
+          "menu": {
+            "folder": {
+              "title": "Dossier d'éléments de contenu",
+              "description": "Créer un dossier pour regrouper des éléments de contenu"
+            },
+            "item": {
+              "title": "Élément de contenu",
+              "description": "Créer un élément de contenu"
+            }
+          }
+        },
+        "content-item-details": {
+          "title": "Modifier l'élément de contenu",
+          "subtitle": "Modifier votre élément de contenu",
+          "title-new": "Nouvel élément de contenu",
+          "subtitle-new": "Ajouter un nouvel élément de contenu",
+          "labels": {
+            "content-item-name": "Nom de l'élément de contenu",
+            "content-item-description": "Description de l'élément de contenu",
+            "none": "Aucun"
+          },
+          "placeholders": {
+            "content-item-name": "Entrez le nom de l'élément de contenu",
+            "content-item-description": "Entrez la description de l'élément de contenu"
+          }
+        },
+        "folder-details": {
+          "title": "Modifier le dossier d'éléments de contenu",
+          "subtitle": "Modifier votre dossier d'éléments de contenu",
+          "title-new": "Nouveau dossier d'éléments de contenu",
+          "subtitle-new": "Ajouter un nouveau dossier d'éléments de contenu",
+          "labels": {
+            "folder-name": "Nom du dossier",
+            "folder-description": "Description du dossier"
+          },
+          "placeholders": {
+            "folder-name": "Entrez le nom du dossier",
+            "folder-description": "Entrez la description du dossier"
+          }
+        },
+        "list": {
+          "title": "Éléments de contenu",
+          "subtitle": "Liste des éléments de contenu",
+          "bread-crumb-top": "Tous les éléments",
+          "labels": {
+            "picture": "Image",
+            "name": "Nom",
+            "description": "Description",
+            "no-data": "Aucune donnée"
+          },
+          "noItemsMessage": "Vous n'avez pas encore d'éléments de contenu"
+        }
+      },
+      "placeholders": {
+        "add": {
+          "title": "Nouveau espace",
+          "subtitle": "Ajouter un nouvel espace",
+          "menu": {
+            "folder": {
+              "title": "Dossier d'espaces",
+              "description": "Créer un dossier pour regrouper des espaces"
+            },
+            "item": {
+              "title": "Espace",
+              "description": "Créer un espace pour regrouper des éléments de contenu"
+            }
+          }
+        },
+        "placeholder-details": {
+          "title": "Nouvel espace",
+          "subtitle": "Ajouter un nouvel espace",
+          "title-new": "Modifier l'espace",
+          "subtitle-new": "Modifier votre espace",
+          "labels": {
+            "placeholder-name": "Nom de l'espace",
+            "placeholder-description": "Description de l'espace",
+            "placeholder-image-description": "Description de l'image de l'espace",
+            "image-note": "Glissez et déposez votre image ici",
+            "progress": "Progression"
+          },
+          "placeholders": {
+            "placeholder-name": "Indiquez le nom de l'espace",
+            "placeholder-description": "Indiquez la description de l'espace"
+          }
+        },
+        "folder-details": {
+          "title": "Modifier le dossier d'espaces",
+          "subtitle": "Modifier votre dossier d'espaces",
+          "title-new": "Nouveau dossier d'espaces",
+          "subtitle-new": "Ajouter un nouveau dossier d'espaces",
+          "labels": {
+            "folder-name": "Nom du dossier",
+            "folder-description": "Description du dossier"
+          },
+          "placeholders": {
+            "folder-name": "Indiquez le nom du dossier",
+            "folder-description": "Indiquez la description du dossier"
+          }
+        },
+        "list": {
+          "title": "Espaces de contenu",
+          "subtitle": "Liste de vos espaces de contenu",
+          "bread-crumb-top": "Tous les espaces",
+          "labels": {
+            "picture": "Image",
+            "name": "Nom",
+            "description": "Description",
+            "no-data": "Pas de contenu"
+          }
+        }
+      },
+      "publishing": {
+        "add-content-items": {
+          "title": "Ajouter des éléments de contenu",
+          "subtitle": "Sélectionnez les éléments de contenu à ajouter",
+          "bread-crumb-top": "Tous les éléments",
+          "labels": {
+            "chosen-content-items": "Éléments de contenu sélectionnés",
+            "content-items": "Éléments de contenu",
+            "picture": "Image",
+            "name": "Nom",
+            "description": "Description",
+            "no-data": "Pas de données"
+          }
+        },
+        "add-placeholders": {
+          "title": "Ajouter des espaces",
+          "subtitle": "Sélectionnez les espaces à ajouter",
+          "bread-crumb-top": "Tous les espaces",
+          "labels": {
+            "chosen-placeholders": "Espaces sélectionnés",
+            "content-placeholders": "Espaces de contenu",
+            "picture": "Image",
+            "name": "Nom",
+            "description": "Description",
+            "no-data": "Pas de données"
+          }
+        },
+        "publishing-main-step": {
+          "title": "Modifier l'élément de contenu publié",
+          "subtitle": "Modifier votre élément de contenu publié",
+          "title-new": "Nouvel élément de contenu publié",
+          "subtitle-new": "Ajouter un nouvel élément de contenu publié",
+          "labels": {
+            "name": "Nom",
+            "description": "Description",
+            "store": "Magasin",
+            "is-active": "Actif",
+            "start-date": "Date de début",
+            "end-date": "Date de fin",
+            "publishing-conditions": "Conditions de publication"
+          },
+          "placeholders": {
+            "name": "Indiquez le nom de l'élément de contenu publié",
+            "description": "Indiquez la description de l'élément de contenu publié",
+            "store": "Sélectionnez...",
+            "start-date": "Indiquez une valeur",
+            "end-date": "Indiquez une valeur"
+          },
+          "menu": {
+            "placeholders": {
+              "title": "Espace",
+              "description": "{{quantity}} espace(s) sélectionné(s)"
+            },
+            "content-items": {
+              "title": "Éléments de contenu",
+              "description": "{{quantity}} élément(s) de contenu sélectionné(s)"
+            }
+          }
+        },
+        "list": {
+          "title": "Contenu publié",
+          "subtitle": "Liste de vos éléments de contenu publiés",
+          "noItemsMessage": "Vous n'avez pas encore publié de contenu",
+          "labels": {
+            "picture": "Icône",
+            "name": "Nom",
+            "description": "Description",
+            "no-data": "Pas de contenu publié"
+          }
+        }
+      },
+      "coupons": {
+        "code": "Code",
+        "total-uses-count": "Nombre total d'utilisations",
+        "max-uses-number": "Nombre maximum d'utilisations",
+        "max-uses-per-user": "Utilisations maximales par client",
+        "toolbar": {
+          "add": "Ajouter",
+          "import": "Importer",
+          "refresh": "Rafraîchir",
+          "delete": "Supprimer",
+          "delete-all": "Tout supprimer"
+        },
+        "no-coupons-message": "Vous n'avez pas encore de coupons"
+      },
+      "coupons-import": {
+        "title": "Importer des coupons",
+        "labels": {
+          "delimiter": "Délimiteur de colonne CSV",
+          "upload": "Télécharger le fichier CSV",
+          "upload-progress": "Progression du téléchargement",
+          "space": "Espace",
+          "comma": "Virgule",
+          "semicolon": "Point-virgule",
+          "start": "Démarrer",
+          "end": "Fin",
+          "total": "Nombre total",
+          "processed": "Nombre traité",
+          "errors-count": "Nombre d'erreurs",
+          "errors": "Erreurs",
+          "tab": "Tabulation"
+        },
+        "placeholders": {
+          "delimiter": "Sélectionnez..."
+        }
+      },
+      "coupons-import-processing": {
+        "title": "Importation de coupons"
+      }
+    },
+    "dialogs": {
+      "content-item-delete": {
+        "title": "Confirmer la suppression",
+        "message": "Êtes-vous sûr de vouloir supprimer cet élément de contenu ?"
+      },
+      "placeholders-folder-delete": {
+        "title": "Confirmer la suppression",
+        "message": "Êtes-vous sûr de vouloir supprimer ce dossier d'espaces de contenu ?"
+      },
+      "content-item-folder-delete": {
+        "title": "Confirmer la suppression",
+        "message": "Êtes-vous sûr de vouloir supprimer ce dossier d'éléments de contenu ?"
+      },
+      "content-folder-delete": {
+        "title": "Confirmer la suppression",
+        "message": "Êtes-vous sûr de vouloir supprimer ce dossier ?"
+      },
+      "publication-delete": {
+        "title": "Confirmer la suppression",
+        "message": "Êtes-vous sûr de vouloir supprimer cette publication ?"
+      },
+      "content-placeholder-delete": {
+        "title": "Confirmer la suppression",
+        "message": "Êtes-vous sûr de vouloir supprimer cet espace de contenu ?"
+      },
+      "promotions-delete": {
+        "title": "Confirmer la suppression",
+        "message": "Êtes-vous sûr de vouloir supprimer les promotions sélectionnées ?"
+      },
+      "promotion-save": {
+        "title": "Enregistrer les modifications",
+        "message": "La promotion a été modifiée. Voulez-vous enregistrer les modifications ?"
+      },
+      "coupon-delete": {
+        "title": "Confirmer la suppression",
+        "message": "Êtes-vous sûr de vouloir supprimer les coupons sélectionnés ?",
+        "message-all": "Êtes-vous sûr de vouloir supprimer tous les coupons ?"
+      }
+    },
+    "commands": {
+      "manage-type-properties": "Gérer les types de propriété",
+      "edit-folder": "Modifier le dossier",
+      "start-import": "Démarrer l'importation"
+    }
+  },
+  "permissions": {
+    "marketing:read": "Voir les données marketing",
+    "marketing:create": "Créer des données marketing",
+    "marketing:update": "Mettre à jour les données marketing",
+    "marketing:delete": "Supprimer des données marketing",
+    "marketing:access": "Ouvrir le menu marketing"
+  },
+  "settings": {
+    "Marketing.Promotion.CombinePolicy": {
+      "description": "Meilleure récompense : Sélectionnez les récompenses de promotion qui attireront le plus les acheteurs. Offres multiples valides : Si votre magasin a plusieurs promotions actives, les acheteurs peuvent se qualifier pour plusieurs promotions en même temps",
+      "title": "Politique sélectionnée pour l'utilisation de plusieurs promotions actives"
+    },
+    "Marketing.ExportImport.Description": {
+      "description": "Exporter et importer des promotions et du contenu dynamique (places, contenu, publications)",
+      "title": "Description de l'exportation/importation"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Marketing": {
+      "description": "Exporter et importer des promotions et du contenu dynamique (places, contenu, publications)"
+    }
+  }
+}
