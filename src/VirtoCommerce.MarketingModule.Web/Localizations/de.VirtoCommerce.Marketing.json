@@ -1,0 +1,419 @@
+{
+  "marketing": {
+    "main-menu-title": "Marketing",
+    "widgets": {
+      "couponsWidget": {
+        "title": "Gutscheine",
+        "newPromotion": "Sie können Gutscheine nach dem Speichern einer Promotion hinzufügen"
+      }
+    },
+    "blades": {
+      "marketing-main": {
+        "title": "Marketing"
+      },
+      "promotion-detail": {
+        "title-new": "Neue Promotion",
+        "labels": {
+          "is-active": "Aktiv",
+          "exclusivity": "Exklusivität",
+          "is-combine-with-self": "Kann mehrmals eingelöst werden",
+          "priority": "Priorität",
+          "promotion-name": "Name der Promotion",
+          "description": "Beschreibung",
+          "store": "Geschäfte",
+          "start-date": "Startdatum",
+          "usage-limit": "Nutzungsgrenze",
+          "coupons": "Gutscheine",
+          "expiration-date": "Ablaufdatum",
+          "per-customer-limit": "Einschränkungen für einzelne Kunden",
+          "promotion-conditions": "Bedingungen der Promotion",
+          "combined-with-others": "Gültig mit anderen Angeboten",
+          "exclusive": "Global exklusiv"
+        },
+        "descr": {
+          "promotion-name": "Geben Sie Ihrer Promotion einen einzigartigen Namen, der in der Promotionsliste angezeigt wird",
+          "store": "Geschäfte, in denen diese Promotion gilt",
+          "is-active": "Verwenden Sie diese Schaltfläche, um Ihre Promotion zu aktivieren oder zu deaktivieren",
+          "start-date": "Wenn Sie kein Startdatum angeben, wird die Promotion sofort nach dem Speichern aktiv",
+          "expiration-date": "Wenn Sie kein Enddatum angeben, bleibt die Promotion aktiv, bis Sie sie deaktivieren",
+          "priority": "Die Promotion mit der höchsten Priorität wird zuerst angewendet",
+          "exclusivity": "Wenn Sie 'Global Exklusiv' auswählen, können Ihre Kunden keine anderen Promotions mit niedrigerer Priorität auf die Bestellung anwenden",
+          "is-combine-with-self": "Aktivieren Sie diese Option, wenn mehrere Gutscheine erforderlich sind, um das Angebot einzulösen"
+        },
+        "placeholders": {
+          "promotion-name": "Geben Sie hier den Namen Ihrer Promotion ein...",
+          "description": "Geben Sie hier Ihre Beschreibung ein...",
+          "store": "Auswählen...",
+          "start-date": "Bitte geben Sie ein Datum an...",
+          "coupons": "Geben Sie Gutscheincodes ein...",
+          "expiration-date": "Bitte geben Sie ein Datum an..."
+        },
+        "toolbar": {
+          "coupons": "Gutscheine"
+        },
+        "cannot-be-saved": "Sie sind derzeit auf den Umfang der Geschäfte beschränkt, und die ausgewählte Promotion ist mehreren Geschäften zugewiesen. Das Bearbeiten dieser Promotion ist nicht erlaubt"
+      },
+      "coupon-detail": {
+        "new-title": "Neuer Gutschein",
+        "title": "Gutschein",
+        "labels": {
+          "coupon-code": "Code",
+          "code-description": "Der Gutscheincode darf nur alphanumerische Zeichen enthalten",
+          "max-uses-number": "Maximale Nutzungsanzahl",
+          "max-uses-per-user": "Maximale Nutzungen pro Kunde",
+          "max-uses-number-description": "Geben Sie die Anzahl der Male an, die dieser Gutschein eingelöst werden kann. Wenn Sie keine Begrenzung festlegen möchten, geben Sie 0 ein",
+          "max-uses-per-user-description": "Geben Sie die Anzahl der Male an, die dieser Gutschein von einem einzelnen Benutzer eingelöst werden kann. Wenn Sie keine Begrenzung festlegen möchten, geben Sie 0 ein",
+          "reservation-expiration-date": "Ablaufdatum des Gutscheins",
+          "reservation-expiration-date-description": "Lassen Sie dieses Feld leer, wenn es mit dem Ablaufdatum der Promotion übereinstimmt",
+          "upload-description": "Die CSV-Datei mit den Gutscheindaten muss das folgende Format haben: [coupon_code][delimiter][max_use_number][delimiter][member_id] (eckige Klammern entfernen). Wenn Sie keine Nutzungsgrenze festlegen möchten, setzen Sie max_use_number auf 0",
+          "enter-value": "Bitte geben Sie einen Wert an",
+          "select-date": "Bitte geben Sie ein Datum an...",
+          "member": "Kunde",
+          "coupon-usages": "Gutscheinverwendungen",
+          "coupon-info": "Info"
+        },
+        "placeholders": {
+          "member": "Wählen Sie einen Kunden oder eine Organisation aus..."
+        }
+      },
+      "promotion-list": {
+        "labels": {
+          "name": "Name",
+          "isActive": "Aktiv",
+          "last-modified": "Geändert"
+        },
+        "new-filter": "Neuen Filter hinzufügen",
+        "placeholders": {
+          "select-filter": "Filter auswählen"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Filter bearbeiten",
+        "new-title": "Neuer Filter",
+        "new-subtitle": "Neuen Filter erstellen",
+        "unnamed-filter": "Unbenannter Filter",
+        "labels": {
+          "name": "Filtername",
+          "name_": "Nennen Sie diesen Filter",
+          "active": "Nur aktiv"
+        },
+        "placeholders": {
+          "all": "Unbestimmt"
+        }
+      },
+      "catalog-items-select": {
+        "title-product": "Produkt für Promotionsbedingungen auswählen",
+        "title-category": "Kategorie für Promotionsbedingungen auswählen"
+      },
+      "catalog-entries": {
+        "title-product": "Ausgewählte Elemente"
+      },
+      "dynamicContent-list": {
+        "menu": {
+          "items": {
+            "title": "Inhaltselemente",
+            "description": "Verwalten Sie dynamische Inhaltselemente"
+          },
+          "placeholders": {
+            "title": "Inhaltsplatzhalter",
+            "description": "Verwalten Sie Platzhalter, die Inhaltselemente enthalten"
+          },
+          "publishing": {
+            "title": "Veröffentlichter Inhalt",
+            "description": "Bedingungen für die Anzeige Ihres Inhalts festlegen"
+          }
+        }
+      },
+      "items": {
+        "add": {
+          "title": "Neues Inhaltselement",
+          "subtitle": "Fügen Sie ein neues Inhaltselement hinzu",
+          "menu": {
+            "folder": {
+              "title": "Inhaltselementordner",
+              "description": "Erstellen Sie einen Ordner für Inhaltselemente"
+            },
+            "item": {
+              "title": "Inhaltselement",
+              "description": "Erstellen Sie ein Inhaltselement"
+            }
+          }
+        },
+        "content-item-details": {
+          "title": "Inhaltselement bearbeiten",
+          "subtitle": "Ändern Sie Ihr Inhaltselement",
+          "title-new": "Neues Inhaltselement",
+          "subtitle-new": "Fügen Sie ein neues Inhaltselement hinzu",
+          "labels": {
+            "content-item-name": "Name des Inhaltselements",
+            "content-item-description": "Beschreibung des Inhaltselements",
+            "none": "Keine"
+          },
+          "placeholders": {
+            "content-item-name": "Geben Sie den Namen des Inhaltselements ein",
+            "content-item-description": "Geben Sie die Beschreibung des Inhaltselements ein"
+          }
+        },
+        "folder-details": {
+          "title": "Inhaltselementordner bearbeiten",
+          "subtitle": "Ändern Sie Ihren Inhaltselementordner",
+          "title-new": "Neuer Inhaltselementordner",
+          "subtitle-new": "Fügen Sie einen neuen Inhaltselementordner hinzu",
+          "labels": {
+            "folder-name": "Ordnername",
+            "folder-description": "Ordnerbeschreibung"
+          },
+          "placeholders": {
+            "folder-name": "Geben Sie den Ordnernamen ein",
+            "folder-description": "Geben Sie die Ordnerbeschreibung ein"
+          }
+        },
+        "list": {
+          "title": "Inhaltselemente",
+          "subtitle": "Liste der Inhaltselemente",
+          "bread-crumb-top": "Alle Elemente",
+          "labels": {
+            "picture": "Bild",
+            "name": "Name",
+            "description": "Beschreibung",
+            "no-data": "Keine Daten"
+          },
+          "noItemsMessage": "Sie haben noch keine Inhaltselemente"
+        }
+      },
+      "placeholders": {
+        "add": {
+          "title": "Neuer Platzhalter",
+          "subtitle": "Fügen Sie einen neuen Platzhalter hinzu",
+          "menu": {
+            "folder": {
+              "title": "Platzhalterordner",
+              "description": "Erstellen Sie einen Ordner für Platzhalter"
+            },
+            "item": {
+              "title": "Platzhalter",
+              "description": "Erstellen Sie einen Platzhalter für Inhaltselemente"
+            }
+          }
+        },
+        "placeholder-details": {
+          "title": "Neuer Platzhalter",
+          "subtitle": "Fügen Sie einen neuen Platzhalter hinzu",
+          "title-new": "Platzhalter bearbeiten",
+          "subtitle-new": "Ändern Sie Ihren Platzhalter",
+          "labels": {
+            "placeholder-name": "Name des Platzhalters",
+            "placeholder-description": "Beschreibung des Platzhalters",
+            "placeholder-image-description": "Beschreibung des Platzhalterbildes",
+            "image-note": "Ziehen Sie Ihr Bild hierher",
+            "progress": "Fortschritt"
+          },
+          "placeholders": {
+            "placeholder-name": "Geben Sie den Namen des Platzhalters an",
+            "placeholder-description": "Geben Sie die Beschreibung des Platzhalters an"
+          }
+        },
+        "folder-details": {
+          "title": "Platzhalterordner bearbeiten",
+          "subtitle": "Ändern Sie Ihren Platzhalterordner",
+          "title-new": "Neuer Platzhalterordner",
+          "subtitle-new": "Fügen Sie einen neuen Platzhalterordner hinzu",
+          "labels": {
+            "folder-name": "Ordnername",
+            "folder-description": "Ordnerbeschreibung"
+          },
+          "placeholders": {
+            "folder-name": "Geben Sie den Ordnernamen an",
+            "folder-description": "Geben Sie die Ordnerbeschreibung an"
+          }
+        },
+        "list": {
+          "title": "Inhaltsplatzhalter",
+          "subtitle": "Liste Ihrer Inhaltsplatzhalter",
+          "bread-crumb-top": "Alle Platzhalter",
+          "labels": {
+            "picture": "Bild",
+            "name": "Name",
+            "description": "Beschreibung",
+            "no-data": "Keine Daten"
+          }
+        }
+      },
+      "publishing": {
+        "add-content-items": {
+          "title": "Inhaltselemente hinzufügen",
+          "subtitle": "Wählen Sie aus, welche Inhaltselemente hinzugefügt werden sollen",
+          "bread-crumb-top": "Alle Elemente",
+          "labels": {
+            "chosen-content-items": "Ausgewählte Inhaltselemente",
+            "content-items": "Inhaltselemente",
+            "picture": "Bild",
+            "name": "Name",
+            "description": "Beschreibung",
+            "no-data": "Keine Daten"
+          }
+        },
+        "add-placeholders": {
+          "title": "Platzhalter hinzufügen",
+          "subtitle": "Wählen Sie aus, welche Platzhalter hinzugefügt werden sollen",
+          "bread-crumb-top": "Alle Platzhalter",
+          "labels": {
+            "chosen-placeholders": "Ausgewählte Platzhalter",
+            "content-placeholders": "Inhaltsplatzhalter",
+            "picture": "Bild",
+            "name": "Name",
+            "description": "Beschreibung",
+            "no-data": "Keine Daten"
+          }
+        },
+        "publishing-main-step": {
+          "title": "Veröffentlichtes Inhaltselement bearbeiten",
+          "subtitle": "Ändern Sie Ihr veröffentlichtes Inhaltselement",
+          "title-new": "Neues veröffentlichtes Inhaltselement",
+          "subtitle-new": "Fügen Sie ein neues veröffentlichtes Inhaltselement hinzu",
+          "labels": {
+            "name": "Name",
+            "description": "Beschreibung",
+            "store": "Geschäft",
+            "is-active": "Aktiv",
+            "start-date": "Startdatum",
+            "end-date": "Enddatum",
+            "publishing-conditions": "Veröffentlichungsbedingungen"
+          },
+          "placeholders": {
+            "name": "Geben Sie den Namen des veröffentlichten Inhaltselements an",
+            "description": "Geben Sie die Beschreibung des veröffentlichten Inhaltselements an",
+            "store": "Auswählen...",
+            "start-date": "Geben Sie einen Wert an",
+            "end-date": "Geben Sie einen Wert an"
+          },
+          "menu": {
+            "placeholders": {
+              "title": "Platzhalter",
+              "description": "{{quantity}} Platzhalter ausgewählt"
+            },
+            "content-items": {
+              "title": "Inhaltselemente",
+              "description": "{{quantity}} Inhaltselement(e) ausgewählt"
+            }
+          }
+        },
+        "list": {
+          "title": "Veröffentlichter Inhalt",
+          "subtitle": "Liste Ihrer veröffentlichten Inhaltselemente",
+          "noItemsMessage": "Sie haben noch keinen veröffentlichten Inhalt",
+          "labels": {
+            "picture": "Icon",
+            "name": "Name",
+            "description": "Beschreibung",
+            "no-data": "Kein veröffentlichter Inhalt"
+          }
+        }
+      },
+      "coupons": {
+        "code": "Code",
+        "total-uses-count": "Gesamtanzahl der Verwendungen",
+        "max-uses-number": "Maximale Nutzungsanzahl",
+        "max-uses-per-user": "Maximale Verwendungen pro Kunde",
+        "toolbar": {
+          "add": "Hinzufügen",
+          "import": "Importieren",
+          "refresh": "Aktualisieren",
+          "delete": "Löschen",
+          "delete-all": "Alle löschen"
+        },
+        "no-coupons-message": "Sie haben noch keine Gutscheine"
+      },
+      "coupons-import": {
+        "title": "Gutscheine importieren",
+        "labels": {
+          "delimiter": "CSV-Spalten-Trennzeichen",
+          "upload": "CSV-Datei hochladen",
+          "upload-progress": "Hochladefortschritt",
+          "space": "Leerzeichen",
+          "comma": "Komma",
+          "semicolon": "Semikolon",
+          "start": "Start",
+          "end": "Ende",
+          "total": "Gesamtanzahl",
+          "processed": "Verarbeitet",
+          "errors-count": "Anzahl der Fehler",
+          "errors": "Fehler",
+          "tab": "Tabulator"
+        },
+        "placeholders": {
+          "delimiter": "Auswählen..."
+        }
+      },
+      "coupons-import-processing": {
+        "title": "Gutscheine werden importiert"
+      }
+    },
+    "dialogs": {
+      "content-item-delete": {
+        "title": "Löschen bestätigen",
+        "message": "Sind Sie sicher, dass Sie dieses Inhaltselement löschen möchten?"
+      },
+      "placeholders-folder-delete": {
+        "title": "Löschen bestätigen",
+        "message": "Sind Sie sicher, dass Sie diesen Platzhalterordner löschen möchten?"
+      },
+      "content-item-folder-delete": {
+        "title": "Löschen bestätigen",
+        "message": "Sind Sie sicher, dass Sie diesen Inhaltselementordner löschen möchten?"
+      },
+      "content-folder-delete": {
+        "title": "Löschen bestätigen",
+        "message": "Sind Sie sicher, dass Sie diesen Ordner löschen möchten?"
+      },
+      "publication-delete": {
+        "title": "Löschen bestätigen",
+        "message": "Sind Sie sicher, dass Sie diese Veröffentlichung löschen möchten?"
+      },
+      "content-placeholder-delete": {
+        "title": "Löschen bestätigen",
+        "message": "Sind Sie sicher, dass Sie diesen Platzhalter löschen möchten?"
+      },
+      "promotions-delete": {
+        "title": "Löschen bestätigen",
+        "message": "Sind Sie sicher, dass Sie die ausgewählten Promotions löschen möchten?"
+      },
+      "promotion-save": {
+        "title": "Änderungen speichern",
+        "message": "Die Promotion wurde geändert. Möchten Sie die Änderungen speichern?"
+      },
+      "coupon-delete": {
+        "title": "Löschen bestätigen",
+        "message": "Sind Sie sicher, dass Sie die ausgewählten Gutscheine löschen möchten?",
+        "message-all": "Sind Sie sicher, dass Sie alle Gutscheine löschen möchten?"
+      }
+    },
+    "commands": {
+      "manage-type-properties": "Eigenschaftstypen verwalten",
+      "edit-folder": "Ordner bearbeiten",
+      "start-import": "Import starten"
+    }
+  },
+  "permissions": {
+    "marketing:read": "Marketingdaten anzeigen",
+    "marketing:create": "Marketingdaten erstellen",
+    "marketing:update": "Marketingdaten aktualisieren",
+    "marketing:delete": "Marketingdaten löschen",
+    "marketing:access": "Marketingmenü öffnen"
+  },
+  "settings": {
+    "Marketing.Promotion.CombinePolicy": {
+      "description": "Beste Belohnung: Wählen Sie Promotionsbelohnungen, die für die Käufer am ansprechendsten sind. Mehrere Angebote gültig: Wenn Ihr Geschäft mehrere aktive Promotions hat, können Käufer für mehrere Promotions gleichzeitig qualifiziert werden",
+      "title": "Ausgewählte Richtlinie zur Nutzung mehrerer aktiver Promotions"
+    },
+    "Marketing.ExportImport.Description": {
+      "description": "Exportieren und importieren Sie Promotions und dynamische Inhalte (Orte, Inhalte, Veröffentlichungen)",
+      "title": "Export-/Importbeschreibung"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Marketing": {
+      "description": "Exportieren und importieren Sie Promotions und dynamische Inhalte (Orte, Inhalte, Veröffentlichungen)"
+    }
+  }
+}

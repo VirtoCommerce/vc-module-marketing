@@ -1,0 +1,419 @@
+{
+  "marketing": {
+    "main-menu-title": "Marketing",
+    "widgets": {
+      "couponsWidget": {
+        "title": "Kupony",
+        "newPromotion": "Możesz dodać kupony po zapisaniu promocji"
+      }
+    },
+    "blades": {
+      "marketing-main": {
+        "title": "Marketing"
+      },
+      "promotion-detail": {
+        "title-new": "Nowa promocja",
+        "labels": {
+          "is-active": "Aktywna",
+          "exclusivity": "Ekskluzywność",
+          "is-combine-with-self": "Można wykorzystać więcej niż raz",
+          "priority": "Priorytet",
+          "promotion-name": "Nazwa promocji",
+          "description": "Opis",
+          "store": "Sklepy",
+          "start-date": "Data rozpoczęcia",
+          "usage-limit": "Limit użycia",
+          "coupons": "Kupony",
+          "expiration-date": "Data wygaśnięcia",
+          "per-customer-limit": "Ograniczenia dla klientów indywidualnych",
+          "promotion-conditions": "Warunki promocji",
+          "combined-with-others": "Ważna z innymi ofertami",
+          "exclusive": "Globalnie ekskluzywna"
+        },
+        "descr": {
+          "promotion-name": "Nadaj promocji unikalną nazwę, która zostanie wyświetlona na liście promocji",
+          "store": "Sklepy, w których obowiązuje ta promocja",
+          "is-active": "Użyj tego przycisku, aby włączyć lub wyłączyć promocję",
+          "start-date": "Jeśli nie określisz daty rozpoczęcia, promocja stanie się aktywna natychmiast po jej zapisaniu",
+          "expiration-date": "Jeśli nie określisz daty zakończenia, promocja będzie aktywna do momentu dezaktywacji",
+          "priority": "Promocja z najwyższym priorytetem zostanie zastosowana jako pierwsza",
+          "exclusivity": "Jeśli wybierzesz 'Globalnie Ekskluzywna', twoi klienci nie będą mogli zastosować żadnych innych promocji o niższym priorytecie do zamówienia",
+          "is-combine-with-self": "Włącz tę opcję, jeśli do realizacji oferty wymagane są wielokrotne kupony"
+        },
+        "placeholders": {
+          "promotion-name": "Wpisz tutaj nazwę promocji...",
+          "description": "Wpisz tutaj opis...",
+          "store": "Wybierz...",
+          "start-date": "Podaj datę...",
+          "coupons": "Wprowadź kody kuponów...",
+          "expiration-date": "Podaj datę..."
+        },
+        "toolbar": {
+          "coupons": "Kupony"
+        },
+        "cannot-be-saved": "Obecnie masz ograniczony zakres sklepów, a wybrana promocja jest przypisana do wielu sklepów. Edytowanie tej promocji nie jest dozwolone"
+      },
+      "coupon-detail": {
+        "new-title": "Nowy kupon",
+        "title": "Kupon",
+        "labels": {
+          "coupon-code": "Kod",
+          "code-description": "Kod kuponu może zawierać tylko znaki alfanumeryczne",
+          "max-uses-number": "Maksymalna liczba użyć",
+          "max-uses-per-user": "Maksymalna liczba użyć na użytkownika",
+          "max-uses-number-description": "Określ liczbę razy, ile ten kupon może zostać zrealizowany. Jeśli nie chcesz ustawiać limitu, wpisz 0",
+          "max-uses-per-user-description": "Określ liczbę razy, ile ten kupon może zostać zrealizowany przez jednego użytkownika. Jeśli nie chcesz ustawiać limitu, wpisz 0",
+          "reservation-expiration-date": "Data wygaśnięcia kuponu",
+          "reservation-expiration-date-description": "Pozostaw to pole puste, jeśli jest takie samo jak data wygaśnięcia promocji",
+          "upload-description": "Plik CSV zawierający dane kuponu musi mieć następujący format: [kod_kuponu][separator][maksymalna_liczba_użyć][separator][member_id] (usuń nawiasy kwadratowe). Jeśli nie chcesz ustawiać limitu użycia, ustaw maksymalną liczbę użyć na 0",
+          "enter-value": "Podaj wartość",
+          "select-date": "Podaj datę...",
+          "member": "Klient",
+          "coupon-usages": "Użycia kuponu",
+          "coupon-info": "Informacje"
+        },
+        "placeholders": {
+          "member": "Wybierz klienta lub organizację..."
+        }
+      },
+      "promotion-list": {
+        "labels": {
+          "name": "Nazwa",
+          "isActive": "Aktywna",
+          "last-modified": "Zmodyfikowano"
+        },
+        "new-filter": "Dodaj nowy filtr",
+        "placeholders": {
+          "select-filter": "Wybierz filtr"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Edytuj filtr",
+        "new-title": "Nowy filtr",
+        "new-subtitle": "Utwórz nowy filtr",
+        "unnamed-filter": "Filtr bez nazwy",
+        "labels": {
+          "name": "Nazwa filtra",
+          "name_": "Nadaj nazwę temu filtrowi",
+          "active": "Tylko aktywne"
+        },
+        "placeholders": {
+          "all": "Nieokreślone"
+        }
+      },
+      "catalog-items-select": {
+        "title-product": "Wybierz produkt do warunku promocji",
+        "title-category": "Wybierz kategorię do warunku promocji"
+      },
+      "catalog-entries": {
+        "title-product": "Wybrane elementy"
+      },
+      "dynamicContent-list": {
+        "menu": {
+          "items": {
+            "title": "Elementy treści",
+            "description": "Zarządzaj dynamicznymi elementami treści"
+          },
+          "placeholders": {
+            "title": "Miejsca treści",
+            "description": "Zarządzaj miejscami, które zawierają elementy treści"
+          },
+          "publishing": {
+            "title": "Opublikowane treści",
+            "description": "Ustaw warunki wyświetlania twoich treści"
+          }
+        }
+      },
+      "items": {
+        "add": {
+          "title": "Nowy element treści",
+          "subtitle": "Dodaj nowy element treści",
+          "menu": {
+            "folder": {
+              "title": "Folder elementu treści",
+              "description": "Utwórz folder na elementy treści"
+            },
+            "item": {
+              "title": "Element treści",
+              "description": "Utwórz element treści"
+            }
+          }
+        },
+        "content-item-details": {
+          "title": "Edytuj element treści",
+          "subtitle": "Zmień swój element treści",
+          "title-new": "Nowy element treści",
+          "subtitle-new": "Dodaj nowy element treści",
+          "labels": {
+            "content-item-name": "Nazwa elementu treści",
+            "content-item-description": "Opis elementu treści",
+            "none": "Brak"
+          },
+          "placeholders": {
+            "content-item-name": "Wpisz nazwę elementu treści",
+            "content-item-description": "Wpisz opis elementu treści"
+          }
+        },
+        "folder-details": {
+          "title": "Edytuj folder elementu treści",
+          "subtitle": "Zmień swój folder elementu treści",
+          "title-new": "Nowy folder elementu treści",
+          "subtitle-new": "Dodaj nowy folder treści",
+          "labels": {
+            "folder-name": "Nazwa folderu",
+            "folder-description": "Opis folderu"
+          },
+          "placeholders": {
+            "folder-name": "Wpisz nazwę folderu",
+            "folder-description": "Wpisz opis folderu"
+          }
+        },
+        "list": {
+          "title": "Elementy treści",
+          "subtitle": "Lista elementów treści",
+          "bread-crumb-top": "Wszystkie elementy",
+          "labels": {
+            "picture": "Obraz",
+            "name": "Nazwa",
+            "description": "Opis",
+            "no-data": "Brak danych"
+          },
+          "noItemsMessage": "Nie masz jeszcze żadnych elementów treści"
+        }
+      },
+      "placeholders": {
+        "add": {
+          "title": "Nowe miejsce",
+          "subtitle": "Dodaj nowe miejsce",
+          "menu": {
+            "folder": {
+              "title": "Folder miejsca",
+              "description": "Utwórz folder na miejsca"
+            },
+            "item": {
+              "title": "Miejsce",
+              "description": "Utwórz folder na elementy treści"
+            }
+          }
+        },
+        "placeholder-details": {
+          "title": "Nowe miejsce",
+          "subtitle": "Dodaj nowe miejsce",
+          "title-new": "Edytuj miejsce",
+          "subtitle-new": "Zmień swoje miejsce",
+          "labels": {
+            "placeholder-name": "Nazwa miejsca",
+            "placeholder-description": "Opis miejsca",
+            "placeholder-image-description": "Opis obrazu miejsca",
+            "image-note": "Przeciągnij i upuść swój obraz tutaj",
+            "progress": "Postęp"
+          },
+          "placeholders": {
+            "placeholder-name": "Podaj nazwę miejsca",
+            "placeholder-description": "Podaj opis miejsca"
+          }
+        },
+        "folder-details": {
+          "title": "Edytuj folder miejsca",
+          "subtitle": "Zmień folder miejsca",
+          "title-new": "Nowy folder miejsca",
+          "subtitle-new": "Dodaj nowy folder miejsca",
+          "labels": {
+            "folder-name": "Nazwa folderu",
+            "folder-description": "Opis folderu"
+          },
+          "placeholders": {
+            "folder-name": "Podaj nazwę folderu",
+            "folder-description": "Podaj opis folderu"
+          }
+        },
+        "list": {
+          "title": "Miejsca treści",
+          "subtitle": "Lista twoich miejsc treści",
+          "bread-crumb-top": "Wszystkie miejsca",
+          "labels": {
+            "picture": "Obraz",
+            "name": "Nazwa",
+            "description": "Opis",
+            "no-data": "Brak danych"
+          }
+        }
+      },
+      "publishing": {
+        "add-content-items": {
+          "title": "Dodaj elementy treści",
+          "subtitle": "Wybierz elementy treści do dodania",
+          "bread-crumb-top": "Wszystkie elementy",
+          "labels": {
+            "chosen-content-items": "Wybrane elementy treści",
+            "content-items": "Elementy treści",
+            "picture": "Obraz",
+            "name": "Nazwa",
+            "description": "Opis",
+            "no-data": "Brak danych"
+          }
+        },
+        "add-placeholders": {
+          "title": "Dodaj miejsca",
+          "subtitle": "Wybierz miejsca do dodania",
+          "bread-crumb-top": "Wszystkie miejsca",
+          "labels": {
+            "chosen-placeholders": "Wybrane miejsca",
+            "content-placeholders": "Miejsca treści",
+            "picture": "Obraz",
+            "name": "Nazwa",
+            "description": "Opis",
+            "no-data": "Brak danych"
+          }
+        },
+        "publishing-main-step": {
+          "title": "Edytuj opublikowany element treści",
+          "subtitle": "Zmień swój opublikowany element treści",
+          "title-new": "Nowy opublikowany element treści",
+          "subtitle-new": "Dodaj nowy opublikowany element treści",
+          "labels": {
+            "name": "Nazwa",
+            "description": "Opis",
+            "store": "Sklep",
+            "is-active": "Aktywny",
+            "start-date": "Data rozpoczęcia",
+            "end-date": "Data zakończenia",
+            "publishing-conditions": "Warunki publikacji"
+          },
+          "placeholders": {
+            "name": "Podaj nazwę opublikowanego elementu treści",
+            "description": "Podaj opis opublikowanego elementu treści",
+            "store": "Wybierz...",
+            "start-date": "Podaj wartość",
+            "end-date": "Podaj wartość"
+          },
+          "menu": {
+            "placeholders": {
+              "title": "Miejsce",
+              "description": "{{quantity}} miejsce(a) wybrane"
+            },
+            "content-items": {
+              "title": "Elementy treści",
+              "description": "{{quantity}} element(y) treści wybrane"
+            }
+          }
+        },
+        "list": {
+          "title": "Opublikowane treści",
+          "subtitle": "Lista twoich opublikowanych elementów treści",
+          "noItemsMessage": "Nie masz jeszcze żadnych opublikowanych treści",
+          "labels": {
+            "picture": "Ikona",
+            "name": "Nazwa",
+            "description": "Opis",
+            "no-data": "Brak opublikowanych treści"
+          }
+        }
+      },
+      "coupons": {
+        "code": "Kod",
+        "total-uses-count": "Łączna liczba użyć",
+        "max-uses-number": "Maksymalna liczba użyć",
+        "max-uses-per-user": "Maksymalna liczba użyć na użytkownika",
+        "toolbar": {
+          "add": "Dodaj",
+          "import": "Importuj",
+          "refresh": "Odśwież",
+          "delete": "Usuń",
+          "delete-all": "Usuń wszystko"
+        },
+        "no-coupons-message": "Nie masz jeszcze żadnych kuponów"
+      },
+      "coupons-import": {
+        "title": "Importuj kupony",
+        "labels": {
+          "delimiter": "Separator kolumn CSV",
+          "upload": "Prześlij plik CSV",
+          "upload-progress": "Postęp przesyłania",
+          "space": "Spacja",
+          "comma": "Przecinek",
+          "semicolon": "Średnik",
+          "start": "Start",
+          "end": "Koniec",
+          "total": "Łączna liczba",
+          "processed": "Liczba przetworzonych",
+          "errors-count": "Liczba błędów",
+          "errors": "Błędy",
+          "tab": "Tabulator"
+        },
+        "placeholders": {
+          "delimiter": "Wybierz..."
+        }
+      },
+      "coupons-import-processing": {
+        "title": "Importowanie kuponów"
+      }
+    },
+    "dialogs": {
+      "content-item-delete": {
+        "title": "Potwierdź usunięcie",
+        "message": "Czy na pewno chcesz usunąć ten element treści?"
+      },
+      "placeholders-folder-delete": {
+        "title": "Potwierdź usunięcie",
+        "message": "Czy na pewno chcesz usunąć ten folder miejsca treści?"
+      },
+      "content-item-folder-delete": {
+        "title": "Potwierdź usunięcie",
+        "message": "Czy na pewno chcesz usunąć ten folder elementu treści?"
+      },
+      "content-folder-delete": {
+        "title": "Potwierdź usunięcie",
+        "message": "Czy na pewno chcesz usunąć ten folder?"
+      },
+      "publication-delete": {
+        "title": "Potwierdź usunięcie",
+        "message": "Czy na pewno chcesz usunąć tę publikację?"
+      },
+      "content-placeholder-delete": {
+        "title": "Potwierdź usunięcie",
+        "message": "Czy na pewno chcesz usunąć ten miejsce treści?"
+      },
+      "promotions-delete": {
+        "title": "Potwierdź usunięcie",
+        "message": "Czy na pewno chcesz usunąć wybrane promocje?"
+      },
+      "promotion-save": {
+        "title": "Zapisz zmiany",
+        "message": "Promocja została zmodyfikowana. Czy chcesz zapisać zmiany?"
+      },
+      "coupon-delete": {
+        "title": "Potwierdź usunięcie",
+        "message": "Czy na pewno chcesz usunąć wybrane kupony?",
+        "message-all": "Czy na pewno chcesz usunąć wszystkie kupony?"
+      }
+    },
+    "commands": {
+      "manage-type-properties": "Zarządzaj typami właściwości",
+      "edit-folder": "Edytuj folder",
+      "start-import": "Rozpocznij import"
+    }
+  },
+  "permissions": {
+    "marketing:read": "Wyświetl dane marketingowe",
+    "marketing:create": "Utwórz dane marketingowe",
+    "marketing:update": "Zaktualizuj dane marketingowe",
+    "marketing:delete": "Usuń dane marketingowe",
+    "marketing:access": "Otwórz menu marketingowe"
+  },
+  "settings": {
+    "Marketing.Promotion.CombinePolicy": {
+      "description": "Najlepsza nagroda: Wybierz nagrody promocyjne, które będą najbardziej atrakcyjne dla klientów. Ważne oferty wielokrotne: Jeśli w twoim sklepie jest wiele aktywnych promocji, klienci mogą zakwalifikować się do kilku promocji jednocześnie",
+      "title": "Wybrana polityka używania wielu aktywnych promocji"
+    },
+    "Marketing.ExportImport.Description": {
+      "description": "Eksportuj i importuj promocje oraz treści dynamiczne (miejsca, treści, publikacje)",
+      "title": "Opis eksportu/importu"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Marketing": {
+      "description": "Eksportuj i importuj promocje oraz treści dynamiczne (miejsca, treści, publikacje)"
+    }
+  }
+}
