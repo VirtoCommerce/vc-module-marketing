@@ -9,7 +9,11 @@
     },
     "blades": {
       "marketing-main": {
-        "title": "营销"
+        "title": "营销",
+        "labels": {
+          "promotions": "促销",
+          "dynamic-content": "动态内容"
+        }
       },
       "promotion-detail": {
         "title-new": "新促销活动",

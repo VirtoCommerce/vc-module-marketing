@@ -9,7 +9,11 @@
     },
     "blades": {
       "marketing-main": {
-        "title": "マーケティング"
+        "title": "マーケティング",
+        "labels": {
+          "promotions": "プロモーション",
+          "dynamic-content": "動的コンテンツ"
+        }
       },
       "promotion-detail": {
         "title-new": "新規プロモーション",
