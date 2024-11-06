@@ -51,8 +51,8 @@ angular.module(moduleName, [])
             mainMenuService.addMenuItem(menuItem);
 
             // Register marketing main blade items
-            marketingMenuItemService.register({ id: '1', name: 'Promotions', entityName: 'promotion', icon: 'fa-area-chart' });
-            marketingMenuItemService.register({ id: '2', name: 'Dynamic content', entityName: 'dynamicContent', icon: 'fa-calendar-o' });
+            marketingMenuItemService.register({ id: '1', name: 'marketing.blades.marketing-main.labels.promotions', entityName: 'promotion', icon: 'fa-area-chart' });
+            marketingMenuItemService.register({ id: '2', name: 'marketing.blades.marketing-main.labels.dynamic-content', entityName: 'dynamicContent', icon: 'fa-calendar-o' });
 
             // register back-button
             toolbarService.register(breadcrumbHistoryService.getBackButtonInstance(), 'virtoCommerce.marketingModule.itemsDynamicContentListController');
