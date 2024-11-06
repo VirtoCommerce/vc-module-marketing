@@ -9,7 +9,11 @@
     },
     "blades": {
       "marketing-main": {
-        "title": "Marketing"
+        "title": "Marketing",
+        "labels": {
+          "promotions": "Promotion",
+          "dynamic-content": "Dynamischer Inhalt"
+        }
       },
       "promotion-detail": {
         "title-new": "Neue Promotion",

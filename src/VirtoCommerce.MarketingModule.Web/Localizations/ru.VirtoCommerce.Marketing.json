@@ -9,7 +9,11 @@
     },
     "blades": {
       "marketing-main": {
-        "title": "Маркетинг"
+        "title": "Маркетинг",
+        "labels": {
+          "promotions": "Маректинговые акции",
+          "dynamic-content": "Динамический контент"
+        }
       },
       "promotion-detail": {
         "title-new": "Новая акция",
