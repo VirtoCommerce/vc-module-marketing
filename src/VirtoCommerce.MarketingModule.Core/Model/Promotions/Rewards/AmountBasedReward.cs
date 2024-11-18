@@ -1,6 +1,4 @@
 using System;
-using System.Linq;
-using VirtoCommerce.CoreModule.Core.Extensions;
 
 namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 {
@@ -56,7 +54,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
             var result = Amount * workQuantity;
             if (AmountType == RewardAmountType.Relative)
             {
-                result = price * Amount * 0.01m * workQuantity;
+                result = result * price / 100m;
             }
             var totalCost = price * quantity;
             //use total cost as MaxLimit if it explicitly not set
