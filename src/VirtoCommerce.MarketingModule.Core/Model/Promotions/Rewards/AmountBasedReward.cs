@@ -60,11 +60,11 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
                 workQuantity = Math.Min(Quantity, workQuantity);
             }
 
-            var result = Amount * workQuantity;
+            var totalAmount = Amount * workQuantity;
 
             if (AmountType == RewardAmountType.Relative)
             {
-                result = result * price * 0.01m;
+                totalAmount = totalAmount * price * 0.01m;
             }
 
             var totalCost = price * quantity;
@@ -75,10 +75,9 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
             // Do not allow MaxLimit to be greater than total cost (to prevent reward amount from being greater than price)
             workMaxLimit = Math.Min(workMaxLimit, totalCost);
 
-            result = Math.Min(workMaxLimit, result);
-            result = Math.Min(workMaxLimit, result) / quantity;
+            totalAmount = Math.Min(workMaxLimit, totalAmount);
 
-            return result;
+            return totalAmount / quantity;
         }
 
 
