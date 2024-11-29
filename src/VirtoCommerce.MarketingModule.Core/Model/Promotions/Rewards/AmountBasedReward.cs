@@ -35,11 +35,12 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
         {
             if (price < 0)
             {
-                throw new ArgumentNullException($"The {nameof(price)} cannot be negative");
+                throw new ArgumentException($"The {nameof(price)} cannot be negative", nameof(price));
             }
+
             if (quantity < 0)
             {
-                throw new ArgumentNullException($"The {nameof(quantity)} cannot be negative");
+                throw new ArgumentException($"The {nameof(quantity)} cannot be negative", nameof(quantity));
             }
 
             var workQuantity = quantity = Math.Max(1, quantity);
@@ -54,7 +55,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
             var result = Amount * workQuantity;
             if (AmountType == RewardAmountType.Relative)
             {
-                result = result * price / 100m;
+                result = result * price * 0.01m;
             }
             var totalCost = price * quantity;
             //use total cost as MaxLimit if it explicitly not set
