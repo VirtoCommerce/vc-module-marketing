@@ -69,10 +69,10 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 
             var totalCost = price * quantity;
 
-            //use total cost as MaxLimit if it explicitly not set
+            // Use total cost as MaxLimit if it is not explicitly set
             var workMaxLimit = MaxLimit > 0 ? MaxLimit : totalCost;
 
-            //Do not allow maxLimit be greater that total cost (to prevent reward amount be greater that price)
+            // Do not allow MaxLimit to be greater than total cost (to prevent reward amount from being greater than price)
             workMaxLimit = Math.Min(workMaxLimit, totalCost);
 
             result = Math.Min(workMaxLimit, result);
