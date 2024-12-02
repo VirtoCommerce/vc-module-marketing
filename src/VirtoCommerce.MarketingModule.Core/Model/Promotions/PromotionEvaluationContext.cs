@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using VirtoCommerce.CoreModule.Core.Common;
+using VirtoCommerce.CoreModule.Core.Currency;
 using VirtoCommerce.Platform.Core.Caching;
 
 namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
@@ -12,6 +13,8 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
         public string StoreId { get; set; }
 
         public string Currency { get; set; }
+
+        public Currency CurrencyObject { get; set; }
 
         /// <summary>
         /// Contains User Id.

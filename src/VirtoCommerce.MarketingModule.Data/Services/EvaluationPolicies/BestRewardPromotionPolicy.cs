@@ -15,21 +15,19 @@ namespace VirtoCommerce.MarketingModule.Data.Services
     public class BestRewardPromotionPolicy : PromotionPolicyBase
     {
         private readonly IPromotionSearchService _promotionSearchService;
-        private readonly ICurrencyService _currencyService;
 
         public BestRewardPromotionPolicy(
             IPromotionSearchService promotionSearchService,
             IPlatformMemoryCache platformMemoryCache,
             ICurrencyService currencyService)
-            : base(platformMemoryCache)
+            : base(platformMemoryCache, currencyService)
         {
             _promotionSearchService = promotionSearchService;
-            _currencyService = currencyService;
         }
 
         protected override async Task<PromotionResult> EvaluatePromotionWithoutCache(PromotionEvaluationContext promoContext)
         {
-            var currency = (await _currencyService.GetAllCurrenciesAsync()).First(x => x.Code == promoContext.Currency);
+            var currency = promoContext.CurrencyObject;
 
             var promotionSearchCriteria = AbstractTypeFactory<PromotionSearchCriteria>.TryCreateInstance();
             promotionSearchCriteria.PopulateFromEvalContext(promoContext);

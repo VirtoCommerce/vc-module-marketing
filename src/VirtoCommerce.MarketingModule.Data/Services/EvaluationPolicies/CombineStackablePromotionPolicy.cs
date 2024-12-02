@@ -17,18 +17,16 @@ namespace VirtoCommerce.MarketingModule.Data.Services
     {
         private readonly IPromotionSearchService _promotionSearchService;
         private readonly IPromotionRewardEvaluator _promotionRewardEvaluator;
-        private readonly ICurrencyService _currencyService;
 
         public CombineStackablePromotionPolicy(
             IPromotionSearchService promotionSearchService,
             IPromotionRewardEvaluator promotionRewardEvaluator,
             IPlatformMemoryCache platformMemoryCache,
             ICurrencyService currencyService)
-            : base(platformMemoryCache)
+            : base(platformMemoryCache, currencyService)
         {
             _promotionSearchService = promotionSearchService;
             _promotionRewardEvaluator = promotionRewardEvaluator;
-            _currencyService = currencyService;
         }
 
         protected override async Task<PromotionResult> EvaluatePromotionWithoutCache(PromotionEvaluationContext promoContext)
@@ -163,7 +161,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
         protected virtual void ApplyRewardsToContext(PromotionEvaluationContext context, IEnumerable<PromotionReward> rewards, ICollection<PromotionReward> skippedRewards)
         {
-            var currency = _currencyService.GetAllCurrenciesAsync().GetAwaiter().GetResult().First(x => x.Code == context.Currency);
+            var currency = context.CurrencyObject;
 
             var activeShipmentReward = rewards.OfType<ShipmentReward>()
                 .Where(x => string.IsNullOrEmpty(x.ShippingMethod) || x.ShippingMethod.EqualsInvariant(context.ShipmentMethodCode))
