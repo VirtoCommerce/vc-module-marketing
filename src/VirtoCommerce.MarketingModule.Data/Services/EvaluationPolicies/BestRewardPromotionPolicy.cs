@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VirtoCommerce.CoreModule.Core.Currency;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Search;
@@ -13,21 +15,28 @@ namespace VirtoCommerce.MarketingModule.Data.Services
     public class BestRewardPromotionPolicy : PromotionPolicyBase
     {
         private readonly IPromotionSearchService _promotionSearchService;
+        private readonly ICurrencyService _currencyService;
 
-        public BestRewardPromotionPolicy(IPromotionSearchService promotionSearchService, IPlatformMemoryCache platformMemoryCache)
+        public BestRewardPromotionPolicy(
+            IPromotionSearchService promotionSearchService,
+            IPlatformMemoryCache platformMemoryCache,
+            ICurrencyService currencyService)
             : base(platformMemoryCache)
         {
             _promotionSearchService = promotionSearchService;
+            _currencyService = currencyService;
         }
 
         protected override async Task<PromotionResult> EvaluatePromotionWithoutCache(PromotionEvaluationContext promoContext)
         {
+            var currency = (await _currencyService.GetAllCurrenciesAsync()).First(x => x.Code == promoContext.Currency);
+
             var promotionSearchCriteria = AbstractTypeFactory<PromotionSearchCriteria>.TryCreateInstance();
             promotionSearchCriteria.PopulateFromEvalContext(promoContext);
 
             promotionSearchCriteria.OnlyActive = true;
             promotionSearchCriteria.Take = int.MaxValue;
-            promotionSearchCriteria.StoreIds = string.IsNullOrEmpty(promoContext.StoreId) ? null : new[] { promoContext.StoreId };
+            promotionSearchCriteria.StoreIds = string.IsNullOrEmpty(promoContext.StoreId) ? null : [promoContext.StoreId];
 
             var promotions = await _promotionSearchService.SearchPromotionsAsync(promotionSearchCriteria);
 
@@ -48,7 +57,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             var groupedByShippingMethodRewards = allShipmentRewards.GroupBy(x => x.ShippingMethod);
             foreach (var shipmentRewards in groupedByShippingMethodRewards)
             {
-                var bestShipmentReward = GetBestAmountReward(curShipmentAmount, shipmentRewards);
+                var bestShipmentReward = GetBestAmountReward(curShipmentAmount, 1, currency, shipmentRewards);
                 if (bestShipmentReward != null)
                 {
                     result.Rewards.Add(bestShipmentReward);
@@ -61,7 +70,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             var groupedByPaymentMethodRewards = allPaymentRewards.GroupBy(x => x.PaymentMethod);
             foreach (var paymentRewards in groupedByPaymentMethodRewards)
             {
-                var bestPaymentReward = GetBestAmountReward(currentPaymentAmount, paymentRewards);
+                var bestPaymentReward = GetBestAmountReward(currentPaymentAmount, 1, currency, paymentRewards);
                 if (bestPaymentReward != null)
                 {
                     result.Rewards.Add(bestPaymentReward);
@@ -76,7 +85,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 var item = promoContext.PromoEntries.FirstOrDefault(x => x.ProductId == groupReward.Key);
                 if (item != null)
                 {
-                    var bestItemReward = GetBestAmountReward(item.Price, item.Quantity, groupReward);
+                    var bestItemReward = GetBestAmountReward(item.Price, item.Quantity, currency, groupReward);
                     if (bestItemReward != null)
                     {
                         result.Rewards.Add(bestItemReward);
@@ -85,7 +94,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             }
 
             //best order promotion 
-            var cartSubtotalRewards = rewards.OfType<CartSubtotalReward>().Where(x => x.IsValid).OrderByDescending(x => x.GetRewardAmount(promoContext.CartTotal, 1));
+            var cartSubtotalRewards = rewards.OfType<CartSubtotalReward>().Where(x => x.IsValid).OrderByDescending(x => x.GetTotalAmount(promoContext.CartTotal, 1, currency)).ToList();
             var cartSubtotalReward = cartSubtotalRewards.FirstOrDefault(x => !string.IsNullOrEmpty(x.Coupon)) ?? cartSubtotalRewards.FirstOrDefault();
             if (cartSubtotalReward != null)
             {
@@ -101,11 +110,13 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             return result;
         }
 
+        [Obsolete("Use GetBestAmountReward(decimal price, int quantity, Currency currency, IEnumerable<AmountBasedReward> rewards)", DiagnosticId = "VC0010", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
         protected virtual AmountBasedReward GetBestAmountReward(decimal currentAmount, IEnumerable<AmountBasedReward> reward)
         {
             return GetBestAmountReward(currentAmount, 1, reward);
         }
 
+        [Obsolete("Use GetBestAmountReward(decimal price, int quantity, Currency currency, IEnumerable<AmountBasedReward> rewards)", DiagnosticId = "VC0010", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
         protected virtual AmountBasedReward GetBestAmountReward(decimal currentAmount, int quantity, IEnumerable<AmountBasedReward> reward)
         {
             AmountBasedReward retVal = null;
@@ -134,6 +145,15 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             }
 
             return retVal;
+        }
+
+        protected virtual AmountBasedReward GetBestAmountReward(decimal price, int quantity, Currency currency, IEnumerable<AmountBasedReward> rewards)
+        {
+            var bestReward = rewards
+                .OrderByDescending(x => x.GetTotalAmount(price, quantity, currency))
+                .FirstOrDefault();
+
+            return bestReward;
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VirtoCommerce.CoreModule.Core.Currency;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Search;
@@ -16,12 +17,18 @@ namespace VirtoCommerce.MarketingModule.Data.Services
     {
         private readonly IPromotionSearchService _promotionSearchService;
         private readonly IPromotionRewardEvaluator _promotionRewardEvaluator;
+        private readonly ICurrencyService _currencyService;
 
-        public CombineStackablePromotionPolicy(IPromotionSearchService promotionSearchService, IPromotionRewardEvaluator promotionRewardEvaluator, IPlatformMemoryCache platformMemoryCache)
+        public CombineStackablePromotionPolicy(
+            IPromotionSearchService promotionSearchService,
+            IPromotionRewardEvaluator promotionRewardEvaluator,
+            IPlatformMemoryCache platformMemoryCache,
+            ICurrencyService currencyService)
             : base(platformMemoryCache)
         {
             _promotionSearchService = promotionSearchService;
             _promotionRewardEvaluator = promotionRewardEvaluator;
+            _currencyService = currencyService;
         }
 
         protected override async Task<PromotionResult> EvaluatePromotionWithoutCache(PromotionEvaluationContext promoContext)
@@ -156,20 +163,24 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
         protected virtual void ApplyRewardsToContext(PromotionEvaluationContext context, IEnumerable<PromotionReward> rewards, ICollection<PromotionReward> skippedRewards)
         {
+            var currency = _currencyService.GetAllCurrenciesAsync().GetAwaiter().GetResult().First(x => x.Code == context.Currency);
+
             var activeShipmentReward = rewards.OfType<ShipmentReward>()
                 .Where(x => string.IsNullOrEmpty(x.ShippingMethod) || x.ShippingMethod.EqualsInvariant(context.ShipmentMethodCode))
                 .FirstOrDefault(x => string.IsNullOrEmpty(x.ShippingMethodOption) || x.ShippingMethodOption.EqualsInvariant(context.ShipmentMethodOption));
 
             if (activeShipmentReward != null)
             {
-                var discountAmount = activeShipmentReward.GetRewardAmount(context.ShipmentMethodPrice, 1);
-                context.ShipmentMethodPrice -= discountAmount;
-                //Do not allow to make negative shipment price
-                if (context.ShipmentMethodPrice < 0 || discountAmount == 0)
+                var discountAmount = activeShipmentReward.GetTotalAmount(context.ShipmentMethodPrice, 1, currency);
+
+                // Do not allow to make negative shipment price
+                if (discountAmount <= 0 || discountAmount > context.ShipmentMethodPrice)
                 {
                     skippedRewards.Add(activeShipmentReward);
-                    //restore back shipment price
-                    context.ShipmentMethodPrice += discountAmount;
+                }
+                else
+                {
+                    context.ShipmentMethodPrice -= discountAmount;
                 }
             }
 
@@ -178,39 +189,43 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
             if (activePaymentReward != null)
             {
-                var discountAmount = activePaymentReward.GetRewardAmount(context.PaymentMethodPrice, 1);
-                context.PaymentMethodPrice -= discountAmount;
-                //Do not allow to make negative payment price
-                if (context.PaymentMethodPrice < 0 || discountAmount == 0)
+                var discountAmount = activePaymentReward.GetTotalAmount(context.PaymentMethodPrice, 1, currency);
+
+                // Do not allow to make negative payment price
+                if (discountAmount <= 0 || discountAmount > context.PaymentMethodPrice)
                 {
                     skippedRewards.Add(activePaymentReward);
-                    //restore back payment price
-                    context.PaymentMethodPrice += discountAmount;
+                }
+                else
+                {
+                    context.PaymentMethodPrice -= discountAmount;
                 }
             }
 
             foreach (var productReward in rewards.OfType<CatalogItemAmountReward>())
             {
                 var promoEntry = context.PromoEntries.FirstOrDefault(x => string.IsNullOrEmpty(x.ProductId) || x.ProductId.EqualsInvariant(productReward.ProductId));
+
                 if (promoEntry != null)
                 {
-                    var perUnitDiscountAmount = productReward.GetRewardAmount(promoEntry.Price, Math.Max(1, promoEntry.Quantity));
-                    promoEntry.Price -= perUnitDiscountAmount;
-                    //Do not allow to make negative the product price and exclude not affected rewards
-                    if (promoEntry.Price < 0 || perUnitDiscountAmount == 0)
+                    var discountAmountPerItem = productReward.GetAmountPerItem(promoEntry.Price, Math.Max(1, promoEntry.Quantity), currency);
+
+                    // Do not allow to make negative product price and skip this reward
+                    if (discountAmountPerItem <= 0 || discountAmountPerItem > promoEntry.Price)
                     {
                         skippedRewards.Add(productReward);
-                        //restore back prices and totals
-                        promoEntry.Price += perUnitDiscountAmount;
                     }
                     else
                     {
-                        //Need to do the same for cart promo entries because there is may be conditions which check these entries prices
+                        promoEntry.Price -= discountAmountPerItem;
+
+                        // Need to do the same for cart promo entries because there may be conditions which check these entries prices
                         var cartPromoEntry = context.CartPromoEntries.FirstOrDefault(x => x.ProductId.EqualsInvariant(productReward.ProductId));
+
                         if (cartPromoEntry != null)
                         {
-                            perUnitDiscountAmount = productReward.GetRewardAmount(cartPromoEntry.Price, Math.Max(1, cartPromoEntry.Quantity));
-                            cartPromoEntry.Price -= perUnitDiscountAmount;
+                            discountAmountPerItem = productReward.GetAmountPerItem(cartPromoEntry.Price, Math.Max(1, cartPromoEntry.Quantity), currency);
+                            cartPromoEntry.Price -= discountAmountPerItem;
                         }
                     }
                 }

@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VirtoCommerce.CoreModule.Core.Conditions;
+using VirtoCommerce.CoreModule.Core.Currency;
 using VirtoCommerce.MarketingModule.Core;
 using VirtoCommerce.MarketingModule.Core.Events;
 using VirtoCommerce.MarketingModule.Core.Model;
@@ -99,14 +100,15 @@ namespace VirtoCommerce.MarketingModule.Web
                 var platformMemoryCache = provider.GetService<IPlatformMemoryCache>();
                 var promotionService = provider.GetService<IPromotionSearchService>();
                 var promotionCombinePolicy = settingsManager.GetValue<string>(ModuleConstants.Settings.General.CombinePolicy);
+                var currencyService = provider.GetService<ICurrencyService>();
 
                 if (promotionCombinePolicy.EqualsInvariant("CombineStackable"))
                 {
                     var promotionRewardEvaluator = provider.GetService<IPromotionRewardEvaluator>();
-                    return new CombineStackablePromotionPolicy(promotionService, promotionRewardEvaluator, platformMemoryCache);
+                    return new CombineStackablePromotionPolicy(promotionService, promotionRewardEvaluator, platformMemoryCache, currencyService);
                 }
 
-                return new BestRewardPromotionPolicy(promotionService, platformMemoryCache);
+                return new BestRewardPromotionPolicy(promotionService, platformMemoryCache, currencyService);
             });
 
             serviceCollection.AddTransient<LogChangesChangedEventHandler>();
