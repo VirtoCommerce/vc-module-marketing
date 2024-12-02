@@ -470,7 +470,7 @@ namespace VirtoCommerce.MarketingModule.Test
                 .Setup(x => x.GetAllCurrenciesAsync())
                 .ReturnsAsync([currency]);
 
-            return new CombineStackablePromotionPolicy(promoSearchServiceMock.Object, promotionRewardEvaluatorMock.Object, platformMemoryCache, currencyServiceMock.Object);
+            return new CombineStackablePromotionPolicy(currencyServiceMock.Object, platformMemoryCache, promoSearchServiceMock.Object, promotionRewardEvaluatorMock.Object);
         }
 
         private static Mock<IPromotionRewardEvaluator> GetPromotionRewardEvaluatorMock()

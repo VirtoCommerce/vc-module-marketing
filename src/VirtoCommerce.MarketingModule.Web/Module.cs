@@ -105,10 +105,10 @@ namespace VirtoCommerce.MarketingModule.Web
                 if (promotionCombinePolicy.EqualsInvariant("CombineStackable"))
                 {
                     var promotionRewardEvaluator = provider.GetService<IPromotionRewardEvaluator>();
-                    return new CombineStackablePromotionPolicy(promotionService, promotionRewardEvaluator, platformMemoryCache, currencyService);
+                    return new CombineStackablePromotionPolicy(currencyService, platformMemoryCache, promotionService, promotionRewardEvaluator);
                 }
 
-                return new BestRewardPromotionPolicy(promotionService, platformMemoryCache, currencyService);
+                return new BestRewardPromotionPolicy(currencyService, platformMemoryCache, promotionService);
             });
 
             serviceCollection.AddTransient<LogChangesChangedEventHandler>();

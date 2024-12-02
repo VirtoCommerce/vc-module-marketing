@@ -17,10 +17,10 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         private readonly IPromotionSearchService _promotionSearchService;
 
         public BestRewardPromotionPolicy(
-            IPromotionSearchService promotionSearchService,
+            ICurrencyService currencyService,
             IPlatformMemoryCache platformMemoryCache,
-            ICurrencyService currencyService)
-            : base(platformMemoryCache, currencyService)
+            IPromotionSearchService promotionSearchService)
+            : base(currencyService, platformMemoryCache)
         {
             _promotionSearchService = promotionSearchService;
         }

@@ -299,7 +299,7 @@ namespace VirtoCommerce.MarketingModule.Test
                 .Setup(x => x.GetAllCurrenciesAsync())
                 .ReturnsAsync([currency]);
 
-            return new BestRewardPromotionPolicy(promoSearchServiceMock.Object, platformMemoryCache, currencyServiceMock.Object);
+            return new BestRewardPromotionPolicy(currencyServiceMock.Object, platformMemoryCache, promoSearchServiceMock.Object);
         }
 
         private static IEnumerable<Promotion> TestPromotions

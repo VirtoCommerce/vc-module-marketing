@@ -71,12 +71,12 @@ namespace VirtoCommerce.MarketingModule.Benchmark.PromoPolicies
         private IMarketingPromoEvaluator GetBestRewardPromotionPolicy()
         {
 
-            return new BestRewardPromotionPolicy(promoSearchServiceMock.Object, disabledPlatformMemoryCache, new Mock<ICurrencyService>().Object);
+            return new BestRewardPromotionPolicy(new Mock<ICurrencyService>().Object, disabledPlatformMemoryCache, promoSearchServiceMock.Object);
         }
 
         private IMarketingPromoEvaluator GetCombineStackablePromotionPolicy()
         {
-            return new CombineStackablePromotionPolicy(promoSearchServiceMock.Object, GetPromotionRewardEvaluatorMock().Object, disabledPlatformMemoryCache, new Mock<ICurrencyService>().Object);
+            return new CombineStackablePromotionPolicy(new Mock<ICurrencyService>().Object, disabledPlatformMemoryCache, promoSearchServiceMock.Object, GetPromotionRewardEvaluatorMock().Object);
         }
 
 

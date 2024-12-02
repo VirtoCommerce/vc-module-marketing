@@ -19,11 +19,11 @@ namespace VirtoCommerce.MarketingModule.Data.Services
         private readonly IPromotionRewardEvaluator _promotionRewardEvaluator;
 
         public CombineStackablePromotionPolicy(
-            IPromotionSearchService promotionSearchService,
-            IPromotionRewardEvaluator promotionRewardEvaluator,
+            ICurrencyService currencyService,
             IPlatformMemoryCache platformMemoryCache,
-            ICurrencyService currencyService)
-            : base(platformMemoryCache, currencyService)
+            IPromotionSearchService promotionSearchService,
+            IPromotionRewardEvaluator promotionRewardEvaluator)
+            : base(currencyService, platformMemoryCache)
         {
             _promotionSearchService = promotionSearchService;
             _promotionRewardEvaluator = promotionRewardEvaluator;
@@ -36,7 +36,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
             promotionSearchCriteria.OnlyActive = true;
             promotionSearchCriteria.Take = int.MaxValue;
-            promotionSearchCriteria.StoreIds = string.IsNullOrEmpty(promoContext.StoreId) ? null : new[] { promoContext.StoreId };
+            promotionSearchCriteria.StoreIds = string.IsNullOrEmpty(promoContext.StoreId) ? null : [promoContext.StoreId];
 
             var promotions = await _promotionSearchService.SearchPromotionsAsync(promotionSearchCriteria);
 
@@ -144,7 +144,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             ApplyRewardsToContext(context, newRewards, skippedRewards);
             resultRewards.AddRange(newRewards.Except(skippedRewards));
             //If there any other rewards left need to cycle new iteration
-            if (rewards.Any())
+            if (rewards.Count > 0)
             {
                 // Throw exception if there are non-handled rewards. They could cause cycling otherwise.
                 if (!newRewards.Any())

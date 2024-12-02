@@ -13,15 +13,15 @@ namespace VirtoCommerce.MarketingModule.Data.Services.EvaluationPolicies
 {
     public abstract class PromotionPolicyBase : IMarketingPromoEvaluator
     {
-        private readonly IPlatformMemoryCache _platformMemoryCache;
         private readonly ICurrencyService _currencyService;
+        private readonly IPlatformMemoryCache _platformMemoryCache;
 
         protected PromotionPolicyBase(
-            IPlatformMemoryCache platformMemoryCache,
-            ICurrencyService currencyService)
+            ICurrencyService currencyService,
+            IPlatformMemoryCache platformMemoryCache)
         {
-            _platformMemoryCache = platformMemoryCache;
             _currencyService = currencyService;
+            _platformMemoryCache = platformMemoryCache;
         }
 
         public virtual async Task<PromotionResult> EvaluatePromotionAsync(IEvaluationContext context)
