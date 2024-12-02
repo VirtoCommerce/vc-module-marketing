@@ -63,7 +63,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             var firstOrderExclusiveReward = rewards.FirstOrDefault(x => x.Promotion.IsExclusive);
             if (firstOrderExclusiveReward != null)
             {
-                //Leave only exclusive promotion rewards even if they appeared as a result of other promotion with highest priority
+                // Keep only exclusive promotion rewards, even if they appeared as a result of another promotion with a higher priority
                 resultRewards.Clear();
                 //Add only rewards from exclusive promotion
                 rewards = rewards.Where(x => x.Promotion == firstOrderExclusiveReward.Promotion).ToList();
@@ -140,10 +140,10 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 rewards.Remove(specialOfferReward);
             }
 
-            //Apply new rewards to the evaluation context to influent for conditions in the  next evaluation iteration
+            // Apply new rewards to the evaluation context to influence conditions in the next evaluation iteration
             ApplyRewardsToContext(context, newRewards, skippedRewards);
             resultRewards.AddRange(newRewards.Except(skippedRewards));
-            //If there any other rewards left need to cycle new iteration
+            // If there are other rewards left, run a new iteration
             if (rewards.Count > 0)
             {
                 // Throw exception if there are non-handled rewards. They could cause cycling otherwise.
@@ -208,7 +208,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                 {
                     var discountAmountPerItem = productReward.GetAmountPerItem(promoEntry.Price, Math.Max(1, promoEntry.Quantity), currency);
 
-                    // Do not allow to make negative product price and skip this reward
+                    // Do not allow to make negative product price
                     if (discountAmountPerItem <= 0 || discountAmountPerItem > promoEntry.Price)
                     {
                         skippedRewards.Add(productReward);
