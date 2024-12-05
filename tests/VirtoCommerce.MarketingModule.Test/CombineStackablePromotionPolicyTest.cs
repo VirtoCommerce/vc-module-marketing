@@ -9,6 +9,7 @@ using Moq;
 using Newtonsoft.Json;
 using VirtoCommerce.CoreModule.Core.Common;
 using VirtoCommerce.CoreModule.Core.Conditions;
+using VirtoCommerce.CoreModule.Core.Currency;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Promotions;
@@ -165,7 +166,6 @@ namespace VirtoCommerce.MarketingModule.Test
             {
                 IsRegisteredUser = true,
                 IsEveryone = true,
-                Currency = "usd",
                 PromoEntries = new List<ProductPromoEntry> { new ProductPromoEntry() { ProductId = "1" } },
                 CartPromoEntries = new List<ProductPromoEntry> { new ProductPromoEntry { Quantity = 11, Price = 5 } }
             };
@@ -459,7 +459,18 @@ namespace VirtoCommerce.MarketingModule.Test
             var memoryCache = new MemoryCache(Options.Create(new MemoryCacheOptions()));
             var platformMemoryCache = new PlatformMemoryCache(memoryCache, Options.Create(new CachingOptions()), new Mock<ILogger<PlatformMemoryCache>>().Object);
 
-            return new CombineStackablePromotionPolicy(promoSearchServiceMock.Object, promotionRewardEvaluatorMock.Object, platformMemoryCache);
+            var currency = new Currency(new Language("en-US"), code: null)
+            {
+                RoundingPolicy = new DefaultMoneyRoundingPolicy()
+            };
+
+            var currencyServiceMock = new Mock<ICurrencyService>();
+
+            currencyServiceMock
+                .Setup(x => x.GetAllCurrenciesAsync())
+                .ReturnsAsync([currency]);
+
+            return new CombineStackablePromotionPolicy(currencyServiceMock.Object, platformMemoryCache, promoSearchServiceMock.Object, promotionRewardEvaluatorMock.Object);
         }
 
         private static Mock<IPromotionRewardEvaluator> GetPromotionRewardEvaluatorMock()

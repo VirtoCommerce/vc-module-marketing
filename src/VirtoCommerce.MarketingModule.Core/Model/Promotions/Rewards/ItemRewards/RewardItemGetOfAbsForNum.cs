@@ -6,6 +6,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
     public class RewardItemGetOfAbsForNum : ConditionTree, IReward
     {
         public decimal Amount { get; set; }
+        public bool RoundAmountPerItem { get; set; }
         public string ProductId { get; set; }
         public int NumItem { get; set; }
         public string ProductName { get; set; }
@@ -18,6 +19,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
             {
                 Amount = Amount,
                 AmountType = RewardAmountType.Absolute,
+                RoundAmountPerItem = RoundAmountPerItem,
                 Quantity = NumItem,
                 ProductId = ProductId
             };

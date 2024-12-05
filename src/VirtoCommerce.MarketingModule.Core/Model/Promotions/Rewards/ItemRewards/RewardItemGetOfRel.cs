@@ -6,6 +6,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
     public class RewardItemGetOfRel : ConditionTree, IReward
     {
         public decimal Amount { get; set; }
+        public bool RoundAmountPerItem { get; set; }
         public string ProductId { get; set; }
         public string ProductName { get; set; }
         public decimal MaxLimit { get; set; }
@@ -17,6 +18,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
             {
                 Amount = Amount,
                 AmountType = RewardAmountType.Relative,
+                RoundAmountPerItem = RoundAmountPerItem,
                 ProductId = ProductId,
                 MaxLimit = MaxLimit
             };

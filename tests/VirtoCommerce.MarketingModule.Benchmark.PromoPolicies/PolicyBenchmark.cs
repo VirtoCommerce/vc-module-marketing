@@ -8,6 +8,7 @@ using Moq;
 using Newtonsoft.Json;
 using VirtoCommerce.CoreModule.Core.Common;
 using VirtoCommerce.CoreModule.Core.Conditions;
+using VirtoCommerce.CoreModule.Core.Currency;
 using VirtoCommerce.MarketingModule.Core.Model.DynamicContent;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
@@ -70,12 +71,12 @@ namespace VirtoCommerce.MarketingModule.Benchmark.PromoPolicies
         private IMarketingPromoEvaluator GetBestRewardPromotionPolicy()
         {
 
-            return new BestRewardPromotionPolicy(promoSearchServiceMock.Object, disabledPlatformMemoryCache);
+            return new BestRewardPromotionPolicy(new Mock<ICurrencyService>().Object, disabledPlatformMemoryCache, promoSearchServiceMock.Object);
         }
 
         private IMarketingPromoEvaluator GetCombineStackablePromotionPolicy()
         {
-            return new CombineStackablePromotionPolicy(promoSearchServiceMock.Object, GetPromotionRewardEvaluatorMock().Object, disabledPlatformMemoryCache);
+            return new CombineStackablePromotionPolicy(new Mock<ICurrencyService>().Object, disabledPlatformMemoryCache, promoSearchServiceMock.Object, GetPromotionRewardEvaluatorMock().Object);
         }
 
 
