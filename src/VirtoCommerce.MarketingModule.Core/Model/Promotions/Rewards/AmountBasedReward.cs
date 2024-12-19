@@ -1,4 +1,5 @@
 using System;
+using VirtoCommerce.CoreModule.Core.Currency;
 
 namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 {
@@ -30,13 +31,69 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
         public int ForNthQuantity { get; set; }
         public int InEveryNthQuantity { get; set; }
 
+        public bool RoundAmountPerItem { get; set; }
+
         /// <summary>
         ///  Get per item reward amount for given items quantity and price
         /// </summary>
         /// <param name="price">Price per item</param>
         /// <param name="quantity">Total items quantity</param>
         /// <returns></returns>
+        [Obsolete("Use GetAmountPerItem(decimal price, int quantity, Currency currency) or GetTotalAmount(decimal price, int quantity, Currency currency)", DiagnosticId = "VC0010", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
         public virtual decimal GetRewardAmount(decimal price, int quantity)
+        {
+            var totalAmount = GetTotalAmount(price, quantity);
+
+            return totalAmount / quantity;
+        }
+
+        /// <summary>
+        /// Get per item reward amount for given items quantity and price
+        /// </summary>
+        /// <param name="price">Price per item</param>
+        /// <param name="quantity">Total items quantity</param>
+        /// <param name="currency"></param>
+        /// <returns></returns>
+        public virtual decimal GetAmountPerItem(decimal price, int quantity, Currency currency)
+        {
+            ArgumentNullException.ThrowIfNull(nameof(currency));
+
+            var totalAmount = GetTotalAmount(price, quantity);
+            var amountPerItem = totalAmount / quantity;
+
+            if (RoundAmountPerItem)
+            {
+                amountPerItem = currency.RoundingPolicy.RoundMoney(amountPerItem, currency);
+            }
+
+            return amountPerItem;
+        }
+
+        /// <summary>
+        ///  Get total reward amount for given items quantity and price
+        /// </summary>
+        /// <param name="price">Price per item</param>
+        /// <param name="quantity">Total items quantity</param>
+        /// <param name="currency"></param>
+        /// <returns></returns>
+        public virtual decimal GetTotalAmount(decimal price, int quantity, Currency currency)
+        {
+            ArgumentNullException.ThrowIfNull(nameof(currency));
+
+            var totalAmount = GetTotalAmount(price, quantity);
+
+            if (RoundAmountPerItem)
+            {
+                var amountPerItem = totalAmount / quantity;
+                amountPerItem = currency.RoundingPolicy.RoundMoney(amountPerItem, currency);
+                totalAmount = amountPerItem * quantity;
+            }
+
+            return totalAmount;
+        }
+
+
+        protected virtual decimal GetTotalAmount(decimal price, int quantity)
         {
             if (price < 0)
             {
@@ -77,14 +134,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 
             totalAmount = Math.Min(workMaxLimit, totalAmount);
 
-            return totalAmount / quantity;
-        }
-
-
-        [Obsolete("Use GetRewardAmount instead")]
-        public decimal CalculateDiscountAmount(decimal price, int quantity = 1)
-        {
-            return GetRewardAmount(price, quantity);
+            return totalAmount;
         }
     }
 }
