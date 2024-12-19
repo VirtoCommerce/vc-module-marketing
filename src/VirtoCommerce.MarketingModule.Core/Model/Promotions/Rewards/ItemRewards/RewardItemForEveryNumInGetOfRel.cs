@@ -6,6 +6,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
     public class RewardItemForEveryNumInGetOfRel : ConditionTree, IReward
     {
         public decimal Amount { get; set; }
+        public bool RoundAmountPerItem { get; set; }
         public ProductContainer Product { get; set; } = new ProductContainer();
         public int ForNthQuantity { get; set; }
         public int InEveryNthQuantity { get; set; }
@@ -20,6 +21,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
             {
                 Amount = Amount,
                 AmountType = RewardAmountType.Relative,
+                RoundAmountPerItem = RoundAmountPerItem,
                 Quantity = ItemLimit,
                 ForNthQuantity = ForNthQuantity,
                 InEveryNthQuantity = InEveryNthQuantity,

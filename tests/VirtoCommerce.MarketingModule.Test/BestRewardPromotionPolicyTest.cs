@@ -6,6 +6,8 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
+using VirtoCommerce.CoreModule.Core.Common;
+using VirtoCommerce.CoreModule.Core.Currency;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Conditions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
@@ -286,7 +288,18 @@ namespace VirtoCommerce.MarketingModule.Test
             var memoryCache = new MemoryCache(Options.Create(new MemoryCacheOptions()));
             var platformMemoryCache = new PlatformMemoryCache(memoryCache, Options.Create(new CachingOptions()), new Mock<ILogger<PlatformMemoryCache>>().Object);
 
-            return new BestRewardPromotionPolicy(promoSearchServiceMock.Object, platformMemoryCache);
+            var currency = new Currency(new Language("en-US"), code: null)
+            {
+                RoundingPolicy = new DefaultMoneyRoundingPolicy()
+            };
+
+            var currencyServiceMock = new Mock<ICurrencyService>();
+
+            currencyServiceMock
+                .Setup(x => x.GetAllCurrenciesAsync())
+                .ReturnsAsync([currency]);
+
+            return new BestRewardPromotionPolicy(currencyServiceMock.Object, platformMemoryCache, promoSearchServiceMock.Object);
         }
 
         private static IEnumerable<Promotion> TestPromotions
