@@ -34,6 +34,7 @@ using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.ExportImport;
+using VirtoCommerce.Platform.Core.Extensions;
 using VirtoCommerce.Platform.Core.JsonConverters;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
@@ -46,12 +47,16 @@ using VirtoCommerce.Platform.Data.SqlServer.Extensions;
 namespace VirtoCommerce.MarketingModule.Web
 {
     [ExcludeFromCodeCoverage]
-    public class Module : IModule, IExportSupport, IImportSupport, IHasConfiguration
+    public class Module : IModule, IExportSupport, IImportSupport, IHasConfiguration, IHasModuleCatalog
     {
         private IApplicationBuilder _appBuilder;
 
         public ManifestModuleInfo ModuleInfo { get; set; }
         public IConfiguration Configuration { get; set; }
+        public IModuleCatalog ModuleCatalog { get; set; }
+
+        private const string CustomerModuleId = "VirtoCommerce.Customer";
+        private const string OrdersModuleId = "VirtoCommerce.Orders";
 
         public void Initialize(IServiceCollection serviceCollection)
         {
@@ -113,7 +118,10 @@ namespace VirtoCommerce.MarketingModule.Web
 
             serviceCollection.AddTransient<LogChangesChangedEventHandler>();
             serviceCollection.AddTransient<MarketingExportImport>();
-            serviceCollection.AddTransient<CouponUsageRecordHandler>();
+            if (ModuleCatalog.IsModuleInstalled(OrdersModuleId))
+            {
+                serviceCollection.AddTransient<CouponUsageRecordHandler>();
+            }
 
             serviceCollection.AddTransient<IAuthorizationHandler, MarketingAuthorizationHandler>();
         }
@@ -143,7 +151,10 @@ namespace VirtoCommerce.MarketingModule.Web
             });
 
             //Create order observer. record order coupon usage
-            appBuilder.RegisterEventHandler<OrderChangedEvent, CouponUsageRecordHandler>();
+            if (ModuleCatalog.IsModuleInstalled(OrdersModuleId))
+            {
+                appBuilder.RegisterEventHandler<OrderChangedEvent, CouponUsageRecordHandler>();
+            }
             appBuilder.RegisterEventHandler<PromotionChangedEvent, LogChangesChangedEventHandler>();
             appBuilder.RegisterEventHandler<CouponChangedEvent, LogChangesChangedEventHandler>();
 
