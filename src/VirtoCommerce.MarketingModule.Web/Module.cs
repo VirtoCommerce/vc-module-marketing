@@ -55,7 +55,6 @@ namespace VirtoCommerce.MarketingModule.Web
         public IConfiguration Configuration { get; set; }
         public IModuleCatalog ModuleCatalog { get; set; }
 
-        private const string CustomerModuleId = "VirtoCommerce.Customer";
         private const string OrdersModuleId = "VirtoCommerce.Orders";
 
         public void Initialize(IServiceCollection serviceCollection)
