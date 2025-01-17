@@ -55,7 +55,7 @@ namespace VirtoCommerce.MarketingModule.Web
         public IConfiguration Configuration { get; set; }
         public IModuleCatalog ModuleCatalog { get; set; }
 
-        private const string OrdersModuleId = "VirtoCommerce.Orders";
+        private const string _ordersModuleId = "VirtoCommerce.Orders";
 
         public void Initialize(IServiceCollection serviceCollection)
         {
@@ -118,7 +118,7 @@ namespace VirtoCommerce.MarketingModule.Web
             serviceCollection.AddTransient<LogChangesChangedEventHandler>();
             serviceCollection.AddTransient<MarketingExportImport>();
 
-            if (ModuleCatalog.IsModuleInstalled(OrdersModuleId))
+            if (ModuleCatalog.IsModuleInstalled(_ordersModuleId))
             {
                 serviceCollection.AddTransient<CouponUsageRecordHandler>();
             }
@@ -151,7 +151,7 @@ namespace VirtoCommerce.MarketingModule.Web
             });
 
             //Create order observer. record order coupon usage
-            if (ModuleCatalog.IsModuleInstalled(OrdersModuleId))
+            if (ModuleCatalog.IsModuleInstalled(_ordersModuleId))
             {
                 appBuilder.RegisterEventHandler<OrderChangedEvent, CouponUsageRecordHandler>();
             }
