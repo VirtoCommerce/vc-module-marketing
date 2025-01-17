@@ -1,15 +1,15 @@
 angular.module('virtoCommerce.marketingModule')
     .controller('virtoCommerce.marketingModule.couponDetailController',
-        ['$scope',
+        ['$scope', "$injector",
             'platformWebApp.bladeNavigationService',
             'virtoCommerce.marketingModule.promotions',
-            'virtoCommerce.customerModule.members',
-            function ($scope,
+            function ($scope, $injector,
                 bladeNavigationService,
-                promotionsApi,
-                membersApi) {
+                promotionsApi) {
                 var blade = $scope.blade;
                 blade.isLoading = false;
+
+                $scope.customerModuleInstalled = $injector.has('virtoCommerce.customerModule');
 
                 blade.refresh = function (parentRefresh) {
                     if (!blade.isNew) {
@@ -76,6 +76,8 @@ angular.module('virtoCommerce.marketingModule')
                         "Organization", "Contact"
                     ];
                     criteria.deepSearch = true;
+
+                    var membersApi = $injector.get('virtoCommerce.customerModule.members');
 
                     return membersApi.search(criteria);
                 }
