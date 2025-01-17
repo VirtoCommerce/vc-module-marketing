@@ -29,7 +29,7 @@
   <iconUrl>Modules/$(VirtoCommerce.Marketing)/Content/logo.png</iconUrl>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>
   <releaseNotes>Third version.</releaseNotes>
-  <copyright>Copyright © 2011-2024 Virto Commerce. All rights reserved</copyright>
+  <copyright>Copyright © 2011-2025 Virto Commerce. All rights reserved</copyright>
   <tags>marketing promotion</tags>
   <assemblyFile>VirtoCommerce.MarketingModule.Web.dll</assemblyFile>
   <moduleType>VirtoCommerce.MarketingModule.Web.Module, VirtoCommerce.MarketingModule.Web</moduleType>
