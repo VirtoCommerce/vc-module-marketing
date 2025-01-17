@@ -117,6 +117,7 @@ namespace VirtoCommerce.MarketingModule.Web
 
             serviceCollection.AddTransient<LogChangesChangedEventHandler>();
             serviceCollection.AddTransient<MarketingExportImport>();
+
             if (ModuleCatalog.IsModuleInstalled(OrdersModuleId))
             {
                 serviceCollection.AddTransient<CouponUsageRecordHandler>();
@@ -154,6 +155,7 @@ namespace VirtoCommerce.MarketingModule.Web
             {
                 appBuilder.RegisterEventHandler<OrderChangedEvent, CouponUsageRecordHandler>();
             }
+
             appBuilder.RegisterEventHandler<PromotionChangedEvent, LogChangesChangedEventHandler>();
             appBuilder.RegisterEventHandler<CouponChangedEvent, LogChangesChangedEventHandler>();
 
