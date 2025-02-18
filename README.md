@@ -6,17 +6,15 @@ VirtoCommerce.Marketing module represents a marketing management system.
 
 ## Key Features
 
-* Dynamic content management for storefront;
+* Dynamic content management for frontend;
 * Content publishing management;
 * Promotions.
 
 ## Documentation
 
-* [Marketing module document ](/docs/index.md)
+* [Marketing module document ](https://docs.virtocommerce.org/platform/user-guide/marketing/overview/)
 * [View on GitHub](https://github.com/VirtoCommerce/vc-module-marketing)
-
-
-* Developer guide: <a href="https://docs.virtocommerce.org/new/dev_docs/Extensibility/extending-dynamic-expression-tree/#defining-new-class-for-expression-tree-prototype" target="_blank">Composing dynamic conditions</a>
+* [Developer guide](https://docs.virtocommerce.org/platform/developer-guide/Extensibility/extending-dynamic-expression-tree/#defining-new-class-for-expression-tree-prototype)
 
 ## Installation
 Installing the module:
@@ -32,8 +30,8 @@ Installing the module:
 
 ## References
 
-* Deploy: https://virtocommerce.com/docs/latest/developer-guide/deploy-module-from-source-code/
-* Installation: https://www.virtocommerce.com/docs/latest/user-guide/modules/
+* Deploy: https://docs.virtocommerce.org/platform/developer-guide/Tutorials-and-How-tos/Tutorials/deploy-module-from-source-code/
+* Installation: https://docs.virtocommerce.org/platform/user-guide/modules-installation/
 * Home: https://virtocommerce.com
 * Community: https://www.virtocommerce.org
 * [Download Latest Release](https://github.com/VirtoCommerce/vc-module-marketing/releases/)
