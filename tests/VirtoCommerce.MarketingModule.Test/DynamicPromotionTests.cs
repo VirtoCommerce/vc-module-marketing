@@ -81,14 +81,14 @@ namespace VirtoCommerce.MarketingModule.Test
         public void DynamicPromotion_Clone()
         {
             var blockCustomer = new BlockCustomerCondition()
-                    .WithAvailConditions(
+                    .WithAvailableChildren(
                         new ConditionIsRegisteredUser(),
                         new ConditionIsEveryone(),
                         new ConditionIsFirstTimeBuyer(),
                         new UserGroupsContainsCondition() { Group = "11" }
                      );
             var blockCatalog = new BlockCatalogCondition()
-                    .WithAvailConditions(
+                    .WithAvailableChildren(
                         new ConditionCategoryIs() { CategoryId = "11", CategoryName = "", ExcludingCategoryIds = new string[] { "1", "2" }, ExcludingProductIds = new string[] { "3", "4" } },
                         new ConditionCodeContains() { Keyword = "keyword" },
                         new ConditionCurrencyIs() { Currency = "USD" },
@@ -97,14 +97,14 @@ namespace VirtoCommerce.MarketingModule.Test
                         new ConditionHasNoSalePrice()
                      );
             var blockCart = new BlockCartCondition()
-                    .WithAvailConditions(
+                    .WithAvailableChildren(
                         new ConditionAtNumItemsInCart() { CompareCondition = "CND", ExcludingCategoryIds = new string[] { "1", "2" }, ExcludingProductIds = new string[] { "3", "4" }, NumItem = 111, NumItemSecond = 222 },
                         new ConditionAtNumItemsInCategoryAreInCart() { CategoryId = "catid", CategoryName = "catname", CompareCondition = "CND", ExcludingCategoryIds = new string[] { "1", "2" }, ExcludingProductIds = new string[] { "3", "4" }, NumItem = 111, NumItemSecond = 222 },
                         new ConditionAtNumItemsOfEntryAreInCart() { CompareCondition = "CND", NumItem = 111, NumItemSecond = 222, ProductId = "Id", ProductName = "Name" },
                         new ConditionCartSubtotalLeast() { CompareCondition = "CND", ExcludingCategoryIds = new string[] { "1", "2" }, ExcludingProductIds = new string[] { "3", "4" }, SubTotal = 111, SubTotalSecond = 222 }
                      );
             var blockReward = new BlockReward()
-                    .WithAvailConditions(
+                    .WithAvailableChildren(
                       new RewardCartGetOfAbsSubtotal() { Amount = 444 },
                       new RewardCartGetOfRelSubtotal() { Amount = 444, MaxLimit = 555 },
                       new RewardItemGetFreeNumItemOfProduct() { NumItem = 55, ProductId = "Id", ProductName = "Name" },
@@ -126,7 +126,7 @@ namespace VirtoCommerce.MarketingModule.Test
                 DynamicExpression = AbstractTypeFactory<PromotionConditionAndRewardTree>.TryCreateInstance()
             };
 
-            dynamicPromotion.DynamicExpression.WithChildrens(
+            dynamicPromotion.DynamicExpression.WithChildren(
                 blockCustomer,
                 blockCatalog,
                 blockCart,

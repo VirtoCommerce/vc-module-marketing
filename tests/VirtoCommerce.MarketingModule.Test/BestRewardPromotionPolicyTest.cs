@@ -80,15 +80,15 @@ namespace VirtoCommerce.MarketingModule.Test
         {
             // Arrange
             var condition = new BlockCartCondition()
-                .WithChildrens(new PaymentIsCondition { PaymentMethod = "acceptable" });
-            var reward = new BlockReward().WithChildrens(new RewardCartGetOfAbsSubtotal { Amount = 10m });
+                .WithChildren(new PaymentIsCondition { PaymentMethod = "acceptable" });
+            var reward = new BlockReward().WithChildren(new RewardCartGetOfAbsSubtotal { Amount = 10m });
 
             var promotion = new DynamicPromotion
             {
                 DynamicExpression = AbstractTypeFactory<PromotionConditionAndRewardTree>.TryCreateInstance()
             };
 
-            promotion.DynamicExpression.WithChildrens(condition, reward);
+            promotion.DynamicExpression.WithChildren(condition, reward);
 
             var evalPolicy = GetPromotionEvaluationPolicy(new[] { promotion });
             var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
@@ -112,15 +112,15 @@ namespace VirtoCommerce.MarketingModule.Test
         {
             // Arrange
             var condition = new BlockCartCondition()
-                .WithChildrens(new PaymentIsCondition { PaymentMethod = "acceptable" });
-            var reward = new BlockReward().WithChildrens(new RewardCartGetOfAbsSubtotal { Amount = 10m });
+                .WithChildren(new PaymentIsCondition { PaymentMethod = "acceptable" });
+            var reward = new BlockReward().WithChildren(new RewardCartGetOfAbsSubtotal { Amount = 10m });
 
             var promotion = new DynamicPromotion
             {
                 DynamicExpression = AbstractTypeFactory<PromotionConditionAndRewardTree>.TryCreateInstance()
             };
 
-            promotion.DynamicExpression.WithChildrens(condition, reward);
+            promotion.DynamicExpression.WithChildren(condition, reward);
 
             var evalPolicy = GetPromotionEvaluationPolicy(new[] { promotion });
             var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
@@ -143,15 +143,15 @@ namespace VirtoCommerce.MarketingModule.Test
         {
             // Arrange
             var condition = new BlockCartCondition()
-                .WithChildrens(new ShippingIsCondition { ShippingMethod = "acceptable" });
-            var reward = new BlockReward().WithChildrens(new RewardCartGetOfAbsSubtotal { Amount = 10m });
+                .WithChildren(new ShippingIsCondition { ShippingMethod = "acceptable" });
+            var reward = new BlockReward().WithChildren(new RewardCartGetOfAbsSubtotal { Amount = 10m });
 
             var promotion = new DynamicPromotion
             {
                 DynamicExpression = AbstractTypeFactory<PromotionConditionAndRewardTree>.TryCreateInstance()
             };
 
-            promotion.DynamicExpression.WithChildrens(condition, reward);
+            promotion.DynamicExpression.WithChildren(condition, reward);
 
             var evalPolicy = GetPromotionEvaluationPolicy(new[] { promotion });
             var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
@@ -175,15 +175,15 @@ namespace VirtoCommerce.MarketingModule.Test
         {
             // Arrange
             var condition = new BlockCartCondition()
-                .WithChildrens(new ShippingIsCondition { ShippingMethod = "acceptable" });
-            var reward = new BlockReward().WithChildrens(new RewardCartGetOfAbsSubtotal { Amount = 10m });
+                .WithChildren(new ShippingIsCondition { ShippingMethod = "acceptable" });
+            var reward = new BlockReward().WithChildren(new RewardCartGetOfAbsSubtotal { Amount = 10m });
 
             var promotion = new DynamicPromotion
             {
                 DynamicExpression = AbstractTypeFactory<PromotionConditionAndRewardTree>.TryCreateInstance()
             };
 
-            promotion.DynamicExpression.WithChildrens(condition, reward);
+            promotion.DynamicExpression.WithChildren(condition, reward);
 
             var evalPolicy = GetPromotionEvaluationPolicy(new[] { promotion });
             var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
@@ -205,12 +205,12 @@ namespace VirtoCommerce.MarketingModule.Test
         public async Task EvaluatePromotion_GetBestPaymentReward()
         {
             //Arrange
-            var blockReward = new BlockReward().WithChildrens(new RewardPaymentGetOfAbs() { Amount = 10m, PaymentMethod = "PayTest" });
+            var blockReward = new BlockReward().WithChildren(new RewardPaymentGetOfAbs() { Amount = 10m, PaymentMethod = "PayTest" });
             var dynamicPromotion = new DynamicPromotion
             {
                 DynamicExpression = AbstractTypeFactory<PromotionConditionAndRewardTree>.TryCreateInstance()
             };
-            dynamicPromotion.DynamicExpression.WithChildrens(blockReward);
+            dynamicPromotion.DynamicExpression.WithChildren(blockReward);
 
             var evalPolicy = GetPromotionEvaluationPolicy(new[] { dynamicPromotion });
             var productA = new ProductPromoEntry { ProductId = "ProductA", Price = 100, Quantity = 1 };
@@ -236,7 +236,7 @@ namespace VirtoCommerce.MarketingModule.Test
 
             DynamicPromotion CreatePromotion(bool isExclusive, decimal shippingDiscount, decimal cartDiscount)
             {
-                var blockReward = new BlockReward().WithChildrens(
+                var blockReward = new BlockReward().WithChildren(
                     new RewardShippingGetOfAbsShippingMethod { Amount = shippingDiscount, ShippingMethod = "Shipping" },
                     new RewardCartGetOfAbsSubtotal { Amount = cartDiscount }
                 );
@@ -246,7 +246,7 @@ namespace VirtoCommerce.MarketingModule.Test
                     DynamicExpression = AbstractTypeFactory<PromotionConditionAndRewardTree>.TryCreateInstance(),
                     IsExclusive = isExclusive
                 };
-                result.DynamicExpression.WithChildrens(blockReward);
+                result.DynamicExpression.WithChildren(blockReward);
                 return result;
             }
 
