@@ -1,15 +1,168 @@
+<script type="text/ng-template" id="expression-BlockCustomerCondition.html">
+  Customers matching
+  <a class="__link" left-click-menu data-target="allAny_menu{{element.id}}">{{element.all | boolToValue:'all':'any'}}</a> of the following criteria:
+  <ul class="menu __context" role="menu" id="allAny_menu{{element.id}}">
+    <li class="menu-item" ng-click='element.all=true;'>all</li>
+    <li class="menu-item" ng-click='element.all=false;'>any</li>
+  </ul>
+</script>
+
+<script type="text/ng-template" id="expression-ConditionIsEveryone.html">
+  Everyone
+</script>
+
+<script type="text/ng-template" id="expression-ConditionIsFirstTimeBuyer.html">
+  First time buyer
+</script>
+
+<script type="text/ng-template" id="expression-ConditionIsRegisteredUser.html">
+  Registered user
+</script>
+
+<script type="text/ng-template" id="expression-BlockCatalogCondition.html">
+  If
+  <a class="__link" left-click-menu data-target="allAny_menu{{element.id}}">{{element.all | boolToValue:'all':'any'}}</a> of these catalog conditions are
+  <ul class="menu __context" role="menu" id="allAny_menu{{element.id}}">
+    <li class="menu-item" ng-click='element.all=true;'>all</li>
+    <li class="menu-item" ng-click='element.all=false;'>any</li>
+  </ul>
+  <a class="__link" left-click-menu data-target="trueFalse_menu{{element.id}}">{{ !element.not | boolToValue:'true':'false'}}</a>
+  <ul class="menu __context" role="menu" id="trueFalse_menu{{element.id}}">
+    <li class="menu-item" ng-click='element.not=true;'>false</li>
+    <li class="menu-item" ng-click='element.not=false;'>true</li>
+  </ul>
+</script>
+
+<script type="text/ng-template" id="expression-ConditionCategoryIs.html">
+  Category:
+  <a class="__link" ng-click="openCategorySelectWizard(element1)">{{element1.categoryName?element1.categoryName: 'select category' }}</a>
+</script>
+
+<script type="text/ng-template" id="expression-ConditionEntryIs.html">
+  Product:
+  <a ng-if="element1.productIds" class="__link" ng-click="openItemSelectWizard(element1, true)">
+    {{
+            element1.productIds.length > 1
+                ? 'show ' + element1.productIds.length + ' items'
+                : element1.productNames && element1.productNames.length
+                    ? element1.productCodes && element1.productCodes.length
+                        ? element1.productNames[0] + ' (' +  element1.productCodes[0] + ')'
+                        : element1.productNames[0]
+                    : 'select product'
+    }}
+  </a>
+  <a ng-if="!element1.productIds && element1.productId" class="__link" ng-click="openItemSelectWizard(element1)">{{element1.productName ? element1.productName + ' (' + element1.productCode + ')' : 'select product' }}</a>
+  <a ng-if="!element1.productIds && !element1.productId" class="__link" ng-click="openItemSelectWizard(element1, true)">{{'select product'}}</a>
+</script>
+
+<script type="text/ng-template" id="expression-ConditionCodeContains.html">
+  Product code contains
+  <div class="form-input">
+    <input ng-model="element1.keyword" required placeholder="Enter code">
+  </div>
+</script>
+
 <script type="text/ng-template" id="expression-ConditionCurrencyIs.html">
-    <span ng-controller="virtoCommerce.marketingModule.promotionConditionCurrencyIsController">
-        Currency is
-        <a class="__link" left-click-menu data-target="pcrn_menu{{$index}}">{{element1.currency ? element1.currency : 'select currency' }}</a>
-        <ul class="menu __context" role="menu" id="pcrn_menu{{$index}}" ng-init="currencies = currencyUtils.getCurrencies()">
-            <li class="menu-item" ng-click='element1.currency=x.code;' ng-repeat="x in currencies">{{x.code}}</li>
-        </ul>
-    </span>
+  <span ng-controller="virtoCommerce.marketingModule.promotionConditionCurrencyIsController">
+    Currency is
+    <a class="__link" left-click-menu data-target="pcrn_menu{{$index}}">{{element1.currency ? element1.currency : 'select currency' }}</a>
+    <ul class="menu __context" role="menu" id="pcrn_menu{{$index}}" ng-init="currencies = currencyUtils.getCurrencies()">
+      <li class="menu-item" ng-click='element1.currency=x.code;' ng-repeat="x in currencies">{{x.code}}</li>
+    </ul>
+  </span>
 </script>
+
+<script type="text/ng-template" id="expression-ConditionInStockQuantity.html">
+  In stock quantity is
+  <a class="__link" left-click-menu data-target="compareCondition_menu{{element1.id}}">{{element1.compareCondition | compareConditionToText }}</a>
+  <div class="form-input __mini __number">
+    <input smart-float num-type="integer" required ng-model="element1.quantity" name="firstValue">
+  </div>
+  <span ng-show='element1.compareCondition=="Between"'>and</span>
+  <div class="form-input __mini __number" ng-show='element1.compareCondition=="Between"'>
+    <input smart-float num-type="integer" required ng-model="element1.quantitySecond" name="secondValue">
+  </div>item(s)
+  <ul class="menu __context" role="menu" id="compareCondition_menu{{element1.id}}">
+    <li class="menu-item" ng-click='element1.compareCondition="Exactly";'>exactly</li>
+    <li class="menu-item" ng-click='element1.compareCondition="AtLeast";'>at least</li>
+    <li class="menu-item" ng-click='element1.compareCondition="IsLessThanOrEqual";'>less than or equals</li>
+    <li class="menu-item" ng-click='element1.compareCondition="Between";element1.quantitySecond = element1.quantity;'>between</li>
+  </ul>
+</script>
+
 <script type="text/ng-template" id="expression-ConditionHasNoSalePrice.html">
-    Apply only to full price items and not sales items
+  Apply only to full price items and not sales items
 </script>
+
+<script type="text/ng-template" id="expression-BlockCartCondition.html">
+  If
+  <a class="__link" left-click-menu data-target="allAny_menu{{element.id}}">{{element.all | boolToValue:'all':'any'}}</a> of these cart conditions are
+  <ul class="menu __context" role="menu" id="allAny_menu{{element.id}}">
+    <li class="menu-item" ng-click='element.all=true;'>all</li>
+    <li class="menu-item" ng-click='element.all=false;'>any</li>
+  </ul>
+  <a class="__link" left-click-menu data-target="trueFalse_menu{{element.id}}">{{ !element.not | boolToValue:'true':'false'}}</a>
+  <ul class="menu __context" role="menu" id="trueFalse_menu{{element.id}}">
+    <li class="menu-item" ng-click='element.not=true;'>false</li>
+    <li class="menu-item" ng-click='element.not=false;'>true</li>
+  </ul>
+</script>
+
+<script type="text/ng-template" id="expression-ConditionAtNumItemsInCart.html">
+  <a class="__link" left-click-menu data-target="compareCondition_menu{{element1.id}}">{{element1.compareCondition | compareConditionToText }}</a>
+  <div class="form-input __mini __number">
+    <input smart-float num-type="integer" required ng-model="element1.numItem" name="firstValue">
+  </div>
+  <span ng-show='element1.compareCondition=="Between"'>and</span>
+  <div class="form-input __mini __number" ng-show='element1.compareCondition=="Between"'>
+    <input smart-float num-type="integer" required ng-model="element1.numItemSecond" name="secondValue">
+  </div>items are in the shopping cart excluding
+  <ul class="menu __context" role="menu" id="compareCondition_menu{{element1.id}}">
+    <li class="menu-item" ng-click='element1.compareCondition="Exactly";'>exactly</li>
+    <li class="menu-item" ng-click='element1.compareCondition="AtLeast";'>at least</li>
+    <li class="menu-item" ng-click='element1.compareCondition="IsLessThanOrEqual";'>exactly or less than</li>
+    <li class="menu-item" ng-click='element1.compareCondition="Between";element1.numItemSecond = element1.numItem;'>between</li>
+  </ul>
+</script>
+
+<script type="text/ng-template" id="expression-ConditionAtNumItemsInCategoryAreInCart.html">
+  <a class="__link" left-click-menu data-target="compareCondition_menu{{element1.id}}">{{element1.compareCondition | compareConditionToText }}</a>
+  <div class="form-input __mini __number">
+    <input smart-float num-type="integer" required ng-model="element1.numItem" name="firstValue">
+  </div>
+  <span ng-show='element1.compareCondition=="Between"'>and</span>
+  <div class="form-input __mini __number" ng-show='element1.compareCondition=="Between"'>
+    <input smart-float num-type="integer" required ng-model="element1.numItemSecond" name="secondValue">
+  </div>items from this category:
+  <a class="__link" ng-click="openCategorySelectWizard(element1)">{{element1.categoryName?element1.categoryName: 'select category' }}</a>
+  are in shopping cart excluding
+  <ul class="menu __context" role="menu" id="compareCondition_menu{{element1.id}}">
+    <li class="menu-item" ng-click='element1.compareCondition="Exactly";'>exactly</li>
+    <li class="menu-item" ng-click='element1.compareCondition="AtLeast";'>at least</li>
+    <li class="menu-item" ng-click='element1.compareCondition="IsLessThanOrEqual";'>exactly or less than</li>
+    <li class="menu-item" ng-click='element1.compareCondition="Between";element1.numItemSecond = element1.numItem;'>between</li>
+  </ul>
+</script>
+
+<script type="text/ng-template" id="expression-ConditionAtNumItemsOfEntryAreInCart.html">
+  <a class="__link" left-click-menu data-target="compareCondition_menu{{element1.id}}">{{element1.compareCondition | compareConditionToText }}</a>
+  <div class="form-input __mini __number">
+    <input smart-float num-type="integer" required ng-model="element1.numItem" name="firstValue">
+  </div>
+  <span ng-show='element1.compareCondition=="Between"'>and</span>
+  <div class="form-input __mini __number" ng-show='element1.compareCondition=="Between"'>
+    <input smart-float num-type="integer" required ng-model="element1.numItemSecond" name="secondValue">
+  </div>specific product items:
+  <a class="__link" ng-click="openItemSelectWizard(element1)">{{element1.productId?element1.productName + ' (' + element1.productCode + ')' : 'select product' }}</a>
+  are in the shopping cart
+  <ul class="menu __context" role="menu" id="compareCondition_menu{{element1.id}}">
+    <li class="menu-item" ng-click='element1.compareCondition="Exactly";'>exactly</li>
+    <li class="menu-item" ng-click='element1.compareCondition="AtLeast";'>at least</li>
+    <li class="menu-item" ng-click='element1.compareCondition="IsLessThanOrEqual";'>exactly or less than</li>
+    <li class="menu-item" ng-click='element1.compareCondition="Between";element1.numItemSecond = element1.numItem;'>between</li>
+  </ul>
+</script>
+
 <script type="text/ng-template" id="expression-PaymentIsCondition.html">
   Payment type is
   <a class="__link" left-click-menu data-target="pshp_menu{{$index}}">{{element1.paymentMethod ? element1.paymentMethod : 'select payment method'}}</a>
@@ -17,10 +170,292 @@
     <li class="menu-item" ng-click='element1.paymentMethod=x.id?x.code:x.id' ng-repeat="x in paymentMethods">{{x.code}}</li>
   </ul>
 </script>
+
 <script type="text/ng-template" id="expression-ShippingIsCondition.html">
   Shipping type is
   <a class="__link" left-click-menu data-target="pshp_menu{{$index}}">{{element1.shippingMethod ? element1.shippingMethod : 'select shipping type'}}</a>
   <ul class="menu __context" role="menu" id="pshp_menu{{$index}}" ng-controller="virtoCommerce.dynamicExpressions.shippingMethodRewardController">
     <li class="menu-item" ng-click='element1.shippingMethod=x.id?x.code:x.id' ng-repeat="x in shippingMethods">{{x.code}}</li>
   </ul>
+</script>
+
+<script type="text/ng-template" id="expression-ConditionCartSubtotalLeast.html">
+  Cart subtotal is
+  <a class="__link" left-click-menu data-target="compareCondition_menu{{element1.id}}">{{element1.compareCondition | compareConditionToText }}</a>
+  <div class="form-input __mini">
+    <input money required ng-model="element1.subTotal" name="firstValue">
+  </div>
+  <span ng-show='element1.compareCondition=="Between"'>and</span>
+  <div class="form-input __mini" ng-show='element1.compareCondition=="Between"'>
+    <input money required ng-model="element1.subTotalSecond" name="secondValue">
+  </div>excluding
+  <ul class="menu __context" role="menu" id="compareCondition_menu{{element1.id}}">
+    <li class="menu-item" ng-click='element1.compareCondition="Exactly";'>exactly</li>
+    <li class="menu-item" ng-click='element1.compareCondition="AtLeast";'>at least</li>
+    <li class="menu-item" ng-click='element1.compareCondition="IsLessThanOrEqual";'>exactly or less than</li>
+    <li class="menu-item" ng-click='element1.compareCondition="Between";element1.subTotalSecond = element1.subTotal;'>between</li>
+  </ul>
+</script>
+
+<script type="text/ng-template" id="expression-BlockReward.html">
+  Get the following rewards:
+</script>
+
+<script type="text/ng-template" id="expression-RewardCartGetOfAbsSubtotal.html">
+  $
+  <div class="form-input __mini">
+    <input money required ng-model="element1.amount">
+  </div> off cart subtotal
+</script>
+
+<script type="text/ng-template" id="expression-RewardCartGetOfRelSubtotal.html">
+  <div class="form-input __mini __number">
+    <input smart-float num-type="float" required ng-model="element1.amount">
+  </div> % off cart subtotal, no more than $
+  <div class="form-input __mini">
+    <input money required ng-model="element1.maxLimit">
+  </div>
+</script>
+
+<script type="text/ng-template" id="expression-RewardItemGetFreeNumItemOfProduct.html">
+  <div class="form-input __mini __number">
+    <input smart-float num-type="integer" required ng-model="element1.numItem">
+  </div>free items of this product:
+  <a class="__link" ng-click="openItemSelectWizard(element1)">{{element1.productName?element1.productName + ' (' + element1.productCode + ')' : 'select product' }}</a>
+</script>
+
+<script type="text/ng-template" id="expression-RewardItemGetOfAbs.html">
+  $
+  <div class="form-input __mini">
+    <input money required ng-model="element1.amount">
+  </div>off for
+  <a class="__link" ng-click="openItemSelectWizard(element1)">{{element1.productName?element1.productName + ' (' + element1.productCode + ')' : 'select product' }}</a>
+</script>
+
+<script type="text/ng-template" id="expression-RewardItemGetOfAbsForNum.html">
+  $
+  <div class="form-input __mini">
+    <input money required ng-model="element1.amount">
+  </div>off for
+  <div class="form-input __mini __number">
+    <input smart-float num-type="integer" required ng-model="element1.numItem">
+  </div>items of this product:
+  <a class="__link" ng-click="openItemSelectWizard(element1)">{{element1.productName?element1.productName + ' (' + element1.productCode + ')' : 'select product' }}</a>
+  ,
+  <a class="__link" left-click-menu data-target="trueFalse_menu_{{element1.$$hashKey}}">{{ element1.roundAmountPerItem | boolToValue:'round':"don't round"}}</a>
+  <ul class="menu __context" role="menu" id="trueFalse_menu_{{element1.$$hashKey}}">
+    <li class="menu-item" ng-click='element1.roundAmountPerItem=true;'>round</li>
+    <li class="menu-item" ng-click='element1.roundAmountPerItem=false;'>don't round</li>
+  </ul>
+  amount per item
+</script>
+
+<script type="text/ng-template" id="expression-RewardItemGetOfRel.html">
+  <div class="form-input __mini __number">
+    <input smart-float num-type="float" required ng-model="element1.amount">
+  </div>% off for
+  <a class="__link" ng-click="openItemSelectWizard(element1)">{{element1.productName?element1.productName + ' (' + element1.productCode + ')' : 'select product' }}</a>
+  , no more than $
+  <div class="form-input __mini">
+    <input money required ng-model="element1.maxLimit">
+  </div>
+  ,
+  <a class="__link" left-click-menu data-target="trueFalse_menu_{{element1.$$hashKey}}">{{ element1.roundAmountPerItem | boolToValue:'round':"don't round"}}</a>
+  <ul class="menu __context" role="menu" id="trueFalse_menu_{{element1.$$hashKey}}">
+    <li class="menu-item" ng-click='element1.roundAmountPerItem=true;'>round</li>
+    <li class="menu-item" ng-click='element1.roundAmountPerItem=false;'>don't round</li>
+  </ul>
+  amount per item
+</script>
+
+<script type="text/ng-template" id="expression-RewardItemGetOfRelForNum.html">
+  <div class="form-input __mini __number">
+    <input smart-float num-type="float" required ng-model="element1.amount">
+  </div>% off, no more than $
+  <div class="form-input __mini">
+    <input money required ng-model="element1.maxLimit">
+  </div>for
+  <div class="form-input __mini __number">
+    <input smart-float num-type="integer" required ng-model="element1.numItem">
+  </div>
+  <div>
+    items of this product:
+    <a class="__link" ng-click="openItemSelectWizard(element1)">{{element1.productName?element1.productName + ' (' + element1.productCode + ')' : 'select product' }}</a>
+  </div>
+  ,
+  <a class="__link" left-click-menu data-target="trueFalse_menu_{{element1.$$hashKey}}">{{ element1.roundAmountPerItem | boolToValue:'round':"don't round"}}</a>
+  <ul class="menu __context" role="menu" id="trueFalse_menu_{{element1.$$hashKey}}">
+    <li class="menu-item" ng-click='element1.roundAmountPerItem=true;'>round</li>
+    <li class="menu-item" ng-click='element1.roundAmountPerItem=false;'>don't round</li>
+  </ul>
+  amount per item
+</script>
+
+<script type="text/ng-template" id="expression-RewardItemGiftNumItem.html">
+  <div class="form-input __mini __number">
+    <input smart-float num-type="integer" required ng-model="element1.quantity">
+  </div>items of this product:
+  <a class="__link" ng-click="openItemSelectWizard(element1)">{{element1.productName?element1.productName + ' (' + element1.productCode + ')' : 'select product' }}</a> as a gift. Details:
+  <table>
+    <tr>
+      <td>Name</td>
+      <td>
+        <div class="form-input">
+          <input ng-model="element1.name" placeholder="Enter name">
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>Measurement unit</td>
+      <td>
+        <div class="form-input">
+          <input ng-model="element1.measureUnit" placeholder="Specify measurement">
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>Image URL</td>
+      <td>
+        <div class="form-input">
+          <input ng-model="element1.imageUrl" placeholder="Enter URL" type="url">
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>Description</td>
+      <td>
+        <div class="form-input">
+          <textarea cols="30" rows="10" ng-model="element1.description" placeholder="Enter description"></textarea>
+        </div>
+      </td>
+    </tr>
+  </table>
+</script>
+
+<script type="text/ng-template" id="expression-RewardShippingGetOfAbsShippingMethod.html">
+  $
+  <div class="form-input __mini">
+    <input money required ng-model="element1.amount">
+  </div>off for shipping of this type:
+  <a class="__link" left-click-menu data-target="pshp_menu{{$index}}">{{element1.shippingMethod ? element1.shippingMethod : 'select shipping type'}}</a>
+  <ul class="menu __context" role="menu" id="pshp_menu{{$index}}" ng-controller="virtoCommerce.dynamicExpressions.shippingMethodRewardController">
+    <li class="menu-item" ng-click='element1.shippingMethod=x.id?x.code:x.id' ng-repeat="x in shippingMethods">{{x.code}}</li>
+  </ul>
+</script>
+
+<script type="text/ng-template" id="expression-RewardShippingGetOfRelShippingMethod.html">
+  <div class="form-input __mini __number">
+    <input smart-float num-type="float" required ng-model="element1.amount">
+  </div>
+  <div class="long-reward-expression">
+    % off for shipping of this type:
+    <a class="__link" left-click-menu data-target="pshp_menu{{$index}}">{{element1.shippingMethod ? element1.shippingMethod : 'select shipping type'}}</a>
+    <ul class="menu __context" role="menu" id="pshp_menu{{$index}}" ng-controller="virtoCommerce.dynamicExpressions.shippingMethodRewardController">
+      <li class="menu-item" ng-click='element1.shippingMethod=x.id?x.code:x.id' ng-repeat="x in shippingMethods">{{x.code}}</li>
+    </ul>
+    , no more than $
+  </div>
+  <div class="form-input __mini">
+    <input money required ng-model="element1.maxLimit">
+  </div>
+</script>
+
+<script type="text/ng-template" id="expression-RewardPaymentGetOfAbs.html">
+  $
+  <div class="form-input __mini">
+    <input money required ng-model="element1.amount">
+  </div>off for using this payment method:
+  <a class="__link" left-click-menu data-target="pshp_menu{{$index}}">{{element1.paymentMethod ? element1.paymentMethod : 'select payment method'}}</a>
+  <ul class="menu __context" role="menu" id="pshp_menu{{$index}}" ng-controller="virtoCommerce.dynamicExpressions.paymentMethodRewardController">
+    <li class="menu-item" ng-click='element1.paymentMethod=x.id?x.code:x.id' ng-repeat="x in paymentMethods">{{x.code}}</li>
+  </ul>
+</script>
+
+<script type="text/ng-template" id="expression-RewardPaymentGetOfRel.html">
+  <div class="form-input __mini">
+    <input money required ng-model="element1.amount">
+  </div>
+  <div class="long-reward-expression">
+    % off for using this payment method:
+    <a class="__link" left-click-menu data-target="pshp_menu{{$index}}">{{element1.paymentMethod ? element1.paymentMethod : 'select payment method'}}</a>
+    <ul class="menu __context" role="menu" id="pshp_menu{{$index}}" ng-controller="virtoCommerce.dynamicExpressions.paymentMethodRewardController">
+      <li class="menu-item" ng-click='element1.paymentMethod=x.id?x.code:x.id' ng-repeat="x in paymentMethods">{{x.code}}</li>
+    </ul>
+    , no more than $
+  </div>
+  <div class="form-input __mini">
+    <input money required ng-model="element1.maxLimit">
+  </div>
+</script>
+
+<script type="text/ng-template" id="expression-RewardItemForEveryNumInGetOfRel.html">
+  For
+  <div class="form-input __mini __number">
+    <input smart-float num-type="integer" required ng-model="element1.forNthQuantity">
+  </div>
+  of every
+  <div class="form-input __mini __number">
+    <input smart-float num-type="integer" required ng-model="element1.inEveryNthQuantity">
+  </div>
+  items of this product:
+  <a class="__link" ng-click="openItemSelectWizard(element1.product)">{{ element1.product && element1.product.productName ? element1.product.productName + ' (' + element1.product.productCode + ')'  : 'select product' }}</a>
+  <div>
+    Receive
+    <div class="form-input __mini __number">
+      <input smart-float num-type="float" required ng-model="element1.amount">
+    </div>% off,
+    no more than
+    <div class="form-input __mini __number">
+      <input smart-float num-type="integer" ng-model="element1.itemLimit">
+    </div>
+    <br>and no more than $
+    <div class="form-input __mini">
+      <input money required ng-model="element1.maxLimit">
+    </div>
+  </div>
+  ,
+  <a class="__link" left-click-menu data-target="trueFalse_menu_{{element1.$$hashKey}}">{{ element1.roundAmountPerItem | boolToValue:'round':"don't round"}}</a>
+  <ul class="menu __context" role="menu" id="trueFalse_menu_{{element1.$$hashKey}}">
+    <li class="menu-item" ng-click='element1.roundAmountPerItem=true;'>round</li>
+    <li class="menu-item" ng-click='element1.roundAmountPerItem=false;'>don't round</li>
+  </ul>
+  amount per item
+</script>
+
+<script type="text/ng-template" id="expression-RewardItemForEveryNumOtherItemInGetOfRel.html">
+  For
+  <div class="form-input __mini __number">
+    <input smart-float num-type="integer" required ng-model="element1.forNthQuantity">
+  </div>
+  items of this product:
+  <a class="__link" ng-click="openItemSelectWizard(element1.product)">{{ element1.product && element1.product.productName ? element1.product.productName + ' (' + element1.product.productCode + ')' : 'select product' }}</a>
+  of every
+  <div class="form-input __mini __number">
+    <input smart-float num-type="integer" required ng-model="element1.inEveryNthQuantity">
+  </div>
+  items of this product:
+  <a class="__link" ng-click="openItemSelectWizard(element1.conditionalProduct)">{{ element1.conditionalProduct && element1.conditionalProduct.productName ? element1.conditionalProduct.productName + ' (' + element1.conditionalProduct.productCode + ')' : 'select product' }}</a>
+  <div>
+    Receive
+    <div class="form-input __mini __number">
+      <input smart-float num-type="float" required ng-model="element1.amount">
+    </div>% off,
+    no more than
+    <div class="form-input __mini __number">
+      <input smart-float num-type="integer" ng-model="element1.itemLimit">
+    </div>
+    <br>and no more than $
+    <div class="form-input __mini">
+      <input money required ng-model="element1.maxLimit">
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="expression-ExcludingCategoryCondition.html">
+  items from
+  <a class="__link" ng-click="openCategorySelectWizard(element)">{{element.categoryId?element.categoryName || element.categoryId: 'select category' }}</a> category
+</script>
+
+<script type="text/ng-template" id="expression-ExcludingProductCondition.html">
+  <a class="__link" ng-click="openItemSelectWizard(element)">{{element.productName?element.productName + ' (' + element.productCode + ')' : 'select product' }}</a> items
 </script>

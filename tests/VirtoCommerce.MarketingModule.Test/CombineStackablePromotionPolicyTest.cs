@@ -402,7 +402,7 @@ namespace VirtoCommerce.MarketingModule.Test
 
             DynamicPromotion CreatePromotion(bool isExclusive, decimal shippingDiscount, decimal cartDiscount)
             {
-                var blockReward = new BlockReward().WithChildrens(
+                var blockReward = new BlockReward().WithChildren(
                     new RewardShippingGetOfAbsShippingMethod { Amount = shippingDiscount, ShippingMethod = "Shipping" },
                     new RewardCartGetOfAbsSubtotal { Amount = cartDiscount }
                 );
@@ -412,7 +412,7 @@ namespace VirtoCommerce.MarketingModule.Test
                     DynamicExpression = AbstractTypeFactory<PromotionConditionAndRewardTree>.TryCreateInstance(),
                     IsExclusive = isExclusive
                 };
-                result.DynamicExpression.WithChildrens(blockReward);
+                result.DynamicExpression.WithChildren(blockReward);
                 return result;
             }
 
@@ -448,7 +448,7 @@ namespace VirtoCommerce.MarketingModule.Test
                 Results = promotions.ToList()
             };
 
-            var promoSearchServiceMock = new Moq.Mock<IPromotionSearchService>();
+            var promoSearchServiceMock = new Mock<IPromotionSearchService>();
             promoSearchServiceMock.Setup(x => x.SearchPromotionsAsync(It.IsAny<PromotionSearchCriteria>())).ReturnsAsync(result);
 
             if (promotionRewardEvaluatorMock == null)

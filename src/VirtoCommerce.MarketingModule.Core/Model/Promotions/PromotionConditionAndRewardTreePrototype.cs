@@ -10,61 +10,55 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
     {
         public PromotionConditionAndRewardTreePrototype()
         {
-            var blockCustomer = new BlockCustomerCondition()
-                    .WithAvailConditions(
+            IConditionTree[] children =
+            [
+                new BlockCustomerCondition()
+                    .WithAvailableChildren(
                         new ConditionIsRegisteredUser(),
                         new ConditionIsEveryone(),
                         new ConditionIsFirstTimeBuyer(),
                         new UserGroupsContainsCondition(),
                         new UserGroupIsCondition()
-                     );
-            var blockCatalog = new BlockCatalogCondition()
-                    .WithAvailConditions(
+                    ),
+                new BlockCatalogCondition()
+                    .WithAvailableChildren(
                         new ConditionCategoryIs(),
                         new ConditionCodeContains(),
                         new ConditionCurrencyIs(),
                         new ConditionEntryIs(),
                         new ConditionInStockQuantity(),
                         new ConditionHasNoSalePrice()
-                     );
-            var blockCart = new BlockCartCondition()
-                    .WithAvailConditions(
+                    ),
+                new BlockCartCondition()
+                    .WithAvailableChildren(
                         new ConditionAtNumItemsInCart(),
                         new ConditionAtNumItemsInCategoryAreInCart(),
                         new ConditionAtNumItemsOfEntryAreInCart(),
                         new PaymentIsCondition(),
                         new ShippingIsCondition(),
                         new ConditionCartSubtotalLeast()
-                     );
-            var blockReward = new BlockReward()
-                    .WithAvailConditions(
-                      new RewardCartGetOfAbsSubtotal(),
-                      new RewardCartGetOfRelSubtotal(),
-                      new RewardItemGetFreeNumItemOfProduct(),
-                      new RewardItemGetOfAbs(),
-                      new RewardItemGetOfAbsForNum(),
-                      new RewardItemGetOfRel(),
-                      new RewardItemGetOfRelForNum(),
-                      new RewardItemGiftNumItem(),
-                      new RewardShippingGetOfAbsShippingMethod(),
-                      new RewardShippingGetOfRelShippingMethod(),
-                      new RewardPaymentGetOfAbs(),
-                      new RewardPaymentGetOfRel(),
-                      new RewardItemForEveryNumInGetOfRel(),
-                      new RewardItemForEveryNumOtherItemInGetOfRel()
-                    );
-            WithAvailConditions(
-                blockCustomer,
-                blockCatalog,
-                blockCart,
-                blockReward
-           );
-            WithChildrens(
-                blockCustomer,
-                blockCatalog,
-                blockCart,
-                blockReward
-                );
+                    ),
+                new BlockReward()
+                    .WithAvailableChildren(
+                        new RewardCartGetOfAbsSubtotal(),
+                        new RewardCartGetOfRelSubtotal(),
+                        new RewardItemGetFreeNumItemOfProduct(),
+                        new RewardItemGetOfAbs(),
+                        new RewardItemGetOfAbsForNum(),
+                        new RewardItemGetOfRel(),
+                        new RewardItemGetOfRelForNum(),
+                        new RewardItemGiftNumItem(),
+                        new RewardShippingGetOfAbsShippingMethod(),
+                        new RewardShippingGetOfRelShippingMethod(),
+                        new RewardPaymentGetOfAbs(),
+                        new RewardPaymentGetOfRel(),
+                        new RewardItemForEveryNumInGetOfRel(),
+                        new RewardItemForEveryNumOtherItemInGetOfRel()
+                    ),
+            ];
+
+            WithChildren(children);
+            WithAvailableChildren(children);
         }
     }
 }

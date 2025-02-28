@@ -1,5 +1,5 @@
 //Call this to register our module to main application
-var moduleName = "virtoCommerce.marketingModule";
+var moduleName = 'virtoCommerce.marketingModule';
 
 if (AppDependencies != undefined) {
     AppDependencies.push(moduleName);
@@ -85,40 +85,191 @@ angular.module(moduleName, [])
             };
             permissionScopeResolver.register(marketingStoreScope);
 
-            //Register dashboard widgets
-            //widgetService.registerWidget({
-            //    isVisible: function (blade) { return authService.checkPermission('marketing:read'); },
-            //    controller: 'virtoCommerce.marketingModule.dashboard.promotionsWidgetController',
-            //    template: 'tile-count.html'
-            //}, 'mainDashboard');
+            // PROMOTIONS
+            // Customer conditions
+            dynamicExpressionService.registerExpression({
+                id: 'BlockCustomerCondition',
+                newChildLabel: 'Add user group',
+                getValidationError: function () {
+                    return (this.children && this.children.length) ? undefined : 'Your promotion must have at least one eligibility criterion';
+                },
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'ConditionIsEveryone',
+                displayName: 'Everyone',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'ConditionIsFirstTimeBuyer',
+                displayName: 'First time customers',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'ConditionIsRegisteredUser',
+                displayName: 'Registered users',
+            });
 
+            // Exclude category or product
+            dynamicExpressionService.registerExpression({
+                id: 'ExcludingCategoryCondition',
+                displayName: 'Items from a specific category',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'ExcludingProductCondition',
+                displayName: 'Product items',
+            });
+            var availableExcludings = [
+                { id: 'ExcludingCategoryCondition' },
+                { id: 'ExcludingProductCondition' },
+            ];
+
+            // Catalog conditions
+            dynamicExpressionService.registerExpression({
+                id: 'BlockCatalogCondition',
+                newChildLabel: 'Add condition',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'ConditionCategoryIs',
+                displayName: 'Specific category',
+                availableChildren: availableExcludings,
+                newChildLabel: 'Excluding',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'ConditionEntryIs',
+                displayName: 'Specific product',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'ConditionCodeContains',
+                displayName: 'Product code contains...',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'ConditionCurrencyIs',
+                displayName: 'Currency is...',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'ConditionInStockQuantity',
+                displayName: 'In stock quantity is...',
+            });
             dynamicExpressionService.registerExpression({
                 id: 'ConditionHasNoSalePrice',
-                displayName: 'Apply only to full price items and not sales items'
+                displayName: 'Apply only to full price items and not sales items',
             });
 
-            var catalogGroupName = "Catalog";
+            // Cart conditions
             dynamicExpressionService.registerExpression({
-                groupName: catalogGroupName,
-                id: 'DynamicContentConditionCategoryIs',
-                templateURL: 'expression-ConditionCategoryIs.html',
-                displayName: 'Specific category'
+                id: 'BlockCartCondition',
+                newChildLabel: 'Add condition',
             });
             dynamicExpressionService.registerExpression({
-                groupName: catalogGroupName,
-                id: 'DynamicContentConditionProductIs',
-                templateURL: 'expression-ConditionEntryIs.html',
-                displayName: 'Specific product'
+                id: 'ConditionAtNumItemsInCart',
+                displayName: 'Number of items in the shopping cart',
+                newChildLabel: 'Excluding',
+                availableChildren: availableExcludings,
             });
-
+            dynamicExpressionService.registerExpression({
+                id: 'ConditionAtNumItemsInCategoryAreInCart',
+                displayName: 'Number of items out of a category in the shopping cart',
+                newChildLabel: 'Excluding',
+                availableChildren: availableExcludings,
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'ConditionAtNumItemsOfEntryAreInCart',
+                displayName: 'Number of specific product items in the shopping cart',
+            });
             dynamicExpressionService.registerExpression({
                 id: 'PaymentIsCondition',
                 displayName: 'Payment type is...',
             });
-
             dynamicExpressionService.registerExpression({
                 id: 'ShippingIsCondition',
                 displayName: 'Shipping type is...',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'ConditionCartSubtotalLeast',
+                displayName: 'Cart subtotal is...',
+                newChildLabel: 'Excluding',
+                availableChildren: availableExcludings,
+            });
+
+            // Rewards
+            dynamicExpressionService.registerExpression({
+                id: 'BlockReward',
+                newChildLabel: 'Add reward',
+                getValidationError: function () {
+                    return (this.children && this.children.length) ? undefined : 'Your promotion must have at least one reward';
+                },
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'RewardCartGetOfAbsSubtotal',
+                displayName: '$... off cart subtotal',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'RewardCartGetOfRelSubtotal',
+                displayName: '...% off cart subtotal, no more than $...',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'RewardItemGetFreeNumItemOfProduct',
+                displayName: '... free items of ... product',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'RewardItemGetOfAbs',
+                displayName: '$... off',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'RewardItemGetOfAbsForNum',
+                displayName: '$... off for ... specific product items',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'RewardItemGetOfRel',
+                displayName: '...% off for product ..., no more than $...',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'RewardItemGetOfRelForNum',
+                displayName: '...% off for ... specific product items, no more than $...',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'RewardItemGiftNumItem',
+                displayName: '... items of ... product as a gift',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'RewardShippingGetOfAbsShippingMethod',
+                displayName: '$... off for shipping at ...',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'RewardShippingGetOfRelShippingMethod',
+                displayName: '% off for shipping at ..., no more than $...',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'RewardPaymentGetOfAbs',
+                displayName: '$... off for using ... payment method',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'RewardPaymentGetOfRel',
+                displayName: '...% off for using ... payment method, no more than $...',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'RewardItemForEveryNumInGetOfRel',
+                displayName: '...% off for ... of every ... specific product items',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'RewardItemForEveryNumOtherItemInGetOfRel',
+                displayName: '...% off for ... items of a specific product per every ... items of another product',
+            });
+
+            // DYNAMIC CONTENT
+            dynamicExpressionService.registerExpression({
+                id: 'BlockContentCondition',
+                newChildLabel: 'Add condition'
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'DynamicContentConditionCategoryIs',
+                displayName: 'Specific category',
+                templateURL: 'expression-ConditionCategoryIs.html',
+                groupName: 'Catalog',
+            });
+            dynamicExpressionService.registerExpression({
+                id: 'DynamicContentConditionProductIs',
+                displayName: 'Specific product',
+                templateURL: 'expression-ConditionEntryIs.html',
+                groupName: 'Catalog',
             });
 
             $http.get('Modules/$(VirtoCommerce.Marketing)/Scripts/dynamicConditions/templates.html').then(function (response) {

@@ -134,10 +134,10 @@ namespace VirtoCommerce.MarketingModule.Test
         private static DynamicContentConditionTree GetExpressionTree(params ConditionTree[] condition)
         {
             var blockCondition = new BlockContentCondition()
-                .WithChildrens(condition);
+                .WithChildren(condition);
 
             var expression = new DynamicContentConditionTree();
-            expression.WithChildrens(blockCondition);
+            expression.WithChildren(blockCondition);
 
             return expression;
         }

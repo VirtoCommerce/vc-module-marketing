@@ -13,7 +13,7 @@ namespace VirtoCommerce.MarketingSampleModule.Web.Models
             blockCatalogCondition.AvailableChildren.Add(new SampleCondition());
 
             // Add a new block with sample condition to the beginning of the tree
-            var blockSampleConditions = new BlockSampleCondition().WithAvailConditions(new SampleCondition());
+            var blockSampleConditions = new BlockSampleCondition().WithAvailableChildren(new SampleCondition());
             AvailableChildren.Insert(0, blockSampleConditions);
             Children.Insert(0, blockSampleConditions);
         }
