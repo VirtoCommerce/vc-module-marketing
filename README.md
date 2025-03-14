@@ -13,7 +13,6 @@ The Virto Commerce Marketing module represents a marketing management system.
 ## Documentation
 
 * [Marketing module user documentation](https://docs.virtocommerce.org/platform/user-guide/marketing/overview/)
-* [GraphQL API documentation](https://docs.virtocommerce.org/platform/developer-guide/GraphQL-Storefront-API-Reference-xAPI/Marketing/overview/)
 * [REST API](https://virtostart-demo-admin.govirto.com/docs/index.html?urls.primaryName=VirtoCommerce.Marketing)
 * [View on GitHub](https://github.com/VirtoCommerce/vc-module-marketing)
 * [Developer guide](https://docs.virtocommerce.org/platform/developer-guide/Extensibility/extending-dynamic-expression-tree/#defining-new-class-for-expression-tree-prototype)
