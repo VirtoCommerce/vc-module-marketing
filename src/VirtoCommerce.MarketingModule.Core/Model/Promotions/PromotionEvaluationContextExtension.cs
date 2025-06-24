@@ -109,6 +109,16 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
             return new ProductPromoEntry[] { context.PromoEntry }.InProducts(productIds).Any();
         }
 
+        public static bool IsParentItemInProduct(this PromotionEvaluationContext context, string productId)
+        {
+            return new ProductPromoEntry[] { context.PromoEntry }.ParentInProducts([productId]).Any();
+        }
+
+        public static bool IsParentItemInProducts(this PromotionEvaluationContext context, string[] productIds)
+        {
+            return new ProductPromoEntry[] { context.PromoEntry }.ParentInProducts(productIds).Any();
+        }
+
         [Obsolete("Use new method instead.")]
         public static bool IsItemsInStockQuantity(this PromotionEvaluationContext context, bool isExactly, int quantity)
         {
@@ -159,6 +169,12 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
             return productIds.Any() ? promotionEntries.Where(x => ProductInProducts(x, productIds)) : promotionEntries;
         }
 
+        public static IEnumerable<ProductPromoEntry> ParentInProducts(this IEnumerable<ProductPromoEntry> entries, string[] productIds)
+        {
+            productIds = productIds.Where(x => x != null).ToArray();
+            var promotionEntries = entries as IList<ProductPromoEntry> ?? entries.ToList();
+            return productIds.Length != 0 ? promotionEntries.Where(x => ParentProductInProducts(x, productIds)) : promotionEntries;
+        }
 
         public static IEnumerable<ProductPromoEntry> ExcludeCategories(this IEnumerable<ProductPromoEntry> entries, string[] categoryIds)
         {
@@ -185,6 +201,11 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
         public static bool ProductInProducts(this ProductPromoEntry entry, IEnumerable<string> productIds)
         {
             return productIds.Contains(entry.ProductId, StringComparer.OrdinalIgnoreCase);
+        }
+
+        public static bool ParentProductInProducts(this ProductPromoEntry entry, IEnumerable<string> productIds)
+        {
+            return productIds.Contains(entry.ParentId, StringComparer.OrdinalIgnoreCase);
         }
 
         #endregion

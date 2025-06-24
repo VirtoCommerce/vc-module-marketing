@@ -34,11 +34,19 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions.Conditions
                 {
                     result = promotionEvaluationContext.IsItemInProduct(ProductId);
                 }
-            }
 
-            if (!result && ApplyToAllVariants)
-            {
-                // check variations
+                if (!result && ApplyToAllVariants)
+                {
+                    // check variations
+                    if (ProductIds != null)
+                    {
+                        result = promotionEvaluationContext.IsParentItemInProducts(ProductIds);
+                    }
+                    else if (ProductId != null)
+                    {
+                        result = promotionEvaluationContext.IsParentItemInProduct(ProductId);
+                    }
+                }
             }
 
             return result;
