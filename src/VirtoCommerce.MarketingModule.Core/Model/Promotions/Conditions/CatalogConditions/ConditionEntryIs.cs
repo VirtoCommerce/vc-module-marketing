@@ -26,26 +26,16 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions.Conditions
             var result = false;
             if (context is PromotionEvaluationContext promotionEvaluationContext)
             {
-                if (ProductIds != null)
-                {
-                    result = promotionEvaluationContext.IsItemInProducts(ProductIds);
-                }
-                else if (ProductId != null)
-                {
-                    result = promotionEvaluationContext.IsItemInProduct(ProductId);
-                }
+                result = ProductIds != null
+                    ? promotionEvaluationContext.IsItemInProducts(ProductIds)
+                    : promotionEvaluationContext.IsItemInProduct(ProductId);
 
                 if (!result && ApplyToAllVariants)
                 {
                     // check variations
-                    if (ProductIds != null)
-                    {
-                        result = promotionEvaluationContext.IsParentItemInProducts(ProductIds);
-                    }
-                    else if (ProductId != null)
-                    {
-                        result = promotionEvaluationContext.IsParentItemInProduct(ProductId);
-                    }
+                    result = ProductIds != null
+                        ? promotionEvaluationContext.IsParentItemInProducts(ProductIds)
+                        : promotionEvaluationContext.IsParentItemInProduct(ProductId);
                 }
             }
 
