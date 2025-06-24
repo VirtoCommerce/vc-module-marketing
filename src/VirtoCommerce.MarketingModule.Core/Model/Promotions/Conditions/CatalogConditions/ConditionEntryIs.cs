@@ -7,11 +7,11 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions.Conditions
     //Product is []
     public class ConditionEntryIs : ConditionTree
     {
-
         public string ProductId { get; set; }
         public string ProductName { get; set; }
         public string[] ProductIds { get; set; }
         public string[] ProductNames { get; set; }
+        public bool ApplyToAllVariants { get; set; }
 
         /// <summary>
         /// ((PromotionEvaluationContext)x).IsItemInProduct(ProductId)
@@ -34,6 +34,11 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions.Conditions
                 {
                     result = promotionEvaluationContext.IsItemInProduct(ProductId);
                 }
+            }
+
+            if (!result && ApplyToAllVariants)
+            {
+                // check variations
             }
 
             return result;
