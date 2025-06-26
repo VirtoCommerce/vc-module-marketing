@@ -45,8 +45,8 @@ namespace VirtoCommerce.MarketingModule.Test
 
             //Assert
             Assert.Equal(2, rewards.Count);
-            Assert.Equal(30m, rewards.First(x => x.Promotion.Id.EqualsInvariant("FedEx Get 30% Off")).Amount);
-            Assert.Equal(70m, rewards.First(x => x.Promotion.Id.EqualsInvariant("Any shipment 70% Off")).Amount);
+            Assert.Equal(30m, rewards.First(x => x.Promotion.Id.EqualsIgnoreCase("FedEx Get 30% Off")).Amount);
+            Assert.Equal(70m, rewards.First(x => x.Promotion.Id.EqualsIgnoreCase("Any shipment 70% Off")).Amount);
         }
 
         [Theory]

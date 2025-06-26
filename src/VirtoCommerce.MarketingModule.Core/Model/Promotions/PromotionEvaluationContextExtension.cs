@@ -76,22 +76,22 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 
         public static bool IsAnyLineItemExtendedTotalNew(this PromotionEvaluationContext context, decimal lineItemTotal, decimal lineItemTotalSecond, string compareCondition, string[] excludingCategoryIds, string[] excludingProductIds)
         {
-            if (compareCondition.EqualsInvariant(ConditionOperation.Exactly))
+            if (compareCondition.EqualsIgnoreCase(ConditionOperation.Exactly))
                 return context.CartPromoEntries.Where(x => x.Price * x.Quantity == lineItemTotal)
                     .ExcludeCategories(excludingCategoryIds)
                     .ExcludeProducts(excludingProductIds)
                     .Any();
-            else if (compareCondition.EqualsInvariant(ConditionOperation.AtLeast))
+            else if (compareCondition.EqualsIgnoreCase(ConditionOperation.AtLeast))
                 return context.CartPromoEntries.Where(x => x.Price * x.Quantity >= lineItemTotal)
                     .ExcludeCategories(excludingCategoryIds)
                     .ExcludeProducts(excludingProductIds)
                     .Any();
-            else if (compareCondition.EqualsInvariant(ConditionOperation.IsLessThanOrEqual))
+            else if (compareCondition.EqualsIgnoreCase(ConditionOperation.IsLessThanOrEqual))
                 return context.CartPromoEntries.Where(x => x.Price * x.Quantity <= lineItemTotal)
                     .ExcludeCategories(excludingCategoryIds)
                     .ExcludeProducts(excludingProductIds)
                     .Any();
-            else if (compareCondition.EqualsInvariant(ConditionOperation.Between))
+            else if (compareCondition.EqualsIgnoreCase(ConditionOperation.Between))
                 return context.CartPromoEntries.Where(x => x.Price * x.Quantity >= lineItemTotal && x.Quantity <= lineItemTotalSecond)
                     .ExcludeCategories(excludingCategoryIds)
                     .ExcludeProducts(excludingProductIds)
@@ -118,13 +118,13 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
 
         public static bool IsItemsInStockQuantityNew(this PromotionEvaluationContext context, string compareCondition, int quantity, int quantitySecond)
         {
-            if (compareCondition.EqualsInvariant(ConditionOperation.Exactly))
+            if (compareCondition.EqualsIgnoreCase(ConditionOperation.Exactly))
                 return context.PromoEntry.InStockQuantity == quantity;
-            else if (compareCondition.EqualsInvariant(ConditionOperation.AtLeast))
+            else if (compareCondition.EqualsIgnoreCase(ConditionOperation.AtLeast))
                 return context.PromoEntry.InStockQuantity >= quantity;
-            else if (compareCondition.EqualsInvariant(ConditionOperation.IsLessThanOrEqual))
+            else if (compareCondition.EqualsIgnoreCase(ConditionOperation.IsLessThanOrEqual))
                 return context.PromoEntry.InStockQuantity <= quantity;
-            else if (compareCondition.EqualsInvariant(ConditionOperation.Between))
+            else if (compareCondition.EqualsIgnoreCase(ConditionOperation.Between))
                 return context.PromoEntry.InStockQuantity >= quantity && context.PromoEntry.InStockQuantity <= quantitySecond;
             throw new Exception("CompareCondition has incorrect value.");
         }

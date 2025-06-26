@@ -6,8 +6,8 @@ if (AppDependencies !== undefined) {
 }
 
 angular.module(moduleName, [])
-    .run(['virtoCommerce.coreModule.common.dynamicExpressionService', '$http', '$compile',
-        function (dynamicExpressionService, $http, $compile) {
+    .run(['virtoCommerce.coreModule.common.dynamicExpressionService', 'platformWebApp.dynamicTemplateService',
+        function (dynamicExpressionService, dynamicTemplateService) {
             //Register Sample expressions
             dynamicExpressionService.registerExpression({
                 id: 'BlockSampleCondition',
@@ -21,9 +21,6 @@ angular.module(moduleName, [])
                 displayName: 'Sample condition is []'
             });
 
-            $http.get('Modules/$(VirtoCommerce.MarketingSample)/Scripts/all-templates.html').then(function (response) {
-                // compile the response, which will put stuff into the cache
-                $compile(response.data);
-            });
+            dynamicTemplateService.ensureTemplateLoaded('Modules/$(VirtoCommerce.MarketingSample)/Scripts/all-templates.html');
         }
     ]);

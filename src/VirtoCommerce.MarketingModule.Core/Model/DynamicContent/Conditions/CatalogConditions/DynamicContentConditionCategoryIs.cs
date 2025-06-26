@@ -13,7 +13,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.DynamicContent.Conditions.Cat
         {
             return context is DynamicContentEvaluationContext dynamicContentContext
                 && !dynamicContentContext.CategoryId.IsNullOrEmpty()
-                && CategoryId.EqualsInvariant(dynamicContentContext.CategoryId);
+                && CategoryId.EqualsIgnoreCase(dynamicContentContext.CategoryId);
         }
     }
 }
