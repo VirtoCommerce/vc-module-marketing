@@ -164,8 +164,8 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             var currency = context.CurrencyObject;
 
             var activeShipmentReward = rewards.OfType<ShipmentReward>()
-                .Where(x => string.IsNullOrEmpty(x.ShippingMethod) || x.ShippingMethod.EqualsInvariant(context.ShipmentMethodCode))
-                .FirstOrDefault(x => string.IsNullOrEmpty(x.ShippingMethodOption) || x.ShippingMethodOption.EqualsInvariant(context.ShipmentMethodOption));
+                .Where(x => string.IsNullOrEmpty(x.ShippingMethod) || x.ShippingMethod.EqualsIgnoreCase(context.ShipmentMethodCode))
+                .FirstOrDefault(x => string.IsNullOrEmpty(x.ShippingMethodOption) || x.ShippingMethodOption.EqualsIgnoreCase(context.ShipmentMethodOption));
 
             if (activeShipmentReward != null)
             {
@@ -183,7 +183,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
             }
 
             var activePaymentReward = rewards.OfType<PaymentReward>()
-                .FirstOrDefault(x => string.IsNullOrEmpty(x.PaymentMethod) || x.PaymentMethod.EqualsInvariant(context.PaymentMethodCode));
+                .FirstOrDefault(x => string.IsNullOrEmpty(x.PaymentMethod) || x.PaymentMethod.EqualsIgnoreCase(context.PaymentMethodCode));
 
             if (activePaymentReward != null)
             {
@@ -202,7 +202,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
 
             foreach (var productReward in rewards.OfType<CatalogItemAmountReward>())
             {
-                var promoEntry = context.PromoEntries.FirstOrDefault(x => string.IsNullOrEmpty(x.ProductId) || x.ProductId.EqualsInvariant(productReward.ProductId));
+                var promoEntry = context.PromoEntries.FirstOrDefault(x => string.IsNullOrEmpty(x.ProductId) || x.ProductId.EqualsIgnoreCase(productReward.ProductId));
 
                 if (promoEntry != null)
                 {
@@ -218,7 +218,7 @@ namespace VirtoCommerce.MarketingModule.Data.Services
                         promoEntry.Price -= discountAmountPerItem;
 
                         // Need to do the same for cart promo entries because there may be conditions which check these entries prices
-                        var cartPromoEntry = context.CartPromoEntries.FirstOrDefault(x => x.ProductId.EqualsInvariant(productReward.ProductId));
+                        var cartPromoEntry = context.CartPromoEntries.FirstOrDefault(x => x.ProductId.EqualsIgnoreCase(productReward.ProductId));
 
                         if (cartPromoEntry != null)
                         {

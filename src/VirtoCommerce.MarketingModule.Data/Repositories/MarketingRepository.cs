@@ -169,7 +169,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
                    .Select(x => new { CouponCode = x.Key, TotalUsesCount = x.Count() }).ToArrayAsync();
             foreach (var totalsUses in couponUsagesTotals)
             {
-                var coupon = retVal.FirstOrDefault(x => x.Code.EqualsInvariant(totalsUses.CouponCode));
+                var coupon = retVal.FirstOrDefault(x => x.Code.EqualsIgnoreCase(totalsUses.CouponCode));
                 if (coupon != null)
                 {
                     coupon.TotalUsesCount = totalsUses.TotalUsesCount;
