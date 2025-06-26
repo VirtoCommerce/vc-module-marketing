@@ -1,4 +1,4 @@
-const moduleId = 'VirtoCommerce.Marketing';
+const namespace = 'VirtoCommerce.Marketing';
 
 const glob = require('glob');
 const path = require('path');
@@ -9,12 +9,11 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const rootPath = path.resolve(__dirname, 'dist');
 
 function getEntryPoints(isProduction) {
-    const result = [
+    return [
         ...glob.sync('./Scripts/**/*.js', { nosort: true }),
         ...(isProduction ? glob.sync('./Scripts/**/*.html', { nosort: true }) : []),
-        ...glob.sync('./Content/**/*.css', { nosort: true })
+        ...glob.sync('./Content/**/*.css', { nosort: true }),
     ];
-    return result;
 }
 
 module.exports = (env, argv) => {
@@ -25,13 +24,13 @@ module.exports = (env, argv) => {
         devtool: false,
         output: {
             path: rootPath,
-            filename: 'app.js'
+            filename: 'app.js',
         },
         module: {
             rules: [
                 {
                     test: /\.css$/,
-                    use: [MiniCssExtractPlugin.loader, 'css-loader']
+                    use: [MiniCssExtractPlugin.loader, 'css-loader'],
                 },
                 {
                     test: /\.html$/,
@@ -40,7 +39,7 @@ module.exports = (env, argv) => {
                             loader: 'ngtemplate-loader',
                             options: {
                                 relativeTo: path.resolve(__dirname, './'),
-                                prefix: `Modules/$(${moduleId})/`,
+                                prefix: `Modules/$(${namespace})/`,
                             }
                         },
                         {
@@ -57,14 +56,14 @@ module.exports = (env, argv) => {
             new CleanWebpackPlugin(),
             isProduction ?
                 new webpack.SourceMapDevToolPlugin({
-                    namespace: moduleId,
-                    filename: '[file].map[query]'
+                    namespace: namespace,
+                    filename: '[file].map[query]',
                 }) :
                 new webpack.SourceMapDevToolPlugin({
-                    namespace: moduleId
+                    namespace: namespace
                 }),
             new MiniCssExtractPlugin({
-                filename: 'style.css'
+                filename: 'style.css',
             })
         ]
     };
