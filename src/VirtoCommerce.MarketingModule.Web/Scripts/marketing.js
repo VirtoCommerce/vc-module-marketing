@@ -37,8 +37,8 @@ angular.module(moduleName, [])
         };
     })
 
-    .run(['$http', '$compile', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', 'platformWebApp.toolbarService', 'platformWebApp.breadcrumbHistoryService', '$state', 'platformWebApp.authService', 'virtoCommerce.storeModule.stores', 'platformWebApp.permissionScopeResolver', 'platformWebApp.bladeNavigationService', 'virtoCommerce.coreModule.common.dynamicExpressionService', 'virtoCommerce.marketingModule.marketingMenuItemService'
-        , function ($http, $compile, mainMenuService, widgetService, toolbarService, breadcrumbHistoryService, $state, authService, stores, permissionScopeResolver, bladeNavigationService, dynamicExpressionService, marketingMenuItemService) {
+    .run(['platformWebApp.dynamicTemplateService', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', 'platformWebApp.toolbarService', 'platformWebApp.breadcrumbHistoryService', '$state', 'platformWebApp.authService', 'virtoCommerce.storeModule.stores', 'platformWebApp.permissionScopeResolver', 'platformWebApp.bladeNavigationService', 'virtoCommerce.coreModule.common.dynamicExpressionService', 'virtoCommerce.marketingModule.marketingMenuItemService'
+        , function (dynamicTemplateService, mainMenuService, widgetService, toolbarService, breadcrumbHistoryService, $state, authService, stores, permissionScopeResolver, bladeNavigationService, dynamicExpressionService, marketingMenuItemService) {
             //Register module in main menu
             var menuItem = {
                 path: 'browse/marketing',
@@ -272,8 +272,5 @@ angular.module(moduleName, [])
                 groupName: 'Catalog',
             });
 
-            $http.get('Modules/$(VirtoCommerce.Marketing)/Scripts/dynamicConditions/templates.html').then(function (response) {
-                // compile the response, which will put stuff into the cache
-                $compile(response.data);
-            });
+            dynamicTemplateService.ensureTemplateLoaded('Modules/$(VirtoCommerce.Marketing)/Scripts/dynamicConditions/templates.html');
         }]);

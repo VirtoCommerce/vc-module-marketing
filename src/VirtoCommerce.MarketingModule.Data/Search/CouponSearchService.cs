@@ -16,7 +16,7 @@ using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.MarketingModule.Data.Search
 {
-    public class CouponSearchService: ICouponSearchService
+    public class CouponSearchService : ICouponSearchService
     {
         private readonly Func<IMarketingRepository> _repositoryFactory;
         private readonly IPlatformMemoryCache _platformMemoryCache;
@@ -91,7 +91,7 @@ namespace VirtoCommerce.MarketingModule.Data.Search
         {
             var sortInfos = criteria.SortInfos;
             //TODO: Sort by TotalUsesCount 
-            if (sortInfos.IsNullOrEmpty() || sortInfos.Any(x => x.SortColumn.EqualsInvariant(nameof(Coupon.TotalUsesCount))))
+            if (sortInfos.IsNullOrEmpty() || sortInfos.Any(x => x.SortColumn.EqualsIgnoreCase(nameof(Coupon.TotalUsesCount))))
             {
                 sortInfos = new[]
                 {

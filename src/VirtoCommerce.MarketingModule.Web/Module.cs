@@ -106,7 +106,7 @@ namespace VirtoCommerce.MarketingModule.Web
                 var promotionCombinePolicy = settingsManager.GetValue<string>(ModuleConstants.Settings.General.CombinePolicy);
                 var currencyService = provider.GetService<ICurrencyService>();
 
-                if (promotionCombinePolicy.EqualsInvariant("CombineStackable"))
+                if (promotionCombinePolicy.EqualsIgnoreCase("CombineStackable"))
                 {
                     var promotionRewardEvaluator = provider.GetService<IPromotionRewardEvaluator>();
                     return new CombineStackablePromotionPolicy(currencyService, platformMemoryCache, promotionService, promotionRewardEvaluator);
