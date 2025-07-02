@@ -7,11 +7,11 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions.Conditions
     //Product is []
     public class ConditionEntryIs : ConditionTree
     {
-
         public string ProductId { get; set; }
         public string ProductName { get; set; }
         public string[] ProductIds { get; set; }
         public string[] ProductNames { get; set; }
+        public bool ApplyToAllVariants { get; set; }
 
         /// <summary>
         /// ((PromotionEvaluationContext)x).IsItemInProduct(ProductId)
@@ -26,13 +26,16 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions.Conditions
             var result = false;
             if (context is PromotionEvaluationContext promotionEvaluationContext)
             {
-                if (ProductIds != null)
+                result = ProductIds != null
+                    ? promotionEvaluationContext.IsItemInProducts(ProductIds)
+                    : promotionEvaluationContext.IsItemInProduct(ProductId);
+
+                if (!result && ApplyToAllVariants)
                 {
-                    result = promotionEvaluationContext.IsItemInProducts(ProductIds);
-                }
-                else if (ProductId != null)
-                {
-                    result = promotionEvaluationContext.IsItemInProduct(ProductId);
+                    // check variations
+                    result = ProductIds != null
+                        ? promotionEvaluationContext.IsParentItemInProducts(ProductIds)
+                        : promotionEvaluationContext.IsParentItemInProduct(ProductId);
                 }
             }
 

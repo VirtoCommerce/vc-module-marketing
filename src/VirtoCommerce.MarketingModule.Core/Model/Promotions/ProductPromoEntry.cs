@@ -22,6 +22,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
         public string CatalogId { get; set; }
         public string CategoryId { get; set; }
         public string ProductId { get; set; }
+        public string ParentId { get; set; }
         public object Owner { get; set; }
         public string Outline { get; set; }
 
