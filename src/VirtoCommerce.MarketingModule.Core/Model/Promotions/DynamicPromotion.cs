@@ -168,7 +168,7 @@ namespace VirtoCommerce.MarketingModule.Core.Promotions
 
                         if (couponIsValid && !string.IsNullOrWhiteSpace(coupon.MemberId))
                         {
-                            couponIsValid = coupon.MemberId == promoContext.ContactId || coupon.MemberId == promoContext.OrganizaitonId;
+                            couponIsValid = coupon.MemberId == promoContext.ContactId || coupon.MemberId == promoContext.OrganizationId;
                         }
 
                         if (couponIsValid)
