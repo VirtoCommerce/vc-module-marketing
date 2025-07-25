@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using VirtoCommerce.CoreModule.Core.Common;
@@ -41,7 +42,15 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
         }
 
         public string ContactId { get; set; }
-        public string OrganizaitonId { get; set; }
+
+        [Obsolete("Use OrganizationId instead.", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
+        public string OrganizaitonId
+        {
+            get => OrganizationId;
+            set => OrganizationId = value;
+        }
+
+        public string OrganizationId { get; set; }
 
         public bool IsRegisteredUser { get; set; }
 
