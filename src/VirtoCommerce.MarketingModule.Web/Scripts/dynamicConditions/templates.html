@@ -53,6 +53,14 @@
   </a>
   <a ng-if="!element1.productIds && element1.productId" class="__link" ng-click="openItemSelectWizard(element1)">{{element1.productName ? element1.productName + ' (' + element1.productCode + ')' : 'select product' }}</a>
   <a ng-if="!element1.productIds && !element1.productId" class="__link" ng-click="openItemSelectWizard(element1, true)">{{'select product'}}</a>
+  <div ng-if="element1.productIds || element1.productId">
+    Apply to all product variants:
+    <a class="__link" left-click-menu data-target="trueFalse_menu_{{element1.$$hashKey}}">{{ element1.applyToAllVariants | boolToValue:'yes':"no"}}</a>
+    <ul class="menu __context" role="menu" id="trueFalse_menu_{{element1.$$hashKey}}">
+      <li class="menu-item" ng-click='element1.applyToAllVariants=true;'>yes</li>
+      <li class="menu-item" ng-click='element1.applyToAllVariants=false;'>no</li>
+    </ul>
+  </div>
 </script>
 
 <script type="text/ng-template" id="expression-ConditionCodeContains.html">
