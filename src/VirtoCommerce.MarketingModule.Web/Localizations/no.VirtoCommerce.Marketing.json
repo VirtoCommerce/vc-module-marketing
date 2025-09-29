@@ -1,0 +1,423 @@
+{
+  "marketing": {
+    "main-menu-title": "Markedsføring",
+    "widgets": {
+      "couponsWidget": {
+        "title": "Kuponger",
+        "newPromotion": "Du kan legge til kuponger etter å ha lagret en kampanje"
+      }
+    },
+    "blades": {
+      "marketing-main": {
+        "title": "Markedsføring",
+        "labels": {
+          "promotions": "Kampanjer",
+          "dynamic-content": "Dynamisk innhold"
+        }
+      },
+      "promotion-detail": {
+        "title-new": "Ny kampanje",
+        "labels": {
+          "is-active": "Aktiv",
+          "exclusivity": "Eksklusivitet",
+          "is-combine-with-self": "Kan innløses flere ganger",
+          "priority": "Prioritet",
+          "promotion-name": "Kampanjenavn",
+          "description": "Beskrivelse",
+          "store": "Butikker",
+          "start-date": "Startdato",
+          "usage-limit": "Bruksgrense",
+          "coupons": "Kuponger",
+          "expiration-date": "Utløpsdato",
+          "per-customer-limit": "Begrensninger for individuelle kunder",
+          "promotion-conditions": "Kampanjevilkår",
+          "combined-with-others": "Gyldig med andre tilbud",
+          "exclusive": "Globalt eksklusiv"
+        },
+        "descr": {
+          "promotion-name": "Gi kampanjen din et unikt navn som vil vises i kampanjelisten",
+          "store": "Butikker der denne kampanjen gjelder",
+          "is-active": "Bruk denne knappen for å aktivere eller deaktivere kampanjen din",
+          "start-date": "Hvis du ikke angir en startdato, blir kampanjen aktiv umiddelbart etter at du lagrer den",
+          "expiration-date": "Hvis du ikke angir en sluttdato, vil kampanjen være aktiv til du deaktiverer den",
+          "priority": "Kampanjen med høyest prioritet brukes først",
+          "exclusivity": "Hvis du velger 'Globalt eksklusiv', kan ikke kundene dine bruke andre kampanjer med lavere prioritet på ordren",
+          "is-combine-with-self": "Aktiver dette alternativet hvis flere kuponger kreves for å innløse tilbudet"
+        },
+        "placeholders": {
+          "promotion-name": "Skriv inn kampanjenavnet her...",
+          "description": "Skriv inn beskrivelsen her...",
+          "store": "Velg...",
+          "start-date": "Angi en dato...",
+          "coupons": "Skriv inn kupongkoder...",
+          "expiration-date": "Angi en dato..."
+        },
+        "toolbar": {
+          "coupons": "Kuponger"
+        },
+        "cannot-be-saved": "Du er for øyeblikket begrenset til omfanget av butikkene, og den valgte kampanjen er tilordnet flere butikker. Redigering av denne kampanjen er ikke tillatt"
+      },
+      "coupon-detail": {
+        "new-title": "Ny kupong",
+        "title": "Kupong",
+        "labels": {
+          "coupon-code": "Kode",
+          "code-description": "Kupongkoden kan kun inneholde alfanumeriske tegn",
+          "max-uses-number": "Maksimalt antall bruk",
+          "max-uses-per-user": "Maksimalt antall bruk per kunde",
+          "max-uses-number-description": "Angi antall ganger denne kupongen kan innløses. Hvis du ikke vil sette noen grense, sett 0",
+          "max-uses-per-user-description": "Angi antall ganger denne kupongen kan innløses av en enkelt bruker. Hvis du ikke vil sette noen grense, sett 0",
+          "reservation-expiration-date": "Kupongens utløpsdato",
+          "reservation-expiration-date-description": "La dette feltet stå tomt hvis det er det samme som kampanjens utløpsdato",
+          "upload-description": "CSV-filen som inneholder kupongdata må ha følgende format: [kupongkode][skilletegn][maks_antall_bruk][skilletegn][medlem_id] (fjern hakeparenteser). Hvis du ikke vil sette noen bruksgrense, sett maks_antall_bruk til 0",
+          "enter-value": "Angi en verdi",
+          "select-date": "Angi en dato...",
+          "member": "Kunde",
+          "coupon-usages": "Kupongbruk",
+          "coupon-info": "Info"
+        },
+        "placeholders": {
+          "member": "Velg en kunde eller organisasjon..."
+        }
+      },
+      "promotion-list": {
+        "labels": {
+          "name": "Navn",
+          "isActive": "Aktiv",
+          "last-modified": "Sist endret"
+        },
+        "new-filter": "Legg til nytt filter",
+        "placeholders": {
+          "select-filter": "Velg filter"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Rediger filter",
+        "new-title": "Nytt filter",
+        "new-subtitle": "Opprett nytt filter",
+        "unnamed-filter": "Navnløst filter",
+        "labels": {
+          "name": "Filternavn",
+          "name_": "Navngi dette filteret",
+          "active": "Kun aktive"
+        },
+        "placeholders": {
+          "all": "Uspesifisert"
+        }
+      },
+      "catalog-items-select": {
+        "title-product": "Velg produkt for kampanjevilkår",
+        "title-category": "Velg kategori for kampanjevilkår"
+      },
+      "catalog-entries": {
+        "title-product": "Valgte elementer"
+      },
+      "dynamicContent-list": {
+        "menu": {
+          "items": {
+            "title": "Innholdselementer",
+            "description": "Administrer dynamiske innholdselementer"
+          },
+          "placeholders": {
+            "title": "Innholdsplassholdere",
+            "description": "Administrer plassholdere som inneholder innholdselementer"
+          },
+          "publishing": {
+            "title": "Publisert innhold",
+            "description": "Sett betingelser for å vise innholdet ditt"
+          }
+        }
+      },
+      "items": {
+        "add": {
+          "title": "Nytt innholdselement",
+          "subtitle": "Legg til et nytt innholdselement",
+          "menu": {
+            "folder": {
+              "title": "Mappe for innholdselementer",
+              "description": "Opprett en mappe for å lagre innholdselementer"
+            },
+            "item": {
+              "title": "Innholdselement",
+              "description": "Opprett et innholdselement"
+            }
+          }
+        },
+        "content-item-details": {
+          "title": "Rediger innholdselement",
+          "subtitle": "Endre innholdselementet ditt",
+          "title-new": "Nytt innholdselement",
+          "subtitle-new": "Legg til et nytt innholdselement",
+          "labels": {
+            "content-item-name": "Navn på innholdselement",
+            "content-item-description": "Beskrivelse av innholdselement",
+            "none": "Ingen"
+          },
+          "placeholders": {
+            "content-item-name": "Skriv inn navn på innholdselement",
+            "content-item-description": "Skriv inn beskrivelse av innholdselement"
+          }
+        },
+        "folder-details": {
+          "title": "Rediger mappe for innholdselementer",
+          "subtitle": "Endre mappen din for innholdselementer",
+          "title-new": "Ny mappe for innholdselementer",
+          "subtitle-new": "Legg til en ny innholdsmappe",
+          "labels": {
+            "folder-name": "Mappenavn",
+            "folder-description": "Mappebeskrivelse"
+          },
+          "placeholders": {
+            "folder-name": "Skriv inn mappenavn",
+            "folder-description": "Skriv inn mappebeskrivelse"
+          }
+        },
+        "list": {
+          "title": "Innholdselementer",
+          "subtitle": "Liste over innholdselementer",
+          "bread-crumb-top": "Alle elementer",
+          "labels": {
+            "picture": "Bilde",
+            "name": "Navn",
+            "description": "Beskrivelse",
+            "no-data": "Ingen data"
+          },
+          "noItemsMessage": "Du har ingen innholdselementer ennå"
+        }
+      },
+      "placeholders": {
+        "add": {
+          "title": "Ny plassholder",
+          "subtitle": "Legg til en ny plassholder",
+          "menu": {
+            "folder": {
+              "title": "Mappe for plassholdere",
+              "description": "Opprett en mappe for å lagre plassholdere"
+            },
+            "item": {
+              "title": "Plassholder",
+              "description": "Opprett en mappe for å lagre innholdselementer"
+            }
+          }
+        },
+        "placeholder-details": {
+          "title": "Ny plassholder",
+          "subtitle": "Legg til en ny plassholder",
+          "title-new": "Rediger plassholder",
+          "subtitle-new": "Endre plassholderen din",
+          "labels": {
+            "placeholder-name": "Navn på plassholder",
+            "placeholder-description": "Beskrivelse av plassholder",
+            "placeholder-image-description": "Beskrivelse av plassholderbilde",
+            "image-note": "Dra og slipp bildet ditt her",
+            "progress": "Fremgang"
+          },
+          "placeholders": {
+            "placeholder-name": "Angi navn på plassholder",
+            "placeholder-description": "Angi beskrivelse av plassholder"
+          }
+        },
+        "folder-details": {
+          "title": "Rediger mappe for plassholdere",
+          "subtitle": "Endre mappen din for plassholdere",
+          "title-new": "Ny mappe for plassholdere",
+          "subtitle-new": "Legg til en ny mappe for plassholdere",
+          "labels": {
+            "folder-name": "Mappenavn",
+            "folder-description": "Mappebeskrivelse"
+          },
+          "placeholders": {
+            "folder-name": "Angi mappenavn",
+            "folder-description": "Angi mappebeskrivelse"
+          }
+        },
+        "list": {
+          "title": "Innholdsplassholdere",
+          "subtitle": "Liste over dine innholdsplassholdere",
+          "bread-crumb-top": "Alle plassholdere",
+          "labels": {
+            "picture": "Bilde",
+            "name": "Navn",
+            "description": "Beskrivelse",
+            "no-data": "Ingen data"
+          }
+        }
+      },
+      "publishing": {
+        "add-content-items": {
+          "title": "Legg til innholdselementer",
+          "subtitle": "Velg hvilke innholdselementer som skal legges til",
+          "bread-crumb-top": "Alle elementer",
+          "labels": {
+            "chosen-content-items": "Valgte innholdselementer",
+            "content-items": "Innholdselementer",
+            "picture": "Bilde",
+            "name": "Navn",
+            "description": "Beskrivelse",
+            "no-data": "Ingen data"
+          }
+        },
+        "add-placeholders": {
+          "title": "Legg til plassholdere",
+          "subtitle": "Velg hvilke plassholdere som skal legges til",
+          "bread-crumb-top": "Alle plassholdere",
+          "labels": {
+            "chosen-placeholders": "Valgte plassholdere",
+            "content-placeholders": "Innholdsplassholdere",
+            "picture": "Bilde",
+            "name": "Navn",
+            "description": "Beskrivelse",
+            "no-data": "Ingen data"
+          }
+        },
+        "publishing-main-step": {
+          "title": "Rediger publisert innholdselement",
+          "subtitle": "Endre det publiserte innholdselementet ditt",
+          "title-new": "Nytt publisert innholdselement",
+          "subtitle-new": "Legg til et nytt publisert innholdselement",
+          "labels": {
+            "name": "Navn",
+            "description": "Beskrivelse",
+            "store": "Butikk",
+            "is-active": "Aktiv",
+            "start-date": "Startdato",
+            "end-date": "Sluttdato",
+            "publishing-conditions": "Publiseringsbetingelser"
+          },
+          "placeholders": {
+            "name": "Angi navn på publisert innholdselement",
+            "description": "Angi beskrivelse av publisert innholdselement",
+            "store": "Velg...",
+            "start-date": "Angi en verdi",
+            "end-date": "Angi en verdi"
+          },
+          "menu": {
+            "placeholders": {
+              "title": "Plassholder",
+              "description": "{{quantity}} plassholder(e) valgt"
+            },
+            "content-items": {
+              "title": "Innholdselementer",
+              "description": "{{quantity}} innholdselement(er) valgt"
+            }
+          }
+        },
+        "list": {
+          "title": "Publisert innhold",
+          "subtitle": "Liste over dine publiserte innholdselementer",
+          "noItemsMessage": "Du har ingen publiserte innholdselementer ennå",
+          "labels": {
+            "picture": "Ikon",
+            "name": "Navn",
+            "description": "Beskrivelse",
+            "no-data": "Ingen publisert innhold"
+          }
+        }
+      },
+      "coupons": {
+        "code": "Kode",
+        "total-uses-count": "Totalt antall bruk",
+        "max-uses-number": "Maksimalt antall bruk",
+        "max-uses-per-user": "Maksimalt antall bruk per kunde",
+        "toolbar": {
+          "add": "Legg til",
+          "import": "Importer",
+          "refresh": "Oppdater",
+          "delete": "Slett",
+          "delete-all": "Slett alle"
+        },
+        "no-coupons-message": "Du har ingen kuponger ennå"
+      },
+      "coupons-import": {
+        "title": "Importer kuponger",
+        "labels": {
+          "delimiter": "CSV-kolonneskilletegn",
+          "upload": "Last opp CSV-fil",
+          "upload-progress": "Opplastingsfremgang",
+          "space": "Mellomrom",
+          "comma": "Komma",
+          "semicolon": "Semikolon",
+          "start": "Start",
+          "end": "Slutt",
+          "total": "Totalt antall",
+          "processed": "Behandlet antall",
+          "errors-count": "Antall feil",
+          "errors": "Feil",
+          "tab": "Tabulator"
+        },
+        "placeholders": {
+          "delimiter": "Velg..."
+        }
+      },
+      "coupons-import-processing": {
+        "title": "Importerer kuponger"
+      }
+    },
+    "dialogs": {
+      "content-item-delete": {
+        "title": "Bekreft sletting",
+        "message": "Er du sikker på at du vil slette dette innholdselementet?"
+      },
+      "placeholders-folder-delete": {
+        "title": "Bekreft sletting",
+        "message": "Er du sikker på at du vil slette denne mappen for innholdsplassholdere?"
+      },
+      "content-item-folder-delete": {
+        "title": "Bekreft sletting",
+        "message": "Er du sikker på at du vil slette denne mappen for innholdselementer?"
+      },
+      "content-folder-delete": {
+        "title": "Bekreft sletting",
+        "message": "Er du sikker på at du vil slette denne mappen?"
+      },
+      "publication-delete": {
+        "title": "Bekreft sletting",
+        "message": "Er du sikker på at du vil slette denne publikasjonen?"
+      },
+      "content-placeholder-delete": {
+        "title": "Bekreft sletting",
+        "message": "Er du sikker på at du vil slette denne innholdsplassholderen?"
+      },
+      "promotions-delete": {
+        "title": "Bekreft sletting",
+        "message": "Er du sikker på at du vil slette de valgte kampanjene?"
+      },
+      "promotion-save": {
+        "title": "Lagre endringer",
+        "message": "Kampanjen har blitt endret. Vil du lagre endringene?"
+      },
+      "coupon-delete": {
+        "title": "Bekreft sletting",
+        "message": "Er du sikker på at du vil slette de valgte kupongene?",
+        "message-all": "Er du sikker på at du vil slette alle kupongene?"
+      }
+    },
+    "commands": {
+      "manage-type-properties": "Administrer egenskapstyper",
+      "edit-folder": "Rediger mappe",
+      "start-import": "Start import"
+    }
+  },
+  "permissions": {
+    "marketing:read": "Vis markedsføringsdata",
+    "marketing:create": "Opprett markedsføringsdata",
+    "marketing:update": "Oppdater markedsføringsdata",
+    "marketing:delete": "Slett markedsføringsdata",
+    "marketing:access": "Åpne markedsføringsmenyen"
+  },
+  "settings": {
+    "Marketing.Promotion.CombinePolicy": {
+      "description": "Beste belønning: Velg kampanjebelønninger som vil appellere mest til kundene. Flere tilbud gyldige: Hvis butikken din har flere aktive kampanjer, kan kunder kvalifisere seg for flere kampanjer samtidig",
+      "title": "Valgt policy for bruk av flere aktive kampanjer"
+    },
+    "Marketing.ExportImport.Description": {
+      "description": "Eksporter og importer kampanjer og dynamisk innhold (plasser, innhold, publikasjoner)",
+      "title": "Beskrivelse av eksport/import"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Marketing": {
+      "description": "Eksporter og importer kampanjer og dynamisk innhold (plasser, innhold, publikasjoner)"
+    }
+  }
+}
