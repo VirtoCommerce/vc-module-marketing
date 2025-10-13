@@ -2,82 +2,80 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using VirtoCommerce.MarketingModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Domain;
 
-namespace VirtoCommerce.MarketingModule.Data.Model
+namespace VirtoCommerce.MarketingModule.Data.Model;
+
+public class DynamicContentPlaceEntity : AuditableEntity, IDataEntity<DynamicContentPlaceEntity, DynamicContentPlace>
 {
-    public class DynamicContentPlaceEntity : AuditableEntity
+    [Required]
+    [StringLength(128)]
+    public string Name { get; set; }
+
+    [StringLength(256)]
+    public string Description { get; set; }
+
+    [StringLength(2048)]
+    public string ImageUrl { get; set; }
+
+    #region Navigation Properties
+
+    [StringLength(128)]
+    public string FolderId { get; set; }
+    public virtual DynamicContentFolderEntity Folder { get; set; }
+
+    #endregion
+
+    public virtual DynamicContentPlace ToModel(DynamicContentPlace model)
     {
-        [Required]
-        [StringLength(128)]
-        public string Name { get; set; }
+        ArgumentNullException.ThrowIfNull(model);
 
-        [StringLength(256)]
-        public string Description { get; set; }
+        model.Id = Id;
+        model.CreatedBy = CreatedBy;
+        model.CreatedDate = CreatedDate;
+        model.ModifiedBy = ModifiedBy;
+        model.ModifiedDate = ModifiedDate;
 
-        [StringLength(2048)]
-        public string ImageUrl { get; set; }
+        model.Name = Name;
+        model.FolderId = FolderId;
+        model.ImageUrl = ImageUrl;
+        model.Description = Description;
 
-        #region Navigation Properties
-
-        public string FolderId { get; set; }
-        public virtual DynamicContentFolderEntity Folder { get; set; }
-
-        #endregion
-
-        public virtual DynamicContentPlace ToModel(DynamicContentPlace place)
+        if (Folder != null)
         {
-            if (place == null)
-                throw new ArgumentNullException(nameof(place));
-
-            place.Id = Id;
-            place.CreatedBy = CreatedBy;
-            place.CreatedDate = CreatedDate;
-            place.ModifiedBy = ModifiedBy;
-            place.ModifiedDate = ModifiedDate;
-
-            place.Name = Name;
-            place.FolderId = FolderId;
-            place.ImageUrl = ImageUrl;
-            place.Description = Description;
-
-            if (Folder != null)
-            {
-                place.Folder = Folder.ToModel(AbstractTypeFactory<DynamicContentFolder>.TryCreateInstance());
-            }
-
-            return place;
+            model.Folder = Folder.ToModel(AbstractTypeFactory<DynamicContentFolder>.TryCreateInstance());
         }
 
-        public virtual DynamicContentPlaceEntity FromModel(DynamicContentPlace place, PrimaryKeyResolvingMap pkMap)
-        {
-            if (place == null)
-                throw new ArgumentNullException(nameof(place));
+        return model;
+    }
 
-            pkMap.AddPair(place, this);
+    public virtual DynamicContentPlaceEntity FromModel(DynamicContentPlace model, PrimaryKeyResolvingMap pkMap)
+    {
+        ArgumentNullException.ThrowIfNull(model);
 
-            Id = place.Id;
-            CreatedBy = place.CreatedBy;
-            CreatedDate = place.CreatedDate;
-            ModifiedBy = place.ModifiedBy;
-            ModifiedDate = place.ModifiedDate;
+        pkMap.AddPair(model, this);
 
-            Name = place.Name;
-            FolderId = place.FolderId;
-            ImageUrl = place.ImageUrl;
-            Description = place.Description;
+        Id = model.Id;
+        CreatedBy = model.CreatedBy;
+        CreatedDate = model.CreatedDate;
+        ModifiedBy = model.ModifiedBy;
+        ModifiedDate = model.ModifiedDate;
 
-            return this;
-        }
+        Name = model.Name;
+        FolderId = model.FolderId;
+        ImageUrl = model.ImageUrl;
+        Description = model.Description;
 
-        public virtual void Patch(DynamicContentPlaceEntity target)
-        {
-            if (target == null)
-                throw new ArgumentNullException(nameof(target));
+        return this;
+    }
 
-            target.Name = Name;
-            target.Description = Description;
-            target.FolderId = FolderId;
-            target.ImageUrl = ImageUrl;
-        }
+    public virtual void Patch(DynamicContentPlaceEntity target)
+    {
+        ArgumentNullException.ThrowIfNull(target);
+
+        target.Name = Name;
+        target.Description = Description;
+        target.FolderId = FolderId;
+        target.ImageUrl = ImageUrl;
     }
 }

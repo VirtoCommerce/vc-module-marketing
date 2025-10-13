@@ -13,103 +13,103 @@ using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Security.Authorization;
 
-namespace VirtoCommerce.MarketingModule.Web.Authorization
+namespace VirtoCommerce.MarketingModule.Web.Authorization;
+
+public sealed class MarketingAuthorizationHandler(
+    IOptions<MvcNewtonsoftJsonOptions> jsonOptions,
+    IPromotionService promotionService,
+    ICouponService couponService)
+    : PermissionAuthorizationHandlerBase<MarketingAuthorizationRequirement>
 {
-    public sealed class MarketingAuthorizationHandler : PermissionAuthorizationHandlerBase<MarketingAuthorizationRequirement>
+    private readonly MvcNewtonsoftJsonOptions _jsonOptions = jsonOptions.Value;
+
+    protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, MarketingAuthorizationRequirement requirement)
     {
-        private readonly IPromotionService _promotionService;
-        private readonly ICouponService _couponService;
-        private readonly MvcNewtonsoftJsonOptions _jsonOptions;
-        public MarketingAuthorizationHandler(
-            IOptions<MvcNewtonsoftJsonOptions> jsonOptions,
-            IPromotionService promotionService,
-            ICouponService couponService)
+        await base.HandleRequirementAsync(context, requirement);
+
+        if (context.HasSucceeded)
         {
-            _promotionService = promotionService;
-            _couponService = couponService;
-            _jsonOptions = jsonOptions.Value;
+            return;
         }
 
-        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, MarketingAuthorizationRequirement requirement)
+        var userPermission = context.User.FindPermission(requirement.Permission, _jsonOptions.SerializerSettings);
+        if (userPermission == null)
         {
-            await base.HandleRequirementAsync(context, requirement);
-            if (context.HasSucceeded)
-            {
-                return;
-            }
+            return;
+        }
 
-            var userPermission = context.User.FindPermission(requirement.Permission, _jsonOptions.SerializerSettings);
-            if (userPermission == null)
-            {
-                return;
-            }
+        var allowedStoreIds = userPermission.AssignedScopes
+            .OfType<MarketingStoreSelectedScope>()
+            .Select(x => x.StoreId)
+            .Distinct()
+            .ToArray();
 
-            var storeSelectedScopes = userPermission.AssignedScopes.OfType<MarketingStoreSelectedScope>();
-            var allowedStoreIds = storeSelectedScopes.Select(x => x.StoreId).Distinct().ToArray();
-            switch (context.Resource)
-            {
-                case PromotionSearchCriteria criteria:
-                    criteria.StoreIds = allowedStoreIds;
+        switch (context.Resource)
+        {
+            case PromotionSearchCriteria criteria:
+                criteria.StoreIds = allowedStoreIds;
+                context.Succeed(requirement);
+                break;
+            case DynamicPromotion promotion:
+                if (StoreInScope(promotion.StoreIds.ToArray(), allowedStoreIds, requirement.CheckAllScopes))
+                {
                     context.Succeed(requirement);
-                    break;
-                case DynamicPromotion promotion:
-                    if (StoreInScope(promotion.StoreIds.ToArray(), allowedStoreIds, requirement.CheckAllScopes))
-                    {
-                        context.Succeed(requirement);
-                    }
-                    break;
-                case IEnumerable<Coupon> coupons:
-                    if (await CouponsInScope(coupons, allowedStoreIds, requirement.CheckAllScopes))
-                    {
-                        context.Succeed(requirement);
-                    }
-
-                    break;
-                case PermissionResourceModel resource:
-                    if (await CouponsInScope(resource.CouponIds, allowedStoreIds, requirement.CheckAllScopes)
-                        || await PromotionsInScope(resource.PromotionIds, allowedStoreIds, requirement.CheckAllScopes))
-                    {
-                        context.Succeed(requirement);
-                    }
-                    break;
-            }
+                }
+                break;
+            case IEnumerable<Coupon> coupons:
+                if (await CouponsInScope(coupons, allowedStoreIds, requirement.CheckAllScopes))
+                {
+                    context.Succeed(requirement);
+                }
+                break;
+            case PermissionResourceModel resource:
+                if (await CouponsInScope(resource.CouponIds, allowedStoreIds, requirement.CheckAllScopes)
+                    || await PromotionsInScope(resource.PromotionIds, allowedStoreIds, requirement.CheckAllScopes))
+                {
+                    context.Succeed(requirement);
+                }
+                break;
         }
+    }
 
-        private async Task<bool> CouponsInScope(string[] couponIds, string[] allowedStoreIds, bool checkAllScopes)
+    private async Task<bool> CouponsInScope(string[] couponIds, string[] allowedStoreIds, bool checkAllScopes)
+    {
+        if (couponIds.IsNullOrEmpty())
         {
-            if (couponIds.IsNullOrEmpty())
-            {
-                return false;
-            }
-
-            var coupons = await _couponService.GetByIdsAsync(couponIds);
-            return await CouponsInScope(coupons, allowedStoreIds, checkAllScopes);
+            return false;
         }
 
-        private async Task<bool> CouponsInScope(IEnumerable<Coupon> coupons, string[] allowedStoreIds, bool checkAllScopes)
+        var coupons = await couponService.GetAsync(couponIds);
+
+        return await CouponsInScope(coupons, allowedStoreIds, checkAllScopes);
+    }
+
+    private async Task<bool> CouponsInScope(IEnumerable<Coupon> coupons, string[] allowedStoreIds, bool checkAllScopes)
+    {
+        var promotionIds = coupons.Select(x => x.PromotionId).Distinct().ToArray();
+        var promotions = await promotionService.GetAsync(promotionIds);
+        var storesIds = promotions.SelectMany(x => x.StoreIds).ToArray();
+
+        return StoreInScope(storesIds, allowedStoreIds, checkAllScopes);
+    }
+
+    private async Task<bool> PromotionsInScope(string[] promotionIds, string[] allowedStoreIds, bool checkAllScopes)
+    {
+        if (promotionIds.IsNullOrEmpty())
         {
-            var promotionIds = coupons.Select(x => x.PromotionId).Distinct().ToArray();
-            var promotions = await _promotionService.GetPromotionsByIdsAsync(promotionIds);
-            var storesIds = promotions.SelectMany(x => x.StoreIds).ToArray();
-            return StoreInScope(storesIds, allowedStoreIds, checkAllScopes);
+            return false;
         }
+        var promotions = await promotionService.GetAsync(promotionIds);
+        var storeIds = promotions.SelectMany(x => x.StoreIds).ToArray();
 
-        private async Task<bool> PromotionsInScope(string[] promotionIds, string[] allowedStoreIds, bool checkAllScopes)
-        {
-            if (promotionIds.IsNullOrEmpty())
-            {
-                return false;
-            }
-            var promotions = await _promotionService.GetPromotionsByIdsAsync(promotionIds);
-            var storeIds = promotions.SelectMany(x => x.StoreIds).ToArray();
-            return StoreInScope(storeIds, allowedStoreIds, checkAllScopes);
-        }
+        return StoreInScope(storeIds, allowedStoreIds, checkAllScopes);
+    }
 
-        private static bool StoreInScope(string[] currentStoreIds, string[] allowedStoreIds, bool checkAllScopes)
-        {
-            return currentStoreIds.IsNullOrEmpty() || CheckAll() || CheckAny();
-            bool CheckAll() => checkAllScopes && currentStoreIds.All(allowedStoreIds.Contains);
-            bool CheckAny() => !checkAllScopes && currentStoreIds.Any(allowedStoreIds.Contains);
-        }
+    private static bool StoreInScope(string[] currentStoreIds, string[] allowedStoreIds, bool checkAllScopes)
+    {
+        return currentStoreIds.IsNullOrEmpty() || CheckAll() || CheckAny();
+
+        bool CheckAll() => checkAllScopes && currentStoreIds.All(allowedStoreIds.Contains);
+        bool CheckAny() => !checkAllScopes && currentStoreIds.Any(allowedStoreIds.Contains);
     }
 }

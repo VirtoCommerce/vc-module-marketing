@@ -2,114 +2,99 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Search;
-using VirtoCommerce.MarketingModule.Data.Caching;
+using VirtoCommerce.MarketingModule.Core.Services;
 using VirtoCommerce.MarketingModule.Data.Model;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.GenericCrud;
+using VirtoCommerce.Platform.Data.GenericCrud;
 
 namespace VirtoCommerce.MarketingModule.Data.Search
 {
-    public class PromotionUsageSearchService : IPromotionUsageSearchService
+    public class PromotionUsageSearchService(
+        Func<IMarketingRepository> repositoryFactory,
+        IPlatformMemoryCache platformMemoryCache,
+        IPromotionUsageService crudService,
+        IOptions<CrudOptions> crudOptions)
+        : SearchService<PromotionUsageSearchCriteria, PromotionUsageSearchResult, PromotionUsage, PromotionUsageEntity>
+            (repositoryFactory, platformMemoryCache, crudService, crudOptions),
+            IPromotionUsageSearchService
     {
-        private readonly IPlatformMemoryCache _platformMemoryCache;
-        private readonly Func<IMarketingRepository> _repositoryFactory;
-
-        public PromotionUsageSearchService(Func<IMarketingRepository> repositoryFactory, IPlatformMemoryCache platformMemoryCache)
+        [Obsolete("Use SearchAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
+        public virtual Task<PromotionUsageSearchResult> SearchUsagesAsync(PromotionUsageSearchCriteria criteria)
         {
-            _platformMemoryCache = platformMemoryCache;
-            _repositoryFactory = repositoryFactory;
+            return SearchAsync(criteria);
         }
 
-#pragma warning disable S4457 // Parameter validation in "async"/"await" methods should be wrapped
-        public virtual async Task<PromotionUsageSearchResult> SearchUsagesAsync(PromotionUsageSearchCriteria criteria)
-#pragma warning restore S4457 // Parameter validation in "async"/"await" methods should be wrapped
+
+        protected override IQueryable<PromotionUsageEntity> BuildQuery(IRepository repository, PromotionUsageSearchCriteria criteria)
         {
-            if (criteria == null)
-            {
-                throw new ArgumentNullException(nameof(criteria));
-            }
-
-            var cacheKey = CacheKey.With(GetType(), nameof(SearchUsagesAsync), criteria.GetCacheKey());
-            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
-            {
-                cacheEntry.AddExpirationToken(PromotionUsageSearchCacheRegion.CreateChangeToken());
-
-                var result = AbstractTypeFactory<PromotionUsageSearchResult>.TryCreateInstance();
-
-                using (var repository = _repositoryFactory())
-                {
-                    var sortInfos = BuildSortExpression(criteria);
-                    var query = BuildQuery(repository, criteria);
-
-                    result.TotalCount = await query.CountAsync();
-
-                    if (criteria.Take > 0)
-                    {
-                        var usages = await query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
-                                         .Skip(criteria.Skip).Take(criteria.Take)
-                                         .ToArrayAsync();
-                        result.Results = usages.Select(x => x.ToModel(AbstractTypeFactory<PromotionUsage>.TryCreateInstance())).ToList();
-                    }
-
-                    return result;
-                }
-            });
+            // Temporarily calling the obsolete method that could potentially be overridden in derived classes.
+#pragma warning disable VC0011 // Type or member is obsolete
+            return BuildQuery((IMarketingRepository)repository, criteria);
+#pragma warning restore VC0011 // Type or member is obsolete
         }
 
-        protected virtual IList<SortInfo> BuildSortExpression(PromotionUsageSearchCriteria criteria)
-        {
-            var sortInfos = criteria.SortInfos;
-            if (sortInfos.IsNullOrEmpty())
-            {
-                sortInfos = new[]
-                {
-                    new SortInfo
-                    {
-                        SortColumn = nameof(PromotionUsage.ModifiedDate),
-                        SortDirection = SortDirection.Descending
-                    }
-                };
-            }
-
-            return sortInfos;
-        }
-
+        [Obsolete("Use BuildQuery(IRepository repository, PromotionUsageSearchCriteria criteria)", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
         protected virtual IQueryable<PromotionUsageEntity> BuildQuery(IMarketingRepository repository, PromotionUsageSearchCriteria criteria)
         {
             var query = repository.PromotionUsages;
 
-            if (!string.IsNullOrEmpty(criteria.PromotionId))
+            if (!criteria.PromotionId.IsNullOrEmpty())
             {
                 query = query.Where(x => x.PromotionId == criteria.PromotionId);
             }
-            if (!string.IsNullOrEmpty(criteria.CouponCode))
+
+            if (!criteria.CouponCode.IsNullOrEmpty())
             {
                 query = query.Where(x => x.CouponCode == criteria.CouponCode);
             }
-            if (!string.IsNullOrEmpty(criteria.ObjectId))
+
+            if (!criteria.ObjectId.IsNullOrEmpty())
             {
                 query = query.Where(x => x.ObjectId == criteria.ObjectId);
             }
-            if (!string.IsNullOrEmpty(criteria.ObjectType))
+
+            if (!criteria.ObjectType.IsNullOrEmpty())
             {
                 query = query.Where(x => x.ObjectType == criteria.ObjectType);
             }
-            if (!string.IsNullOrWhiteSpace(criteria.UserId))
+
+            if (!criteria.UserId.IsNullOrWhiteSpace())
             {
                 query = query.Where(x => x.UserId == criteria.UserId);
             }
-            if (!string.IsNullOrWhiteSpace(criteria.UserName))
+
+            if (!criteria.UserName.IsNullOrWhiteSpace())
             {
                 query = query.Where(x => x.UserName == criteria.UserName);
             }
 
             return query;
+        }
+
+        protected override IList<SortInfo> BuildSortExpression(PromotionUsageSearchCriteria criteria)
+        {
+            var sortInfos = criteria.SortInfos;
+
+            if (sortInfos.IsNullOrEmpty())
+            {
+                sortInfos =
+                [
+                    new SortInfo
+                    {
+                        SortColumn = nameof(PromotionUsage.ModifiedDate),
+                        SortDirection = SortDirection.Descending,
+                    },
+                ];
+            }
+
+            return sortInfos;
         }
     }
 }

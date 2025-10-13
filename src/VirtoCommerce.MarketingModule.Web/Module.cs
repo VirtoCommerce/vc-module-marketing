@@ -81,20 +81,37 @@ namespace VirtoCommerce.MarketingModule.Web
             serviceCollection.AddTransient<IMarketingRepository, MarketingRepository>();
             serviceCollection.AddTransient<Func<IMarketingRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<IMarketingRepository>());
 
-            serviceCollection.AddTransient<IPromotionService, PromotionService>();
             serviceCollection.AddTransient<ICouponService, CouponService>();
-            serviceCollection.AddTransient<IPromotionUsageService, PromotionUsageService>();
-            serviceCollection.AddTransient<IMarketingDynamicContentEvaluator, DefaultDynamicContentEvaluator>();
-            serviceCollection.AddTransient<IDynamicContentService, DynamicContentService>();
-            serviceCollection.AddTransient<IPromotionRewardEvaluator, DefaultPromotionRewardEvaluator>();
+            serviceCollection.AddTransient<ICouponSearchService, CouponSearchService>();
 
+            serviceCollection.AddTransient<IPromotionService, PromotionService>();
+            serviceCollection.AddTransient<IPromotionSearchService, PromotionSearchService>();
+
+            serviceCollection.AddTransient<IPromotionUsageService, PromotionUsageService>();
+            serviceCollection.AddTransient<IPromotionUsageSearchService, PromotionUsageSearchService>();
+
+            serviceCollection.AddTransient<IDynamicContentFolderService, DynamicContentFolderService>();
+            serviceCollection.AddTransient<IDynamicContentFolderSearchService, DynamicContentFolderSearchService>();
+
+            serviceCollection.AddTransient<IDynamicContentItemService, DynamicContentItemService>();
+            serviceCollection.AddTransient<IDynamicContentItemSearchService, DynamicContentItemSearchService>();
+
+            serviceCollection.AddTransient<IDynamicContentPlaceService, DynamicContentPlaceService>();
+            serviceCollection.AddTransient<IDynamicContentPlaceSearchService, DynamicContentPlaceSearchService>();
+
+            serviceCollection.AddTransient<IDynamicContentPublicationService, DynamicContentPublicationService>();
+            serviceCollection.AddTransient<IDynamicContentPublicationSearchService, DynamicContentPublicationSearchService>();
+
+#pragma warning disable VC0011 // Type or member is obsolete
+            serviceCollection.AddTransient<IFolderSearchService, FolderSearchService>();
             serviceCollection.AddTransient<IContentItemsSearchService, ContentItemsSearchService>();
             serviceCollection.AddTransient<IContentPlacesSearchService, ContentPlacesSearchService>();
             serviceCollection.AddTransient<IContentPublicationsSearchService, ContentPublicationsSearchService>();
-            serviceCollection.AddTransient<ICouponSearchService, CouponSearchService>();
-            serviceCollection.AddTransient<IFolderSearchService, FolderSearchService>();
-            serviceCollection.AddTransient<IPromotionSearchService, PromotionSearchService>();
-            serviceCollection.AddTransient<IPromotionUsageSearchService, PromotionUsageSearchService>();
+#pragma warning restore VC0011 // Type or member is obsolete
+
+            serviceCollection.AddTransient<IPromotionRewardEvaluator, DefaultPromotionRewardEvaluator>();
+            serviceCollection.AddTransient<IMarketingDynamicContentEvaluator, DefaultDynamicContentEvaluator>();
+            serviceCollection.AddTransient<IDynamicContentService, DynamicContentService>();
 
             serviceCollection.AddTransient<CsvCouponImporter>();
 
@@ -174,19 +191,17 @@ namespace VirtoCommerce.MarketingModule.Web
             var dynamicPropertyRegistrar = appBuilder.ApplicationServices.GetRequiredService<IDynamicPropertyRegistrar>();
             dynamicPropertyRegistrar.RegisterType<DynamicContentItem>();
 
-            var dynamicContentService = appBuilder.ApplicationServices.GetService<IDynamicContentService>();
+            var dynamicContentService = appBuilder.ApplicationServices.GetService<IDynamicContentFolderService>();
             foreach (var id in new[] { ModuleConstants.MarketingConstants.ContentPlacesRootFolderId, ModuleConstants.MarketingConstants.ContentItemRootFolderId })
             {
-                var folders = dynamicContentService.GetFoldersByIdsAsync([id]).GetAwaiter().GetResult();
+                var folders = dynamicContentService.GetAsync([id]).GetAwaiter().GetResult();
                 var rootFolder = folders.FirstOrDefault();
                 if (rootFolder == null)
                 {
-                    rootFolder = new DynamicContentFolder
-                    {
-                        Id = id,
-                        Name = id
-                    };
-                    dynamicContentService.SaveFoldersAsync([rootFolder]).GetAwaiter().GetResult();
+                    rootFolder = AbstractTypeFactory<DynamicContentFolder>.TryCreateInstance();
+                    rootFolder.Id = id;
+                    rootFolder.Name = id;
+                    dynamicContentService.SaveChangesAsync([rootFolder]).GetAwaiter().GetResult();
                 }
             }
 

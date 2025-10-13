@@ -5,7 +5,6 @@ using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VirtoCommerce.AssetsModule.Core.Assets;
-using VirtoCommerce.MarketingModule.Core;
 using VirtoCommerce.MarketingModule.Core.Model;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
@@ -24,303 +23,292 @@ using VirtoCommerce.Platform.Core.Security;
 using Permissions = VirtoCommerce.MarketingModule.Core.ModuleConstants.Security.Permissions;
 using webModel = VirtoCommerce.MarketingModule.Web.Model;
 
-namespace VirtoCommerce.MarketingModule.Web.Controllers.Api
+namespace VirtoCommerce.MarketingModule.Web.Controllers.Api;
+
+[Route("api/marketing/promotions")]
+[Authorize]
+public class MarketingModulePromotionController(
+    IPromotionService promotionService,
+    ICouponService couponService,
+    IMarketingPromoEvaluator promoEvaluator,
+    IPromotionSearchService promoSearchService,
+    IUserNameResolver userNameResolver,
+    IPushNotificationManager notifier,
+    IBlobStorageProvider blobStorageProvider,
+    CsvCouponImporter csvCouponImporter,
+    Func<IMarketingRepository> repositoryFactory,
+    ICouponSearchService couponSearchService,
+    IAuthorizationService authorizationService)
+    : Controller
 {
-    [Route("api/marketing/promotions")]
-    [Authorize]
-    public class MarketingModulePromotionController : Controller
+    /// <summary>
+    /// Search dynamic content places by given criteria
+    /// </summary>
+    /// <param name="criteria">criteria</param>
+    [HttpPost]
+    [Route("search")]
+    public async Task<ActionResult<PromotionSearchResult>> PromotionsSearch([FromBody] PromotionSearchCriteria criteria)
     {
-        private readonly IPromotionService _promotionService;
-        private readonly ICouponService _couponService;
-        private readonly IMarketingPromoEvaluator _promoEvaluator;
-        private readonly IPromotionSearchService _promoSearchService;
-        private readonly IUserNameResolver _userNameResolver;
-        private readonly IPushNotificationManager _notifier;
-        private readonly IBlobStorageProvider _blobStorageProvider;
-        private readonly CsvCouponImporter _csvCouponImporter;
-        private readonly Func<IMarketingRepository> _repositoryFactory;
-        private readonly ICouponSearchService _couponSearchService;
-        private readonly IAuthorizationService _authorizationService;
-        public MarketingModulePromotionController(
-            IPromotionService promotionService,
-            ICouponService couponService,
-            IMarketingPromoEvaluator promoEvaluator,
-            IPromotionSearchService promoSearchService,
-            IUserNameResolver userNameResolver,
-            IPushNotificationManager notifier,
-            IBlobStorageProvider blobStorageProvider,
-            CsvCouponImporter csvCouponImporter,
-            Func<IMarketingRepository> repositoryFactory,
-            ICouponSearchService couponSearchService,
-            IAuthorizationService authorizationService)
+        //Scope bound ACL filtration
+        var authorizationResult = await authorizationService.AuthorizeAsync(
+            User, criteria, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
+        if (!authorizationResult.Succeeded)
         {
-            _promotionService = promotionService;
-            _couponService = couponService;
-            _promoEvaluator = promoEvaluator;
-            _promoSearchService = promoSearchService;
-            _userNameResolver = userNameResolver;
-            _notifier = notifier;
-            _blobStorageProvider = blobStorageProvider;
-            _csvCouponImporter = csvCouponImporter;
-            _repositoryFactory = repositoryFactory;
-            _couponSearchService = couponSearchService;
-            _authorizationService = authorizationService;
+            return Forbid();
         }
 
-        /// <summary>
-        /// Search dynamic content places by given criteria
-        /// </summary>
-        /// <param name="criteria">criteria</param>
-        [HttpPost]
-        [Route("search")]
-        public async Task<ActionResult<PromotionSearchResult>> PromotionsSearch([FromBody] PromotionSearchCriteria criteria)
-        {
-            //Scope bound ACL filtration
-            var authorizationResult = await _authorizationService.AuthorizeAsync(
-                User, criteria, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
-            if (!authorizationResult.Succeeded)
-            {
-                return Forbid();
-            }
-            var result = await _promoSearchService.SearchPromotionsAsync(criteria);
+        var searchResult = await promoSearchService.SearchNoCloneAsync(criteria);
 
-            return Ok(result);
-        }
+        return Ok(searchResult);
+    }
 
-        /// <summary>
-        /// Evaluate promotions
-        /// </summary>
-        /// <param name="context">Promotion evaluation context</param>
-        [HttpPost]
-        [Route("evaluate")]
-        public async Task<ActionResult<webModel.PromotionReward[]>> EvaluatePromotions([FromBody] PromotionEvaluationContext context)
-        {
-            var promotionResult = await _promoEvaluator.EvaluatePromotionAsync(context);
-            //This dynamic casting is used here for duck-type casting class hierarchy into flat type
-            //because OpenAPI and code generation like AutoRest tools don't work with inheritances
-            var result = promotionResult.Rewards.Select(x => (dynamic)x).ToArray();
-            return Ok(result);
-        }
+    /// <summary>
+    /// Evaluate promotions
+    /// </summary>
+    /// <param name="context">Promotion evaluation context</param>
+    [HttpPost]
+    [Route("evaluate")]
+    public async Task<ActionResult<webModel.PromotionReward[]>> EvaluatePromotions([FromBody] PromotionEvaluationContext context)
+    {
+        var promotionResult = await promoEvaluator.EvaluatePromotionAsync(context);
 
-        /// <summary>
-        /// Find promotion object by id
-        /// </summary>
-        /// <remarks>Return a single promotion (dynamic or custom) object </remarks>
-        /// <param name="id">promotion id</param>
-        [HttpGet]
-        [Route("{id}")]
-        public async Task<ActionResult<Promotion>> GetPromotionById(string id)
+        //This dynamic casting is used here for duck-type casting class hierarchy into flat type
+        //because OpenAPI and code generation like AutoRest tools don't work with inheritances
+        var result = promotionResult.Rewards.Select(dynamic (x) => x).ToArray();
+
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Find promotion object by id
+    /// </summary>
+    /// <remarks>Return a single promotion (dynamic or custom) object </remarks>
+    /// <param name="id">promotion id</param>
+    [HttpGet]
+    [Route("{id}")]
+    public async Task<ActionResult<Promotion>> GetPromotionById(string id)
+    {
+        var promotion = await promotionService.GetByIdAsync(id);
+        if (promotion is null)
         {
-            var promotions = await _promotionService.GetPromotionsByIdsAsync(new[] { id });
-            var result = promotions.FirstOrDefault();
-            if (result != null)
-            {
-                var authorizationResult = await _authorizationService.AuthorizeAsync(
-                    User, result, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: false));
-                if (!authorizationResult.Succeeded)
-                {
-                    return Forbid();
-                }
-                if (result is DynamicPromotion dynamicPromotion)
-                {
-                    dynamicPromotion.DynamicExpression?.MergeFromPrototype(AbstractTypeFactory<PromotionConditionAndRewardTreePrototype>.TryCreateInstance());
-                }
-                return Ok(result);
-            }
             return NotFound();
         }
 
-        /// <summary>
-        /// Get new dynamic promotion object 
-        /// </summary>
-        /// <remarks>Return a new dynamic promotion object with populated dynamic expression tree</remarks>
-        [HttpGet]
-        [Route("new")]
-        [Authorize(ModuleConstants.Security.Permissions.Create)]
-        public ActionResult<Promotion> GetNewDynamicPromotion()
+        var authorizationResult = await authorizationService.AuthorizeAsync(
+            User, promotion, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: false));
+        if (!authorizationResult.Succeeded)
         {
-            var retVal = AbstractTypeFactory<Promotion>.TryCreateInstance();
-            if (retVal is DynamicPromotion dynamicPromotion)
+            return Forbid();
+        }
+
+        if (promotion is DynamicPromotion dynamicPromotion)
+        {
+            dynamicPromotion.DynamicExpression?.MergeFromPrototype(AbstractTypeFactory<PromotionConditionAndRewardTreePrototype>.TryCreateInstance());
+        }
+
+        return Ok(promotion);
+    }
+
+    /// <summary>
+    /// Get new dynamic promotion object 
+    /// </summary>
+    /// <remarks>Return a new dynamic promotion object with populated dynamic expression tree</remarks>
+    [HttpGet]
+    [Route("new")]
+    [Authorize(Permissions.Create)]
+    public ActionResult<Promotion> GetNewDynamicPromotion()
+    {
+        var promotion = AbstractTypeFactory<Promotion>.TryCreateInstance();
+        promotion.IsActive = true;
+
+        if (promotion is DynamicPromotion dynamicPromotion)
+        {
+            dynamicPromotion.DynamicExpression = AbstractTypeFactory<PromotionConditionAndRewardTree>.TryCreateInstance();
+            dynamicPromotion.DynamicExpression.MergeFromPrototype(AbstractTypeFactory<PromotionConditionAndRewardTreePrototype>.TryCreateInstance());
+        }
+
+        return Ok(promotion);
+    }
+
+    /// <summary>
+    /// Add new dynamic promotion object to marketing system
+    /// </summary>
+    /// <param name="promotion">dynamic promotion object that needs to be added to the marketing system</param>
+    [HttpPost]
+    [Route("")]
+    [Authorize(Permissions.Create)]
+    public async Task<ActionResult<Promotion>> CreatePromotion([FromBody] Promotion promotion)
+    {
+        await promotionService.SaveChangesAsync([promotion]);
+
+        return await GetPromotionById(promotion.Id);
+    }
+
+    /// <summary>
+    /// Update an existing dynamic promotion object in marketing system
+    /// </summary>
+    /// <param name="promotion">>dynamic promotion object that needs to be updated in the marketing system</param>
+    [HttpPut]
+    [Route("")]
+    [Authorize(Permissions.Update)]
+    public async Task<ActionResult> UpdatePromotions([FromBody] Promotion promotion)
+    {
+        var authorizationResult = await authorizationService.AuthorizeAsync(
+            User, promotion, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
+        if (!authorizationResult.Succeeded)
+        {
+            return Forbid();
+        }
+
+        await promotionService.SaveChangesAsync([promotion]);
+
+        return NoContent();
+    }
+
+    /// <summary>
+    ///  Delete promotions objects
+    /// </summary>
+    /// <param name="ids">promotions object ids for delete in the marketing system</param>
+    [HttpDelete]
+    [Route("")]
+    [Authorize(Permissions.Delete)]
+    public async Task<ActionResult> DeletePromotions([FromQuery] string[] ids)
+    {
+        var permissionResource = new PermissionResourceModel { PromotionIds = ids };
+        var authorizationResult = await authorizationService.AuthorizeAsync(
+            User, permissionResource, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
+        if (!authorizationResult.Succeeded)
+        {
+            return Forbid();
+        }
+
+        await promotionService.DeleteAsync(ids);
+
+        return NoContent();
+    }
+
+    [HttpPost]
+    [Route("coupons/search")]
+    public async Task<ActionResult<CouponSearchResult>> SearchCoupons([FromBody] CouponSearchCriteria criteria)
+    {
+        var searchResult = await couponSearchService.SearchAsync(criteria);
+
+        // Actualize TotalUsage field 
+        using (var repository = repositoryFactory())
+        {
+            var ids = searchResult.Results.Select(x => x.Id).ToArray();
+            var couponEntities = await repository.GetCouponsByIdsAsync(ids);
+
+            foreach (var coupon in searchResult.Results)
             {
-                dynamicPromotion.DynamicExpression = AbstractTypeFactory<PromotionConditionAndRewardTree>.TryCreateInstance();
-                dynamicPromotion.DynamicExpression.MergeFromPrototype(AbstractTypeFactory<PromotionConditionAndRewardTreePrototype>.TryCreateInstance());
+                coupon.TotalUsesCount = couponEntities.First(x => x.Id == coupon.Id).TotalUsesCount;
             }
-            retVal.IsActive = true;
-            return Ok(retVal);
         }
 
-        /// <summary>
-        /// Add new dynamic promotion object to marketing system
-        /// </summary>
-        /// <param name="promotion">dynamic promotion object that needs to be added to the marketing system</param>
-        [HttpPost]
-        [Route("")]
-        [Authorize(ModuleConstants.Security.Permissions.Create)]
-        public async Task<ActionResult<Promotion>> CreatePromotion([FromBody] Promotion promotion)
+        return Ok(searchResult);
+    }
+
+    [HttpGet]
+    [Route("coupons/{id}")]
+    public async Task<ActionResult<Coupon>> GetCoupon(string id)
+    {
+        var coupon = await couponService.GetNoCloneAsync(id);
+
+        return Ok(coupon);
+    }
+
+    [HttpPost]
+    [Route("coupons/add")]
+    [Authorize(Permissions.Update)]
+    public async Task<ActionResult> AddCoupons([FromBody] Coupon[] coupons)
+    {
+        var authorizationResult = await authorizationService.AuthorizeAsync(
+            User, coupons, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
+        if (!authorizationResult.Succeeded)
         {
-            await _promotionService.SavePromotionsAsync(new[] { promotion });
-            return await GetPromotionById(promotion.Id);
+            return Forbid();
         }
 
-        /// <summary>
-        /// Update a existing dynamic promotion object in marketing system
-        /// </summary>
-        /// <param name="promotion">>dynamic promotion object that needs to be updated in the marketing system</param>
-        [HttpPut]
-        [Route("")]
-        [Authorize(ModuleConstants.Security.Permissions.Update)]
-        public async Task<ActionResult> UpdatePromotions([FromBody] Promotion promotion)
+        await couponService.SaveChangesAsync(coupons);
+
+        return NoContent();
+    }
+
+    [HttpDelete]
+    [Route("coupons/delete")]
+    [Authorize(Permissions.Delete)]
+    public async Task<ActionResult> DeleteCoupons([FromQuery] string[] ids)
+    {
+        var permissionResource = new PermissionResourceModel { CouponIds = ids };
+        var authorizationResult = await authorizationService.AuthorizeAsync(
+            User, permissionResource, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
+        if (!authorizationResult.Succeeded)
         {
-            var authorizationResult = await _authorizationService.AuthorizeAsync(
-                User, promotion, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
-            if (!authorizationResult.Succeeded)
-            {
-                return Forbid();
-            }
-            await _promotionService.SavePromotionsAsync(new[] { promotion });
-            return NoContent();
+            return Forbid();
         }
 
-        /// <summary>
-        ///  Delete promotions objects
-        /// </summary>
-        /// <param name="ids">promotions object ids for delete in the marketing system</param>
-        [HttpDelete]
-        [Route("")]
-        [Authorize(ModuleConstants.Security.Permissions.Delete)]
-        public async Task<ActionResult> DeletePromotions([FromQuery] string[] ids)
+        await couponService.DeleteAsync(ids);
+
+        return NoContent();
+    }
+
+    [HttpPost]
+    [Route("coupons/import")]
+    [Authorize(Permissions.Update)]
+    public async Task<ActionResult<ImportNotification>> ImportCouponsAsync([FromBody] ImportRequest request)
+    {
+        var permissionResource = new PermissionResourceModel { PromotionIds = [request.PromotionId] };
+        var authorizationResult = await authorizationService.AuthorizeAsync(
+            User, permissionResource, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
+        if (!authorizationResult.Succeeded)
         {
-            var permissionResource = new PermissionResourceModel { PromotionIds = ids };
-            var authorizationResult = await _authorizationService.AuthorizeAsync(
-                User, permissionResource, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
-            if (!authorizationResult.Succeeded)
-            {
-                return Forbid();
-            }
-            await _promotionService.DeletePromotionsAsync(ids);
-            return NoContent();
+            return Forbid();
         }
 
-        [HttpPost]
-        [Route("coupons/search")]
-        public async Task<ActionResult<CouponSearchResult>> SearchCoupons([FromBody] CouponSearchCriteria criteria)
+        var notification = new ImportNotification(userNameResolver.GetCurrentUserName())
         {
-            var searchResult = await _couponSearchService.SearchCouponsAsync(criteria);
-            // actualize coupon totalUsage field 
-            using (var repository = _repositoryFactory())
-            {
-                var ids = searchResult.Results.Select(x => x.Id).ToArray();
-                var couponEntities = await repository.GetCouponsByIdsAsync(ids);
-                foreach (var coupon in searchResult.Results)
-                {
-                    coupon.TotalUsesCount = couponEntities.First(c => c.Id == coupon.Id).TotalUsesCount;
-                }
-            }
-            return Ok(searchResult);
+            Title = "Import coupons from CSV file",
+            Description = "Starting import...",
+        };
+
+        await notifier.SendAsync(notification);
+
+        BackgroundJob.Enqueue(() => BackgroundImportAsync(request, notification));
+
+        return Ok(notification);
+    }
+
+    [ApiExplorerSettings(IgnoreApi = true)]
+    public async Task BackgroundImportAsync(ImportRequest request, ImportNotification notification)
+    {
+        await using var stream = await blobStorageProvider.OpenReadAsync(request.FileUrl);
+
+        try
+        {
+            await csvCouponImporter.DoImportAsync(stream, request.Delimiter, request.PromotionId, request.ExpirationDate, ProgressCallback);
+        }
+        catch (Exception exception)
+        {
+            notification.Description = "Import error";
+            notification.ErrorCount++;
+            notification.Errors.Add(exception.ToString());
+        }
+        finally
+        {
+            notification.Finished = DateTime.UtcNow;
+            notification.Description = "Import finished" + (notification.Errors.Any() ? " with errors" : " successfully");
+            await notifier.SendAsync(notification);
         }
 
-        [HttpGet]
-        [Route("coupons/{id}")]
-        public async Task<ActionResult<Coupon>> GetCoupon(string id)
+        return;
+
+        void ProgressCallback(ExportImportProgressInfo c)
         {
-            var coupons = await _couponService.GetByIdsAsync(new[] { id });
-            var coupon = coupons.FirstOrDefault();
+            notification.Description = c.Description;
+            notification.Errors = c.Errors;
+            notification.ErrorCount = c.ErrorCount;
 
-            return Ok(coupon);
-        }
-
-        [HttpPost]
-        [Route("coupons/add")]
-        [Authorize(ModuleConstants.Security.Permissions.Update)]
-        public async Task<ActionResult> AddCoupons([FromBody] Coupon[] coupons)
-        {
-            var authorizationResult = await _authorizationService.AuthorizeAsync(
-                User, coupons, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
-            if (!authorizationResult.Succeeded)
-            {
-                return Forbid();
-            }
-
-            await _couponService.SaveCouponsAsync(coupons);
-
-            return NoContent();
-        }
-
-        [HttpDelete]
-        [Route("coupons/delete")]
-        [Authorize(ModuleConstants.Security.Permissions.Delete)]
-        public async Task<ActionResult> DeleteCoupons([FromQuery] string[] ids)
-        {
-            var permissionResource = new PermissionResourceModel { CouponIds = ids };
-            var authorizationResult = await _authorizationService.AuthorizeAsync(
-                User, permissionResource, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
-            if (!authorizationResult.Succeeded)
-            {
-                return Forbid();
-            }
-
-            await _couponService.DeleteCouponsAsync(ids);
-
-            return NoContent();
-        }
-
-        [HttpPost]
-        [Route("coupons/import")]
-        [Authorize(ModuleConstants.Security.Permissions.Update)]
-        public async Task<ActionResult<ImportNotification>> ImportCouponsAsync([FromBody] ImportRequest request)
-        {
-            var permissionResource = new PermissionResourceModel { PromotionIds = new[] { request.PromotionId } };
-            var authorizationResult = await _authorizationService.AuthorizeAsync(
-                User, permissionResource, new MarketingAuthorizationRequirement(Permissions.Read, checkAllScopes: true));
-            if (!authorizationResult.Succeeded)
-            {
-                return Forbid();
-            }
-
-            var notification = new ImportNotification(_userNameResolver.GetCurrentUserName())
-            {
-                Title = "Import coupons from CSV",
-                Description = "Starting import..."
-            };
-
-            await _notifier.SendAsync(notification);
-
-            BackgroundJob.Enqueue(() => BackgroundImportAsync(request, notification));
-
-            return Ok(notification);
-        }
-
-        [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task BackgroundImportAsync(ImportRequest request, ImportNotification notification)
-        {
-            Action<ExportImportProgressInfo> progressCallback = c =>
-            {
-                notification.Description = c.Description;
-                notification.Errors = c.Errors;
-                notification.ErrorCount = c.ErrorCount;
-
-                _notifier.Send(notification);
-            };
-
-            using (var stream = _blobStorageProvider.OpenRead(request.FileUrl))
-            {
-                try
-                {
-                    await _csvCouponImporter.DoImportAsync(stream, request.Delimiter, request.PromotionId, request.ExpirationDate, progressCallback);
-                }
-                catch (Exception exception)
-                {
-                    notification.Description = "Import error";
-                    notification.ErrorCount++;
-                    notification.Errors.Add(exception.ToString());
-                }
-                finally
-                {
-                    notification.Finished = DateTime.UtcNow;
-                    notification.Description = "Import finished" + (notification.Errors.Any() ? " with errors" : " successfully");
-                    await _notifier.SendAsync(notification);
-                }
-            }
+            notifier.Send(notification);
         }
     }
 }

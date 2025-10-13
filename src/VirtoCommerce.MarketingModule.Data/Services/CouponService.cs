@@ -2,117 +2,91 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.MarketingModule.Core.Events;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Services;
-using VirtoCommerce.MarketingModule.Data.Caching;
 using VirtoCommerce.MarketingModule.Data.Model;
 using VirtoCommerce.MarketingModule.Data.Repositories;
+using VirtoCommerce.Platform.Caching;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.Platform.Data.GenericCrud;
 
-namespace VirtoCommerce.MarketingModule.Data.Services
+namespace VirtoCommerce.MarketingModule.Data.Services;
+
+public class CouponService(
+    Func<IMarketingRepository> repositoryFactory,
+    IPlatformMemoryCache platformMemoryCache,
+    IEventPublisher eventPublisher)
+    : CrudService<Coupon, CouponEntity, CouponChangingEvent, CouponChangedEvent>
+        (repositoryFactory, platformMemoryCache, eventPublisher),
+        ICouponService
 {
-    public class CouponService : ICouponService
+    [Obsolete("Use GetAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
+    public async Task<Coupon[]> GetByIdsAsync(string[] ids)
     {
-        private readonly Func<IMarketingRepository> _repositoryFactory;
-        private readonly IEventPublisher _eventPublisher;
-        private readonly IPlatformMemoryCache _platformMemoryCache;
+        return (await GetAsync(ids)).ToArray();
+    }
 
-        public CouponService(Func<IMarketingRepository> repositoryFactory, IEventPublisher eventPublisher, IPlatformMemoryCache platformMemoryCache)
+    [Obsolete("Use SaveChangesAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
+    public Task SaveCouponsAsync(Coupon[] coupons)
+    {
+        return SaveChangesAsync(coupons);
+    }
+
+    [Obsolete("Use DeleteAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
+    public Task DeleteCouponsAsync(string[] ids)
+    {
+        return DeleteAsync(ids);
+    }
+
+
+    protected override async Task BeforeSaveChanges(IList<Coupon> models)
+    {
+        await base.BeforeSaveChanges(models);
+
+        if (models.Any(x => x.Code.IsNullOrEmpty()))
         {
-            _repositoryFactory = repositoryFactory;
-            _eventPublisher = eventPublisher;
-            _platformMemoryCache = platformMemoryCache;
+            throw new InvalidOperationException("Coupon cannot have empty code.");
         }
 
-        #region ICouponService members
+        using var repository = repositoryFactory();
+        var nonUniqueCouponErrors = await repository.CheckCouponsForUniquenessAsync(models.Where(x => x.IsTransient()).ToArray());
 
-        public Task<Coupon[]> GetByIdsAsync(string[] ids)
+        if (!nonUniqueCouponErrors.IsNullOrEmpty())
         {
-            var cacheKey = CacheKey.With(GetType(), "GetByIdsAsync", string.Join("-", ids));
-            return _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
-            {
-                cacheEntry.AddExpirationToken(CouponCacheRegion.CreateChangeToken());
-                using (var repository = _repositoryFactory())
-                {
-                    var coupons = await repository.GetCouponsByIdsAsync(ids);
-                    return coupons.Select(x => x.ToModel(AbstractTypeFactory<Coupon>.TryCreateInstance())).ToArray();
-                }
-            });
+            throw new InvalidOperationException(string.Join(Environment.NewLine, nonUniqueCouponErrors));
         }
+    }
 
-        public async Task SaveCouponsAsync(Coupon[] coupons)
+    protected override Task<IList<CouponEntity>> LoadEntities(IRepository repository, IList<string> ids, string responseGroup)
+    {
+        return ((IMarketingRepository)repository).GetCouponsByIdsAsync(ids);
+    }
+
+    protected override void ClearCache(IList<Coupon> models)
+    {
+        base.ClearCache(models);
+        ClearPromotionCache(models);
+    }
+
+    protected override void ClearSearchCache(IList<Coupon> models)
+    {
+        base.ClearSearchCache(models);
+        ClearPromotionSearchCache();
+    }
+
+    private static void ClearPromotionCache(IList<Coupon> models)
+    {
+        foreach (var promotionId in models.Select(x => x.PromotionId))
         {
-            if (coupons.Any(x => x.Code.IsNullOrEmpty()))
-            {
-                throw new InvalidOperationException($"Coupon can't have empty code!");
-            }
-
-            var pkMap = new PrimaryKeyResolvingMap();
-            var changedEntries = new List<GenericChangedEntry<Coupon>>();
-            
-            using (var repository = _repositoryFactory())
-            {
-                var existCouponEntities = await repository.GetCouponsByIdsAsync(coupons.Where(x => !x.IsTransient()).Select(x => x.Id).ToArray());
-
-                var nonUniqueCouponErrors = await repository.CheckCouponsForUniquenessAsync(coupons.Where(x => x.IsTransient()).ToArray());
-                if (!nonUniqueCouponErrors.IsNullOrEmpty())
-                {
-                    throw new InvalidOperationException(string.Join(Environment.NewLine, nonUniqueCouponErrors));
-                }
-
-                foreach (var coupon in coupons)
-                {
-                    var sourceEntity = AbstractTypeFactory<CouponEntity>.TryCreateInstance();
-                    if (sourceEntity != null)
-                    {
-                        sourceEntity = sourceEntity.FromModel(coupon, pkMap);
-                        var targetCouponEntity = existCouponEntities.FirstOrDefault(x => x.Id == coupon.Id);
-                        if (targetCouponEntity != null)
-                        {
-                            changedEntries.Add(new GenericChangedEntry<Coupon>(coupon, sourceEntity.ToModel(AbstractTypeFactory<Coupon>.TryCreateInstance()), EntryState.Modified));
-                            sourceEntity.Patch(targetCouponEntity);
-                        }
-                        else
-                        {
-                            changedEntries.Add(new GenericChangedEntry<Coupon>(coupon, EntryState.Added));
-                            repository.Add(sourceEntity);
-                        }
-                    }
-                }
-                await repository.UnitOfWork.CommitAsync();
-                pkMap.ResolvePrimaryKeys();
-
-                ClearCache(coupons.Select(x => x.PromotionId).ToArray());
-
-                await _eventPublisher.Publish(new CouponChangedEvent(changedEntries));
-            }
+            GenericCachingRegion<Promotion>.ExpireTokenForKey(promotionId);
         }
+    }
 
-        public async Task DeleteCouponsAsync(string[] ids)
-        {
-            using (var repository = _repositoryFactory())
-            {
-                await repository.RemoveCouponsAsync(ids);
-                await repository.UnitOfWork.CommitAsync();
-            }
-
-            ClearCache();
-        }
-
-        private void ClearCache(string[] promotionIds = null)
-        {
-            CouponCacheRegion.ExpireRegion();
-            PromotionSearchCacheRegion.ExpireRegion();
-
-            if (promotionIds != null)
-            {
-                PromotionCacheRegion.ExpirePromotions(promotionIds);
-            }
-        }
-        #endregion
+    private static void ClearPromotionSearchCache()
+    {
+        GenericSearchCachingRegion<Promotion>.ExpireRegion();
     }
 }

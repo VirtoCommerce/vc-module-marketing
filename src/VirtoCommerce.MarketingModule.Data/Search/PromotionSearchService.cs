@@ -2,108 +2,89 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Search;
 using VirtoCommerce.MarketingModule.Core.Services;
-using VirtoCommerce.MarketingModule.Data.Caching;
 using VirtoCommerce.MarketingModule.Data.Model;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.GenericCrud;
+using VirtoCommerce.Platform.Data.GenericCrud;
 
-namespace VirtoCommerce.MarketingModule.Data.Search
+namespace VirtoCommerce.MarketingModule.Data.Search;
+
+public class PromotionSearchService(
+    Func<IMarketingRepository> repositoryFactory,
+    IPlatformMemoryCache platformMemoryCache,
+    IPromotionService crudService,
+    IOptions<CrudOptions> crudOptions)
+    : SearchService<PromotionSearchCriteria, PromotionSearchResult, Promotion, PromotionEntity>
+        (repositoryFactory, platformMemoryCache, crudService, crudOptions),
+        IPromotionSearchService
 {
-    public class PromotionSearchService : IPromotionSearchService
+    [Obsolete("Use SearchAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
+    public virtual Task<PromotionSearchResult> SearchPromotionsAsync(PromotionSearchCriteria criteria)
     {
-        private readonly Func<IMarketingRepository> _repositoryFactory;
-        private readonly IPromotionService _promotionService;
-        private readonly IPlatformMemoryCache _platformMemoryCache;
+        return SearchAsync(criteria);
+    }
 
-        public PromotionSearchService(Func<IMarketingRepository> repositoryFactory, IPromotionService promotionService, IPlatformMemoryCache platformMemoryCache)
+
+    protected override IQueryable<PromotionEntity> BuildQuery(IRepository repository, PromotionSearchCriteria criteria)
+    {
+        // Temporarily calling the obsolete method that could potentially be overridden in derived classes.
+#pragma warning disable VC0011 // Type or member is obsolete
+        return BuildQuery((IMarketingRepository)repository, criteria);
+#pragma warning restore VC0011 // Type or member is obsolete
+    }
+
+    [Obsolete("Use BuildQuery(IRepository repository, PromotionSearchCriteria criteria)", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
+    protected virtual IQueryable<PromotionEntity> BuildQuery(IMarketingRepository repository, PromotionSearchCriteria criteria)
+    {
+        var query = repository.Promotions;
+
+        if (!criteria.Store.IsNullOrEmpty())
         {
-            _repositoryFactory = repositoryFactory;
-            _promotionService = promotionService;
-            _platformMemoryCache = platformMemoryCache;
+            query = query.Where(x => !x.Stores.Any() || x.Stores.Any(s => s.StoreId == criteria.Store));
         }
 
-        public virtual Task<PromotionSearchResult> SearchPromotionsAsync(PromotionSearchCriteria criteria)
+        if (!criteria.StoreIds.IsNullOrEmpty())
         {
-            var cacheKey = CacheKey.With(GetType(), nameof(SearchPromotionsAsync), criteria.GetCacheKey());
-            return _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
-            {
-                cacheEntry.AddExpirationToken(PromotionSearchCacheRegion.CreateChangeToken());
+            query = query.Where(x => !x.Stores.Any() || x.Stores.Any(s => criteria.StoreIds.Contains(s.StoreId)));
+        }
 
-                var result = AbstractTypeFactory<PromotionSearchResult>.TryCreateInstance();
+        if (criteria.OnlyActive)
+        {
+            var now = DateTime.UtcNow;
+            query = query.Where(x => x.IsActive && now >= x.StartDate && (x.EndDate == null || x.EndDate >= now));
+        }
 
-                using (var repository = _repositoryFactory())
+        if (!criteria.Keyword.IsNullOrEmpty())
+        {
+            query = query.Where(x => x.Name.Contains(criteria.Keyword) || x.Description.Contains(criteria.Keyword));
+        }
+
+        return query;
+    }
+
+    protected override IList<SortInfo> BuildSortExpression(PromotionSearchCriteria criteria)
+    {
+        var sortInfos = criteria.SortInfos;
+
+        if (sortInfos.IsNullOrEmpty())
+        {
+            sortInfos =
+            [
+                new SortInfo
                 {
-                    var sortInfos = BuildSortExpression(criteria);
-                    var query = BuildQuery(repository, criteria);
-                    //https://github.com/zzzprojects/EntityFramework-Plus/issues/293
-                    //Workaround ArgumentException with CountAsync have no predicate when query has a Cast or OfType expression
-                    result.TotalCount = await query.CountAsync(x => true);
-
-                    if (criteria.Take > 0)
-                    {
-                        var ids = await query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
-                                        .Select(x => x.Id)
-                                        .Skip(criteria.Skip).Take(criteria.Take)
-                                        .ToArrayAsync();
-
-                        result.Results = (await _promotionService.GetPromotionsByIdsAsync(ids))
-                            .OrderBy(x => Array.IndexOf(ids, x.Id)).ToList();
-                    }
-                }
-                return result;
-            });
+                    SortColumn = nameof(Promotion.Priority),
+                    SortDirection = SortDirection.Descending,
+                },
+            ];
         }
 
-        protected virtual IList<SortInfo> BuildSortExpression(PromotionSearchCriteria criteria)
-        {
-            var sortInfos = criteria.SortInfos;
-            if (sortInfos.IsNullOrEmpty())
-            {
-                sortInfos = new[]
-                {
-                    new SortInfo
-                    {
-                        SortColumn = nameof(Promotion.Priority),
-                        SortDirection = SortDirection.Descending
-                    }
-                };
-            }
-
-            return sortInfos;
-        }
-
-        protected virtual IQueryable<PromotionEntity> BuildQuery(IMarketingRepository repository, PromotionSearchCriteria criteria)
-        {
-            var query = repository.Promotions;
-
-            if (!string.IsNullOrEmpty(criteria.Store))
-            {
-                query = query.Where(x => !x.Stores.Any() || x.Stores.Any(s => s.StoreId == criteria.Store));
-            }
-
-            if (!criteria.StoreIds.IsNullOrEmpty())
-            {
-                query = query.Where(x => !x.Stores.Any() || x.Stores.Any(s => criteria.StoreIds.Contains(s.StoreId)));
-            }
-
-            if (criteria.OnlyActive)
-            {
-                var now = DateTime.UtcNow;
-                query = query.Where(x => x.IsActive && now >= x.StartDate && (x.EndDate == null || x.EndDate >= now));
-            }
-
-            if (!string.IsNullOrEmpty(criteria.Keyword))
-            {
-                query = query.Where(x => x.Name.Contains(criteria.Keyword) || x.Description.Contains(criteria.Keyword));
-            }
-            return query;
-        }
+        return sortInfos;
     }
 }
