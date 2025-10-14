@@ -1,0 +1,423 @@
+{
+  "marketing": {
+    "main-menu-title": "Marknadsföring",
+    "widgets": {
+      "couponsWidget": {
+        "title": "Kuponger",
+        "newPromotion": "Du kan lägga till kuponger efter att ha sparat en kampanj"
+      }
+    },
+    "blades": {
+      "marketing-main": {
+        "title": "Marknadsföring",
+        "labels": {
+          "promotions": "Kampanjer",
+          "dynamic-content": "Dynamiskt innehåll"
+        }
+      },
+      "promotion-detail": {
+        "title-new": "Ny kampanj",
+        "labels": {
+          "is-active": "Aktiv",
+          "exclusivity": "Exklusivitet",
+          "is-combine-with-self": "Kan användas flera gånger",
+          "priority": "Prioritet",
+          "promotion-name": "Kampanjnamn",
+          "description": "Beskrivning",
+          "store": "Butiker",
+          "start-date": "Startdatum",
+          "usage-limit": "Användningsgräns",
+          "coupons": "Kuponger",
+          "expiration-date": "Utgångsdatum",
+          "per-customer-limit": "Begränsningar för enskilda kunder",
+          "promotion-conditions": "Kampanjvillkor",
+          "combined-with-others": "Giltig med andra erbjudanden",
+          "exclusive": "Globalt exklusiv"
+        },
+        "descr": {
+          "promotion-name": "Ge din kampanj ett unikt namn som visas i kampanjlistan",
+          "store": "Butiker där denna kampanj gäller",
+          "is-active": "Använd denna knapp för att aktivera eller inaktivera din kampanj",
+          "start-date": "Om du inte anger ett startdatum blir kampanjen aktiv direkt efter att du sparar den",
+          "expiration-date": "Om du inte anger ett slutdatum kommer kampanjen att vara aktiv tills du inaktiverar den",
+          "priority": "Kampanjen med högst prioritet tillämpas först",
+          "exclusivity": "Om du väljer 'Globalt exklusiv' kan dina kunder inte använda andra kampanjer med lägre prioritet på beställningen",
+          "is-combine-with-self": "Aktivera detta alternativ om flera kuponger krävs för att lösa in erbjudandet"
+        },
+        "placeholders": {
+          "promotion-name": "Skriv in ditt kampanjnamn här...",
+          "description": "Skriv in din beskrivning här...",
+          "store": "Välj...",
+          "start-date": "Ange ett datum...",
+          "coupons": "Ange kupongkoder...",
+          "expiration-date": "Ange ett datum..."
+        },
+        "toolbar": {
+          "coupons": "Kuponger"
+        },
+        "cannot-be-saved": "Du är för närvarande begränsad till omfattningen av butikerna och den valda kampanjen är tilldelad flera butiker. Redigering av denna kampanj är inte tillåten"
+      },
+      "coupon-detail": {
+        "new-title": "Ny kupong",
+        "title": "Kupong",
+        "labels": {
+          "coupon-code": "Kod",
+          "code-description": "Kupongkoden får endast innehålla alfanumeriska tecken",
+          "max-uses-number": "Maximalt antal användningar",
+          "max-uses-per-user": "Maximalt antal användningar per kund",
+          "max-uses-number-description": "Ange hur många gånger denna kupong kan användas. Om du inte vill sätta någon gräns, ange 0",
+          "max-uses-per-user-description": "Ange hur många gånger denna kupong kan användas av en enskild användare. Om du inte vill sätta någon gräns, ange 0",
+          "reservation-expiration-date": "Kupongens utgångsdatum",
+          "reservation-expiration-date-description": "Lämna detta fält tomt om det är samma som kampanjens utgångsdatum",
+          "upload-description": "CSV-filen som innehåller kupongdata måste ha följande format: [kupongkod][avgränsare][max_antal_användningar][avgränsare][medlems_id] (ta bort hakparenteser). Om du inte vill sätta någon gräns för antal användningar, sätt max_antal_användningar till 0",
+          "enter-value": "Ange ett värde",
+          "select-date": "Ange ett datum...",
+          "member": "Kund",
+          "coupon-usages": "Kuponganvändningar",
+          "coupon-info": "Info"
+        },
+        "placeholders": {
+          "member": "Välj en kund eller organisation..."
+        }
+      },
+      "promotion-list": {
+        "labels": {
+          "name": "Namn",
+          "isActive": "Aktiv",
+          "last-modified": "Senast ändrad"
+        },
+        "new-filter": "Lägg till nytt filter",
+        "placeholders": {
+          "select-filter": "Välj filter"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Redigera filter",
+        "new-title": "Nytt filter",
+        "new-subtitle": "Skapa nytt filter",
+        "unnamed-filter": "Namnlöst filter",
+        "labels": {
+          "name": "Filternamn",
+          "name_": "Namnge detta filter",
+          "active": "Endast aktiva"
+        },
+        "placeholders": {
+          "all": "Ospecificerat"
+        }
+      },
+      "catalog-items-select": {
+        "title-product": "Välj produkt för kampanjvillkor",
+        "title-category": "Välj kategori för kampanjvillkor"
+      },
+      "catalog-entries": {
+        "title-product": "Valda artiklar"
+      },
+      "dynamicContent-list": {
+        "menu": {
+          "items": {
+            "title": "Innehållsartiklar",
+            "description": "Hantera dynamiska innehållsartiklar"
+          },
+          "placeholders": {
+            "title": "Innehållsplats hållare",
+            "description": "Hantera platshållare som innehåller innehållsartiklar"
+          },
+          "publishing": {
+            "title": "Publicerat innehåll",
+            "description": "Ställ in villkor för att visa ditt innehåll"
+          }
+        }
+      },
+      "items": {
+        "add": {
+          "title": "Ny innehållsartikel",
+          "subtitle": "Lägg till en ny innehållsartikel",
+          "menu": {
+            "folder": {
+              "title": "Mapp för innehållsartiklar",
+              "description": "Skapa en mapp för att innehålla innehållsartiklar"
+            },
+            "item": {
+              "title": "Innehållsartikel",
+              "description": "Skapa en innehållsartikel"
+            }
+          }
+        },
+        "content-item-details": {
+          "title": "Redigera innehållsartikel",
+          "subtitle": "Ändra din innehållsartikel",
+          "title-new": "Ny innehållsartikel",
+          "subtitle-new": "Lägg till en ny innehållsartikel",
+          "labels": {
+            "content-item-name": "Namn på innehållsartikel",
+            "content-item-description": "Beskrivning av innehållsartikel",
+            "none": "Ingen"
+          },
+          "placeholders": {
+            "content-item-name": "Ange namn på innehållsartikel",
+            "content-item-description": "Ange beskrivning av innehållsartikel"
+          }
+        },
+        "folder-details": {
+          "title": "Redigera mapp för innehållsartiklar",
+          "subtitle": "Ändra din mapp för innehållsartiklar",
+          "title-new": "Ny mapp för innehållsartiklar",
+          "subtitle-new": "Lägg till en ny innehållsmapp",
+          "labels": {
+            "folder-name": "Mappnamn",
+            "folder-description": "Mappbeskrivning"
+          },
+          "placeholders": {
+            "folder-name": "Ange mappnamn",
+            "folder-description": "Ange mappbeskrivning"
+          }
+        },
+        "list": {
+          "title": "Innehållsartiklar",
+          "subtitle": "Lista över innehållsartiklar",
+          "bread-crumb-top": "Alla artiklar",
+          "labels": {
+            "picture": "Bild",
+            "name": "Namn",
+            "description": "Beskrivning",
+            "no-data": "Inga data"
+          },
+          "noItemsMessage": "Du har inga innehållsartiklar än"
+        }
+      },
+      "placeholders": {
+        "add": {
+          "title": "Ny platshållare",
+          "subtitle": "Lägg till en ny platshållare",
+          "menu": {
+            "folder": {
+              "title": "Mapp för platshållare",
+              "description": "Skapa en mapp för att innehålla platshållare"
+            },
+            "item": {
+              "title": "Platshållare",
+              "description": "Skapa en mapp för att innehålla innehållsartiklar"
+            }
+          }
+        },
+        "placeholder-details": {
+          "title": "Ny platshållare",
+          "subtitle": "Lägg till en ny platshållare",
+          "title-new": "Redigera platshållare",
+          "subtitle-new": "Ändra din platshållare",
+          "labels": {
+            "placeholder-name": "Namn på platshållare",
+            "placeholder-description": "Beskrivning av platshållare",
+            "placeholder-image-description": "Beskrivning av platshållarbild",
+            "image-note": "Dra och släpp din bild här",
+            "progress": "Framsteg"
+          },
+          "placeholders": {
+            "placeholder-name": "Ange namn på platshållare",
+            "placeholder-description": "Ange beskrivning av platshållare"
+          }
+        },
+        "folder-details": {
+          "title": "Redigera mapp för platshållare",
+          "subtitle": "Ändra din mapp för platshållare",
+          "title-new": "Ny mapp för platshållare",
+          "subtitle-new": "Lägg till en ny mapp för platshållare",
+          "labels": {
+            "folder-name": "Mappnamn",
+            "folder-description": "Mappbeskrivning"
+          },
+          "placeholders": {
+            "folder-name": "Ange mappnamn",
+            "folder-description": "Ange mappbeskrivning"
+          }
+        },
+        "list": {
+          "title": "Innehållsplatshållare",
+          "subtitle": "Lista över dina innehållsplatshållare",
+          "bread-crumb-top": "Alla platshållare",
+          "labels": {
+            "picture": "Bild",
+            "name": "Namn",
+            "description": "Beskrivning",
+            "no-data": "Inga data"
+          }
+        }
+      },
+      "publishing": {
+        "add-content-items": {
+          "title": "Lägg till innehållsartiklar",
+          "subtitle": "Välj vilka innehållsartiklar som ska läggas till",
+          "bread-crumb-top": "Alla artiklar",
+          "labels": {
+            "chosen-content-items": "Valda innehållsartiklar",
+            "content-items": "Innehållsartiklar",
+            "picture": "Bild",
+            "name": "Namn",
+            "description": "Beskrivning",
+            "no-data": "Inga data"
+          }
+        },
+        "add-placeholders": {
+          "title": "Lägg till platshållare",
+          "subtitle": "Välj vilka platshållare som ska läggas till",
+          "bread-crumb-top": "Alla platshållare",
+          "labels": {
+            "chosen-placeholders": "Valda platshållare",
+            "content-placeholders": "Innehållsplatshållare",
+            "picture": "Bild",
+            "name": "Namn",
+            "description": "Beskrivning",
+            "no-data": "Inga data"
+          }
+        },
+        "publishing-main-step": {
+          "title": "Redigera publicerat innehållselement",
+          "subtitle": "Ändra ditt publicerade innehållselement",
+          "title-new": "Nytt publicerat innehållselement",
+          "subtitle-new": "Lägg till ett nytt publicerat innehållselement",
+          "labels": {
+            "name": "Namn",
+            "description": "Beskrivning",
+            "store": "Butik",
+            "is-active": "Aktiv",
+            "start-date": "Startdatum",
+            "end-date": "Slutdatum",
+            "publishing-conditions": "Publiceringsvillkor"
+          },
+          "placeholders": {
+            "name": "Ange namn på publicerat innehållselement",
+            "description": "Ange beskrivning av publicerat innehållselement",
+            "store": "Välj...",
+            "start-date": "Ange ett värde",
+            "end-date": "Ange ett värde"
+          },
+          "menu": {
+            "placeholders": {
+              "title": "Platshållare",
+              "description": "{{quantity}} platshållare(r) valda"
+            },
+            "content-items": {
+              "title": "Innehållsartiklar",
+              "description": "{{quantity}} innehållsartikel(ar) valda"
+            }
+          }
+        },
+        "list": {
+          "title": "Publicerat innehåll",
+          "subtitle": "Lista över dina publicerade innehållselement",
+          "noItemsMessage": "Du har inget publicerat innehåll än",
+          "labels": {
+            "picture": "Ikon",
+            "name": "Namn",
+            "description": "Beskrivning",
+            "no-data": "Inget publicerat innehåll"
+          }
+        }
+      },
+      "coupons": {
+        "code": "Kod",
+        "total-uses-count": "Totalt antal användningar",
+        "max-uses-number": "Maximalt antal användningar",
+        "max-uses-per-user": "Maximalt antal användningar per kund",
+        "toolbar": {
+          "add": "Lägg till",
+          "import": "Importera",
+          "refresh": "Uppdatera",
+          "delete": "Radera",
+          "delete-all": "Radera alla"
+        },
+        "no-coupons-message": "Du har inga kuponger än"
+      },
+      "coupons-import": {
+        "title": "Importera kuponger",
+        "labels": {
+          "delimiter": "CSV-kolumnavgränsare",
+          "upload": "Ladda upp CSV-fil",
+          "upload-progress": "Uppladdningsförlopp",
+          "space": "Mellanslag",
+          "comma": "Komma",
+          "semicolon": "Semikolon",
+          "start": "Start",
+          "end": "Slut",
+          "total": "Totalt antal",
+          "processed": "Bearbetat antal",
+          "errors-count": "Antal fel",
+          "errors": "Fel",
+          "tab": "Tabulator"
+        },
+        "placeholders": {
+          "delimiter": "Välj..."
+        }
+      },
+      "coupons-import-processing": {
+        "title": "Importerar kuponger"
+      }
+    },
+    "dialogs": {
+      "content-item-delete": {
+        "title": "Bekräfta radering",
+        "message": "Är du säker på att du vill radera denna innehållsartikel?"
+      },
+      "placeholders-folder-delete": {
+        "title": "Bekräfta radering",
+        "message": "Är du säker på att du vill radera denna mapp för innehållsplatshållare?"
+      },
+      "content-item-folder-delete": {
+        "title": "Bekräfta radering",
+        "message": "Är du säker på att du vill radera denna mapp för innehållsartiklar?"
+      },
+      "content-folder-delete": {
+        "title": "Bekräfta radering",
+        "message": "Är du säker på att du vill radera denna mapp?"
+      },
+      "publication-delete": {
+        "title": "Bekräfta radering",
+        "message": "Är du säker på att du vill radera denna publikation?"
+      },
+      "content-placeholder-delete": {
+        "title": "Bekräfta radering",
+        "message": "Är du säker på att du vill radera denna innehållsplatshållare?"
+      },
+      "promotions-delete": {
+        "title": "Bekräfta radering",
+        "message": "Är du säker på att du vill radera de valda kampanjerna?"
+      },
+      "promotion-save": {
+        "title": "Spara ändringar",
+        "message": "Kampanjen har ändrats. Vill du spara ändringarna?"
+      },
+      "coupon-delete": {
+        "title": "Bekräfta radering",
+        "message": "Är du säker på att du vill radera de valda kupongerna?",
+        "message-all": "Är du säker på att du vill radera alla kuponger?"
+      }
+    },
+    "commands": {
+      "manage-type-properties": "Hantera egenskapstyper",
+      "edit-folder": "Redigera mapp",
+      "start-import": "Starta import"
+    }
+  },
+  "permissions": {
+    "marketing:read": "Visa marknadsföringsdata",
+    "marketing:create": "Skapa marknadsföringsdata",
+    "marketing:update": "Uppdatera marknadsföringsdata",
+    "marketing:delete": "Radera marknadsföringsdata",
+    "marketing:access": "Öppna marknadsföringsmenyn"
+  },
+  "settings": {
+    "Marketing.Promotion.CombinePolicy": {
+      "description": "Bästa belöning: Välj kampanjbelöningar som tilltalar kunderna mest. Flera erbjudanden giltiga: Om din butik har flera aktiva kampanjer kan kunder kvalificera sig för flera kampanjer samtidigt",
+      "title": "Vald policy för användning av flera aktiva kampanjer"
+    },
+    "Marketing.ExportImport.Description": {
+      "description": "Exportera och importera kampanjer och dynamiskt innehåll (platser, innehåll, publikationer)",
+      "title": "Beskrivning av export/import"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Marketing": {
+      "description": "Exportera och importera kampanjer och dynamiskt innehåll (platser, innehåll, publikationer)"
+    }
+  }
+}
