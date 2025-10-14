@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
-using VirtoCommerce.MarketingModule.Core.Services;
 using VirtoCommerce.MarketingModule.Data.Model;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.MarketingModule.Data.Services;
@@ -50,7 +49,7 @@ public class CouponServiceTests
     }
 
 
-    private ICouponService GetCouponService()
+    private CouponService GetCouponService()
     {
         var memoryCache = new MemoryCache(Options.Create(new MemoryCacheOptions()));
         var platformMemoryCache = new PlatformMemoryCache(memoryCache, Options.Create(new CachingOptions()), Mock.Of<ILogger<PlatformMemoryCache>>());

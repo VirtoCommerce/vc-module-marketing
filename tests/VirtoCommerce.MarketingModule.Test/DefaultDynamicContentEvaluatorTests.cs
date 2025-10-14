@@ -48,7 +48,7 @@ public class DefaultDynamicContentEvaluatorTests
         Assert.Equal(expectedResult, dynamicContentItems.Equals(results));
     }
 
-    private static IMarketingDynamicContentEvaluator GetEvaluator(DynamicContentItem item, DynamicContentItem[] items, DynamicContentConditionTree expression)
+    private static DefaultDynamicContentEvaluator GetEvaluator(DynamicContentItem item, DynamicContentItem[] items, DynamicContentConditionTree expression)
     {
         var groups = new List<DynamicContentPublication>
         {
@@ -76,48 +76,39 @@ public class DefaultDynamicContentEvaluatorTests
             Mock.Of<ILogger<DefaultDynamicContentEvaluator>>());
     }
 
-    public static IEnumerable<object[]> GetDynamicContentExpressionData()
+    public static TheoryData<DynamicContentEvaluationContext, DynamicContentConditionTree, bool> GetDynamicContentExpressionData()
     {
-        return new List<object[]>
+        return new TheoryData<DynamicContentEvaluationContext, DynamicContentConditionTree, bool>
         {
-            new object[]
             {
-                // Context
                 new DynamicContentEvaluationContext { CategoryId = "Category_1" },
-                // Expression
                 GetExpressionTree(new DynamicContentConditionCategoryIs { CategoryId = "Category_1" }),
-                // Expected result
-                true,
+                true
             },
-            new object[]
             {
                 new DynamicContentEvaluationContext { CategoryId = "Category_1" },
                 GetExpressionTree(new DynamicContentConditionCategoryIs { CategoryId = "Category_2" }),
-                false,
+                false
             },
-            new object[]
             {
                 new DynamicContentEvaluationContext { ProductId = "ProductId_1" },
                 GetExpressionTree(new DynamicContentConditionProductIs { ProductIds = ["ProductId_1"] }),
-                true,
+                true
             },
-            new object[]
             {
                 new DynamicContentEvaluationContext { ProductId = "ProductId_1" },
                 GetExpressionTree(new DynamicContentConditionProductIs { ProductIds = ["ProductId_1", "Product_2"] }),
-                true,
+                true
             },
-            new object[]
             {
                 new DynamicContentEvaluationContext { ProductId = "ProductId_2" },
                 GetExpressionTree(new DynamicContentConditionProductIs { ProductIds = ["ProductId_1"] }),
-                false,
+                false
             },
-            new object[]
             {
                 new DynamicContentEvaluationContext { GeoCity = "NY" },
                 GetGeoPointCondition(),
-                true,
+                true
             },
         };
     }

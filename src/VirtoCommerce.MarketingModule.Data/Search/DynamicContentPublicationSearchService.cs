@@ -35,7 +35,7 @@ public class DynamicContentPublicationSearchService(
 
         if (criteria.OnlyActive)
         {
-            query = query.Where(x => x.IsActive == true);
+            query = query.Where(x => x.IsActive);
         }
 
         if (criteria.ToDate != null)

@@ -54,7 +54,7 @@ public class DefaultDynamicContentEvaluator(
             }
             catch (Exception ex)
             {
-                logger.LogError(ex.Message, ex);
+                logger.LogError(ex, "Failed to evaluate a dynamic expression");
             }
         }
 
