@@ -35,6 +35,7 @@ public class DefaultDynamicContentEvaluator(
         criteria = criteria.FromEvalContext(dynamicContext);
 
         var publications = await dynamicContentPublicationSearchService.SearchAsync(criteria);
+        const int maxResponseItemsCount = 20;
 
         foreach (var publication in publications.Results)
         {
@@ -46,7 +47,7 @@ public class DefaultDynamicContentEvaluator(
                     items.AddRange(publication.ContentItems);
                 }
 
-                if (items.Count >= 20)
+                if (items.Count >= maxResponseItemsCount)
                 {
                     break;
                 }
