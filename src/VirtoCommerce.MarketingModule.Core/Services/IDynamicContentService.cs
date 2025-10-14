@@ -4,6 +4,7 @@ using VirtoCommerce.MarketingModule.Core.Model;
 
 namespace VirtoCommerce.MarketingModule.Core.Services;
 
+[Obsolete("Use IDynamicContentFolderService, IDynamicContentItemService, IDynamicContentPlaceService, IDynamicContentPublicationService", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
 public interface IDynamicContentService
 {
     [Obsolete("Use IDynamicContentFolderService.GetAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]

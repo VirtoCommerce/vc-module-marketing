@@ -14,87 +14,83 @@ using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Data.GenericCrud;
 
-namespace VirtoCommerce.MarketingModule.Data.Search
+namespace VirtoCommerce.MarketingModule.Data.Search;
+
+public class PromotionUsageSearchService(
+    Func<IMarketingRepository> repositoryFactory,
+    IPlatformMemoryCache platformMemoryCache,
+    IPromotionUsageService crudService,
+    IOptions<CrudOptions> crudOptions)
+    : SearchService<PromotionUsageSearchCriteria, PromotionUsageSearchResult, PromotionUsage, PromotionUsageEntity>
+        (repositoryFactory, platformMemoryCache, crudService, crudOptions),
+        IPromotionUsageSearchService
 {
-    public class PromotionUsageSearchService(
-        Func<IMarketingRepository> repositoryFactory,
-        IPlatformMemoryCache platformMemoryCache,
-        IPromotionUsageService crudService,
-        IOptions<CrudOptions> crudOptions)
-        : SearchService<PromotionUsageSearchCriteria, PromotionUsageSearchResult, PromotionUsage, PromotionUsageEntity>
-            (repositoryFactory, platformMemoryCache, crudService, crudOptions),
-            IPromotionUsageSearchService
+    [Obsolete("Use SearchAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
+    public virtual Task<PromotionUsageSearchResult> SearchUsagesAsync(PromotionUsageSearchCriteria criteria)
     {
-        [Obsolete("Use SearchAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
-        public virtual Task<PromotionUsageSearchResult> SearchUsagesAsync(PromotionUsageSearchCriteria criteria)
+        return SearchAsync(criteria);
+    }
+
+
+    [Obsolete("Use BuildQuery(IRepository repository, PromotionUsageSearchCriteria criteria)", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
+    protected virtual IQueryable<PromotionUsageEntity> BuildQuery(IMarketingRepository repository, PromotionUsageSearchCriteria criteria)
+    {
+        return BuildQuery((IRepository)repository, criteria);
+    }
+
+    protected override IQueryable<PromotionUsageEntity> BuildQuery(IRepository repository, PromotionUsageSearchCriteria criteria)
+    {
+        var query = ((IMarketingRepository)repository).PromotionUsages;
+
+        if (!criteria.PromotionId.IsNullOrEmpty())
         {
-            return SearchAsync(criteria);
+            query = query.Where(x => x.PromotionId == criteria.PromotionId);
         }
 
-
-        protected override IQueryable<PromotionUsageEntity> BuildQuery(IRepository repository, PromotionUsageSearchCriteria criteria)
+        if (!criteria.CouponCode.IsNullOrEmpty())
         {
-            // Temporarily calling the obsolete method that could potentially be overridden in derived classes.
-#pragma warning disable VC0011 // Type or member is obsolete
-            return BuildQuery((IMarketingRepository)repository, criteria);
-#pragma warning restore VC0011 // Type or member is obsolete
+            query = query.Where(x => x.CouponCode == criteria.CouponCode);
         }
 
-        [Obsolete("Use BuildQuery(IRepository repository, PromotionUsageSearchCriteria criteria)", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
-        protected virtual IQueryable<PromotionUsageEntity> BuildQuery(IMarketingRepository repository, PromotionUsageSearchCriteria criteria)
+        if (!criteria.ObjectId.IsNullOrEmpty())
         {
-            var query = repository.PromotionUsages;
-
-            if (!criteria.PromotionId.IsNullOrEmpty())
-            {
-                query = query.Where(x => x.PromotionId == criteria.PromotionId);
-            }
-
-            if (!criteria.CouponCode.IsNullOrEmpty())
-            {
-                query = query.Where(x => x.CouponCode == criteria.CouponCode);
-            }
-
-            if (!criteria.ObjectId.IsNullOrEmpty())
-            {
-                query = query.Where(x => x.ObjectId == criteria.ObjectId);
-            }
-
-            if (!criteria.ObjectType.IsNullOrEmpty())
-            {
-                query = query.Where(x => x.ObjectType == criteria.ObjectType);
-            }
-
-            if (!criteria.UserId.IsNullOrWhiteSpace())
-            {
-                query = query.Where(x => x.UserId == criteria.UserId);
-            }
-
-            if (!criteria.UserName.IsNullOrWhiteSpace())
-            {
-                query = query.Where(x => x.UserName == criteria.UserName);
-            }
-
-            return query;
+            query = query.Where(x => x.ObjectId == criteria.ObjectId);
         }
 
-        protected override IList<SortInfo> BuildSortExpression(PromotionUsageSearchCriteria criteria)
+        if (!criteria.ObjectType.IsNullOrEmpty())
         {
-            var sortInfos = criteria.SortInfos;
-
-            if (sortInfos.IsNullOrEmpty())
-            {
-                sortInfos =
-                [
-                    new SortInfo
-                    {
-                        SortColumn = nameof(PromotionUsage.ModifiedDate),
-                        SortDirection = SortDirection.Descending,
-                    },
-                ];
-            }
-
-            return sortInfos;
+            query = query.Where(x => x.ObjectType == criteria.ObjectType);
         }
+
+        if (!criteria.UserId.IsNullOrWhiteSpace())
+        {
+            query = query.Where(x => x.UserId == criteria.UserId);
+        }
+
+        if (!criteria.UserName.IsNullOrWhiteSpace())
+        {
+            query = query.Where(x => x.UserName == criteria.UserName);
+        }
+
+        return query;
+    }
+
+    protected override IList<SortInfo> BuildSortExpression(PromotionUsageSearchCriteria criteria)
+    {
+        var sortInfos = criteria.SortInfos;
+
+        if (sortInfos.IsNullOrEmpty())
+        {
+            sortInfos =
+            [
+                new SortInfo
+                {
+                    SortColumn = nameof(PromotionUsage.ModifiedDate),
+                    SortDirection = SortDirection.Descending,
+                },
+            ];
+        }
+
+        return sortInfos;
     }
 }

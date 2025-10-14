@@ -103,6 +103,7 @@ namespace VirtoCommerce.MarketingModule.Web
             serviceCollection.AddTransient<IDynamicContentPublicationSearchService, DynamicContentPublicationSearchService>();
 
 #pragma warning disable VC0011 // Type or member is obsolete
+            serviceCollection.AddTransient<IDynamicContentService, DynamicContentService>();
             serviceCollection.AddTransient<IFolderSearchService, FolderSearchService>();
             serviceCollection.AddTransient<IContentItemsSearchService, ContentItemsSearchService>();
             serviceCollection.AddTransient<IContentPlacesSearchService, ContentPlacesSearchService>();
@@ -111,7 +112,6 @@ namespace VirtoCommerce.MarketingModule.Web
 
             serviceCollection.AddTransient<IPromotionRewardEvaluator, DefaultPromotionRewardEvaluator>();
             serviceCollection.AddTransient<IMarketingDynamicContentEvaluator, DefaultDynamicContentEvaluator>();
-            serviceCollection.AddTransient<IDynamicContentService, DynamicContentService>();
 
             serviceCollection.AddTransient<CsvCouponImporter>();
 
@@ -191,32 +191,29 @@ namespace VirtoCommerce.MarketingModule.Web
             var dynamicPropertyRegistrar = appBuilder.ApplicationServices.GetRequiredService<IDynamicPropertyRegistrar>();
             dynamicPropertyRegistrar.RegisterType<DynamicContentItem>();
 
-            var dynamicContentService = appBuilder.ApplicationServices.GetService<IDynamicContentFolderService>();
+            var dynamicContentFolderService = appBuilder.ApplicationServices.GetService<IDynamicContentFolderService>();
             foreach (var id in new[] { ModuleConstants.MarketingConstants.ContentPlacesRootFolderId, ModuleConstants.MarketingConstants.ContentItemRootFolderId })
             {
-                var folders = dynamicContentService.GetAsync([id]).GetAwaiter().GetResult();
+                var folders = dynamicContentFolderService.GetAsync([id]).GetAwaiter().GetResult();
                 var rootFolder = folders.FirstOrDefault();
                 if (rootFolder == null)
                 {
                     rootFolder = AbstractTypeFactory<DynamicContentFolder>.TryCreateInstance();
                     rootFolder.Id = id;
                     rootFolder.Name = id;
-                    dynamicContentService.SaveChangesAsync([rootFolder]).GetAwaiter().GetResult();
+                    dynamicContentFolderService.SaveChangesAsync([rootFolder]).GetAwaiter().GetResult();
                 }
             }
 
             //Create standard dynamic properties for dynamic content item
+            var contentItemTypeProperty = AbstractTypeFactory<DynamicProperty>.TryCreateInstance();
+            contentItemTypeProperty.Id = "Marketing_DynamicContentItem_Type_Property";
+            contentItemTypeProperty.IsDictionary = true;
+            contentItemTypeProperty.Name = "Content type";
+            contentItemTypeProperty.ObjectType = typeof(DynamicContentItem).FullName;
+            contentItemTypeProperty.ValueType = DynamicPropertyValueType.ShortText;
+            contentItemTypeProperty.CreatedBy = "Auto";
             var dynamicPropertyService = appBuilder.ApplicationServices.GetService<IDynamicPropertyService>();
-            var contentItemTypeProperty = new DynamicProperty
-            {
-                Id = "Marketing_DynamicContentItem_Type_Property",
-                IsDictionary = true,
-                Name = "Content type",
-                ObjectType = typeof(DynamicContentItem).FullName,
-                ValueType = DynamicPropertyValueType.ShortText,
-                CreatedBy = "Auto",
-            };
-
             dynamicPropertyService.SaveDynamicPropertiesAsync([contentItemTypeProperty]).GetAwaiter().GetResult();
 
             PolymorphJsonConverter.RegisterTypeForDiscriminator(typeof(PromotionReward), nameof(PromotionReward.Id));

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
+using VirtoCommerce.MarketingModule.Core.Services;
 using VirtoCommerce.MarketingModule.Data.Model;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.MarketingModule.Data.Services;
@@ -16,12 +17,12 @@ using Xunit;
 
 namespace VirtoCommerce.MarketingModule.Test;
 
+[Obsolete("To be removed", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
 public class PromotionUsageUsageServiceUnitTests
 {
     private readonly Mock<IMarketingRepository> _repositoryMock = new();
 
     [Fact]
-    [Obsolete("To be removed", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
     public async Task GetByIdsAsync_GetThenSavePromotionUsage_ReturnCachedPromotionUsage()
     {
         //Arrange
@@ -49,7 +50,7 @@ public class PromotionUsageUsageServiceUnitTests
     }
 
 
-    private PromotionUsageService GetPromotionUsageService()
+    private IPromotionUsageService GetPromotionUsageService()
     {
         var memoryCache = new MemoryCache(Options.Create(new MemoryCacheOptions()));
         var platformMemoryCache = new PlatformMemoryCache(memoryCache, Options.Create(new CachingOptions()), Mock.Of<ILogger<PlatformMemoryCache>>());

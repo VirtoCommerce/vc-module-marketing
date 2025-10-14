@@ -32,18 +32,15 @@ public class CouponSearchService(
     }
 
 
-    protected override IQueryable<CouponEntity> BuildQuery(IRepository repository, CouponSearchCriteria criteria)
-    {
-        // Temporarily calling the obsolete method that could potentially be overridden in derived classes.
-#pragma warning disable VC0011 // Type or member is obsolete
-        return BuildQuery(criteria, (IMarketingRepository)repository);
-#pragma warning restore VC0011 // Type or member is obsolete
-    }
-
     [Obsolete("Use BuildQuery(IRepository repository, CouponSearchCriteria criteria)", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
     protected virtual IQueryable<CouponEntity> BuildQuery(CouponSearchCriteria criteria, IMarketingRepository repository)
     {
-        var query = repository.Coupons;
+        return BuildQuery(repository, criteria);
+    }
+
+    protected override IQueryable<CouponEntity> BuildQuery(IRepository repository, CouponSearchCriteria criteria)
+    {
+        var query = ((IMarketingRepository)repository).Coupons;
 
         if (!criteria.PromotionId.IsNullOrEmpty())
         {
@@ -63,16 +60,13 @@ public class CouponSearchService(
         return query;
     }
 
-    protected override IList<SortInfo> BuildSortExpression(CouponSearchCriteria criteria)
-    {
-        // Temporarily calling the obsolete method that could potentially be overridden in derived classes.
-#pragma warning disable VC0011 // Type or member is obsolete
-        return BuildSearchExpression(criteria);
-#pragma warning restore VC0011 // Type or member is obsolete
-    }
-
     [Obsolete("Use BuildSortExpression()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
     protected virtual IList<SortInfo> BuildSearchExpression(CouponSearchCriteria criteria)
+    {
+        return BuildSortExpression(criteria);
+    }
+
+    protected override IList<SortInfo> BuildSortExpression(CouponSearchCriteria criteria)
     {
         var sortInfos = criteria.SortInfos;
 

@@ -37,11 +37,6 @@ public abstract class PromotionPolicyBase(
 
     protected abstract Task<PromotionResult> EvaluatePromotionWithoutCache(PromotionEvaluationContext promoContext);
 
-    protected virtual IChangeToken CreateCacheToken(PromotionEvaluationContext promoContext)
-    {
-        return GenericSearchCachingRegion<Promotion>.CreateChangeToken();
-    }
-
     private static PromotionEvaluationContext GetPromotionEvaluationContext(IEvaluationContext context)
     {
         ArgumentNullException.ThrowIfNull(context);
@@ -52,5 +47,10 @@ public abstract class PromotionPolicyBase(
         }
 
         return promoContext;
+    }
+
+    protected virtual IChangeToken CreateCacheToken(PromotionEvaluationContext promoContext)
+    {
+        return GenericSearchCachingRegion<Promotion>.CreateChangeToken();
     }
 }

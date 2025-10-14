@@ -17,12 +17,12 @@ using Xunit;
 
 namespace VirtoCommerce.MarketingModule.Test;
 
+[Obsolete("To be removed", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
 public class CouponServiceTests
 {
     private readonly Mock<IMarketingRepository> _repositoryMock = new();
 
     [Fact]
-    [Obsolete("To be removed", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
     public async Task GetByIdsAsync_GetThenSaveCoupon_ReturnCachedCoupon()
     {
         // Arrange

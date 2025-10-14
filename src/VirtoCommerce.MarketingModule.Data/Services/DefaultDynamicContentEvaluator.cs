@@ -12,8 +12,8 @@ using VirtoCommerce.Platform.Core.Common;
 namespace VirtoCommerce.MarketingModule.Data.Services;
 
 public class DefaultDynamicContentEvaluator(
-    IDynamicContentPublicationSearchService dynamicContentPublicationSearchService,
     IDynamicContentItemService dynamicContentItemService,
+    IDynamicContentPublicationSearchService dynamicContentPublicationSearchService,
     ILogger<DefaultDynamicContentEvaluator> logger)
     : IMarketingDynamicContentEvaluator
 {
@@ -33,6 +33,7 @@ public class DefaultDynamicContentEvaluator(
 
         var criteria = AbstractTypeFactory<DynamicContentPublicationSearchCriteria>.TryCreateInstance();
         criteria = criteria.FromEvalContext(dynamicContext);
+
         var publications = await dynamicContentPublicationSearchService.SearchAsync(criteria);
 
         foreach (var publication in publications.Results)

@@ -71,8 +71,8 @@ public class DefaultDynamicContentEvaluatorTests
             .ReturnsAsync(items);
 
         return new DefaultDynamicContentEvaluator(
-            dynamicContentPublicationSearchServiceMock.Object,
             dynamicContentItemServiceMock.Object,
+            dynamicContentPublicationSearchServiceMock.Object,
             Mock.Of<ILogger<DefaultDynamicContentEvaluator>>());
     }
 

@@ -32,18 +32,15 @@ public class PromotionSearchService(
     }
 
 
-    protected override IQueryable<PromotionEntity> BuildQuery(IRepository repository, PromotionSearchCriteria criteria)
-    {
-        // Temporarily calling the obsolete method that could potentially be overridden in derived classes.
-#pragma warning disable VC0011 // Type or member is obsolete
-        return BuildQuery((IMarketingRepository)repository, criteria);
-#pragma warning restore VC0011 // Type or member is obsolete
-    }
-
     [Obsolete("Use BuildQuery(IRepository repository, PromotionSearchCriteria criteria)", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
     protected virtual IQueryable<PromotionEntity> BuildQuery(IMarketingRepository repository, PromotionSearchCriteria criteria)
     {
-        var query = repository.Promotions;
+        return BuildQuery((IRepository)repository, criteria);
+    }
+
+    protected override IQueryable<PromotionEntity> BuildQuery(IRepository repository, PromotionSearchCriteria criteria)
+    {
+        var query = ((IMarketingRepository)repository).Promotions;
 
         if (!criteria.Store.IsNullOrEmpty())
         {

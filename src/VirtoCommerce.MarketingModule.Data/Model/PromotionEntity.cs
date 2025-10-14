@@ -63,80 +63,81 @@ public class PromotionEntity : AuditableEntity, IHasOuterId, IDataEntity<Promoti
 
     #endregion
 
-    public virtual Promotion ToModel(Promotion promotion)
+    public virtual Promotion ToModel(Promotion model)
     {
-        ArgumentNullException.ThrowIfNull(promotion);
+        ArgumentNullException.ThrowIfNull(model);
 
-        promotion.Id = Id;
-        promotion.CreatedBy = CreatedBy;
-        promotion.CreatedDate = CreatedDate;
-        promotion.ModifiedBy = ModifiedBy;
-        promotion.ModifiedDate = ModifiedDate;
-        promotion.OuterId = OuterId;
+        model.Id = Id;
+        model.CreatedBy = CreatedBy;
+        model.CreatedDate = CreatedDate;
+        model.ModifiedBy = ModifiedBy;
+        model.ModifiedDate = ModifiedDate;
+        model.OuterId = OuterId;
 
-        promotion.StartDate = StartDate;
-        promotion.EndDate = EndDate;
-        promotion.Name = Name;
-        promotion.Description = Description;
-        promotion.IsActive = IsActive;
-        promotion.EndDate = EndDate;
-        promotion.Priority = Priority;
-        promotion.IsExclusive = IsExclusive;
-        promotion.MaxPersonalUsageCount = PerCustomerLimit;
-        promotion.MaxUsageCount = TotalLimit;
-        promotion.MaxPersonalUsageCount = PerCustomerLimit;
-        promotion.HasCoupons = HasCoupons;
+        model.StartDate = StartDate;
+        model.EndDate = EndDate;
+        model.Name = Name;
+        model.Description = Description;
+        model.IsActive = IsActive;
+        model.EndDate = EndDate;
+        model.Priority = Priority;
+        model.IsExclusive = IsExclusive;
+        model.MaxPersonalUsageCount = PerCustomerLimit;
+        model.MaxUsageCount = TotalLimit;
+        model.MaxPersonalUsageCount = PerCustomerLimit;
+        model.HasCoupons = HasCoupons;
 
         if (Stores != null)
         {
-            promotion.StoreIds = Stores.Select(x => x.StoreId).ToList();
+            model.StoreIds = Stores.Select(x => x.StoreId).ToList();
         }
 
-        if (promotion is DynamicPromotion dynamicPromotion)
+        if (model is DynamicPromotion dynamicPromotion)
         {
             dynamicPromotion.IsAllowCombiningWithSelf = IsAllowCombiningWithSelf;
             dynamicPromotion.DynamicExpression = AbstractTypeFactory<PromotionConditionAndRewardTree>.TryCreateInstance();
+
             if (PredicateVisualTreeSerialized != null)
             {
                 dynamicPromotion.DynamicExpression = JsonConvert.DeserializeObject<PromotionConditionAndRewardTree>(PredicateVisualTreeSerialized, new ConditionJsonConverter(), new PolymorphJsonConverter());
             }
         }
 
-        return promotion;
+        return model;
     }
 
-    public virtual PromotionEntity FromModel(Promotion promotion, PrimaryKeyResolvingMap pkMap)
+    public virtual PromotionEntity FromModel(Promotion model, PrimaryKeyResolvingMap pkMap)
     {
-        ArgumentNullException.ThrowIfNull(promotion);
+        ArgumentNullException.ThrowIfNull(model);
 
-        pkMap.AddPair(promotion, this);
+        pkMap.AddPair(model, this);
 
-        Id = promotion.Id;
-        CreatedBy = promotion.CreatedBy;
-        CreatedDate = promotion.CreatedDate;
-        ModifiedBy = promotion.ModifiedBy;
-        ModifiedDate = promotion.ModifiedDate;
-        OuterId = promotion.OuterId;
+        Id = model.Id;
+        CreatedBy = model.CreatedBy;
+        CreatedDate = model.CreatedDate;
+        ModifiedBy = model.ModifiedBy;
+        ModifiedDate = model.ModifiedDate;
+        OuterId = model.OuterId;
 
-        StartDate = promotion.StartDate ?? DateTime.UtcNow;
-        EndDate = promotion.EndDate;
-        Name = promotion.Name;
-        Description = promotion.Description;
-        IsActive = promotion.IsActive;
-        EndDate = promotion.EndDate;
-        Priority = promotion.Priority;
-        IsExclusive = promotion.IsExclusive;
+        StartDate = model.StartDate ?? DateTime.UtcNow;
+        EndDate = model.EndDate;
+        Name = model.Name;
+        Description = model.Description;
+        IsActive = model.IsActive;
+        EndDate = model.EndDate;
+        Priority = model.Priority;
+        IsExclusive = model.IsExclusive;
 
-        PerCustomerLimit = promotion.MaxPersonalUsageCount;
-        TotalLimit = promotion.MaxUsageCount;
-        PerCustomerLimit = promotion.MaxPersonalUsageCount;
+        PerCustomerLimit = model.MaxPersonalUsageCount;
+        TotalLimit = model.MaxUsageCount;
+        PerCustomerLimit = model.MaxPersonalUsageCount;
 
-        if (promotion.StoreIds != null)
+        if (model.StoreIds != null)
         {
-            Stores = new ObservableCollection<PromotionStoreEntity>(promotion.StoreIds.Select(x => new PromotionStoreEntity { StoreId = x, PromotionId = promotion.Id }));
+            Stores = new ObservableCollection<PromotionStoreEntity>(model.StoreIds.Select(x => new PromotionStoreEntity { StoreId = x, PromotionId = model.Id }));
         }
 
-        if (promotion is DynamicPromotion dynamicPromotion)
+        if (model is DynamicPromotion dynamicPromotion)
         {
             IsAllowCombiningWithSelf = dynamicPromotion.IsAllowCombiningWithSelf;
 

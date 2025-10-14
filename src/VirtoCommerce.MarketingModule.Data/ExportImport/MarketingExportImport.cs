@@ -34,7 +34,8 @@ public class MarketingExportImport(
     private const int _batchSize = 50;
 
     public virtual async Task DoExportAsync(
-        Stream outStream, ExportImportOptions options,
+        Stream outputStream,
+        ExportImportOptions options,
         Action<ExportImportProgressInfo> progressCallback,
         ICancellationToken cancellationToken)
     {
@@ -42,8 +43,8 @@ public class MarketingExportImport(
         var progressInfo = new ExportImportProgressInfo { Description = "loading data..." };
         progressCallback(progressInfo);
 
-        await using var sw = new StreamWriter(outStream);
-        await using var writer = new JsonTextWriter(sw);
+        await using var streamWriter = new StreamWriter(outputStream);
+        await using var writer = new JsonTextWriter(streamWriter);
         await writer.WriteStartObjectAsync();
 
         progressInfo.Description = "Promotions exporting...";

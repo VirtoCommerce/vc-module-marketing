@@ -14,10 +14,10 @@ using Xunit;
 
 namespace VirtoCommerce.MarketingModule.Test;
 
+[Obsolete("Replaced with DynamicContentFolderServiceTests", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
 public class DynamicContentServiceUnitTests : DynamicContentServiceTestsBase
 {
     [Fact]
-    [Obsolete("To be removed", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
     public async Task DeleteFoldersAsync_FolderHasChildren_AllRemoved()
     {
         //Arrange

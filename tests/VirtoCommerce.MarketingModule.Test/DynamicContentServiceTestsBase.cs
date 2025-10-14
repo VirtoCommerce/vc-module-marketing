@@ -41,26 +41,10 @@ public abstract class DynamicContentServiceTestsBase
             .Setup(x => x.Remove(It.IsAny<DynamicContentFolderEntity>()))
             .Callback<DynamicContentFolderEntity>(entity =>
             {
-                Remove(folders, [entity.Id]);
-            });
-
-        repositoryMock
-            .Setup(x => x.RemoveFoldersAsync(It.IsAny<DynamicContentFolderEntity[]>()))
-            .Callback<DynamicContentFolderEntity[]>(entities =>
-            {
-
-                Remove(folders, entities.Select(x => x.Id));
+                var folder = folders.FirstOrDefault(x => x.Id.EqualsIgnoreCase(entity.Id));
+                folders.Remove(folder);
             });
 
         return repositoryMock;
-    }
-
-    private static void Remove<TEntity>(List<TEntity> entities, IEnumerable<string> ids)
-        where TEntity : IEntity
-    {
-        foreach (var entity in entities.ToList().Where(x => ids.ContainsIgnoreCase(x.Id)))
-        {
-            entities.Remove(entity);
-        }
     }
 }

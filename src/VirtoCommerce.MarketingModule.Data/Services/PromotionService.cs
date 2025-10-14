@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using VirtoCommerce.MarketingModule.Core.Events;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Services;
-using VirtoCommerce.MarketingModule.Data.Caching;
 using VirtoCommerce.MarketingModule.Data.Model;
 using VirtoCommerce.MarketingModule.Data.Repositories;
+using VirtoCommerce.Platform.Caching;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
@@ -50,7 +50,11 @@ public class PromotionService(
     [Obsolete("Use ClearCache(IList<Promotion> models)", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
     protected virtual void ClearCache(string[] promotionIds)
     {
-        PromotionSearchCacheRegion.ExpireRegion();
-        PromotionCacheRegion.ExpirePromotions(promotionIds);
+        GenericSearchCachingRegion<Promotion>.ExpireRegion();
+
+        foreach (var promotionId in promotionIds)
+        {
+            GenericCachingRegion<Promotion>.ExpireTokenForKey(promotionId);
+        }
     }
 }
