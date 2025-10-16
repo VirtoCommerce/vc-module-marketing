@@ -1,0 +1,423 @@
+{
+  "marketing": {
+    "main-menu-title": "Markkinointi",
+    "widgets": {
+      "couponsWidget": {
+        "title": "Kupongit",
+        "newPromotion": "Voit lisätä kuponkeja kampanjan tallentamisen jälkeen"
+      }
+    },
+    "blades": {
+      "marketing-main": {
+        "title": "Markkinointi",
+        "labels": {
+          "promotions": "Kampanjat",
+          "dynamic-content": "Dynaaminen sisältö"
+        }
+      },
+      "promotion-detail": {
+        "title-new": "Uusi kampanja",
+        "labels": {
+          "is-active": "Aktiivinen",
+          "exclusivity": "Eksklusiivisuus",
+          "is-combine-with-self": "Voidaan lunastaa useammin kuin kerran",
+          "priority": "Prioriteetti",
+          "promotion-name": "Kampanjan nimi",
+          "description": "Kuvaus",
+          "store": "Kaupat",
+          "start-date": "Aloituspäivä",
+          "usage-limit": "Käyttörajoitus",
+          "coupons": "Kupongit",
+          "expiration-date": "Vanhenemispäivä",
+          "per-customer-limit": "Rajoitukset yksittäisille asiakkaille",
+          "promotion-conditions": "Kampanjan ehdot",
+          "combined-with-others": "Voimassa muiden tarjousten kanssa",
+          "exclusive": "Globaalisti eksklusiivinen"
+        },
+        "descr": {
+          "promotion-name": "Anna kampanjallesi yksilöllinen nimi, joka näkyy kampanjalistassa",
+          "store": "Kaupat, joissa tämä kampanja on voimassa",
+          "is-active": "Käytä tätä painiketta kampanjan aktivoimiseen tai deaktivoimiseen",
+          "start-date": "Jos et määritä aloituspäivää, kampanja aktivoituu heti tallennuksen jälkeen",
+          "expiration-date": "Jos et määritä päättymispäivää, kampanja on aktiivinen, kunnes deaktivoit sen",
+          "priority": "Korkeimman prioriteetin kampanja sovelletaan ensin",
+          "exclusivity": "Jos valitset 'Globaalisti eksklusiivinen', asiakkaat eivät voi käyttää muita matalamman prioriteetin kampanjoita tilaukseen",
+          "is-combine-with-self": "Ota tämä vaihtoehto käyttöön, jos tarjouksen lunastamiseen vaaditaan useita kuponkeja"
+        },
+        "placeholders": {
+          "promotion-name": "Kirjoita kampanjan nimi tähän...",
+          "description": "Kirjoita kuvaus tähän...",
+          "store": "Valitse...",
+          "start-date": "Anna päivämäärä...",
+          "coupons": "Syötä kuponkikoodit...",
+          "expiration-date": "Anna päivämäärä..."
+        },
+        "toolbar": {
+          "coupons": "Kupongit"
+        },
+        "cannot-be-saved": "Olet tällä hetkellä rajoitettu kauppojen laajuuteen, ja valittu kampanja on määritetty useille kaupoille. Tämän kampanjan muokkaaminen ei ole sallittua"
+      },
+      "coupon-detail": {
+        "new-title": "Uusi kuponki",
+        "title": "Kuponki",
+        "labels": {
+          "coupon-code": "Koodi",
+          "code-description": "Kuponkikoodi voi sisältää vain aakkosnumeerisia merkkejä",
+          "max-uses-number": "Maksimikäyttömäärä",
+          "max-uses-per-user": "Maksimikäytöt asiakasta kohden",
+          "max-uses-number-description": "Määritä, kuinka monta kertaa tätä kuponkia voidaan käyttää. Jos et halua asettaa rajaa, syötä 0",
+          "max-uses-per-user-description": "Määritä, kuinka monta kertaa yksi käyttäjä voi käyttää tätä kuponkia. Jos et halua asettaa rajaa, syötä 0",
+          "reservation-expiration-date": "Kupongin vanhenemispäivä",
+          "reservation-expiration-date-description": "Jätä tämä kenttä tyhjäksi, jos se on sama kuin kampanjan vanhenemispäivä",
+          "upload-description": "Kuponkidataa sisältävän CSV-tiedoston tulee olla seuraavassa muodossa: [kuponki_koodi][erotin][maksimi_käyttömäärä][erotin][jäsen_id] (poista hakasulkeet). Jos et halua asettaa käyttörajaa, aseta maksimi_käyttömäärä arvoon 0",
+          "enter-value": "Määritä arvo",
+          "select-date": "Anna päivämäärä...",
+          "member": "Asiakas",
+          "coupon-usages": "Kupongin käytöt",
+          "coupon-info": "Tiedot"
+        },
+        "placeholders": {
+          "member": "Valitse asiakas tai organisaatio..."
+        }
+      },
+      "promotion-list": {
+        "labels": {
+          "name": "Nimi",
+          "isActive": "Aktiivinen",
+          "last-modified": "Viimeksi muokattu"
+        },
+        "new-filter": "Lisää uusi suodatin",
+        "placeholders": {
+          "select-filter": "Valitse suodatin"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Muokkaa suodatinta",
+        "new-title": "Uusi suodatin",
+        "new-subtitle": "Luo uusi suodatin",
+        "unnamed-filter": "Nimetön suodatin",
+        "labels": {
+          "name": "Suodattimen nimi",
+          "name_": "Nimeä tämä suodatin",
+          "active": "Vain aktiiviset"
+        },
+        "placeholders": {
+          "all": "Määrittelemätön"
+        }
+      },
+      "catalog-items-select": {
+        "title-product": "Valitse tuote kampanjaehdolle",
+        "title-category": "Valitse kategoria kampanjaehdolle"
+      },
+      "catalog-entries": {
+        "title-product": "Valitut kohteet"
+      },
+      "dynamicContent-list": {
+        "menu": {
+          "items": {
+            "title": "Sisältökohteet",
+            "description": "Hallinnoi dynaamisia sisältökohteita"
+          },
+          "placeholders": {
+            "title": "Sisältöpaikanvaraajat",
+            "description": "Hallinnoi paikanvaraajia, jotka sisältävät sisältökohteita"
+          },
+          "publishing": {
+            "title": "Julkaistu sisältö",
+            "description": "Aseta ehdot sisällön näyttämiselle"
+          }
+        }
+      },
+      "items": {
+        "add": {
+          "title": "Uusi sisältökohde",
+          "subtitle": "Lisää uusi sisältökohde",
+          "menu": {
+            "folder": {
+              "title": "Sisältökohteiden kansio",
+              "description": "Luo kansio sisältökohteiden säilyttämiseen"
+            },
+            "item": {
+              "title": "Sisältökohde",
+              "description": "Luo sisältökohde"
+            }
+          }
+        },
+        "content-item-details": {
+          "title": "Muokkaa sisältökohdetta",
+          "subtitle": "Muokkaa sisältökohdettasi",
+          "title-new": "Uusi sisältökohde",
+          "subtitle-new": "Lisää uusi sisältökohde",
+          "labels": {
+            "content-item-name": "Sisältökohteen nimi",
+            "content-item-description": "Sisältökohteen kuvaus",
+            "none": "Ei mitään"
+          },
+          "placeholders": {
+            "content-item-name": "Syötä sisältökohteen nimi",
+            "content-item-description": "Syötä sisältökohteen kuvaus"
+          }
+        },
+        "folder-details": {
+          "title": "Muokkaa sisältökohteiden kansiota",
+          "subtitle": "Muokkaa sisältökohteiden kansiotasi",
+          "title-new": "Uusi sisältökohteiden kansio",
+          "subtitle-new": "Lisää uusi sisältökansio",
+          "labels": {
+            "folder-name": "Kansion nimi",
+            "folder-description": "Kansion kuvaus"
+          },
+          "placeholders": {
+            "folder-name": "Syötä kansion nimi",
+            "folder-description": "Syötä kansion kuvaus"
+          }
+        },
+        "list": {
+          "title": "Sisältökohteet",
+          "subtitle": "Sisältökohteiden luettelo",
+          "bread-crumb-top": "Kaikki kohteet",
+          "labels": {
+            "picture": "Kuva",
+            "name": "Nimi",
+            "description": "Kuvaus",
+            "no-data": "Ei dataa"
+          },
+          "noItemsMessage": "Sinulla ei ole vielä sisältökohteita"
+        }
+      },
+      "placeholders": {
+        "add": {
+          "title": "Uusi paikanvaraaja",
+          "subtitle": "Lisää uusi paikanvaraaja",
+          "menu": {
+            "folder": {
+              "title": "Paikanvaraajakansio",
+              "description": "Luo kansio paikanvaraajien säilyttämiseen"
+            },
+            "item": {
+              "title": "Paikanvaraaja",
+              "description": "Luo kansio sisältökohteiden säilyttämiseen"
+            }
+          }
+        },
+        "placeholder-details": {
+          "title": "Uusi paikanvaraaja",
+          "subtitle": "Lisää uusi paikanvaraaja",
+          "title-new": "Muokkaa paikanvaraajaa",
+          "subtitle-new": "Muokkaa paikanvaraajaasi",
+          "labels": {
+            "placeholder-name": "Paikanvaraajan nimi",
+            "placeholder-description": "Paikanvaraajan kuvaus",
+            "placeholder-image-description": "Paikanvaraajakuvan kuvaus",
+            "image-note": "Raahaa ja pudota kuvasi tähän",
+            "progress": "Edistyminen"
+          },
+          "placeholders": {
+            "placeholder-name": "Määritä paikanvaraajan nimi",
+            "placeholder-description": "Määritä paikanvaraajan kuvaus"
+          }
+        },
+        "folder-details": {
+          "title": "Muokkaa paikanvaraajakansiota",
+          "subtitle": "Muokkaa paikanvaraajakansiotasi",
+          "title-new": "Uusi paikanvaraajakansio",
+          "subtitle-new": "Lisää uusi paikanvaraajakansio",
+          "labels": {
+            "folder-name": "Kansion nimi",
+            "folder-description": "Kansion kuvaus"
+          },
+          "placeholders": {
+            "folder-name": "Määritä kansion nimi",
+            "folder-description": "Määritä kansion kuvaus"
+          }
+        },
+        "list": {
+          "title": "Sisältöpaikanvaraajat",
+          "subtitle": "Luettelo sisältöpaikanvaraajistasi",
+          "bread-crumb-top": "Kaikki paikanvaraajat",
+          "labels": {
+            "picture": "Kuva",
+            "name": "Nimi",
+            "description": "Kuvaus",
+            "no-data": "Ei dataa"
+          }
+        }
+      },
+      "publishing": {
+        "add-content-items": {
+          "title": "Lisää sisältökohteita",
+          "subtitle": "Valitse lisättävät sisältökohteet",
+          "bread-crumb-top": "Kaikki kohteet",
+          "labels": {
+            "chosen-content-items": "Valitut sisältökohteet",
+            "content-items": "Sisältökohteet",
+            "picture": "Kuva",
+            "name": "Nimi",
+            "description": "Kuvaus",
+            "no-data": "Ei dataa"
+          }
+        },
+        "add-placeholders": {
+          "title": "Lisää paikanvaraajia",
+          "subtitle": "Valitse lisättävät paikanvaraajat",
+          "bread-crumb-top": "Kaikki paikanvaraajat",
+          "labels": {
+            "chosen-placeholders": "Valitut paikanvaraajat",
+            "content-placeholders": "Sisältöpaikanvaraajat",
+            "picture": "Kuva",
+            "name": "Nimi",
+            "description": "Kuvaus",
+            "no-data": "Ei dataa"
+          }
+        },
+        "publishing-main-step": {
+          "title": "Muokkaa julkaistua sisältöelementtiä",
+          "subtitle": "Muokkaa julkaistua sisältöelementtiäsi",
+          "title-new": "Uusi julkaistu sisältöelementti",
+          "subtitle-new": "Lisää uusi julkaistu sisältöelementti",
+          "labels": {
+            "name": "Nimi",
+            "description": "Kuvaus",
+            "store": "Kauppa",
+            "is-active": "Aktiivinen",
+            "start-date": "Aloituspäivä",
+            "end-date": "Päättymispäivä",
+            "publishing-conditions": "Julkaisuehdot"
+          },
+          "placeholders": {
+            "name": "Määritä julkaistun sisältöelementin nimi",
+            "description": "Määritä julkaistun sisältöelementin kuvaus",
+            "store": "Valitse...",
+            "start-date": "Määritä arvo",
+            "end-date": "Määritä arvo"
+          },
+          "menu": {
+            "placeholders": {
+              "title": "Paikanvaraaja",
+              "description": "{{quantity}} paikanvaraaja(a) valittu"
+            },
+            "content-items": {
+              "title": "Sisältökohteet",
+              "description": "{{quantity}} sisältökohde(tta) valittu"
+            }
+          }
+        },
+        "list": {
+          "title": "Julkaistu sisältö",
+          "subtitle": "Luettelo julkaistuista sisältöelementeistäsi",
+          "noItemsMessage": "Sinulla ei ole vielä julkaistua sisältöä",
+          "labels": {
+            "picture": "Kuvake",
+            "name": "Nimi",
+            "description": "Kuvaus",
+            "no-data": "Ei julkaistua sisältöä"
+          }
+        }
+      },
+      "coupons": {
+        "code": "Koodi",
+        "total-uses-count": "Kokonaiskäyttömäärä",
+        "max-uses-number": "Maksimikäyttömäärä",
+        "max-uses-per-user": "Maksimikäytöt asiakasta kohden",
+        "toolbar": {
+          "add": "Lisää",
+          "import": "Tuo",
+          "refresh": "Päivitä",
+          "delete": "Poista",
+          "delete-all": "Poista kaikki"
+        },
+        "no-coupons-message": "Sinulla ei ole vielä kuponkeja"
+      },
+      "coupons-import": {
+        "title": "Tuo kuponkeja",
+        "labels": {
+          "delimiter": "CSV-sarakkeiden erotin",
+          "upload": "Lataa CSV-tiedosto",
+          "upload-progress": "Latauksen edistyminen",
+          "space": "Välilyönti",
+          "comma": "Pilkku",
+          "semicolon": "Puolipiste",
+          "start": "Aloita",
+          "end": "Lopeta",
+          "total": "Kokonaismäärä",
+          "processed": "Käsitelty määrä",
+          "errors-count": "Virheiden määrä",
+          "errors": "Virheet",
+          "tab": "Tabulaattori"
+        },
+        "placeholders": {
+          "delimiter": "Valitse..."
+        }
+      },
+      "coupons-import-processing": {
+        "title": "Tuodaan kuponkeja"
+      }
+    },
+    "dialogs": {
+      "content-item-delete": {
+        "title": "Vahvista poisto",
+        "message": "Oletko varma, että haluat poistaa tämän sisältökohteen?"
+      },
+      "placeholders-folder-delete": {
+        "title": "Vahvista poisto",
+        "message": "Oletko varma, että haluat poistaa tämän sisältöpaikanvaraajakansion?"
+      },
+      "content-item-folder-delete": {
+        "title": "Vahvista poisto",
+        "message": "Oletko varma, että haluat poistaa tämän sisältökohteiden kansion?"
+      },
+      "content-folder-delete": {
+        "title": "Vahvista poisto",
+        "message": "Oletko varma, että haluat poistaa tämän kansion?"
+      },
+      "publication-delete": {
+        "title": "Vahvista poisto",
+        "message": "Oletko varma, että haluat poistaa tämän julkaisun?"
+      },
+      "content-placeholder-delete": {
+        "title": "Vahvista poisto",
+        "message": "Oletko varma, että haluat poistaa tämän sisältöpaikanvaraajan?"
+      },
+      "promotions-delete": {
+        "title": "Vahvista poisto",
+        "message": "Oletko varma, että haluat poistaa valitut kampanjat?"
+      },
+      "promotion-save": {
+        "title": "Tallenna muutokset",
+        "message": "Kampanjaa on muokattu. Haluatko tallentaa muutokset?"
+      },
+      "coupon-delete": {
+        "title": "Vahvista poisto",
+        "message": "Oletko varma, että haluat poistaa valitut kupongit?",
+        "message-all": "Oletko varma, että haluat poistaa kaikki kupongit?"
+      }
+    },
+    "commands": {
+      "manage-type-properties": "Hallinnoi ominaisuustyyppejä",
+      "edit-folder": "Muokkaa kansiota",
+      "start-import": "Aloita tuonti"
+    }
+  },
+  "permissions": {
+    "marketing:read": "Näytä markkinointitiedot",
+    "marketing:create": "Luo markkinointitiedot",
+    "marketing:update": "Päivitä markkinointitiedot",
+    "marketing:delete": "Poista markkinointitiedot",
+    "marketing:access": "Avaa markkinointivalikko"
+  },
+  "settings": {
+    "Marketing.Promotion.CombinePolicy": {
+      "description": "Paras palkinto: Valitse kampanjapalkinnot, jotka vetoavat eniten ostajiin. Useat tarjoukset voimassa: Jos kaupassasi on useita aktiivisia kampanjoita, ostajat voivat saada useita kampanjoita samanaikaisesti",
+      "title": "Valittu käytäntö useiden aktiivisten kampanjoiden käyttöön"
+    },
+    "Marketing.ExportImport.Description": {
+      "description": "Vie ja tuo kampanjoita sekä dynaamista sisältöä (paikat, sisältö, julkaisut)",
+      "title": "Vienti/tuonti kuvaus"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Marketing": {
+      "description": "Vie ja tuo kampanjoita sekä dynaamista sisältöä (paikat, sisältö, julkaisut)"
+    }
+  }
+}
