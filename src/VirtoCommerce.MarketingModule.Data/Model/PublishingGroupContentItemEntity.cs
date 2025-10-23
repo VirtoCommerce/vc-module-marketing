@@ -1,60 +1,56 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using VirtoCommerce.MarketingModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
 
-namespace VirtoCommerce.MarketingModule.Data.Model
+namespace VirtoCommerce.MarketingModule.Data.Model;
+
+public class PublishingGroupContentItemEntity : AuditableEntity
 {
-    public class PublishingGroupContentItemEntity : AuditableEntity
+    public int Priority { get; set; }
+
+    #region Navigation Properties
+
+    [StringLength(128)]
+    public string DynamicContentPublishingGroupId { get; set; }
+    public virtual DynamicContentPublishingGroupEntity PublishingGroup { get; set; }
+
+    [StringLength(128)]
+    public string DynamicContentItemId { get; set; }
+    public virtual DynamicContentItemEntity ContentItem { get; set; }
+
+    #endregion
+
+    public virtual DynamicContentItem ToModel(DynamicContentItem model)
     {
-        public int Priority { get; set; }
+        ArgumentNullException.ThrowIfNull(model);
 
-        #region Navigation Properties
-
-        public string DynamicContentPublishingGroupId { get; set; }
-        public virtual DynamicContentPublishingGroupEntity PublishingGroup { get; set; }
-
-        public string DynamicContentItemId { get; set; }
-        public virtual DynamicContentItemEntity ContentItem { get; set; }
-
-        #endregion
-
-        public virtual DynamicContentItem ToModel(DynamicContentItem contentItem)
+        if (ContentItem != null)
         {
-            if (contentItem == null)
-            {
-                throw new ArgumentNullException(nameof(contentItem));
-            }
-
-            ContentItem.ToModel(contentItem);
-
-            contentItem.Priority = Priority;
-
-            return contentItem;
+            ContentItem.ToModel(model);
         }
 
-        public virtual PublishingGroupContentItemEntity FromModel(DynamicContentItem contentItem, PrimaryKeyResolvingMap pkMap)
-        {
-            if (contentItem == null)
-            {
-                throw new ArgumentNullException(nameof(contentItem));
-            }
+        model.Priority = Priority;
 
-            pkMap.AddPair(contentItem, this);
+        return model;
+    }
 
-            DynamicContentItemId = contentItem.Id;
-            Priority = contentItem.Priority;
+    public virtual PublishingGroupContentItemEntity FromModel(DynamicContentItem model, PrimaryKeyResolvingMap pkMap)
+    {
+        ArgumentNullException.ThrowIfNull(model);
 
-            return this;
-        }
+        pkMap.AddPair(model, this);
 
-        public virtual void Patch(PublishingGroupContentItemEntity target)
-        {
-            if (target == null)
-            {
-                throw new ArgumentNullException(nameof(target));
-            }
+        DynamicContentItemId = model.Id;
+        Priority = model.Priority;
 
-            target.Priority = Priority;
-        }
+        return this;
+    }
+
+    public virtual void Patch(PublishingGroupContentItemEntity target)
+    {
+        ArgumentNullException.ThrowIfNull(target);
+
+        target.Priority = Priority;
     }
 }

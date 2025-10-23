@@ -3,97 +3,95 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Domain;
 
-namespace VirtoCommerce.MarketingModule.Data.Model
+namespace VirtoCommerce.MarketingModule.Data.Model;
+
+public class CouponEntity : AuditableEntity, IHasOuterId, IDataEntity<CouponEntity, Coupon>
 {
-    public class CouponEntity : AuditableEntity, IHasOuterId
+    [Required]
+    [StringLength(64)]
+    public string Code { get; set; }
+
+    public int MaxUsesNumber { get; set; }
+
+    public int MaxUsesPerUser { get; set; }
+
+    public DateTime? ExpirationDate { get; set; }
+
+    [NotMapped]
+    public long TotalUsesCount { get; set; }
+
+    [StringLength(128)]
+    public string OuterId { get; set; }
+
+    [StringLength(128)]
+    public string MemberId { get; set; }
+
+    #region Navigation Properties
+
+    [StringLength(128)]
+    public string PromotionId { get; set; }
+    public virtual PromotionEntity Promotion { get; set; }
+
+    #endregion
+
+    public virtual Coupon ToModel(Coupon model)
     {
-        [Required]
-        [StringLength(64)]
-        public string Code { get; set; }
+        ArgumentNullException.ThrowIfNull(model);
 
-        public int MaxUsesNumber { get; set; }
+        model.Code = Code;
+        model.CreatedBy = CreatedBy;
+        model.CreatedDate = CreatedDate;
+        model.ModifiedBy = ModifiedBy;
+        model.ModifiedDate = ModifiedDate;
+        model.OuterId = OuterId;
 
-        public int MaxUsesPerUser { get; set; }
+        model.ExpirationDate = ExpirationDate;
+        model.Id = Id;
+        model.MaxUsesNumber = MaxUsesNumber;
+        model.MaxUsesNumber = MaxUsesNumber;
+        model.PromotionId = PromotionId;
+        model.TotalUsesCount = TotalUsesCount;
+        model.MaxUsesPerUser = MaxUsesPerUser;
+        model.MemberId = MemberId;
 
-        public DateTime? ExpirationDate { get; set; }
+        return model;
+    }
 
-        [NotMapped]
-        public long TotalUsesCount { get; set; }
+    public virtual CouponEntity FromModel(Coupon model, PrimaryKeyResolvingMap pkMap)
+    {
+        ArgumentNullException.ThrowIfNull(model);
 
-        [StringLength(128)]
-        public string OuterId { get; set; }
+        pkMap.AddPair(model, this);
 
-        [StringLength(128)]
-        public string MemberId { get; set; }
+        Code = model.Code;
+        CreatedBy = model.CreatedBy;
+        CreatedDate = model.CreatedDate;
+        ModifiedBy = model.ModifiedBy;
+        ModifiedDate = model.ModifiedDate;
+        OuterId = model.OuterId;
 
-        #region Navigation Properties
+        ExpirationDate = model.ExpirationDate;
+        Id = model.Id;
+        MaxUsesNumber = model.MaxUsesNumber;
+        MaxUsesPerUser = model.MaxUsesPerUser;
+        MaxUsesNumber = model.MaxUsesNumber;
+        PromotionId = model.PromotionId;
+        TotalUsesCount = model.TotalUsesCount;
+        MemberId = model.MemberId;
 
-        public string PromotionId { get; set; }
-        public virtual PromotionEntity Promotion { get; set; }
+        return this;
+    }
 
-        #endregion
+    public virtual void Patch(CouponEntity target)
+    {
+        ArgumentNullException.ThrowIfNull(target);
 
-        public virtual Coupon ToModel(Coupon coupon)
-        {
-            if (coupon == null)
-                throw new ArgumentNullException(nameof(coupon));
-
-            coupon.Code = Code;
-            coupon.CreatedBy = CreatedBy;
-            coupon.CreatedDate = CreatedDate;
-            coupon.ModifiedBy = ModifiedBy;
-            coupon.ModifiedDate = ModifiedDate;
-            coupon.OuterId = OuterId;
-
-            coupon.ExpirationDate = ExpirationDate;
-            coupon.Id = Id;
-            coupon.MaxUsesNumber = MaxUsesNumber;
-            coupon.MaxUsesNumber = MaxUsesNumber;
-            coupon.PromotionId = PromotionId;
-            coupon.TotalUsesCount = TotalUsesCount;
-            coupon.MaxUsesPerUser = MaxUsesPerUser;
-            coupon.MemberId = MemberId;
-
-            return coupon;
-        }
-
-        public virtual CouponEntity FromModel(Coupon coupon, PrimaryKeyResolvingMap pkMap)
-        {
-            if (coupon == null)
-                throw new ArgumentNullException(nameof(coupon));
-
-            pkMap.AddPair(coupon, this);
-
-            Code = coupon.Code;
-            CreatedBy = coupon.CreatedBy;
-            CreatedDate = coupon.CreatedDate;
-            ModifiedBy = coupon.ModifiedBy;
-            ModifiedDate = coupon.ModifiedDate;
-            OuterId = coupon.OuterId;
-
-            ExpirationDate = coupon.ExpirationDate;
-            Id = coupon.Id;
-            MaxUsesNumber = coupon.MaxUsesNumber;
-            MaxUsesPerUser = coupon.MaxUsesPerUser;
-            MaxUsesNumber = coupon.MaxUsesNumber;
-            PromotionId = coupon.PromotionId;
-            TotalUsesCount = coupon.TotalUsesCount;
-            MemberId = coupon.MemberId;
-
-            return this;
-        }
-
-        public virtual void Patch(CouponEntity target)
-        {
-            if (target == null)
-                throw new ArgumentNullException(nameof(target));
-
-            target.Code = Code;
-            target.ExpirationDate = ExpirationDate;
-            target.MaxUsesNumber = MaxUsesNumber;
-            target.MaxUsesPerUser = MaxUsesPerUser;
-            target.MemberId = MemberId;
-        }
+        target.Code = Code;
+        target.ExpirationDate = ExpirationDate;
+        target.MaxUsesNumber = MaxUsesNumber;
+        target.MaxUsesPerUser = MaxUsesPerUser;
+        target.MemberId = MemberId;
     }
 }

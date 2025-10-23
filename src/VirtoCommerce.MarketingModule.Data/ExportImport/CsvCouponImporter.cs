@@ -2,68 +2,62 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using CsvHelper;
 using CsvHelper.Configuration;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Services;
+using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
 
-namespace VirtoCommerce.MarketingModule.Web.ExportImport
+namespace VirtoCommerce.MarketingModule.Web.ExportImport;
+
+public sealed class CsvCouponImporter(ICouponService couponService)
 {
-    public sealed class CsvCouponImporter
+    private const int _chunkSize = 500;
+
+    public async Task DoImportAsync(Stream inputStream, string delimiter, string promotionId, DateTime? expirationDate, Action<ExportImportProgressInfo> progressCallback)
     {
-        public CsvCouponImporter(ICouponService couponService)
+        var coupons = new List<Coupon>();
+
+        var progressInfo = new ExportImportProgressInfo
         {
-            _couponService = couponService;
+            Description = "Reading coupons from CSV...",
+        };
+        progressCallback(progressInfo);
+
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            Delimiter = delimiter,
+            HasHeaderRecord = false,
+        };
+
+        using (var reader = new CsvReader(new StreamReader(inputStream), config))
+        {
+            while (await reader.ReadAsync())
+            {
+                var coupon = AbstractTypeFactory<Coupon>.TryCreateInstance();
+                coupon.Code = reader.GetField<string>(0);
+                coupon.MaxUsesNumber = reader.GetField<int>(1);
+                coupon.MemberId = reader.GetField<string>(2);
+                coupon.PromotionId = promotionId;
+                coupon.ExpirationDate = expirationDate;
+
+                coupons.Add(coupon);
+            }
         }
 
-        private readonly ICouponService _couponService;
-        private const int ChunkSize = 500;
+        var importedCount = 0;
 
-        public async Task DoImportAsync(Stream inputStream, string delimiter, string promotionId, DateTime? expirationDate, Action<ExportImportProgressInfo> progressCallback)
+        foreach (var chunk in coupons.Paginate(_chunkSize))
         {
-            var coupons = new List<Coupon>();
-
-            var progressInfo = new ExportImportProgressInfo
-            {
-                Description = "Reading coupons from CSV..."
-            };
+            importedCount += chunk.Count;
+            progressInfo.Description = $"Importing {importedCount} of {coupons.Count} coupons...";
             progressCallback(progressInfo);
-
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-            {
-                Delimiter = delimiter,
-                HasHeaderRecord = false
-            };
-
-            using (var reader = new CsvReader(new StreamReader(inputStream), config))
-            {
-                while (reader.Read())
-                {
-                    coupons.Add(new Coupon
-                    {
-                        Code = reader.GetField<string>(0),
-                        MaxUsesNumber = reader.GetField<int>(1),
-                        MemberId = reader.GetField<string>(2),
-                        PromotionId = promotionId,
-                        ExpirationDate = expirationDate,
-                    });
-                }
-            }
-
-            var chunksCount = (int)Math.Ceiling((double)coupons.Count / ChunkSize);
-            for (var i = 0; i < chunksCount; i++)
-            {
-                progressInfo.Description = string.Format("Importing {0} of {1} coupons...", (i + 1) * ChunkSize, coupons.Count);
-                progressCallback(progressInfo);
-                var chunk = coupons.Skip(i * ChunkSize).Take(ChunkSize);
-                await _couponService.SaveCouponsAsync(chunk.ToArray());
-            }
-            progressInfo.Description = "Coupons import is finished.";
-            progressCallback(progressInfo);
-
+            await couponService.SaveChangesAsync(chunk);
         }
+
+        progressInfo.Description = "Coupons import is finished.";
+        progressCallback(progressInfo);
     }
 }

@@ -4,118 +4,123 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using VirtoCommerce.MarketingModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Domain;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 
-namespace VirtoCommerce.MarketingModule.Data.Model
+namespace VirtoCommerce.MarketingModule.Data.Model;
+
+public class DynamicContentItemEntity : AuditableEntity, IDataEntity<DynamicContentItemEntity, DynamicContentItem>
 {
-    public class DynamicContentItemEntity : AuditableEntity
+    [Required]
+    [StringLength(128)]
+    public string Name { get; set; }
+
+    [StringLength(256)]
+    public string Description { get; set; }
+
+    /// <summary>
+    /// available values in DynamicContentType enum
+    /// </summary>
+    [StringLength(64)]
+    public string ContentTypeId { get; set; }
+
+    public bool IsMultilingual { get; set; }
+
+    [StringLength(2048)]
+    public string ImageUrl { get; set; }
+
+    #region Navigation Properties
+
+    [StringLength(128)]
+    public string FolderId { get; set; }
+    public virtual DynamicContentFolderEntity Folder { get; set; }
+
+    public ObservableCollection<DynamicContentItemDynamicPropertyObjectValueEntity> DynamicPropertyObjectValues { get; set; }
+        = new NullCollection<DynamicContentItemDynamicPropertyObjectValueEntity>();
+
+    #endregion
+
+    public virtual DynamicContentItem ToModel(DynamicContentItem model)
     {
-        [Required]
-        [StringLength(128)]
-        public string Name { get; set; }
+        ArgumentNullException.ThrowIfNull(model);
 
-        [StringLength(256)]
-        public string Description { get; set; }
+        model.Id = Id;
+        model.CreatedBy = CreatedBy;
+        model.CreatedDate = CreatedDate;
+        model.ModifiedBy = ModifiedBy;
+        model.ModifiedDate = ModifiedDate;
 
-        /// <summary>
-        /// available values in DynamicContentType enum
-        /// </summary>
-        [StringLength(64)]
-        public string ContentTypeId { get; set; }
+        model.Name = Name;
+        model.FolderId = FolderId;
+        model.ImageUrl = ImageUrl;
+        model.ContentType = ContentTypeId;
+        model.Description = Description;
 
-        public bool IsMultilingual { get; set; }
-
-        [StringLength(2048)]
-        public string ImageUrl { get; set; }
-
-        #region Navigation Properties
-
-        public string FolderId { get; set; }
-        public virtual DynamicContentFolderEntity Folder { get; set; }
-
-        public ObservableCollection<DynamicContentItemDynamicPropertyObjectValueEntity> DynamicPropertyObjectValues { get; set; }
-            = new NullCollection<DynamicContentItemDynamicPropertyObjectValueEntity>();
-
-        #endregion
-
-        public virtual DynamicContentItem ToModel(DynamicContentItem item)
+        if (Folder != null)
         {
-            if (item == null)
-                throw new ArgumentNullException(nameof(item));
+            model.Folder = Folder.ToModel(AbstractTypeFactory<DynamicContentFolder>.TryCreateInstance());
+        }
 
-            item.Id = Id;
-            item.CreatedBy = CreatedBy;
-            item.CreatedDate = CreatedDate;
-            item.ModifiedBy = ModifiedBy;
-            item.ModifiedDate = ModifiedDate;
-
-            item.Name = Name;
-            item.FolderId = FolderId;
-            item.ImageUrl = ImageUrl;
-            item.ContentType = ContentTypeId;
-            item.Description = Description;
-
-            if (Folder != null)
-            {
-                item.Folder = Folder.ToModel(AbstractTypeFactory<DynamicContentFolder>.TryCreateInstance());               
-            }
-
-            item.DynamicProperties = DynamicPropertyObjectValues.GroupBy(g => g.PropertyId).Select(x =>
+        model.DynamicProperties = DynamicPropertyObjectValues
+            .GroupBy(x => x.PropertyId)
+            .Select(g =>
             {
                 var property = AbstractTypeFactory<DynamicObjectProperty>.TryCreateInstance();
-                property.Id = x.Key;
-                property.Name = x.FirstOrDefault()?.PropertyName;
-                property.Values = x.Select(v => v.ToModel(AbstractTypeFactory<DynamicPropertyObjectValue>.TryCreateInstance())).ToArray();
+                property.Id = g.Key;
+                property.Name = g.First().PropertyName;
+                property.Values = g.Select(x => x.ToModel(AbstractTypeFactory<DynamicPropertyObjectValue>.TryCreateInstance())).ToArray();
                 return property;
-            }).ToArray();
+            })
+            .ToArray();
 
-            return item;
+        return model;
+    }
+
+    public virtual DynamicContentItemEntity FromModel(DynamicContentItem model, PrimaryKeyResolvingMap pkMap)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        pkMap.AddPair(model, this);
+
+        Id = model.Id;
+        CreatedBy = model.CreatedBy;
+        CreatedDate = model.CreatedDate;
+        ModifiedBy = model.ModifiedBy;
+        ModifiedDate = model.ModifiedDate;
+
+        Name = model.Name;
+        FolderId = model.FolderId;
+        ImageUrl = model.ImageUrl;
+        ContentTypeId = model.ContentType;
+        Description = model.Description;
+
+        if (model.DynamicProperties != null)
+        {
+            ContentTypeId = model.GetDynamicPropertyValue<string>("Content type", null);
+
+            DynamicPropertyObjectValues = new ObservableCollection<DynamicContentItemDynamicPropertyObjectValueEntity>(
+                model.DynamicProperties
+                    .SelectMany(p => p.Values
+                        .Select(v => AbstractTypeFactory<DynamicContentItemDynamicPropertyObjectValueEntity>.TryCreateInstance().FromModel(v, model, p)))
+                    .OfType<DynamicContentItemDynamicPropertyObjectValueEntity>());
         }
 
-        public virtual DynamicContentItemEntity FromModel(DynamicContentItem item, PrimaryKeyResolvingMap pkMap)
+        return this;
+    }
+
+    public virtual void Patch(DynamicContentItemEntity target)
+    {
+        ArgumentNullException.ThrowIfNull(target);
+
+        target.Name = Name;
+        target.Description = Description;
+        target.FolderId = FolderId;
+        target.ContentTypeId = ContentTypeId;
+        target.ImageUrl = ImageUrl;
+
+        if (!DynamicPropertyObjectValues.IsNullCollection())
         {
-            if (item == null)
-                throw new ArgumentNullException(nameof(item));
-
-            pkMap.AddPair(item, this);
-
-            Id = item.Id;
-            CreatedBy = item.CreatedBy;
-            CreatedDate = item.CreatedDate;
-            ModifiedBy = item.ModifiedBy;
-            ModifiedDate = item.ModifiedDate;
-
-            Name = item.Name;
-            FolderId = item.FolderId;
-            ImageUrl = item.ImageUrl;
-            ContentTypeId = item.ContentType;
-            Description = item.Description;
-
-            if (item.DynamicProperties != null)
-            {
-                ContentTypeId = item.GetDynamicPropertyValue<string>("Content type", null);
-                DynamicPropertyObjectValues = new ObservableCollection<DynamicContentItemDynamicPropertyObjectValueEntity>(item.DynamicProperties.SelectMany(p => p.Values
-                    .Select(v => AbstractTypeFactory<DynamicContentItemDynamicPropertyObjectValueEntity>.TryCreateInstance().FromModel(v, item, p))).OfType<DynamicContentItemDynamicPropertyObjectValueEntity>());
-            }
-
-            return this;
-        }
-
-        public virtual void Patch(DynamicContentItemEntity target)
-        {
-            if (target == null)
-                throw new ArgumentNullException(nameof(target));
-
-            target.Name = Name;
-            target.Description = Description;
-            target.FolderId = FolderId;
-            target.ContentTypeId = ContentTypeId;
-            target.ImageUrl = ImageUrl;
-
-            if (!DynamicPropertyObjectValues.IsNullCollection())
-            {
-                DynamicPropertyObjectValues.Patch(target.DynamicPropertyObjectValues, (sourceDynamicPropertyObjectValues, targetDynamicPropertyObjectValues) => sourceDynamicPropertyObjectValues.Patch(targetDynamicPropertyObjectValues));
-            }
+            DynamicPropertyObjectValues.Patch(target.DynamicPropertyObjectValues, (sourceValues, targetValues) => sourceValues.Patch(targetValues));
         }
     }
 }

@@ -10,7 +10,7 @@
     <ProjectReference Include="..\..\src\VirtoCommerce.MarketingModule.Core\VirtoCommerce.MarketingModule.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="pctx_mock.json">
+    <None Update="promotion_evaluation_context_mock.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

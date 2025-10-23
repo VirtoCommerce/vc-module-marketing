@@ -1,0 +1,596 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "Host": {
+      "type": "string",
+      "enum": [
+        "AppVeyor",
+        "AzurePipelines",
+        "Bamboo",
+        "Bitbucket",
+        "Bitrise",
+        "GitHubActions",
+        "GitLab",
+        "Jenkins",
+        "Rider",
+        "SpaceAutomation",
+        "TeamCity",
+        "Terminal",
+        "TravisCI",
+        "VisualStudio",
+        "VSCode"
+      ]
+    },
+    "ExecutableTarget": {
+      "type": "string",
+      "enum": [
+        "Backup",
+        "BuildAndPush",
+        "BuildCustomApp",
+        "BuildImage",
+        "ChangeVersion",
+        "Clean",
+        "ClearTemp",
+        "CloudAuth",
+        "CloudDeploy",
+        "CloudDown",
+        "CloudDownloadManifest",
+        "CloudEnvList",
+        "CloudEnvLogs",
+        "CloudEnvRestart",
+        "CloudEnvSetParameter",
+        "CloudEnvStatus",
+        "CloudEnvUpdate",
+        "CloudInit",
+        "CloudUp",
+        "Compile",
+        "CompleteHotfix",
+        "CompleteRelease",
+        "Compress",
+        "CompressWithCustomApp",
+        "Configure",
+        "DockerLogin",
+        "GetManifestGit",
+        "GrabMigrator",
+        "IncrementMinor",
+        "IncrementPatch",
+        "Init",
+        "InitPlatform",
+        "Install",
+        "InstallModules",
+        "InstallPlatform",
+        "LatestBlobs",
+        "MassPullAndBuild",
+        "MatchVersions",
+        "Pack",
+        "PrepareDockerContext",
+        "Publish",
+        "PublishManifestGit",
+        "PublishModuleManifest",
+        "PublishPackages",
+        "PushImage",
+        "QuickHotfix",
+        "QuickRelease",
+        "Release",
+        "RemoveBackup",
+        "Restore",
+        "Rollback",
+        "ShowDiff",
+        "SonarQubeEnd",
+        "SonarQubeStart",
+        "StartAnalyzer",
+        "StartHotfix",
+        "StartRelease",
+        "SwaggerValidation",
+        "Test",
+        "Uninstall",
+        "Update",
+        "UpdateManifest",
+        "UploadBlob",
+        "ValidateDependencies",
+        "ValidateManifest",
+        "ValidateSwaggerSchema",
+        "WebPackBuild"
+      ]
+    },
+    "Verbosity": {
+      "type": "string",
+      "description": "",
+      "enum": [
+        "Verbose",
+        "Normal",
+        "Minimal",
+        "Quiet"
+      ]
+    },
+    "NukeBuild": {
+      "properties": {
+        "Continue": {
+          "type": "boolean",
+          "description": "Indicates to continue a previously failed build attempt"
+        },
+        "Help": {
+          "type": "boolean",
+          "description": "Shows the help text for this build assembly"
+        },
+        "Host": {
+          "description": "Host for execution. Default is 'automatic'",
+          "$ref": "#/definitions/Host"
+        },
+        "NoLogo": {
+          "type": "boolean",
+          "description": "Disables displaying the NUKE logo"
+        },
+        "Partition": {
+          "type": "string",
+          "description": "Partition to use on CI"
+        },
+        "Plan": {
+          "type": "boolean",
+          "description": "Shows the execution plan (HTML)"
+        },
+        "Profile": {
+          "type": "array",
+          "description": "Defines the profiles to load",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Root": {
+          "type": "string",
+          "description": "Root directory during build execution"
+        },
+        "Skip": {
+          "type": "array",
+          "description": "List of targets to be skipped. Empty list skips all dependencies",
+          "items": {
+            "$ref": "#/definitions/ExecutableTarget"
+          }
+        },
+        "Target": {
+          "type": "array",
+          "description": "List of targets to be invoked. Default is '{default_target}'",
+          "items": {
+            "$ref": "#/definitions/ExecutableTarget"
+          }
+        },
+        "Verbosity": {
+          "description": "Logging verbosity during build execution. Default is 'Normal'",
+          "$ref": "#/definitions/Verbosity"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "properties": {
+        "ApiKey": {
+          "type": "string",
+          "description": "API key for the specified source"
+        },
+        "AppProject": {
+          "type": "string",
+          "description": "App Project Name"
+        },
+        "AppsettingsPath": {
+          "type": "string",
+          "description": "appsettings.json path"
+        },
+        "ArgoAppName": {
+          "type": "string",
+          "description": "Argo Application Name"
+        },
+        "ArgoConfigFile": {
+          "type": "string",
+          "description": "Config file for Argo Application Service"
+        },
+        "ArgoServer": {
+          "type": "string",
+          "description": "ArgoCD Server"
+        },
+        "ArgoToken": {
+          "type": "string",
+          "description": "ArgoCD Token"
+        },
+        "ArtifactsDirectory": {
+          "type": "string",
+          "description": "Path to Artifacts Directory"
+        },
+        "AttemptsNumber": {
+          "type": "integer",
+          "description": "Number of attempts before fail",
+          "format": "int32"
+        },
+        "AzureAD": {
+          "type": "boolean",
+          "description": "Use Azure AD as SaaS Auth Provider"
+        },
+        "AzureBlob": {
+          "type": "string",
+          "description": "Azure Blob Connection String"
+        },
+        "AzureBlobConnectionString": {
+          "type": "string",
+          "description": "Azure Blob Connection String"
+        },
+        "AzureSasToken": {
+          "type": "string",
+          "description": "Azure Blob SAS Token"
+        },
+        "AzureToken": {
+          "type": "string",
+          "description": "Azure PAT"
+        },
+        "AzureUniversalPackagesPat": {
+          "type": "string",
+          "description": "Azure PAT for the Universal Packages"
+        },
+        "BackupFile": {
+          "type": "string",
+          "description": "Backup file path"
+        },
+        "BlobsNumber": {
+          "type": "integer",
+          "description": "Number of Blobs to show",
+          "format": "int32"
+        },
+        "BundlesUrl": {
+          "type": "string",
+          "description": "Url to Bundles file"
+        },
+        "CloudAuthProvider": {
+          "type": "string",
+          "description": "SaaS Auth Provider"
+        },
+        "CloudToken": {
+          "type": "string",
+          "description": "SaaS Token"
+        },
+        "CloudTokenFile": {
+          "type": "string",
+          "description": "Path for the file with SaaS Token"
+        },
+        "CloudUrl": {
+          "type": "string",
+          "description": "SaaS Portal"
+        },
+        "ClusterName": {
+          "type": "string",
+          "description": "Cloud Environment Cluster Name"
+        },
+        "Configuration": {
+          "type": "string",
+          "description": "Configuration to build - Default is 'Debug' (local) or 'Release' (server)",
+          "enum": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "CoverageReportPath": {
+          "type": "string"
+        },
+        "CurrentDirectory": {
+          "type": "string",
+          "description": "Current Directory"
+        },
+        "CustomModulePackageUri": {
+          "type": "string",
+          "description": "Full URI of module artifact"
+        },
+        "CustomVersionPrefix": {
+          "type": "string",
+          "description": "VersionTag for module.manifest and Directory.Build.props"
+        },
+        "CustomVersionSuffix": {
+          "type": "string",
+          "description": "VersionSuffix for module.manifest and Directory.Build.props"
+        },
+        "DbName": {
+          "type": "string",
+          "description": "Cloud Environment Db Name"
+        },
+        "DbProvider": {
+          "type": "string",
+          "description": "Cloud Environment Db Provider"
+        },
+        "DefaultProject": {
+          "type": "string",
+          "description": "Default (start) project name"
+        },
+        "Delay": {
+          "type": "integer",
+          "description": "Delay between requests in seconds",
+          "format": "int32"
+        },
+        "DisableMatchVersions": {
+          "type": "boolean",
+          "description": "Disable MatchVersion target"
+        },
+        "DiscoveryPath": {
+          "type": "string",
+          "description": "Modules discovery path"
+        },
+        "DockerBuildContextPath": {
+          "type": "string",
+          "description": "Docker build context path"
+        },
+        "DockerConnectionString": {
+          "type": "string",
+          "description": "Connection String"
+        },
+        "DockerfilePath": {
+          "type": "string",
+          "description": "Dockerfile Path"
+        },
+        "DockerfileUrl": {
+          "type": "string",
+          "description": "Url to Dockerfile which will use to build the docker image in the CloudDeploy/CloudUp Target"
+        },
+        "DockerImageName": {
+          "type": "string",
+          "description": "Docker Image Name"
+        },
+        "DockerImageTag": {
+          "type": "array",
+          "description": "Docker Image Tag",
+          "items": {
+            "type": "string"
+          }
+        },
+        "DockerPassword": {
+          "type": "string",
+          "description": "Docker Password"
+        },
+        "DockerRegistryUrl": {
+          "type": "string",
+          "description": "Docker Registry Url"
+        },
+        "DockerUsername": {
+          "type": "string",
+          "description": "Docker Username"
+        },
+        "Edge": {
+          "type": "boolean",
+          "description": "Update to the edge versions"
+        },
+        "EnvironmentName": {
+          "type": "string",
+          "description": "Cloud Environment Name"
+        },
+        "Force": {
+          "type": "boolean",
+          "description": "Force parameter for git checkout"
+        },
+        "GitHubToken": {
+          "type": "string",
+          "description": "GitHub user security token for release creation"
+        },
+        "GitHubUser": {
+          "type": "string",
+          "description": "GitHub user for release creation"
+        },
+        "GitLabServer": {
+          "type": "string",
+          "description": "Gitlab Server (default: https://gitlab.com/api/v4)"
+        },
+        "GitLabToken": {
+          "type": "string",
+          "description": "GitLab Token"
+        },
+        "GlobalModuleIgnoreFileUrl": {
+          "type": "string"
+        },
+        "GrabMigratorConfig": {
+          "type": "string",
+          "description": "Grab-migrator config file"
+        },
+        "HealthStatus": {
+          "type": "string",
+          "description": "Health Status that need to be awaited"
+        },
+        "HelmParameters": {
+          "type": "array",
+          "description": "Array of Helm parameters",
+          "items": {
+            "type": "string"
+          }
+        },
+        "HttpTimeout": {
+          "type": "integer",
+          "description": "Http tasks timeout in seconds",
+          "format": "int32"
+        },
+        "MainBranch": {
+          "type": "string",
+          "description": "Main branch"
+        },
+        "MakeLatest": {
+          "type": "boolean",
+          "description": "True (default) - make the release latest, otherwise - False"
+        },
+        "Manifest": {
+          "type": "string",
+          "description": "Path to the manifest of environment"
+        },
+        "Module": {
+          "type": "array",
+          "description": "Install params (install -module VirtoCommerce.Core:1.2.3)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ModulesCachePath": {
+          "type": "string",
+          "description": "Modules cache path"
+        },
+        "ModulesFolderPath": {
+          "type": "string",
+          "description": "Path to folder with git clones of modules repositories"
+        },
+        "ModulesJsonDirectoryName": {
+          "type": "string",
+          "description": "Directory containing modules.json"
+        },
+        "ModulesJsonName": {
+          "type": "string",
+          "description": "Path to modules.json"
+        },
+        "ModulesJsonRepoUrl": {
+          "type": "string",
+          "description": "Modules.json repo URL"
+        },
+        "NugetConfig": {
+          "type": "string",
+          "description": "Path to NuGet config"
+        },
+        "Organization": {
+          "type": "string",
+          "description": "Organization name"
+        },
+        "PackageJsonPath": {
+          "type": "string",
+          "description": "Path to packageJson"
+        },
+        "PackageManifestPath": {
+          "type": "string",
+          "description": "vc-package.json path"
+        },
+        "Path": {
+          "type": "string",
+          "description": "File Path"
+        },
+        "Platform": {
+          "type": "boolean",
+          "description": "Install the platform"
+        },
+        "PlatformAssetUrl": {
+          "type": "string",
+          "description": "Custom platform asset url"
+        },
+        "PreRelease": {
+          "type": "boolean",
+          "description": "True - prerelease, False - release"
+        },
+        "PrereleasesBlobContainer": {
+          "type": "string",
+          "description": "Prereleases Blob Container"
+        },
+        "ProbingPath": {
+          "type": "string",
+          "description": "Probing path"
+        },
+        "PullRequest": {
+          "type": "boolean",
+          "description": "True - Pull Request"
+        },
+        "Redis": {
+          "type": "string",
+          "description": "Redis Connection String"
+        },
+        "ReleaseBranch": {
+          "type": "string",
+          "description": "Release branch"
+        },
+        "ReleaseNotes": {
+          "type": "string",
+          "description": "Path to Release Notes File"
+        },
+        "RepoName": {
+          "type": "string",
+          "description": "Repo Name"
+        },
+        "RepoOrg": {
+          "type": "string",
+          "description": "Repo Organization/User"
+        },
+        "RoutesFile": {
+          "type": "string",
+          "description": "Routes file for the environment"
+        },
+        "ServicePlan": {
+          "type": "string",
+          "description": "Cloud Environment Service Plan"
+        },
+        "SkipDependencySolving": {
+          "type": "boolean",
+          "description": "Skip dependency solving"
+        },
+        "SonarAuthToken": {
+          "type": "string"
+        },
+        "SonarBranchName": {
+          "type": "string",
+          "description": "Branch Name for SonarQube"
+        },
+        "SonarBranchNameTarget": {
+          "type": "string",
+          "description": "Target Branch Name for SonarQube"
+        },
+        "SonarGithubRepo": {
+          "type": "string",
+          "description": "GitHub Repository for SonarQube"
+        },
+        "SonarOrg": {
+          "type": "string",
+          "description": "Sonar Organization (\"virto-commerce\" by default)"
+        },
+        "SonarPRBase": {
+          "type": "string",
+          "description": "PR Base for SonarQube"
+        },
+        "SonarPRBranch": {
+          "type": "string",
+          "description": "PR Branch for SonarQube"
+        },
+        "SonarPRNumber": {
+          "type": "string",
+          "description": "PR Number for SonarQube"
+        },
+        "SonarPRProvider": {
+          "type": "string",
+          "description": "PR Provider for SonarQube"
+        },
+        "SonarUrl": {
+          "type": "string"
+        },
+        "Source": {
+          "type": "string"
+        },
+        "Sql": {
+          "type": "string",
+          "description": "MSSQL Connection String"
+        },
+        "SwaggerSchemaPath": {
+          "type": "string",
+          "description": "Swagger schema path"
+        },
+        "SwaggerValidatorUri": {
+          "type": "string",
+          "description": "URL of Swagger Validation API"
+        },
+        "SyncStatus": {
+          "type": "string",
+          "description": "SyncStatus that need to be awaited"
+        },
+        "TestsFilter": {
+          "type": "string"
+        },
+        "v": {
+          "type": "string",
+          "description": "Bundle name (default: latest)"
+        },
+        "Version": {
+          "type": "string",
+          "description": "Platform or Module version to install"
+        },
+        "WaitScriptUrl": {
+          "type": "string",
+          "description": "Url to Wake-script which will use to build the docker image in the CloudDeploy/CloudUp Target"
+        }
+      }
+    },
+    {
+      "$ref": "#/definitions/NukeBuild"
+    }
+  ]
+}

@@ -1,110 +1,36 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using VirtoCommerce.MarketingModule.Core.Model;
 using VirtoCommerce.MarketingModule.Core.Model.DynamicContent.Search;
 using VirtoCommerce.MarketingModule.Core.Search;
 using VirtoCommerce.MarketingModule.Core.Services;
-using VirtoCommerce.MarketingModule.Data.Caching;
 using VirtoCommerce.MarketingModule.Data.Model;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
-using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.GenericCrud;
 
-namespace VirtoCommerce.MarketingModule.Data.Search
+namespace VirtoCommerce.MarketingModule.Data.Search;
+
+[Obsolete("Use DynamicContentPublicationSearchService", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
+public class ContentPublicationsSearchService(
+    Func<IMarketingRepository> repositoryFactory,
+    IPlatformMemoryCache platformMemoryCache,
+    IDynamicContentPublicationService crudService,
+    IOptions<CrudOptions> crudOptions)
+    : DynamicContentPublicationSearchService(repositoryFactory, platformMemoryCache, crudService, crudOptions),
+        IContentPublicationsSearchService
 {
-    public class ContentPublicationsSearchService : IContentPublicationsSearchService
+    [Obsolete("Use SearchAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
+    public Task<DynamicContentPublicationSearchResult> SearchContentPublicationsAsync(DynamicContentPublicationSearchCriteria criteria)
     {
-        private readonly Func<IMarketingRepository> _repositoryFactory;
-        private readonly IDynamicContentService _dynamicContentService;
-        private readonly IPlatformMemoryCache _platformMemoryCache;
+        return SearchAsync(criteria);
+    }
 
-        public ContentPublicationsSearchService(Func<IMarketingRepository> repositoryFactory, IDynamicContentService dynamicContentService,
-            IPlatformMemoryCache platformMemoryCache)
-        {
-            _repositoryFactory = repositoryFactory;
-            _dynamicContentService = dynamicContentService;
-            _platformMemoryCache = platformMemoryCache;
-        }
-
-        public async Task<DynamicContentPublicationSearchResult> SearchContentPublicationsAsync(DynamicContentPublicationSearchCriteria criteria)
-        {
-            var cacheKey = CacheKey.With(GetType(), nameof(SearchContentPublicationsAsync), criteria.GetCacheKey());
-            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
-            {
-                cacheEntry.AddExpirationToken(DynamicContentPublicationCacheRegion.CreateChangeToken());
-                var retVal = AbstractTypeFactory<DynamicContentPublicationSearchResult>.TryCreateInstance();
-                using (var repository = _repositoryFactory())
-                {
-                    var sortInfos = BuildSortExpression(criteria);
-                    var query = BuildQuery(criteria, repository);
-
-                    retVal.TotalCount = await query.CountAsync();
-
-                    if (criteria.Take > 0)
-                    {
-                        var ids = await query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
-                                             .Select(x => x.Id)
-                                             .Skip(criteria.Skip).Take(criteria.Take)
-                                             .ToArrayAsync();
-
-                        retVal.Results = (await _dynamicContentService.GetPublicationsByIdsAsync(ids))
-                            .OrderBy(x => Array.IndexOf(ids, x.Id)).ToList();
-                    }
-                }
-                return retVal;
-            });
-        }
-
-        protected virtual IList<SortInfo> BuildSortExpression(DynamicContentPublicationSearchCriteria criteria)
-        {
-            var sortInfos = criteria.SortInfos;
-            if (sortInfos.IsNullOrEmpty())
-            {
-                sortInfos = new[]
-                {
-                    new SortInfo
-                    {
-                        SortColumn = nameof(DynamicContentPublication.Priority),
-                        SortDirection = SortDirection.Ascending
-                    }
-                };
-            }
-
-            return sortInfos;
-        }
-
-        protected virtual IQueryable<DynamicContentPublishingGroupEntity> BuildQuery(DynamicContentPublicationSearchCriteria criteria, IMarketingRepository repository)
-        {
-            var query = repository.PublishingGroups;
-            if (!string.IsNullOrEmpty(criteria.Store))
-            {
-                query = query.Where(x => x.StoreId == criteria.Store);
-            }
-
-            if (criteria.OnlyActive)
-            {
-                query = query.Where(x => x.IsActive == true);
-            }
-
-            if (criteria.ToDate != null)
-            {
-                query = query.Where(x => x.StartDate == null || (criteria.ToDate >= x.StartDate && criteria.ToDate <= x.EndDate));
-            }
-
-            if (!string.IsNullOrEmpty(criteria.PlaceName))
-            {
-                query = query.Where(x => x.ContentPlaces.Any(y => y.ContentPlace.Name == criteria.PlaceName));
-            }
-
-            if (!string.IsNullOrEmpty(criteria.Keyword))
-            {
-                query = query.Where(q => q.Name.Contains(criteria.Keyword));
-            }
-            return query;
-        }
+    [Obsolete("Use BuildQuery(IRepository repository, DynamicContentPublicationSearchCriteria criteria)", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
+    protected virtual IQueryable<DynamicContentPublishingGroupEntity> BuildQuery(DynamicContentPublicationSearchCriteria criteria, IMarketingRepository repository)
+    {
+        return BuildQuery(repository, criteria);
     }
 }
