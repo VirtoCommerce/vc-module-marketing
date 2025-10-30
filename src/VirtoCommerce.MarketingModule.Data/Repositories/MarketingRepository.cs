@@ -56,7 +56,7 @@ public class MarketingRepository(MarketingDbContext dbContext)
 
             foreach (var promotion in promotions)
             {
-                promotion.HasCoupons = promotionIdsWithCoupons.Contains(promotion.Id);
+                promotion.HasCoupons = promotionIdsWithCoupons.ContainsIgnoreCase(promotion.Id);
             }
         }
 
@@ -110,7 +110,7 @@ public class MarketingRepository(MarketingDbContext dbContext)
             var placesWithFolder = places.Where(x => x.FolderId != null).ToList();
             if (placesWithFolder.Count > 0)
             {
-                var folderIds = placesWithFolder.Select(x => x.FolderId).Distinct().ToArray();
+                var folderIds = placesWithFolder.Select(x => x.FolderId).DistinctIgnoreCase().ToArray();
                 var folders = await GetContentFoldersByIdsAsync(folderIds);
                 foreach (var place in placesWithFolder)
                 {
@@ -126,9 +126,9 @@ public class MarketingRepository(MarketingDbContext dbContext)
         var result = await PublishingGroups.Where(i => ids.Contains(i.Id))
             .Include(x => x.ContentItems).ThenInclude(y => y.ContentItem)
             .Include(x => x.ContentPlaces).ThenInclude(y => y.ContentPlace)
-            .ToArrayAsync();
+            .ToListAsync();
 
-        var contentItemIds = result.SelectMany(x => x.ContentItems).Select(x => x.DynamicContentItemId).Distinct().ToArray();
+        var contentItemIds = result.SelectMany(x => x.ContentItems).Select(x => x.DynamicContentItemId).DistinctIgnoreCase().ToArray();
 
         if (!contentItemIds.IsNullOrEmpty())
         {
@@ -216,7 +216,7 @@ public class MarketingRepository(MarketingDbContext dbContext)
 
     public virtual async Task<IList<PromotionUsageEntity>> GetMarketingUsagesByIdsAsync(IList<string> ids)
     {
-        return await PromotionUsages.Where(x => ids.Contains(x.Id)).ToArrayAsync();
+        return await PromotionUsages.Where(x => ids.Contains(x.Id)).ToListAsync();
     }
 
     public Task RemoveMarketingUsagesAsync(string[] ids)
@@ -227,7 +227,7 @@ public class MarketingRepository(MarketingDbContext dbContext)
     public async Task<string[]> CheckCouponsForUniquenessAsync(Coupon[] coupons)
     {
         var result = new List<string>();
-        var couponKeysToAdd = coupons.Select(x => x.Code + x.PromotionId).Distinct().ToArray();
+        var couponKeysToAdd = coupons.Select(x => x.Code + x.PromotionId).DistinctIgnoreCase().ToArray();
 
         for (var skip = 0; skip < couponKeysToAdd.Length; skip += _defaultPageSize)
         {

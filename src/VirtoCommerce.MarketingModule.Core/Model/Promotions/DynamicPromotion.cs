@@ -46,7 +46,7 @@ public class DynamicPromotion : Promotion
             : [];
 
         // Check coupon
-        var couponIsValid = validCoupons.Count > 0 || !HasCoupons;
+        var couponIsValid = !HasCoupons || validCoupons.Count > 0;
 
         promoContext = promoContext.Clone();
 
