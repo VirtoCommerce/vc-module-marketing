@@ -17,7 +17,7 @@ namespace VirtoCommerce.MarketingModule.Data.PostgreSql.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "8.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -67,6 +67,7 @@ namespace VirtoCommerce.MarketingModule.Data.PostgreSql.Migrations
 
                     b.Property<string>("PromotionId")
                         .IsRequired()
+                        .HasMaxLength(128)
                         .HasColumnType("character varying(128)");
 
                     b.HasKey("Id");
@@ -115,6 +116,7 @@ namespace VirtoCommerce.MarketingModule.Data.PostgreSql.Migrations
                         .HasColumnType("character varying(128)");
 
                     b.Property<string>("ParentFolderId")
+                        .HasMaxLength(128)
                         .HasColumnType("character varying(128)");
 
                     b.HasKey("Id");
@@ -145,7 +147,7 @@ namespace VirtoCommerce.MarketingModule.Data.PostgreSql.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal?>("DecimalValue")
-                        .HasColumnType("numeric(18,5)");
+                        .HasColumnType("decimal(18,5)");
 
                     b.Property<string>("DictionaryItemId")
                         .HasMaxLength(128)
@@ -226,6 +228,7 @@ namespace VirtoCommerce.MarketingModule.Data.PostgreSql.Migrations
                         .HasColumnType("character varying(256)");
 
                     b.Property<string>("FolderId")
+                        .HasMaxLength(128)
                         .HasColumnType("character varying(128)");
 
                     b.Property<string>("ImageUrl")
@@ -273,6 +276,7 @@ namespace VirtoCommerce.MarketingModule.Data.PostgreSql.Migrations
                         .HasColumnType("character varying(256)");
 
                     b.Property<string>("FolderId")
+                        .HasMaxLength(128)
                         .HasColumnType("character varying(128)");
 
                     b.Property<string>("ImageUrl")
@@ -499,6 +503,7 @@ namespace VirtoCommerce.MarketingModule.Data.PostgreSql.Migrations
 
                     b.Property<string>("PromotionId")
                         .IsRequired()
+                        .HasMaxLength(128)
                         .HasColumnType("character varying(128)");
 
                     b.Property<string>("UserId")
@@ -531,10 +536,12 @@ namespace VirtoCommerce.MarketingModule.Data.PostgreSql.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DynamicContentItemId")
+                        .HasMaxLength(128)
                         .HasColumnType("character varying(128)");
 
                     b.Property<string>("DynamicContentPublishingGroupId")
                         .IsRequired()
+                        .HasMaxLength(128)
                         .HasColumnType("character varying(128)");
 
                     b.Property<string>("ModifiedBy")

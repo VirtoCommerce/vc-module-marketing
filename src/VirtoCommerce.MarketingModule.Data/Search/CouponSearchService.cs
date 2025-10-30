@@ -2,117 +2,96 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Search;
 using VirtoCommerce.MarketingModule.Core.Services;
-using VirtoCommerce.MarketingModule.Data.Caching;
 using VirtoCommerce.MarketingModule.Data.Model;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.GenericCrud;
+using VirtoCommerce.Platform.Data.GenericCrud;
 
-namespace VirtoCommerce.MarketingModule.Data.Search
+namespace VirtoCommerce.MarketingModule.Data.Search;
+
+public class CouponSearchService(
+    Func<IMarketingRepository> repositoryFactory,
+    IPlatformMemoryCache platformMemoryCache,
+    ICouponService crudService,
+    IOptions<CrudOptions> crudOptions)
+    : SearchService<CouponSearchCriteria, CouponSearchResult, Coupon, CouponEntity>
+        (repositoryFactory, platformMemoryCache, crudService, crudOptions),
+        ICouponSearchService
 {
-    public class CouponSearchService : ICouponSearchService
+    [Obsolete("Use SearchAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
+    public Task<CouponSearchResult> SearchCouponsAsync(CouponSearchCriteria criteria)
     {
-        private readonly Func<IMarketingRepository> _repositoryFactory;
-        private readonly IPlatformMemoryCache _platformMemoryCache;
-        private readonly ICouponService _couponService;
+        return SearchAsync(criteria);
+    }
 
-        public CouponSearchService(Func<IMarketingRepository> repositoryFactory, IPlatformMemoryCache platformMemoryCache, ICouponService couponService)
+
+    [Obsolete("Use BuildQuery(IRepository repository, CouponSearchCriteria criteria)", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
+    protected virtual IQueryable<CouponEntity> BuildQuery(CouponSearchCriteria criteria, IMarketingRepository repository)
+    {
+        return BuildQuery(repository, criteria);
+    }
+
+    protected override IQueryable<CouponEntity> BuildQuery(IRepository repository, CouponSearchCriteria criteria)
+    {
+        var query = ((IMarketingRepository)repository).Coupons;
+
+        if (!criteria.PromotionId.IsNullOrEmpty())
         {
-            _repositoryFactory = repositoryFactory;
-            _platformMemoryCache = platformMemoryCache;
-            _couponService = couponService;
+            query = query.Where(x => x.PromotionId == criteria.PromotionId);
         }
 
-        public async Task<CouponSearchResult> SearchCouponsAsync(CouponSearchCriteria criteria)
+        if (!criteria.Code.IsNullOrEmpty())
         {
-            if (criteria == null)
-            {
-                throw new ArgumentNullException(nameof(criteria));
-            }
+            query = query.Where(x => x.Code == criteria.Code);
+        }
 
-            var cacheKey = CacheKey.With(GetType(), nameof(SearchCouponsAsync), criteria.GetCacheKey());
-            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
-            {
-                cacheEntry.AddExpirationToken(CouponCacheRegion.CreateChangeToken());
+        if (!criteria.Codes.IsNullOrEmpty())
+        {
+            query = query.Where(x => criteria.Codes.Contains(x.Code));
+        }
 
-                using (var repository = _repositoryFactory())
+        return query;
+    }
+
+    [Obsolete("Use BuildSortExpression()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
+    protected virtual IList<SortInfo> BuildSearchExpression(CouponSearchCriteria criteria)
+    {
+        return BuildSortExpression(criteria);
+    }
+
+    protected override IList<SortInfo> BuildSortExpression(CouponSearchCriteria criteria)
+    {
+        var sortInfos = criteria.SortInfos;
+
+        // TODO: Sort by TotalUsesCount 
+        if (sortInfos.IsNullOrEmpty() || sortInfos.Any(x => x.SortColumn.EqualsIgnoreCase(nameof(Coupon.TotalUsesCount))))
+        {
+            sortInfos =
+            [
+                new SortInfo
                 {
-                    var sortInfos = BuildSearchExpression(criteria);
-                    var query = BuildQuery(criteria, repository);
+                    SortColumn = nameof(Coupon.Code),
+                    SortDirection = SortDirection.Descending,
+                },
+            ];
+        }
 
-                    var totalCount = await query.CountAsync();
-                    var searchResult = AbstractTypeFactory<CouponSearchResult>.TryCreateInstance();
-                    searchResult.TotalCount = totalCount;
-
-                    if (criteria.Take > 0)
-                    {
-                        var ids = await query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
-                                             .Select(x => x.Id)
-                                             .Skip(criteria.Skip).Take(criteria.Take)
-                                             .ToArrayAsync();
-
-                        searchResult.Results = (await _couponService.GetByIdsAsync(ids)).OrderBy(x => Array.IndexOf(ids, x.Id)).ToList();
-                    }
-
-                    return searchResult;
-                }
+        if (sortInfos.Count < 2)
+        {
+            sortInfos.Add(new SortInfo
+            {
+                SortColumn = nameof(Coupon.Id),
+                SortDirection = SortDirection.Ascending,
             });
         }
 
-        protected virtual IQueryable<CouponEntity> BuildQuery(CouponSearchCriteria criteria, IMarketingRepository repository)
-        {
-            var query = repository.Coupons;
-
-            if (!string.IsNullOrEmpty(criteria.PromotionId))
-            {
-                query = query.Where(c => c.PromotionId == criteria.PromotionId);
-            }
-
-            if (!string.IsNullOrEmpty(criteria.Code))
-            {
-                query = query.Where(c => c.Code == criteria.Code);
-            }
-
-            if (!criteria.Codes.IsNullOrEmpty())
-            {
-                query = query.Where(c => criteria.Codes.Contains(c.Code));
-            }
-
-            return query;
-        }
-
-        protected virtual IList<SortInfo> BuildSearchExpression(CouponSearchCriteria criteria)
-        {
-            var sortInfos = criteria.SortInfos;
-            //TODO: Sort by TotalUsesCount 
-            if (sortInfos.IsNullOrEmpty() || sortInfos.Any(x => x.SortColumn.EqualsIgnoreCase(nameof(Coupon.TotalUsesCount))))
-            {
-                sortInfos = new[]
-                {
-                    new SortInfo
-                    {
-                        SortColumn = nameof(Coupon.Code),
-                        SortDirection = SortDirection.Descending
-                    }
-                }.ToList();
-            }
-
-            if (sortInfos.Count < 2)
-            {
-                sortInfos.Add(new SortInfo
-                {
-                    SortColumn = nameof(Coupon.Id),
-                    SortDirection = SortDirection.Ascending
-                });
-            }
-
-            return sortInfos;
-        }
+        return sortInfos;
     }
 }

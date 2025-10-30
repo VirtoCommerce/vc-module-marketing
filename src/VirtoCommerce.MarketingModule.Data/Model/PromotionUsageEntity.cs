@@ -2,84 +2,82 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Domain;
 
-namespace VirtoCommerce.MarketingModule.Data.Model
+namespace VirtoCommerce.MarketingModule.Data.Model;
+
+public class PromotionUsageEntity : AuditableEntity, IDataEntity<PromotionUsageEntity, PromotionUsage>
 {
-    public class PromotionUsageEntity : AuditableEntity
+    [StringLength(128)]
+    public string ObjectId { get; set; }
+
+    [StringLength(128)]
+    public string ObjectType { get; set; }
+
+    [StringLength(64)]
+    public string CouponCode { get; set; }
+
+    [StringLength(128)]
+    public string UserId { get; set; }
+
+    [StringLength(128)]
+    public string UserName { get; set; }
+
+    #region Navigation Properties
+
+    [StringLength(128)]
+    public string PromotionId { get; set; }
+    public virtual PromotionEntity Promotion { get; set; }
+
+    #endregion
+
+    public virtual PromotionUsage ToModel(PromotionUsage model)
     {
-        [StringLength(128)]
-        public string ObjectId { get; set; }
+        ArgumentNullException.ThrowIfNull(model);
 
-        [StringLength(128)]
-        public string ObjectType { get; set; }
+        model.Id = Id;
+        model.CreatedBy = CreatedBy;
+        model.CreatedDate = CreatedDate;
+        model.ModifiedBy = ModifiedBy;
+        model.ModifiedDate = ModifiedDate;
 
-        [StringLength(64)]
-        public string CouponCode { get; set; }
+        model.CouponCode = CouponCode;
+        model.ObjectId = ObjectId;
+        model.ObjectType = ObjectType;
+        model.PromotionId = PromotionId;
+        model.UserId = UserId;
+        model.UserName = UserName;
 
-        [StringLength(128)]
-        public string UserId { get; set; }
+        return model;
+    }
 
-        [StringLength(128)]
-        public string UserName { get; set; }
+    public virtual PromotionUsageEntity FromModel(PromotionUsage model, PrimaryKeyResolvingMap pkMap)
+    {
+        ArgumentNullException.ThrowIfNull(model);
 
-        #region Navigation Properties
+        pkMap.AddPair(model, this);
 
-        public string PromotionId { get; set; }
-        public virtual PromotionEntity Promotion { get; set; }
+        Id = model.Id;
+        CreatedBy = model.CreatedBy;
+        CreatedDate = model.CreatedDate;
+        ModifiedBy = model.ModifiedBy;
+        ModifiedDate = model.ModifiedDate;
 
-        #endregion
+        CouponCode = model.CouponCode;
+        PromotionId = model.PromotionId;
+        ObjectId = model.ObjectId;
+        ObjectType = model.ObjectType;
+        UserId = model.UserId;
+        UserName = model.UserName;
 
-        public virtual PromotionUsage ToModel(PromotionUsage usage)
-        {
-            if (usage == null)
-                throw new ArgumentNullException(nameof(usage));
+        return this;
+    }
 
-            usage.Id = Id;
-            usage.CreatedBy = CreatedBy;
-            usage.CreatedDate = CreatedDate;
-            usage.ModifiedBy = ModifiedBy;
-            usage.ModifiedDate = ModifiedDate;
+    public virtual void Patch(PromotionUsageEntity target)
+    {
+        ArgumentNullException.ThrowIfNull(target);
 
-            usage.CouponCode = CouponCode;
-            usage.ObjectId = ObjectId;
-            usage.ObjectType = ObjectType;
-            usage.PromotionId = PromotionId;
-            usage.UserId = UserId;
-            usage.UserName = UserName;
-
-            return usage;
-        }
-
-        public virtual PromotionUsageEntity FromModel(PromotionUsage usage, PrimaryKeyResolvingMap pkMap)
-        {
-            if (usage == null)
-                throw new ArgumentNullException(nameof(usage));
-
-            pkMap.AddPair(usage, this);
-
-            Id = usage.Id;
-            CreatedBy = usage.CreatedBy;
-            CreatedDate = usage.CreatedDate;
-            ModifiedBy = usage.ModifiedBy;
-            ModifiedDate = usage.ModifiedDate;
-
-            CouponCode = usage.CouponCode;
-            PromotionId = usage.PromotionId;
-            ObjectId = usage.ObjectId;
-            ObjectType = usage.ObjectType;
-            UserId = usage.UserId;
-            UserName = usage.UserName;
-
-            return this;
-        }
-
-        public virtual void Patch(PromotionUsageEntity target)
-        {
-            if (target == null)
-                throw new ArgumentNullException(nameof(target));
-
-            target.ObjectId = ObjectId;
-            target.ObjectType = ObjectType;
-        }
+        target.ObjectId = ObjectId;
+        target.ObjectType = ObjectType;
     }
 }

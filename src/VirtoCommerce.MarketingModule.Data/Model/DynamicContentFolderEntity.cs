@@ -3,83 +3,82 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using VirtoCommerce.MarketingModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Domain;
 
-namespace VirtoCommerce.MarketingModule.Data.Model
+namespace VirtoCommerce.MarketingModule.Data.Model;
+
+public class DynamicContentFolderEntity : AuditableEntity, IDataEntity<DynamicContentFolderEntity, DynamicContentFolder>
 {
-    public class DynamicContentFolderEntity : AuditableEntity
+    [Required]
+    [StringLength(128)]
+    public string Name { get; set; }
+
+    [StringLength(256)]
+    public string Description { get; set; }
+
+    [StringLength(2048)]
+    public string ImageUrl { get; set; }
+
+    #region Navigation Properties
+
+    [StringLength(128)]
+    public string ParentFolderId { get; set; }
+    public virtual DynamicContentFolderEntity ParentFolder { get; set; }
+
+    public virtual ObservableCollection<DynamicContentItemEntity> ContentItems { get; set; }
+        = new NullCollection<DynamicContentItemEntity>();
+
+    public virtual ObservableCollection<DynamicContentPlaceEntity> ContentPlaces { get; set; }
+        = new NullCollection<DynamicContentPlaceEntity>();
+
+    #endregion
+
+    public virtual DynamicContentFolder ToModel(DynamicContentFolder folder)
     {
-        [Required]
-        [StringLength(128)]
-        public string Name { get; set; }
+        ArgumentNullException.ThrowIfNull(folder);
 
-        [StringLength(256)]
-        public string Description { get; set; }
+        folder.Id = Id;
+        folder.CreatedBy = CreatedBy;
+        folder.CreatedDate = CreatedDate;
+        folder.ModifiedBy = ModifiedBy;
+        folder.ModifiedDate = ModifiedDate;
 
-        [StringLength(2048)]
-        public string ImageUrl { get; set; }
+        folder.Name = Name;
+        folder.ParentFolderId = ParentFolderId;
+        folder.Description = Description;
 
-        #region Navigation Properties
-
-        public string ParentFolderId { get; set; }
-        public virtual DynamicContentFolderEntity ParentFolder { get; set; }
-
-        public virtual ObservableCollection<DynamicContentItemEntity> ContentItems { get; set; }
-            = new NullCollection<DynamicContentItemEntity>();
-
-        public virtual ObservableCollection<DynamicContentPlaceEntity> ContentPlaces { get; set; }
-            = new NullCollection<DynamicContentPlaceEntity>();
-
-        #endregion
-
-        public virtual DynamicContentFolder ToModel(DynamicContentFolder folder)
+        if (ParentFolder != null)
         {
-            if (folder == null)
-                throw new ArgumentNullException(nameof(folder));
-
-            folder.Id = Id;
-            folder.CreatedBy = CreatedBy;
-            folder.CreatedDate = CreatedDate;
-            folder.ModifiedBy = ModifiedBy;
-            folder.ModifiedDate = ModifiedDate;
-
-            folder.Name = Name;
-            folder.ParentFolderId = ParentFolderId;
-            folder.Description = Description;
-
-            if (ParentFolder != null)
-            {
-                folder.ParentFolder = ParentFolder.ToModel(AbstractTypeFactory<DynamicContentFolder>.TryCreateInstance());
-            }
-            return folder;
+            folder.ParentFolder = ParentFolder.ToModel(AbstractTypeFactory<DynamicContentFolder>.TryCreateInstance());
         }
 
-        public virtual DynamicContentFolderEntity FromModel(DynamicContentFolder folder, PrimaryKeyResolvingMap pkMap)
-        {
-            if (folder == null)
-                throw new ArgumentNullException(nameof(folder));
+        return folder;
+    }
 
-            pkMap.AddPair(folder, this);
+    public virtual DynamicContentFolderEntity FromModel(DynamicContentFolder folder, PrimaryKeyResolvingMap pkMap)
+    {
+        ArgumentNullException.ThrowIfNull(folder);
 
-            Id = folder.Id;
-            CreatedBy = folder.CreatedBy;
-            CreatedDate = folder.CreatedDate;
-            ModifiedBy = folder.ModifiedBy;
-            ModifiedDate = folder.ModifiedDate;
+        pkMap.AddPair(folder, this);
 
-            Name = folder.Name;
-            ParentFolderId = folder.ParentFolderId;
-            Description = folder.Description;
+        Id = folder.Id;
+        CreatedBy = folder.CreatedBy;
+        CreatedDate = folder.CreatedDate;
+        ModifiedBy = folder.ModifiedBy;
+        ModifiedDate = folder.ModifiedDate;
 
-            return this;
-        }
+        Name = folder.Name;
+        ParentFolderId = folder.ParentFolderId;
+        Description = folder.Description;
 
-        public virtual void Patch(DynamicContentFolderEntity target)
-        {
-            if (target == null)
-                throw new ArgumentNullException(nameof(target));
+        return this;
+    }
 
-            target.Name = Name;
-            target.Description = Description;
-        }        
+    public virtual void Patch(DynamicContentFolderEntity target)
+    {
+        ArgumentNullException.ThrowIfNull(target);
+
+        target.Name = Name;
+        target.Description = Description;
     }
 }

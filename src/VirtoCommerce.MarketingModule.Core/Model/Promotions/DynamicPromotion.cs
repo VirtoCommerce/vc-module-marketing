@@ -9,193 +9,180 @@ using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Search;
 using VirtoCommerce.Platform.Core.Common;
 
-namespace VirtoCommerce.MarketingModule.Core.Promotions
+namespace VirtoCommerce.MarketingModule.Core.Promotions;
+
+public class DynamicPromotion : Promotion
 {
-    public class DynamicPromotion : Promotion, ICloneable
+    public DynamicPromotion()
     {
-        public DynamicPromotion()
+        Type = nameof(DynamicPromotion);
+    }
+
+    /// <summary>
+    /// If this flag is set to true, it allows this promotion to combine with itself.
+    /// Special for case when need to return same promotion rewards for multiple coupons
+    /// </summary>
+    public bool IsAllowCombiningWithSelf { get; set; }
+
+    [JsonIgnore]
+    public ICouponSearchService CouponSearchService { get; set; }
+
+    [JsonIgnore]
+    public IPromotionUsageSearchService PromotionUsageSearchService { get; set; }
+
+    public PromotionConditionAndRewardTree DynamicExpression { get; set; }
+
+    public override async Task<IList<PromotionReward>> EvaluatePromotionAsync(IEvaluationContext context)
+    {
+        var rewards = new List<PromotionReward>();
+
+        if (context is not PromotionEvaluationContext promoContext)
         {
-            Type = nameof(DynamicPromotion);
+            throw new ArgumentException($"context should be {nameof(PromotionEvaluationContext)}");
         }
 
-        /// <summary>
-        /// If this flag is set to true, it allows this promotion to combine with itself.
-        /// Special for case when need to return same promotion rewards for multiple coupons
-        /// </summary>
-        public bool IsAllowCombiningWithSelf { get; set; }
+        var validCoupons = HasCoupons
+            ? await FindValidCouponsAsync(promoContext)
+            : [];
 
-        [JsonIgnore]
-        public ICouponSearchService CouponSearchService { get; set; }
+        // Check coupon
+        var couponIsValid = !HasCoupons || validCoupons.Count > 0;
 
-        [JsonIgnore]
-        public IPromotionUsageSearchService PromotionUsageSearchService { get; set; }
+        promoContext = promoContext.Clone();
 
-        public PromotionConditionAndRewardTree DynamicExpression { get; set; }
-
-        public override async Task<PromotionReward[]> EvaluatePromotionAsync(IEvaluationContext context)
+        // Evaluate reward for all promoEntry in context
+        foreach (var promoEntry in promoContext.PromoEntries)
         {
-            var result = new List<PromotionReward>();
+            // Set current context promo entry for evaluation
+            promoContext.PromoEntry = promoEntry;
 
-            if (!(context is PromotionEvaluationContext promoContext))
+            foreach (var reward in DynamicExpression?.GetRewards() ?? [])
             {
-                throw new ArgumentException("context should be PromotionEvaluationContext");
-            }
+                var clonedReward = reward.CloneTyped();
+                EvaluateReward(promoContext, couponIsValid, clonedReward);
 
-            IEnumerable<Coupon> validCoupons = null;
-            if (HasCoupons)
-            {
-                validCoupons = await FindValidCouponsAsync(promoContext);
-            }
-            //Check coupon
-            var couponIsValid = !HasCoupons || validCoupons.Any();
-
-            promoContext = promoContext.Clone();
-
-            //Evaluate reward for all promoEntry in context
-            foreach (var promoEntry in promoContext.PromoEntries)
-            {
-                //Set current context promo entry for evaluation
-                promoContext.PromoEntry = promoEntry;
-
-                foreach (var reward in DynamicExpression?.GetRewards() ?? Array.Empty<PromotionReward>())
+                // Add coupon to reward only when promotion contains associated coupons
+                if (validCoupons.Count > 0)
                 {
-                    var clonedReward = reward.Clone() as PromotionReward;
-                    EvaluateReward(promoContext, couponIsValid, clonedReward);
-                    //Add coupon to reward only for case when promotion contains associated coupons
-                    if (!validCoupons.IsNullOrEmpty())
+                    // Need to return promotion rewards for each valid coupon if promotion IsAllowCombiningWithSelf flag set
+                    foreach (var validCoupon in IsAllowCombiningWithSelf ? validCoupons : validCoupons.Take(1))
                     {
-                        //Need to return promotion rewards for each valid coupon if promotion IsAllowCombiningWithSelf flag set
-                        foreach (var validCoupon in IsAllowCombiningWithSelf ? validCoupons : validCoupons.Take(1))
-                        {
-                            clonedReward.Promotion = this;
-                            clonedReward.Coupon = validCoupon.Code;
-                            result.Add(clonedReward);
-                            //Clone reward for next iteration
-                            clonedReward = clonedReward.Clone() as PromotionReward;
-                        }
-                    }
-                    else
-                    {
-                        result.Add(clonedReward);
+                        clonedReward.Promotion = this;
+                        clonedReward.Coupon = validCoupon.Code;
+                        rewards.Add(clonedReward);
+
+                        // Clone reward for next iteration
+                        clonedReward = clonedReward.CloneTyped();
                     }
                 }
-            }
-            return result.ToArray();
-        }
-
-        protected virtual void EvaluateReward(PromotionEvaluationContext promoContext, bool couponIsValid, PromotionReward reward)
-        {
-            reward.Promotion = this;
-            reward.IsValid = couponIsValid && (DynamicExpression?.IsSatisfiedBy(promoContext) ?? false);
-
-            //Set productId for catalog item reward
-            if (reward is CatalogItemAmountReward catalogItemReward && catalogItemReward.ProductId == null)
-            {
-                catalogItemReward.ProductId = promoContext.PromoEntry.ProductId;
-            }
-        }
-
-        [Obsolete("Not being called. Use FindValidCouponsAsync(PromotionEvaluationContext promoContext) instead.")]
-        protected virtual async Task<IEnumerable<Coupon>> FindValidCouponsAsync(ICollection<string> couponCodes, string userId)
-        {
-            var result = new List<Coupon>();
-            if (!couponCodes.IsNullOrEmpty())
-            {
-                //Remove empty codes from input list
-                couponCodes = couponCodes.Where(x => !string.IsNullOrEmpty(x)).ToList();
-                if (!couponCodes.IsNullOrEmpty())
+                else
                 {
-                    var coupons = await CouponSearchService.SearchCouponsAsync(new CouponSearchCriteria { Codes = couponCodes, PromotionId = Id });
-                    foreach (var coupon in coupons.Results.OrderBy(x => x.TotalUsesCount))
-                    {
-                        var couponIsValid = true;
-                        if (coupon.ExpirationDate != null)
-                        {
-                            couponIsValid = coupon.ExpirationDate > DateTime.UtcNow;
-                        }
-                        if (couponIsValid && coupon.MaxUsesNumber > 0)
-                        {
-                            var usage = await PromotionUsageSearchService.SearchUsagesAsync(new PromotionUsageSearchCriteria { PromotionId = Id, CouponCode = coupon.Code, Take = 0 });
-                            couponIsValid = usage.TotalCount < coupon.MaxUsesNumber;
-                        }
-                        if (couponIsValid && coupon.MaxUsesPerUser > 0 && !string.IsNullOrWhiteSpace(userId))
-                        {
-                            var usage = await PromotionUsageSearchService.SearchUsagesAsync(new PromotionUsageSearchCriteria { PromotionId = Id, CouponCode = coupon.Code, UserId = userId, Take = int.MaxValue });
-                            couponIsValid = usage.TotalCount < coupon.MaxUsesPerUser;
-                        }
-                        if (couponIsValid)
-                        {
-                            result.Add(coupon);
-                        }
-                    }
+                    rewards.Add(clonedReward);
                 }
             }
-            return result;
         }
 
-        protected virtual async Task<IEnumerable<Coupon>> FindValidCouponsAsync(PromotionEvaluationContext promoContext)
+        return rewards;
+    }
+
+    protected virtual void EvaluateReward(PromotionEvaluationContext promoContext, bool couponIsValid, PromotionReward reward)
+    {
+        reward.Promotion = this;
+        reward.IsValid = couponIsValid && (DynamicExpression?.IsSatisfiedBy(promoContext) ?? false);
+
+        // Set productId for catalog item reward
+        if (reward is CatalogItemAmountReward catalogItemReward && catalogItemReward.ProductId == null)
         {
-            var result = new List<Coupon>();
-
-            if (!promoContext.Coupons.IsNullOrEmpty())
-            {
-                //Remove empty codes from input list
-                var couponCodes = promoContext.Coupons.Where(x => !string.IsNullOrEmpty(x)).ToList();
-
-                if (!couponCodes.IsNullOrEmpty())
-                {
-                    var coupons = await CouponSearchService.SearchCouponsAsync(new CouponSearchCriteria { Codes = couponCodes, PromotionId = Id });
-
-                    foreach (var coupon in coupons.Results.OrderBy(x => x.TotalUsesCount))
-                    {
-                        var couponIsValid = true;
-                        if (coupon.ExpirationDate != null)
-                        {
-                            couponIsValid = coupon.ExpirationDate > DateTime.UtcNow;
-                        }
-
-                        if (couponIsValid && coupon.MaxUsesNumber > 0)
-                        {
-                            var usage = await PromotionUsageSearchService.SearchUsagesAsync(new PromotionUsageSearchCriteria { PromotionId = Id, CouponCode = coupon.Code, Take = 0 });
-                            couponIsValid = usage.TotalCount < coupon.MaxUsesNumber;
-                        }
-
-                        if (couponIsValid && coupon.MaxUsesPerUser > 0 && !string.IsNullOrWhiteSpace(promoContext.UserId))
-                        {
-                            var usage = await PromotionUsageSearchService.SearchUsagesAsync(new PromotionUsageSearchCriteria { PromotionId = Id, CouponCode = coupon.Code, UserId = promoContext.UserId, Take = int.MaxValue });
-                            couponIsValid = usage.TotalCount < coupon.MaxUsesPerUser;
-                        }
-
-                        if (couponIsValid && !string.IsNullOrWhiteSpace(coupon.MemberId))
-                        {
-                            couponIsValid = coupon.MemberId == promoContext.ContactId || coupon.MemberId == promoContext.OrganizationId;
-                        }
-
-                        if (couponIsValid)
-                        {
-                            result.Add(coupon);
-                        }
-                    }
-                }
-            }
-
-            return result;
+            catalogItemReward.ProductId = promoContext.PromoEntry.ProductId;
         }
+    }
 
-        #region ICloneable members
-
-        public override object Clone()
+    protected virtual async Task<IList<Coupon>> FindValidCouponsAsync(PromotionEvaluationContext promoContext)
+    {
+        if (promoContext.Coupons.IsNullOrEmpty())
         {
-            var result = base.Clone() as DynamicPromotion;
-
-            if (DynamicExpression != null)
-            {
-                result.DynamicExpression = DynamicExpression.Clone() as PromotionConditionAndRewardTree;
-            }
-
-            return result;
+            return [];
         }
 
-        #endregion
+        // Remove empty codes from input list
+        var couponCodes = promoContext.Coupons
+            .Where(x => !x.IsNullOrEmpty())
+            .ToList();
+
+        if (couponCodes.IsNullOrEmpty())
+        {
+            return [];
+        }
+
+        var searchCriteria = AbstractTypeFactory<CouponSearchCriteria>.TryCreateInstance();
+        searchCriteria.PromotionId = Id;
+        searchCriteria.Codes = couponCodes;
+
+        var coupons = await CouponSearchService.SearchAllAsync(searchCriteria);
+
+        var validCoupons = new List<Coupon>();
+
+        foreach (var coupon in coupons.OrderBy(x => x.TotalUsesCount))
+        {
+            if (await CouponIsValid(coupon, promoContext))
+            {
+                validCoupons.Add(coupon);
+            }
+        }
+
+        return validCoupons;
+    }
+
+    private async Task<bool> CouponIsValid(Coupon coupon, PromotionEvaluationContext promoContext)
+    {
+        var couponIsValid = true;
+
+        if (coupon.ExpirationDate != null)
+        {
+            couponIsValid = coupon.ExpirationDate > DateTime.UtcNow;
+        }
+
+        if (couponIsValid && !coupon.MemberId.IsNullOrWhiteSpace())
+        {
+            couponIsValid = coupon.MemberId == promoContext.ContactId || coupon.MemberId == promoContext.OrganizationId;
+        }
+
+        if (couponIsValid && coupon.MaxUsesNumber > 0)
+        {
+            couponIsValid = await GetUsageCount(Id, coupon.Code) < coupon.MaxUsesNumber;
+        }
+
+        if (couponIsValid && coupon.MaxUsesPerUser > 0 && !promoContext.UserId.IsNullOrWhiteSpace())
+        {
+            couponIsValid = await GetUsageCount(Id, coupon.Code, promoContext.UserId) < coupon.MaxUsesPerUser;
+        }
+
+        return couponIsValid;
+    }
+
+    public override object Clone()
+    {
+        var result = (DynamicPromotion)base.Clone();
+
+        if (DynamicExpression != null)
+        {
+            result.DynamicExpression = DynamicExpression.CloneTyped();
+        }
+
+        return result;
+    }
+
+
+    private async Task<int> GetUsageCount(string promotionId, string couponCode, string userId = null)
+    {
+        var searchCriteria = AbstractTypeFactory<PromotionUsageSearchCriteria>.TryCreateInstance();
+        searchCriteria.PromotionId = promotionId;
+        searchCriteria.CouponCode = couponCode;
+        searchCriteria.UserId = userId;
+        searchCriteria.Take = 0;
+
+        var searchResult = await PromotionUsageSearchService.SearchAsync(searchCriteria);
+
+        return searchResult.TotalCount;
     }
 }
