@@ -1,5 +1,5 @@
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Extensions.Caching.Memory;
@@ -7,77 +7,76 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using VirtoCommerce.MarketingModule.Data.Model;
-using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.MarketingModule.Data.Services;
 using VirtoCommerce.Platform.Caching;
-using VirtoCommerce.Platform.Core.Caching;
-using VirtoCommerce.Platform.Core.Domain;
 using VirtoCommerce.Platform.Core.Events;
 using Xunit;
 
-namespace VirtoCommerce.MarketingModule.Test
+namespace VirtoCommerce.MarketingModule.Test;
+
+[Obsolete("Replaced with DynamicContentFolderServiceTests", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
+public class DynamicContentServiceUnitTests : DynamicContentServiceTestsBase
 {
-    public class DynamicContentServiceUnitTests
+    [Fact]
+    public async Task DeleteFoldersAsync_FolderHasChildren_AllRemoved()
     {
-        private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-        private readonly Mock<IMarketingRepository> _repositoryMock;
-        private readonly Mock<IEventPublisher> _eventPublisherMock;
+        //Arrange
+        var mainId = Guid.NewGuid().ToString();
+        var firstChildId = Guid.NewGuid().ToString();
+        var singleId = Guid.NewGuid().ToString();
 
-        public DynamicContentServiceUnitTests()
-        {
-            _unitOfWorkMock = new Mock<IUnitOfWork>();
-            _repositoryMock = new Mock<IMarketingRepository>();
-            _eventPublisherMock = new Mock<IEventPublisher>();
-        }
+        var mainFolder = new DynamicContentFolderEntity { Id = mainId };
+        var childFolder1 = new DynamicContentFolderEntity { Id = firstChildId, ParentFolderId = mainId };
+        var childFolder2 = new DynamicContentFolderEntity { Id = Guid.NewGuid().ToString(), ParentFolderId = firstChildId };
+        var childFolder3 = new DynamicContentFolderEntity { Id = Guid.NewGuid().ToString(), ParentFolderId = firstChildId };
+        var childFolder4 = new DynamicContentFolderEntity { Id = Guid.NewGuid().ToString(), ParentFolderId = firstChildId };
+        var singleFolder = new DynamicContentFolderEntity { Id = singleId };
 
-        [Fact]
-        public async Task DeleteFoldersAsync_FolderHasChildren_AllRemoved()
-        {
-            //Arrange
-            var mainId = Guid.NewGuid().ToString();
-            var firstChildId = Guid.NewGuid().ToString();
-            var singleId = Guid.NewGuid().ToString();
+        var folders = new List<DynamicContentFolderEntity> { mainFolder, childFolder1, childFolder2, childFolder3, childFolder4, singleFolder };
 
+        var service = GetDynamicContentService(folders);
 
-            var mainFolder = new DynamicContentFolderEntity { Id = mainId };
-            var childFolder1 = new DynamicContentFolderEntity { Id = firstChildId, ParentFolderId = mainId };
-            var childFolder2 = new DynamicContentFolderEntity { Id = Guid.NewGuid().ToString(), ParentFolderId = firstChildId };
-            var childFolder3 = new DynamicContentFolderEntity { Id = Guid.NewGuid().ToString(), ParentFolderId = firstChildId };
-            var childFolder4 = new DynamicContentFolderEntity { Id = Guid.NewGuid().ToString(), ParentFolderId = firstChildId };
-            var singleFolder = new DynamicContentFolderEntity { Id = singleId };
+        //Act
+        await service.DeleteFoldersAsync([mainId]);
 
-            var items = new[] { mainFolder, childFolder1, childFolder2, childFolder3, childFolder4, singleFolder }.AsQueryable();
-
-            _repositoryMock.Setup(o => o.Folders).Returns(() => items);
-            _repositoryMock.Setup(o => o.RemoveFoldersAsync(It.IsAny<DynamicContentFolderEntity[]>())).Callback<DynamicContentFolderEntity[]>(f =>
-            {
-                var allFolders = _repositoryMock.Object.Folders.Where(x => !f.Select(y=>y.Id).Contains(x.Id)).AsQueryable();
-                _repositoryMock.Setup(o => o.Folders).Returns(() => allFolders);
-            });
-
-            var service = GetDynamicContentServiceWithPlatformMemoryCache();
-
-            //Act
-            await service.DeleteFoldersAsync(new[] { mainId });
-
-            //Assert
-            _repositoryMock.Object.Folders.Should().HaveCount(1);
-            _repositoryMock.Object.Folders.Should().Contain(x => x.Id == singleId);
-        }
+        //Assert
+        folders.Should().HaveCount(1);
+        folders.Should().Contain(x => x.Id == singleId);
+    }
 
 
-        private DynamicContentService GetDynamicContentServiceWithPlatformMemoryCache()
-        {
-            var memoryCache = new MemoryCache(Options.Create(new MemoryCacheOptions()));
-            var platformMemoryCache = new PlatformMemoryCache(memoryCache, Options.Create(new CachingOptions()), new Mock<ILogger<PlatformMemoryCache>>().Object);
-            _repositoryMock.Setup(ss => ss.UnitOfWork).Returns(_unitOfWorkMock.Object);
+    private static DynamicContentService GetDynamicContentService(List<DynamicContentFolderEntity> folders)
+    {
+        var memoryCache = new MemoryCache(Options.Create(new MemoryCacheOptions()));
+        var platformMemoryCache = new PlatformMemoryCache(memoryCache, Options.Create(new CachingOptions()), Mock.Of<ILogger<PlatformMemoryCache>>());
 
-            return GetPromotionService(platformMemoryCache, _repositoryMock.Object);
-        }
+        var repositoryMock = GetRepositoryMock(folders);
 
-        public DynamicContentService GetPromotionService(IPlatformMemoryCache platformMemoryCache, IMarketingRepository repository)
-        {
-            return new DynamicContentService(() => repository, _eventPublisherMock.Object, platformMemoryCache);
-        }
+        var eventPublisher = Mock.Of<IEventPublisher>();
+
+        var dynamicContentFolderService = new DynamicContentFolderService(
+            () => repositoryMock.Object,
+            platformMemoryCache,
+            eventPublisher);
+
+        var dynamicContentItemService = new DynamicContentItemService(
+            () => repositoryMock.Object,
+            platformMemoryCache,
+            eventPublisher);
+
+        var dynamicContentPlaceService = new DynamicContentPlaceService(
+            () => repositoryMock.Object,
+            platformMemoryCache,
+            eventPublisher);
+
+        var dynamicContentPublicationService = new DynamicContentPublicationService(
+            () => repositoryMock.Object,
+            platformMemoryCache,
+            eventPublisher);
+
+        return new DynamicContentService(dynamicContentFolderService,
+            dynamicContentItemService,
+            dynamicContentPlaceService,
+            dynamicContentPublicationService);
     }
 }

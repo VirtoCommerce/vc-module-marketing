@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 
@@ -16,8 +17,10 @@ namespace VirtoCommerce.MarketingModule.Data.MySql.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "8.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
             modelBuilder.Entity("VirtoCommerce.MarketingModule.Data.Model.CouponEntity", b =>
                 {
@@ -64,6 +67,7 @@ namespace VirtoCommerce.MarketingModule.Data.MySql.Migrations
 
                     b.Property<string>("PromotionId")
                         .IsRequired()
+                        .HasMaxLength(128)
                         .HasColumnType("varchar(128)");
 
                     b.HasKey("Id");
@@ -112,6 +116,7 @@ namespace VirtoCommerce.MarketingModule.Data.MySql.Migrations
                         .HasColumnType("varchar(128)");
 
                     b.Property<string>("ParentFolderId")
+                        .HasMaxLength(128)
                         .HasColumnType("varchar(128)");
 
                     b.HasKey("Id");
@@ -223,6 +228,7 @@ namespace VirtoCommerce.MarketingModule.Data.MySql.Migrations
                         .HasColumnType("varchar(256)");
 
                     b.Property<string>("FolderId")
+                        .HasMaxLength(128)
                         .HasColumnType("varchar(128)");
 
                     b.Property<string>("ImageUrl")
@@ -270,6 +276,7 @@ namespace VirtoCommerce.MarketingModule.Data.MySql.Migrations
                         .HasColumnType("varchar(256)");
 
                     b.Property<string>("FolderId")
+                        .HasMaxLength(128)
                         .HasColumnType("varchar(128)");
 
                     b.Property<string>("ImageUrl")
@@ -496,6 +503,7 @@ namespace VirtoCommerce.MarketingModule.Data.MySql.Migrations
 
                     b.Property<string>("PromotionId")
                         .IsRequired()
+                        .HasMaxLength(128)
                         .HasColumnType("varchar(128)");
 
                     b.Property<string>("UserId")
@@ -528,10 +536,12 @@ namespace VirtoCommerce.MarketingModule.Data.MySql.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("DynamicContentItemId")
+                        .HasMaxLength(128)
                         .HasColumnType("varchar(128)");
 
                     b.Property<string>("DynamicContentPublishingGroupId")
                         .IsRequired()
+                        .HasMaxLength(128)
                         .HasColumnType("varchar(128)");
 
                     b.Property<string>("ModifiedBy")

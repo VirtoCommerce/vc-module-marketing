@@ -17,10 +17,10 @@ namespace VirtoCommerce.MarketingModule.Data.SqlServer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "8.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("VirtoCommerce.MarketingModule.Data.Model.CouponEntity", b =>
                 {
@@ -67,6 +67,7 @@ namespace VirtoCommerce.MarketingModule.Data.SqlServer.Migrations
 
                     b.Property<string>("PromotionId")
                         .IsRequired()
+                        .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
                     b.HasKey("Id");
@@ -115,6 +116,7 @@ namespace VirtoCommerce.MarketingModule.Data.SqlServer.Migrations
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ParentFolderId")
+                        .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
                     b.HasKey("Id");
@@ -226,6 +228,7 @@ namespace VirtoCommerce.MarketingModule.Data.SqlServer.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("FolderId")
+                        .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ImageUrl")
@@ -273,6 +276,7 @@ namespace VirtoCommerce.MarketingModule.Data.SqlServer.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("FolderId")
+                        .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ImageUrl")
@@ -499,6 +503,7 @@ namespace VirtoCommerce.MarketingModule.Data.SqlServer.Migrations
 
                     b.Property<string>("PromotionId")
                         .IsRequired()
+                        .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("UserId")
@@ -531,10 +536,12 @@ namespace VirtoCommerce.MarketingModule.Data.SqlServer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DynamicContentItemId")
+                        .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("DynamicContentPublishingGroupId")
                         .IsRequired()
+                        .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ModifiedBy")

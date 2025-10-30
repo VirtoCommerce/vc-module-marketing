@@ -4,39 +4,33 @@ using System.Threading.Tasks;
 using VirtoCommerce.CoreModule.Core.Common;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 
-namespace VirtoCommerce.MarketingModule.Test.CustomPromotion
+namespace VirtoCommerce.MarketingModule.Test.CustomPromotion;
+
+public class BuyProductWithTagPromotion(string[] tags, decimal discountAmount) : Promotion
 {
-    public class BuyProductWithTagPromotion : Promotion
+    public override Task<IList<PromotionReward>> EvaluatePromotionAsync(IEvaluationContext context)
     {
-        private readonly string[] _tags;
-        private readonly decimal _discountAmount;
+        var rewards = new List<PromotionReward>();
 
-        public BuyProductWithTagPromotion(string[] tags, decimal discountAmount)
+        if (context is PromotionEvaluationContext promoContext)
         {
-            _tags = tags;
-            _discountAmount = discountAmount;
-        }
-
-        public override Task<PromotionReward[]> EvaluatePromotionAsync(IEvaluationContext context)
-        {
-            var retVal = new List<PromotionReward>();
-            if (context is PromotionEvaluationContext promoContext)
+            foreach (var entry in promoContext.PromoEntries)
             {
-                foreach (var entry in promoContext.PromoEntries)
+                var tag = entry.Attributes?["tag"];
+
+                var reward = new CatalogItemAmountReward
                 {
-                    var tag = entry.Attributes != null ? entry.Attributes["tag"] : null;
-                    var reward = new CatalogItemAmountReward
-                    {
-                        AmountType = RewardAmountType.Relative,
-                        Amount = _discountAmount,
-                        IsValid = !string.IsNullOrEmpty(tag) && _tags.Contains(tag),
-                        ProductId = entry.ProductId,
-                        Promotion = this
-                    };
-                    retVal.Add(reward);
-                }
+                    AmountType = RewardAmountType.Relative,
+                    Amount = discountAmount,
+                    IsValid = !string.IsNullOrEmpty(tag) && tags.Contains(tag),
+                    ProductId = entry.ProductId,
+                    Promotion = this,
+                };
+
+                rewards.Add(reward);
             }
-            return Task.FromResult(retVal.ToArray());
         }
+
+        return Task.FromResult<IList<PromotionReward>>(rewards);
     }
 }
