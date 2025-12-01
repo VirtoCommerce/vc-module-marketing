@@ -3,7 +3,6 @@
     <TargetFramework>net8.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <noWarn>1591</noWarn>
-    <LangVersion>latest</LangVersion>
     <IsPackable>True</IsPackable>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -13,10 +12,10 @@
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="33.0.1" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="VirtoCommerce.OrdersModule.Core" Version="3.838.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.891.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.891.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Security" Version="3.891.0" />
+    <PackageReference Include="VirtoCommerce.OrdersModule.Core" Version="3.863.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.917.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.917.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Security" Version="3.917.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.MarketingModule.Core\VirtoCommerce.MarketingModule.Core.csproj" />
