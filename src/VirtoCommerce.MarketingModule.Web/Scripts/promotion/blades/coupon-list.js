@@ -121,12 +121,15 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
 
     function showAddCouponBlade() {
         var newBlade = {
-            id: 'couponImport',
+            id: 'couponDetail',
             title: 'marketing.blades.coupon-detail.new-title',
+            isNew: true,
             promotionId: blade.promotionId,
             currentEntity: {
                 promotionId: blade.promotionId,
-                isNew: true
+                isNew: true,
+                maxUsesNumber: 0,
+                maxUsesPerUser: 0,
             },
             controller: 'virtoCommerce.marketingModule.couponDetailController',
             template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/promotion/blades/coupon-detail.tpl.html'
