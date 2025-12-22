@@ -5,6 +5,10 @@
       "couponsWidget": {
         "title": "Kupony",
         "newPromotion": "Możesz dodać kupony po zapisaniu promocji"
+      },
+      "promotion-usage-history": {
+        "title": "Historia użycia",
+        "orders-title": "Zamówienia z tą promocją"
       }
     },
     "blades": {
@@ -84,7 +88,16 @@
         "labels": {
           "name": "Nazwa",
           "isActive": "Aktywna",
-          "last-modified": "Zmodyfikowano"
+          "last-modified": "Zmodyfikowano",
+          "hasCoupons": "Ma Kupon",
+          "startDate": "Data rozpoczęcia",
+          "endDate": "Data zakończenia",
+          "copy-id": "Kopiuj ID",
+          "active-filter": "Aktywna",
+          "upcoming-filter": "Nadchodząca",
+          "archived-filter": "Zarchiwizowana",
+          "deactivated-filter": "Dezaktywowana",
+          "all-filter": "Wszystkie promocje"
         },
         "new-filter": "Dodaj nowy filtr",
         "placeholders": {
@@ -99,7 +112,10 @@
         "labels": {
           "name": "Nazwa filtra",
           "name_": "Nadaj nazwę temu filtrowi",
-          "active": "Tylko aktywne"
+          "status": "Status",
+          "criteria": "Kryteria filtra",
+          "from": "Od",
+          "to": "Do"
         },
         "placeholders": {
           "all": "Nieokreślone"

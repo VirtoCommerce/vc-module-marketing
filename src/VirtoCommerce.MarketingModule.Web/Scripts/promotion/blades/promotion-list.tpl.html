@@ -1,39 +1,30 @@
 <div class="blade-static">
     <div class="form-group">
-        <div class="form-input __search">
-            <input placeholder="{{'platform.placeholders.search-keyword' | translate}}" ng-model="filter.keyword" ng-keyup="$event.which === 13 && filter.criteriaChanged()" style="width: 190px">
-            <button class="btn __other" style="position: relative;right: 45px;">
-                <i class="btn-ico fa fa-remove" title="Clear" ng-click="filter.keyword=null;filter.criteriaChanged()"></i>
-            </button>
-            <ui-select ng-model="filter.current" ng-change="filter.change()" style="left: 220px;position: absolute;width: 190px;top: 0px;">
-                <ui-select-match allow-clear="true" placeholder="{{'marketing.blades.promotion-list.placeholders.select-filter' | translate}}">{{$select.selected.name | translate}}</ui-select-match>
-                <ui-select-choices repeat="x in $localStorage.promotionSearchFilters | filter: $select.search">
-                    <span ng-bind-html="x.name | translate | highlight: $select.search"></span>
-                </ui-select-choices>
-            </ui-select>
+      <div style="display: flex;align-items: center;">
+        <a class="add" left-click-menu data-target="filterSearch{{blade.id}}" style="margin: 0 20px 0 0;">{{ filter.current ? filter.current.name : 'marketing.blades.promotion-list.placeholders.select-filter' | translate }} <i class="form-ico fa fa-caret-down"></i></a>
+        <ul class="menu __context" role="menu" id="filterSearch{{blade.id}}" style="width: 170px;">
+          <li ng-repeat="x in $localStorage.promotionSearchFilters" class="splited-element menu-item">
+            <i class="menu-ico fas fa-plus" ng-if="!x.id"></i> <span ng-click='filter.current=x;filter.change();' ng-bind="x.name | translate"></span>
+            <i class="fa fa-pencil right-alignment" ng-click='filter.current=x;filter.edit($event)' ng-if="x.id"></i>
+          </li>
+        </ul>
+
+        <div class="form-input" style="flex-grow: 1; flex-grow: 1; max-width: 400px">
+          <input ng-model="filter.keyword" ng-keyup="$event.which === 13 && filter.filterByKeyword()" placeholder="{{'platform.placeholders.search-keyword' | translate}}">
+          <button class="btn __other" style="position: relative;right: 45px;" ng-click="filter.current=null;filter.change()">
+            <i class="btn-ico fa fa-remove" title="Clear"></i>
+          </button>
         </div>
-        <a href="" ng-click="filter.edit()" style="left: 416px; top:25px; position:absolute;" class="form-edit"><i class="form-ico fa fa-pencil"></i></a>
+      </div>
     </div>
 </div>
 <div class="blade-static __bottom" ng-if="pageSettings.itemsPerPageCount < pageSettings.totalItems" ng-include="'pagerTemplate.html'"></div>
-<div class="blade-content __medium-wide">
+<div class="blade-content __large-wide">
     <div class="blade-inner">
         <div class="inner-block">
-            <div class="table-wrapper" ng-init="setGridOptions({
-                    useExternalSorting: true,
-                    rowTemplate: 'promotion-list.row.html',
-                    columnDefs: [
-                            { name: 'actions', displayName: '', enableColumnResizing: false, enableSorting: false, width: 30, cellTemplate: 'list-actions.cell.html', pinnedLeft:true },
-                            { name: 'name', displayName: 'marketing.blades.promotion-list.labels.name', cellTemplate: 'promotion-list-name.cell.html' },
-                            { name: 'isActive', displayName: 'marketing.blades.promotion-list.labels.isActive', width: 65 },
-                            { name: 'modifiedDate', displayName: 'marketing.blades.promotion-list.labels.last-modified', width: 87 }
-                        ]})">
+            <div class="table-wrapper" ng-init="setGridOptions('promotion-list-grid', getGridOptions())">
                 <div ui-grid="gridOptions" ui-grid-auto-resize ui-grid-save-state ui-grid-selection ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-height></div>
-                <ul class="menu __context" role="menu" id="pro_menu">
-                    <li class="menu-item" ng-click='deleteList([contextMenuEntity])' va-permission="marketing:delete">
-                        <i class="menu-ico fas fa-trash-alt"></i> {{'platform.commands.delete' | translate}}
-                    </li>
-                </ul>
+                <ng-include src="'promotion-list-context-menu.row.html'"></ng-include>
             </div>
         </div>
     </div>
@@ -51,4 +42,25 @@
     <div class="ui-grid-cell-contents">
        <span title="{{row.entity.type == 'DynamicPromotion' ? 'Dynamic promotion' : 'Promotion defined in code'}}" class="table-t">{{COL_FIELD}}</span>
     </div>
+</script>
+<script type="text/ng-template" id="promotion-list-bool.cell.html">
+    <div class="ui-grid-cell-contents">
+        <i class="fa" ng-class="{'fa-check-circle': COL_FIELD, 'fa-circle-o': !COL_FIELD}" ng-style="{'color': COL_FIELD ? '#4CAF50' : '#9E9E9E'}"></i>
+    </div>
+</script>
+<script type="text/ng-template" id="promotion-list-context-menu.row.html">
+  <ul class="menu __context" role="menu" id="pro_menu">
+    <li class="menu-item" ng-click='selectNode(contextMenuEntity)' id="menu_edit">
+      <i class="menu-ico fa fa-edit"></i> {{'platform.commands.manage' | translate}}
+    </li>
+    <li class="menu-item" ng-click='copy(contextMenuEntity.id)' id="menu_copyId">
+      <i class="menu-ico fa fa-copy"></i> {{'marketing.blades.promotion-list.labels.copy-id' | translate}}
+    </li>
+    <li class="menu-item" ng-click='clonePromotion(contextMenuEntity)' id="menu_clone" va-permission="marketing:create">
+      <i class="menu-ico fas fa-clone"></i> {{'platform.commands.clone' | translate}}
+    </li>
+    <li class="menu-item" ng-click='deleteList([contextMenuEntity])' va-permission="marketing:delete" id="menu_delete">
+      <i class="menu-ico fas fa-trash-alt"></i> {{'platform.commands.delete' | translate}}
+    </li>
+  </ul>
 </script>

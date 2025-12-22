@@ -5,6 +5,10 @@
       "couponsWidget": {
         "title": "Купоны",
         "newPromotion": "Вы можете добавить купоны после сохранения акции"
+      },
+      "promotion-usage-history": {
+        "title": "История использования",
+        "orders-title": "Заказы с этой акцией"
       }
     },
     "blades": {
@@ -84,7 +88,16 @@
         "labels": {
           "name": "Имя",
           "isActive": "Активно",
-          "last-modified": "Изменено"
+          "last-modified": "Изменено",
+          "hasCoupons": "Есть купон",
+          "startDate": "Дата начала",
+          "endDate": "Дата окончания",
+          "copy-id": "Копировать ID",
+          "active-filter": "Активные",
+          "upcoming-filter": "Предстоящие",
+          "archived-filter": "Архивные",
+          "deactivated-filter": "Деактивированные",
+          "all-filter": "Все акции"
         },
         "new-filter": "Добавить новый фильтр",
         "placeholders": {
@@ -99,7 +112,10 @@
         "labels": {
           "name": "Имя фильтра",
           "name_": "Назовите этот фильтр",
-          "active": "Только активные"
+          "status": "Статус",
+          "criteria": "Критерии фильтра",
+          "from": "С",
+          "to": "По"
         },
         "placeholders": {
           "all": "Не указано"

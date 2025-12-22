@@ -8,17 +8,46 @@ angular.module('virtoCommerce.marketingModule')
             blade.origEntity = data;
             blade.isLoading = false;
 
+            // Ensure status is a number (not string) for proper comparison with ui-select
+            if (blade.currentEntity.status != null && blade.currentEntity.status !== undefined && blade.currentEntity.status !== '') {
+                var statusValue = parseInt(blade.currentEntity.status, 10);
+                blade.currentEntity.status = isNaN(statusValue) ? null : statusValue;
+            } else {
+                blade.currentEntity.status = null;
+            }
+
             blade.title = blade.isNew ? 'marketing.blades.filter-detail.new-title' : data.name;
             blade.subtitle = blade.isNew ? 'marketing.blades.filter-detail.new-subtitle' : 'marketing.blades.filter-detail.subtitle';
         }
 
+        blade.statusOptions = [
+            { value: 0, label: 'marketing.blades.promotion-list.labels.all-filter' },
+            { value: 1, label: 'marketing.blades.promotion-list.labels.active-filter' },
+            { value: 2, label: 'marketing.blades.promotion-list.labels.upcoming-filter' },
+            { value: 3, label: 'marketing.blades.promotion-list.labels.archived-filter' },
+            { value: 4, label: 'marketing.blades.promotion-list.labels.deactivated-filter' }
+        ];
+
+        // Helper function to get status object by value
+        blade.getStatusByValue = function(statusValue) {
+            if (statusValue == null || statusValue === undefined) return null;
+            return _.findWhere(blade.statusOptions, { value: statusValue });
+        };
+
+        // Helper function to get status label by value
+        $scope.getStatusLabel = function(statusValue) {
+            if (statusValue == null || statusValue === undefined) return '';
+            var status = blade.getStatusByValue(statusValue);
+            return status ? status.label : '';
+        };
+
         blade.metaFields = [
             {
-                name: 'onlyActive',
-                title: "marketing.blades.filter-detail.labels.active",
-                valueType: "Boolean"
+                name: 'status',
+                title: "marketing.blades.filter-detail.labels.status",
+                templateUrl: 'statusSelector.html'
             }, {
-                name: 'store',
+                name: 'storeIds',
                 title: "marketing.blades.promotion-detail.labels.store",
                 templateUrl: 'storeSelector.html'
             //}, {
@@ -32,10 +61,18 @@ angular.module('virtoCommerce.marketingModule')
             }
         ];
 
-        $scope.saveChanges = function () {
+        $scope.applyCriteria = function () {
+            // Normalize status to number before saving (or null if empty/invalid)
+            if (blade.currentEntity.status != null && blade.currentEntity.status !== undefined && blade.currentEntity.status !== '') {
+                var statusValue = parseInt(blade.currentEntity.status, 10);
+                blade.currentEntity.status = isNaN(statusValue) ? null : statusValue;
+            } else {
+                blade.currentEntity.status = null;
+            }
+            
             angular.copy(blade.currentEntity, blade.origEntity);
             if (blade.isNew) {
-                $localStorage.promotionSearchFilters.push(blade.origEntity);
+                $localStorage.promotionSearchFilters.unshift(blade.origEntity);
                 $localStorage.promotionSearchFilterId = blade.origEntity.id;
                 blade.parentBlade.filter.current = blade.origEntity;
                 blade.isNew = false;
@@ -43,6 +80,11 @@ angular.module('virtoCommerce.marketingModule')
 
             initializeBlade(blade.origEntity);
             blade.parentBlade.filter.criteriaChanged();
+            // $scope.bladeClose();
+        };
+        
+        $scope.saveChanges = function () {
+            $scope.applyCriteria();
         };
 
         var formScope;
@@ -88,7 +130,6 @@ angular.module('virtoCommerce.marketingModule')
             $scope.bladeClose();
         }
 
-        blade.stores = stores.query();
 
         // actions on load
         if (blade.isNew) {

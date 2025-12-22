@@ -5,6 +5,10 @@
       "couponsWidget": {
         "title": "Kuponger",
         "newPromotion": "Du kan legge til kuponger etter å ha lagret en kampanje"
+      },
+      "promotion-usage-history": {
+        "title": "Brukshistorikk",
+        "orders-title": "Bestillinger med denne kampanjen"
       }
     },
     "blades": {
@@ -84,7 +88,16 @@
         "labels": {
           "name": "Navn",
           "isActive": "Aktiv",
-          "last-modified": "Sist endret"
+          "last-modified": "Sist endret",
+          "hasCoupons": "Har Kupong",
+          "startDate": "Startdato",
+          "endDate": "Sluttdato",
+          "copy-id": "Kopier ID",
+          "active-filter": "Aktiv",
+          "upcoming-filter": "Kommende",
+          "archived-filter": "Arkivert",
+          "deactivated-filter": "Deaktivert",
+          "all-filter": "Alle Kampanjer"
         },
         "new-filter": "Legg til nytt filter",
         "placeholders": {
@@ -99,7 +112,10 @@
         "labels": {
           "name": "Filternavn",
           "name_": "Navngi dette filteret",
-          "active": "Kun aktive"
+          "status": "Status",
+          "criteria": "Filterkriterier",
+          "from": "Fra",
+          "to": "Til"
         },
         "placeholders": {
           "all": "Uspesifisert"

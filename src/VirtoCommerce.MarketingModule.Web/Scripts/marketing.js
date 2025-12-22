@@ -37,8 +37,8 @@ angular.module(moduleName, [])
         };
     })
 
-    .run(['platformWebApp.dynamicTemplateService', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', 'platformWebApp.toolbarService', 'platformWebApp.breadcrumbHistoryService', '$state', 'platformWebApp.authService', 'virtoCommerce.storeModule.stores', 'platformWebApp.permissionScopeResolver', 'platformWebApp.bladeNavigationService', 'virtoCommerce.coreModule.common.dynamicExpressionService', 'virtoCommerce.marketingModule.marketingMenuItemService'
-        , function (dynamicTemplateService, mainMenuService, widgetService, toolbarService, breadcrumbHistoryService, $state, authService, stores, permissionScopeResolver, bladeNavigationService, dynamicExpressionService, marketingMenuItemService) {
+    .run(['platformWebApp.dynamicTemplateService', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', 'platformWebApp.toolbarService', 'platformWebApp.breadcrumbHistoryService', '$state', 'platformWebApp.authService', 'virtoCommerce.storeModule.stores', 'platformWebApp.permissionScopeResolver', 'platformWebApp.bladeNavigationService', 'virtoCommerce.coreModule.common.dynamicExpressionService', 'virtoCommerce.marketingModule.marketingMenuItemService', 'platformWebApp.moduleHelper'
+        , function (dynamicTemplateService, mainMenuService, widgetService, toolbarService, breadcrumbHistoryService, $state, authService, stores, permissionScopeResolver, bladeNavigationService, dynamicExpressionService, marketingMenuItemService, moduleHelper) {
             //Register module in main menu
             var menuItem = {
                 path: 'browse/marketing',
@@ -63,6 +63,17 @@ angular.module(moduleName, [])
             widgetService.registerWidget({
                 controller: 'virtoCommerce.marketingModule.couponsWidgetController',
                 template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/promotion/widgets/couponsWidget.tpl.html'
+            }, 'promotionDetail');
+
+            widgetService.registerWidget({
+                controller: 'virtoCommerce.marketingModule.promotionUsageHistoryWidgetController',
+                template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/promotion/widgets/promotionUsageHistoryWidget.tpl.html',
+                isVisible: function (blade) {
+                    return moduleHelper.isModuleInstalled('VirtoCommerce.Orders') &&
+                           !blade.isNew &&
+                           blade.currentEntity &&
+                           blade.currentEntity.id;
+                }
             }, 'promotionDetail');
 
             //Register permission scopes templates used for scope bounded definition in role management ui
