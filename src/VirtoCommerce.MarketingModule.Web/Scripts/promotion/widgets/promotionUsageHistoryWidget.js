@@ -46,12 +46,5 @@ angular.module('virtoCommerce.marketingModule')
                 };
 
                 refresh();
-
-                // Watch for entity ID changes to refresh order count
-                $scope.$watch('widget.blade.currentEntity.id', function (newId, oldId) {
-                    if (newId && newId !== oldId && !blade.isNew) {
-                        refresh();
-                    }
-                });
             }]);
 
