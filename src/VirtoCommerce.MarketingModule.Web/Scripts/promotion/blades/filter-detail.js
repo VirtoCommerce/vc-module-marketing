@@ -50,14 +50,6 @@ angular.module('virtoCommerce.marketingModule')
                 name: 'storeIds',
                 title: "marketing.blades.promotion-detail.labels.store",
                 templateUrl: 'storeSelector.html'
-            //}, {
-            //    name: 'startDate',
-            //    title: "marketing.blades.promotion-detail.labels.start-date",
-            //    valueType: "DateTime"
-            //}, {
-            //    name: 'endDate',
-            //    title: "marketing.blades.promotion-detail.labels.expiration-date",
-            //    valueType: "DateTime"
             }
         ];
 
@@ -69,7 +61,7 @@ angular.module('virtoCommerce.marketingModule')
             } else {
                 blade.currentEntity.status = null;
             }
-            
+
             angular.copy(blade.currentEntity, blade.origEntity);
             if (blade.isNew) {
                 $localStorage.promotionSearchFilters.unshift(blade.origEntity);
@@ -80,9 +72,8 @@ angular.module('virtoCommerce.marketingModule')
 
             initializeBlade(blade.origEntity);
             blade.parentBlade.filter.criteriaChanged();
-            // $scope.bladeClose();
         };
-        
+
         $scope.saveChanges = function () {
             $scope.applyCriteria();
         };

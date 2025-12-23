@@ -265,7 +265,7 @@ angular.module('virtoCommerce.marketingModule')
         // ui-grid
         $scope.setGridOptions = function (gridId, gridOptions) {
             $scope.gridOptions = gridOptions;
-            
+
             uiGridHelper.initialize($scope, gridOptions, function (gridApi) {
                 uiGridHelper.bindRefreshOnSortChanged($scope);
             });
