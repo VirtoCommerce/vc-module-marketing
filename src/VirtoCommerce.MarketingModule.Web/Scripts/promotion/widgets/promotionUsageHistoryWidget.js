@@ -1,8 +1,15 @@
 angular.module('virtoCommerce.marketingModule')
     .controller('virtoCommerce.marketingModule.promotionUsageHistoryWidgetController',
-        ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.orderModule.order_res_customerOrders',
-            function ($scope, bladeNavigationService, customerOrders) {
+        ['$scope', '$injector', 'platformWebApp.bladeNavigationService',
+            function ($scope, $injector, bladeNavigationService) {
                 var blade = $scope.widget.blade;
+                    var customerOrders = null;
+
+                    // Orders module is an optional dependency. Avoid hard DI to prevent injection errors
+                    // when VirtoCommerce.Orders isn't installed.
+                    if ($injector.has('virtoCommerce.orderModule.order_res_customerOrders')) {
+                        customerOrders = $injector.get('virtoCommerce.orderModule.order_res_customerOrders');
+                    }
 
                 function refresh() {
                     $scope.ordersCount = '...';
@@ -11,6 +18,11 @@ angular.module('virtoCommerce.marketingModule')
                         $scope.ordersCount = 0;
                         return;
                     }
+
+                        if (!customerOrders) {
+                            $scope.ordersCount = 0;
+                            return;
+                        }
 
                     var countSearchCriteria = {
                         responseGroup: "Default",
@@ -29,6 +41,10 @@ angular.module('virtoCommerce.marketingModule')
                     if (!blade.currentEntity || !blade.currentEntity.id || blade.isNew) {
                         return;
                     }
+
+                        if (!customerOrders) {
+                            return;
+                        }
 
                     var newBlade = {
                         id: 'promotionOrders',

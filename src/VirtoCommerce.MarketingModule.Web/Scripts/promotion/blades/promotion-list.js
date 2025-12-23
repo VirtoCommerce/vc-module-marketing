@@ -25,7 +25,7 @@ angular.module('virtoCommerce.marketingModule')
             blade.isLoading = true;
 
             var criteria = {
-                responseGroup: 'none',
+                responseGroup: 'full',
                 keyword: filter.keyword,
                 sort: uiGridHelper.getSortExpression($scope),
                 skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,

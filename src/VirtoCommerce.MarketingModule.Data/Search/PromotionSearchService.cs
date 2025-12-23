@@ -63,7 +63,7 @@ public class PromotionSearchService(
                     // Active: IsActive AND CurrentDate >= StartDate AND CurrentDate < EndDate (or EndDate is null)
                     query = query.Where(x => x.IsActive && 
                         (now >= x.StartDate) && 
-                        (x.EndDate == null || now < x.EndDate));
+                        (x.EndDate == null || x.EndDate >= now));
                     break;
                 case PromotionStatus.Upcoming:
                     // Upcoming: IsActive AND StartDate > CurrentDate
@@ -71,7 +71,7 @@ public class PromotionSearchService(
                     break;
                 case PromotionStatus.Archived:
                     // Archived: IsActive AND EndDate < CurrentDate
-                    query = query.Where(x => x.IsActive && (x.EndDate == null || x.EndDate >= now));
+                    query = query.Where(x => x.IsActive && x.EndDate <= now);
                     break;
                 case PromotionStatus.Deactivated:
                     // Deactivated: NOT IsActive
