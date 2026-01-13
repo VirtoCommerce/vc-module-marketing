@@ -88,7 +88,7 @@ angular.module('virtoCommerce.marketingModule')
             $scope.bladeClose();
         }
 
-        blade.stores = stores.query();
+        blade.storeDataSource = (criteria) => stores.search(criteria);
 
         // actions on load
         if (blade.isNew) {
