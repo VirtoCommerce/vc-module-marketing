@@ -13,7 +13,7 @@ angular.module('virtoCommerce.marketingModule')
                     { name: 'actions', displayName: '', enableColumnResizing: false, enableSorting: false, width: 30, cellTemplate: 'list-actions.cell.html', pinnedLeft: true},
                     { name: 'name', displayName: 'marketing.blades.promotion-list.labels.name', width: 350, cellTemplate: 'promotion-list-name.cell.html'},
                     { name: 'isActive', displayName: 'marketing.blades.promotion-list.labels.isActive', width: 120, cellTemplate: 'promotion-list-bool.cell.html'},
-                    { name: 'hasCoupons', displayName: 'marketing.blades.promotion-list.labels.hasCoupons', width: 120, cellTemplate: 'promotion-list-bool.cell.html'},
+                    { name: 'hasCoupons', displayName: 'marketing.blades.promotion-list.labels.hasCoupons', width: 120, cellTemplate: 'promotion-list-bool.cell.html', enableSorting: false},
                     { name: 'startDate', displayName: 'marketing.blades.promotion-list.labels.startDate', width: 150, cellFilter: 'date' },
                     { name: 'endDate', displayName: 'marketing.blades.promotion-list.labels.endDate', width: 150, cellFilter: 'date', cellTemplate: '$(Platform)/Scripts/common/templates/ui-grid/am-time-ago.cell.html' },
                     { name: 'description', displayName: 'marketing.blades.promotion-list.labels.description', width: 350 },
