@@ -52,10 +52,39 @@ public class PromotionSearchService(
             query = query.Where(x => !x.Stores.Any() || x.Stores.Any(s => criteria.StoreIds.Contains(s.StoreId)));
         }
 
-        if (criteria.OnlyActive)
+        var now = DateTime.UtcNow;
+
+        // Handle status-based filtering
+        if (criteria.Status.HasValue)
         {
-            var now = DateTime.UtcNow;
-            query = query.Where(x => x.IsActive && now >= x.StartDate && (x.EndDate == null || x.EndDate >= now));
+            switch (criteria.Status.Value)
+            {
+                case PromotionStatus.Active:
+                    // Active: IsActive AND CurrentDate >= StartDate AND CurrentDate < EndDate (or EndDate is null)
+                    query = query.Where(x => x.IsActive && 
+                        (now >= x.StartDate) && 
+                        (x.EndDate == null || x.EndDate >= now));
+                    break;
+                case PromotionStatus.Upcoming:
+                    // Upcoming: IsActive AND StartDate > CurrentDate
+                    query = query.Where(x => x.IsActive && x.StartDate > now);
+                    break;
+                case PromotionStatus.Archived:
+                    // Archived: IsActive AND EndDate < CurrentDate
+                    query = query.Where(x => x.IsActive && x.EndDate < now);
+                    break;
+                case PromotionStatus.Deactivated:
+                    // Deactivated: NOT IsActive
+                    query = query.Where(x => !x.IsActive);
+                    break;
+                case PromotionStatus.All:
+                    // All: No additional filter
+                    break;
+            }
+        }
+        else if (criteria.OnlyActive)
+        {
+            query = query.Where(x => x.IsActive && (now >= x.StartDate) && (x.EndDate == null || x.EndDate >= now));
         }
 
         if (!criteria.Keyword.IsNullOrEmpty())

@@ -5,6 +5,10 @@
       "couponsWidget": {
         "title": "优惠券",
         "newPromotion": "保存促销活动后，您可以添加优惠券"
+      },
+      "promotion-usage-history": {
+        "title": "使用历史",
+        "orders-title": "使用此促销的订单"
       }
     },
     "blades": {
@@ -84,7 +88,16 @@
         "labels": {
           "name": "名称",
           "isActive": "活动",
-          "last-modified": "修改时间"
+          "last-modified": "修改时间",
+          "hasCoupons": "有优惠券",
+          "startDate": "开始日期",
+          "endDate": "结束日期",
+          "copy-id": "复制ID",
+          "active-filter": "活动",
+          "upcoming-filter": "即将推出",
+          "archived-filter": "已归档",
+          "deactivated-filter": "已停用",
+          "all-filter": "所有促销"
         },
         "new-filter": "添加新筛选器",
         "placeholders": {
@@ -99,7 +112,10 @@
         "labels": {
           "name": "筛选器名称",
           "name_": "命名此筛选器",
-          "active": "仅活动"
+          "status": "状态",
+          "criteria": "筛选条件",
+          "from": "从",
+          "to": "到"
         },
         "placeholders": {
           "all": "未指定"

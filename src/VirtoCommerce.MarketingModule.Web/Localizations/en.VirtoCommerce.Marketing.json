@@ -5,6 +5,10 @@
       "couponsWidget": {
         "title": "Coupons",
         "newPromotion": "You can add coupons after saving a promotion"
+      },
+      "promotion-usage-history": {
+        "title": "Usage History",
+        "orders-title": "Orders with this promotion"
       }
     },
     "blades": {
@@ -84,7 +88,17 @@
         "labels": {
           "name": "Name",
           "isActive": "Active",
-          "last-modified": "Modified"
+          "last-modified": "Modified",
+          "hasCoupons": "Has Coupon",
+          "startDate": "Start Date",
+          "endDate": "End Date",
+          "description": "Description",
+          "copy-id": "Copy ID",
+          "active-filter": "Active",
+          "upcoming-filter": "Upcoming",
+          "archived-filter": "Archived",
+          "deactivated-filter": "Deactivated",
+          "all-filter": "All Promotions"
         },
         "new-filter": "Add new filter",
         "placeholders": {
@@ -99,7 +113,10 @@
         "labels": {
           "name": "Filter name",
           "name_": "Name this filter",
-          "active": "Active only"
+          "status": "Status",
+          "criteria": "Filter criteria",
+          "from": "From",
+          "to": "To"
         },
         "placeholders": {
           "all": "Unspecified"
