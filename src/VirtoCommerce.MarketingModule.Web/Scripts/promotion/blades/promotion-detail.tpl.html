@@ -29,8 +29,8 @@
                     <div class="list-descr">{{ 'marketing.blades.promotion-detail.descr.is-active' | translate }}</div>
                   </div>
                 </div>
-                <div class="column">
-                  <div class="form-group __info list" ng-if="blade.showPriority">
+                <div class="column" ng-if="blade.showPriority">
+                  <div class="form-group __info list">
                     <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.priority' | translate }}</label>
                     <div class="form-input __number">
                       <input smart-float num-type="integer" ng-disabled="blade.currentEntity.isExclusive" required ng-model="blade.currentEntity.priority" type="text" />
@@ -98,8 +98,8 @@
               <va-metaform registered-inputs="blade.metaFields" blade="blade" column-count="1" ng-if="blade.currentEntity"></va-metaform>
             </fieldset>
 
-
             <va-widget-container group="promotionDetail" blade="blade" data="blade.currentEntity" gridster-opts="{width: 526}"></va-widget-container>
+
             <fieldset ng-if="blade.currentEntity.dynamicExpression && blade.currentEntity.type==='DynamicPromotion'">
               <legend>{{ 'marketing.blades.promotion-detail.labels.promotion-conditions' | translate }}</legend>
               <div class="dynamic-expression">
