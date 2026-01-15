@@ -54,11 +54,13 @@ angular.module('virtoCommerce.marketingModule')
                         searchCriteria: {
                             promotionIds: [blade.currentEntity.id]
                         },
+                        moduleName: "vc-order",
                         isExpanded: true,
                         controller: 'virtoCommerce.orderModule.customerOrderListController',
                         template: 'Modules/$(VirtoCommerce.Orders)/Scripts/blades/customerOrder-list.tpl.html'
                     };
                     bladeNavigationService.showBlade(newBlade, blade);
+                    $scope.moduleName = "vc-order";
                 };
 
                 refresh();
