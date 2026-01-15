@@ -44,12 +44,12 @@ public class PromotionSearchService(
 
         if (!criteria.Store.IsNullOrEmpty())
         {
-            query = query.Where(x => !x.Stores.Any() || x.Stores.Any(s => s.StoreId == criteria.Store));
+            query = query.Where(x => x.Stores.Any(s => s.StoreId == criteria.Store));
         }
 
         if (!criteria.StoreIds.IsNullOrEmpty())
         {
-            query = query.Where(x => !x.Stores.Any() || x.Stores.Any(s => criteria.StoreIds.Contains(s.StoreId)));
+            query = query.Where(x => x.Stores.Any(s => criteria.StoreIds.Contains(s.StoreId)));
         }
 
         var now = DateTime.UtcNow;
