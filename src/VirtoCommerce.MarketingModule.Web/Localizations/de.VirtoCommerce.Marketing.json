@@ -5,6 +5,10 @@
       "couponsWidget": {
         "title": "Gutscheine",
         "newPromotion": "Sie können Gutscheine nach dem Speichern einer Promotion hinzufügen"
+      },
+      "promotion-usage-history": {
+        "title": "Nutzungsverlauf",
+        "orders-title": "Bestellungen mit dieser Promotion"
       }
     },
     "blades": {
@@ -84,7 +88,16 @@
         "labels": {
           "name": "Name",
           "isActive": "Aktiv",
-          "last-modified": "Geändert"
+          "last-modified": "Geändert",
+          "hasCoupons": "Hat Gutschein",
+          "startDate": "Startdatum",
+          "endDate": "Enddatum",
+          "copy-id": "ID kopieren",
+          "active-filter": "Aktiv",
+          "upcoming-filter": "Bevorstehend",
+          "archived-filter": "Archiviert",
+          "deactivated-filter": "Deaktiviert",
+          "all-filter": "Alle Aktionen"
         },
         "new-filter": "Neuen Filter hinzufügen",
         "placeholders": {
@@ -99,7 +112,10 @@
         "labels": {
           "name": "Filtername",
           "name_": "Nennen Sie diesen Filter",
-          "active": "Nur aktiv"
+          "status": "Status",
+          "criteria": "Filterkriterien",
+          "from": "Von",
+          "to": "Bis"
         },
         "placeholders": {
           "all": "Unbestimmt"

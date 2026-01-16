@@ -5,6 +5,10 @@
       "couponsWidget": {
         "title": "Kupongit",
         "newPromotion": "Voit lisätä kuponkeja kampanjan tallentamisen jälkeen"
+      },
+      "promotion-usage-history": {
+        "title": "Käyttöhistoria",
+        "orders-title": "Tilaukset tällä kampanjalla"
       }
     },
     "blades": {
@@ -84,7 +88,16 @@
         "labels": {
           "name": "Nimi",
           "isActive": "Aktiivinen",
-          "last-modified": "Viimeksi muokattu"
+          "last-modified": "Viimeksi muokattu",
+          "hasCoupons": "Sisältää kuponki",
+          "startDate": "Aloituspäivä",
+          "endDate": "Päättymispäivä",
+          "copy-id": "Kopioi ID",
+          "active-filter": "Aktiivinen",
+          "upcoming-filter": "Tulossa",
+          "archived-filter": "Arkistoitu",
+          "deactivated-filter": "Poistettu käytöstä",
+          "all-filter": "Kaikki kampanjat"
         },
         "new-filter": "Lisää uusi suodatin",
         "placeholders": {
@@ -99,7 +112,10 @@
         "labels": {
           "name": "Suodattimen nimi",
           "name_": "Nimeä tämä suodatin",
-          "active": "Vain aktiiviset"
+          "status": "Tila",
+          "criteria": "Suodattimen kriteerit",
+          "from": "Alkaen",
+          "to": "Päättyen"
         },
         "placeholders": {
           "all": "Määrittelemätön"

@@ -166,7 +166,7 @@ angular.module('virtoCommerce.marketingModule')
                                 title: 'marketing.blades.promotion-detail.title-new',
                                 isNew: true,
                                 isCloning: true,
-                                data: blade.currentEntity,
+                                data: angular.copy(blade.currentEntity),
                                 controller: 'virtoCommerce.marketingModule.promotionDetailController',
                                 template: 'Modules/$(VirtoCommerce.Marketing)/Scripts/promotion/blades/promotion-detail.tpl.html'
                             };

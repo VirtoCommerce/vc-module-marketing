@@ -5,6 +5,10 @@
       "couponsWidget": {
         "title": "クーポン",
         "newPromotion": "プロモーションを保存した後、クーポンを追加できます"
+      },
+      "promotion-usage-history": {
+        "title": "使用履歴",
+        "orders-title": "このプロモーションを使用した注文"
       }
     },
     "blades": {
@@ -84,7 +88,16 @@
         "labels": {
           "name": "名前",
           "isActive": "アクティブ",
-          "last-modified": "最終更新"
+          "last-modified": "最終更新",
+          "hasCoupons": "クーポンあり",
+          "startDate": "開始日",
+          "endDate": "終了日",
+          "copy-id": "IDをコピー",
+          "active-filter": "アクティブ",
+          "upcoming-filter": "予定",
+          "archived-filter": "アーカイブ済み",
+          "deactivated-filter": "無効化",
+          "all-filter": "すべてのプロモーション"
         },
         "new-filter": "新規フィルターを追加",
         "placeholders": {
@@ -99,7 +112,10 @@
         "labels": {
           "name": "フィルター名",
           "name_": "このフィルターに名前を付ける",
-          "active": "アクティブのみ"
+          "status": "ステータス",
+          "criteria": "フィルター条件",
+          "from": "開始",
+          "to": "終了"
         },
         "placeholders": {
           "all": "未指定"

@@ -1,25 +1,35 @@
 <div class="blade-content">
-    <div class="blade-inner">
-        <div class="inner-block clearfix">
-            <form class="form" name="formScope">
-                <div ng-init="setForm(formScope)">
-                    <label class="form-label">{{ 'marketing.blades.filter-detail.labels.name' | translate }}</label>
-                    <div class="form-input">
-                        <input ng-model="blade.currentEntity.name" required placeholder="{{ 'marketing.blades.filter-detail.labels.name_' | translate }}" />
-                    </div>
-                </div>
+  <div class="blade-inner">
+    <div class="inner-block clearfix">
+      <form class="form" name="formScope">
+        <legend>{{ 'marketing.blades.filter-detail.labels.criteria' | translate }}</legend>
 
-                <va-metaform registered-inputs="blade.metaFields" blade="blade"></va-metaform>
-            </form>
+        <div class="form-group" ng-init="setForm(formScope)">
+          <label class="form-label">{{ 'marketing.blades.filter-detail.labels.name' | translate }}</label>
+          <div class="form-input">
+            <input ng-model="blade.currentEntity.name" required placeholder="{{ 'marketing.blades.filter-detail.labels.name_' | translate }}" />
+          </div>
         </div>
+
+        <va-metaform registered-inputs="blade.metaFields" blade="blade"></va-metaform>
+      </form>
     </div>
+  </div>
 </div>
 
 <script type="text/ng-template" id="storeSelector.html">
-    <div class="form-input">
-        <ui-scroll-drop-down data="blade.storeDataSource(criteria)"
-                             placeholder="'marketing.blades.filter-detail.placeholders.all'"
-                             ng-model="blade.currentEntity.store">
-        </ui-scroll-drop-down>
-    </div>
+  <div class="form-input">
+    <va-store-selector multiple ng-model="blade.currentEntity.storeIds" placeholder="'marketing.blades.filter-detail.placeholders.all'"></va-store-selector>
+  </div>
+</script>
+
+<script type="text/ng-template" id="statusSelector.html">
+  <div class="form-input">
+    <ui-select ng-model="blade.currentEntity.status" allow-clear="true" placeholder="{{ 'marketing.blades.filter-detail.placeholders.all' | translate }}">
+      <ui-select-match>{{$select.selected.label | translate}}</ui-select-match>
+      <ui-select-choices repeat="status.value as status in blade.statusOptions | filter: $select.search">
+        <span ng-bind-html="status.label | translate | highlight: $select.search"></span>
+      </ui-select-choices>
+    </ui-select>
+  </div>
 </script>
