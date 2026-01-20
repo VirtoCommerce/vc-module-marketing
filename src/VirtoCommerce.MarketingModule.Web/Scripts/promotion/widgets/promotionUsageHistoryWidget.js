@@ -60,7 +60,6 @@ angular.module('virtoCommerce.marketingModule')
                         template: 'Modules/$(VirtoCommerce.Orders)/Scripts/blades/customerOrder-list.tpl.html'
                     };
                     bladeNavigationService.showBlade(newBlade, blade);
-                    $scope.moduleName = "vc-order";
                 };
 
                 refresh();
