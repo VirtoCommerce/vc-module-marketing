@@ -2,6 +2,7 @@ angular.module('virtoCommerce.marketingModule')
 .controller('virtoCommerce.marketingModule.publicationDetailController', ['$scope', 'virtoCommerce.marketingModule.dynamicContent.contentPublications', 'platformWebApp.bladeNavigationService', 'virtoCommerce.coreModule.common.dynamicExpressionService', 'virtoCommerce.storeModule.stores', 'platformWebApp.dialogService', function ($scope, contentPublications, bladeNavigationService, dynamicExpressionService, stores, dialogService) {
     var blade = $scope.blade;
     blade.updatePermission = 'marketing:update';
+    $scope.storeDataSource = (criteria) => stores.search(criteria);
 
     blade.initializeBlade = function () {
         if (!blade.isNew) {
@@ -284,5 +285,4 @@ angular.module('virtoCommerce.marketingModule')
     }
 
     blade.initializeBlade();
-    $scope.stores = stores.query();
 }]);
