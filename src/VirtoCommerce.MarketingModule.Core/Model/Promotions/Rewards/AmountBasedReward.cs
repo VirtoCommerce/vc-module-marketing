@@ -56,7 +56,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
         /// <returns></returns>
         public virtual decimal GetAmountPerItem(decimal price, int quantity, Currency currency)
         {
-            ArgumentNullException.ThrowIfNull(nameof(currency));
+            ArgumentNullException.ThrowIfNull(currency);
 
             var totalAmount = GetTotalAmount(price, quantity);
             var amountPerItem = totalAmount / quantity;
@@ -78,7 +78,7 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
         /// <returns></returns>
         public virtual decimal GetTotalAmount(decimal price, int quantity, Currency currency)
         {
-            ArgumentNullException.ThrowIfNull(nameof(currency));
+            ArgumentNullException.ThrowIfNull(currency);
 
             var totalAmount = GetTotalAmount(price, quantity);
 
