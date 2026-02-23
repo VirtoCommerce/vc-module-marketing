@@ -9,11 +9,16 @@ angular.module('virtoCommerce.marketingModule')
 
         blade.showPriority = false;
         blade.showErrorStoreStateMessage = null;
+        blade.languages = [];
 
         settings.get({ id: 'Marketing.Promotion.CombinePolicy' }, function (data) {
             blade.showPriority = data.value === 'CombineStackable';
         });
+
         blade.refresh = function (parentRefresh) {
+            var languagesPromise = settings.getValues({ id: 'VirtoCommerce.Core.General.Languages' }, function (languagesData) {
+                blade.languages = languagesData;
+            }).$promise;
 
             var shippingMethodsPromise = !blade.shippingMethods
                 ? shippingMethods.getAllRegistered(function (methods) {
@@ -38,7 +43,7 @@ angular.module('virtoCommerce.marketingModule')
                 : $q.when();
 
             // VP-5647: Wait for payment/shipment method loading before requesting stores and initialize dynamic tree
-            $q.all(shippingMethodsPromise, paymentMethodsPromise).then(() => {
+            $q.all(shippingMethodsPromise, paymentMethodsPromise, languagesPromise).then(() => {
                 if (blade.isNew) {
                     if (blade.isCloning) {
                         blade.data.id = null;
