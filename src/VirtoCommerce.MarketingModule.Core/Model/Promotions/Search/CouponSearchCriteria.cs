@@ -24,5 +24,23 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions.Search
             }
         }
         public string PromotionId { get; set; }
+
+        private IList<string> _promotionIds;
+        public IList<string> PromotionIds
+        {
+            get
+            {
+                if (_promotionIds == null && !string.IsNullOrEmpty(PromotionId))
+                {
+                    _promotionIds = [PromotionId];
+                }
+
+                return _promotionIds;
+            }
+            set
+            {
+                _promotionIds = value;
+            }
+        }
     }
 }
