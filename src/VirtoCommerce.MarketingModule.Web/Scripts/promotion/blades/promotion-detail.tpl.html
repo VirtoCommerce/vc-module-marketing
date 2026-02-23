@@ -84,7 +84,7 @@
                     <label class="form-label">{{ 'marketing.blades.promotion-detail.labels.localized-description' | translate }}</label>
                     <div class="form-input __langs" ng-repeat="language in blade.languages | limitTo: blade.showAllLanguages2 ? blade.languages.length : 2">
                       <label class="lang-code">{{language}}</label>
-                      <textarea cols="30" rows="10" ng-model="blade.currentEntity.localizedDescription.values[language.languageCode]" placeholder="{{ 'marketing.blades.promotion-detail.placeholders.localized-description' | translate }}"></textarea>
+                      <textarea cols="30" rows="10" ng-model="blade.currentEntity.localizedDescription.values[language]" placeholder="{{ 'marketing.blades.promotion-detail.placeholders.localized-description' | translate }}"></textarea>
                     </div>
                     <div ng-if="blade.languages.length > 2">
                       <a href="" ng-click="blade.showAllLanguages2 = !blade.showAllLanguages2">{{ (blade.showAllLanguages2 ? 'marketing.blades.promotion-detail.labels.show-less-languages' : 'marketing.blades.promotion-detail.labels.show-more-languages' ) | translate }}</a>

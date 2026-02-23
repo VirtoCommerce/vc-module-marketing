@@ -607,7 +607,9 @@ namespace VirtoCommerce.MarketingModule.Data.SqlServer.Migrations
             modelBuilder.Entity("VirtoCommerce.MarketingModule.Data.PromotionLocalizedDescriptionEntity", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("LanguageCode")
                         .IsRequired()
@@ -615,6 +617,7 @@ namespace VirtoCommerce.MarketingModule.Data.SqlServer.Migrations
                         .HasColumnType("nvarchar(16)");
 
                     b.Property<string>("ParentEntityId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Value")
@@ -625,13 +628,19 @@ namespace VirtoCommerce.MarketingModule.Data.SqlServer.Migrations
 
                     b.HasIndex("ParentEntityId");
 
-                    b.ToTable("PromotionLocalizedDescriptionEntity");
+                    b.HasIndex("LanguageCode", "ParentEntityId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_PromotionLocalizedDescription_LanguageCode_ParentEntityId");
+
+                    b.ToTable("PromotionLocalizedDescription", (string)null);
                 });
 
             modelBuilder.Entity("VirtoCommerce.MarketingModule.Data.PromotionLocalizedDisplayNameEntity", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("LanguageCode")
                         .IsRequired()
@@ -639,6 +648,7 @@ namespace VirtoCommerce.MarketingModule.Data.SqlServer.Migrations
                         .HasColumnType("nvarchar(16)");
 
                     b.Property<string>("ParentEntityId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Value")
@@ -649,7 +659,11 @@ namespace VirtoCommerce.MarketingModule.Data.SqlServer.Migrations
 
                     b.HasIndex("ParentEntityId");
 
-                    b.ToTable("PromotionLocalizedDisplayNameEntity");
+                    b.HasIndex("LanguageCode", "ParentEntityId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_PromotionLocalizedDisplayName_LanguageCode_ParentEntityId");
+
+                    b.ToTable("PromotionLocalizedDisplayName", (string)null);
                 });
 
             modelBuilder.Entity("VirtoCommerce.MarketingModule.Data.Model.CouponEntity", b =>
@@ -765,7 +779,9 @@ namespace VirtoCommerce.MarketingModule.Data.SqlServer.Migrations
                 {
                     b.HasOne("VirtoCommerce.MarketingModule.Data.Model.PromotionEntity", "ParentEntity")
                         .WithMany("LocalizedDescriptions")
-                        .HasForeignKey("ParentEntityId");
+                        .HasForeignKey("ParentEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ParentEntity");
                 });
@@ -774,7 +790,9 @@ namespace VirtoCommerce.MarketingModule.Data.SqlServer.Migrations
                 {
                     b.HasOne("VirtoCommerce.MarketingModule.Data.Model.PromotionEntity", "ParentEntity")
                         .WithMany("LocalizedDisplayNames")
-                        .HasForeignKey("ParentEntityId");
+                        .HasForeignKey("ParentEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ParentEntity");
                 });

@@ -48,6 +48,40 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
 
             #endregion
 
+            #region PromotionLocalization
+
+            modelBuilder.Entity<PromotionLocalizedDisplayNameEntity>(builder =>
+            {
+                builder.ToTable("PromotionLocalizedDisplayName").HasKey(x => x.Id);
+                builder.Property(x => x.Id).HasMaxLength(IdLength).ValueGeneratedOnAdd();
+
+                builder.HasOne(x => x.ParentEntity)
+                    .WithMany(x => x.LocalizedDisplayNames)
+                    .HasForeignKey(x => x.ParentEntityId)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                builder.HasIndex(x => new { x.LanguageCode, x.ParentEntityId }).IsUnique()
+                    .HasDatabaseName("IX_PromotionLocalizedDisplayName_LanguageCode_ParentEntityId");
+            });
+
+            modelBuilder.Entity<PromotionLocalizedDescriptionEntity>(builder =>
+            {
+                builder.ToTable("PromotionLocalizedDescription").HasKey(x => x.Id);
+                builder.Property(x => x.Id).HasMaxLength(IdLength).ValueGeneratedOnAdd();
+
+                builder.HasOne(x => x.ParentEntity)
+                    .WithMany(x => x.LocalizedDescriptions)
+                    .HasForeignKey(x => x.ParentEntityId)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                builder.HasIndex(x => new { x.LanguageCode, x.ParentEntityId }).IsUnique()
+                    .HasDatabaseName("IX_PromotionLocalizedDescription_LanguageCode_ParentEntityId");
+            });
+
+            #endregion
+
             #region DynamicContentItem
 
             modelBuilder.Entity<DynamicContentItemEntity>().ToTable("DynamicContentItem");
