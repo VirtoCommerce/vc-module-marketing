@@ -43,7 +43,7 @@ angular.module('virtoCommerce.marketingModule')
                 : $q.when();
 
             // VP-5647: Wait for payment/shipment method loading before requesting stores and initialize dynamic tree
-            $q.all(shippingMethodsPromise, paymentMethodsPromise, languagesPromise).then(() => {
+            $q.all([shippingMethodsPromise, paymentMethodsPromise, languagesPromise]).then(() => {
                 if (blade.isNew) {
                     if (blade.isCloning) {
                         blade.data.id = null;

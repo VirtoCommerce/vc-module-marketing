@@ -228,8 +228,8 @@ public class PromotionEntity : AuditableEntity, IHasOuterId, IDataEntity<Promoti
 
         if (!LocalizedDescriptions.IsNullCollection())
         {
-            var localizedNameComparer = AnonymousComparer.Create((PromotionLocalizedDescriptionEntity x) => $"{x.Value}-{x.LanguageCode}");
-            LocalizedDescriptions.Patch(target.LocalizedDescriptions, localizedNameComparer, (sourceValue, targetValue) => { });
+            var localizedDescriptionComparer = AnonymousComparer.Create((PromotionLocalizedDescriptionEntity x) => $"{x.Value}-{x.LanguageCode}");
+            LocalizedDescriptions.Patch(target.LocalizedDescriptions, localizedDescriptionComparer, (sourceValue, targetValue) => { });
         }
 
         if (!LocalizedDisplayNames.IsNullCollection())
