@@ -36,7 +36,12 @@
           "per-customer-limit": "Limitações para clientes individuais",
           "promotion-conditions": "Condições da promoção",
           "combined-with-others": "Válido com outras ofertas",
-          "exclusive": "Exclusividade global"
+          "exclusive": "Exclusividade global",
+          "is-public": "Público",
+          "localized-name": "Nome localizado",
+          "localized-description": "Descrição localizada",
+          "show-more-languages": "Mostrar mais idiomas",
+          "show-less-languages": "Mostrar menos idiomas"
         },
         "descr": {
           "promotion-name": "Dê um nome único à promoção que será exibido na lista de promoções",
@@ -46,7 +51,8 @@
           "expiration-date": "Se você não especificar uma data de término, a promoção ficará ativa até que você a desative",
           "priority": "A promoção com maior prioridade será aplicada primeiro",
           "exclusivity": "Se você selecionar 'Exclusividade Global', seus clientes não poderão aplicar outras promoções de prioridade inferior ao pedido",
-          "is-combine-with-self": "Ative esta opção se forem necessários vários cupons para resgatar a oferta"
+          "is-combine-with-self": "Ative esta opção se forem necessários vários cupons para resgatar a oferta",
+          "is-public": "Exibir esta promoção na loja"
         },
         "placeholders": {
           "promotion-name": "Digite o nome da promoção aqui...",
@@ -54,7 +60,9 @@
           "store": "Selecione...",
           "start-date": "Informe uma data...",
           "coupons": "Insira os códigos dos cupons...",
-          "expiration-date": "Informe uma data..."
+          "expiration-date": "Informe uma data...",
+          "localized-name": "Forneça um nome localizado (ex.: «50%», «Grátis», etc.)",
+          "localized-description": "Forneça uma descrição..."
         },
         "toolbar": {
           "coupons": "Cupons"

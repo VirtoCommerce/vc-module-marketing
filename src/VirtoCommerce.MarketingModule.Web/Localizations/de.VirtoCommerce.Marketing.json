@@ -36,7 +36,12 @@
           "per-customer-limit": "Einschränkungen für einzelne Kunden",
           "promotion-conditions": "Bedingungen der Promotion",
           "combined-with-others": "Gültig mit anderen Angeboten",
-          "exclusive": "Global exklusiv"
+          "exclusive": "Global exklusiv",
+          "is-public": "Öffentlich",
+          "localized-name": "Lokalisierter Name",
+          "localized-description": "Lokalisierte Beschreibung",
+          "show-more-languages": "Weitere Sprachen anzeigen",
+          "show-less-languages": "Weniger Sprachen anzeigen"
         },
         "descr": {
           "promotion-name": "Geben Sie Ihrer Promotion einen einzigartigen Namen, der in der Promotionsliste angezeigt wird",
@@ -46,7 +51,8 @@
           "expiration-date": "Wenn Sie kein Enddatum angeben, bleibt die Promotion aktiv, bis Sie sie deaktivieren",
           "priority": "Die Promotion mit der höchsten Priorität wird zuerst angewendet",
           "exclusivity": "Wenn Sie 'Global Exklusiv' auswählen, können Ihre Kunden keine anderen Promotions mit niedrigerer Priorität auf die Bestellung anwenden",
-          "is-combine-with-self": "Aktivieren Sie diese Option, wenn mehrere Gutscheine erforderlich sind, um das Angebot einzulösen"
+          "is-combine-with-self": "Aktivieren Sie diese Option, wenn mehrere Gutscheine erforderlich sind, um das Angebot einzulösen",
+          "is-public": "Diese Promotion im Storefront anzeigen"
         },
         "placeholders": {
           "promotion-name": "Geben Sie hier den Namen Ihrer Promotion ein...",
@@ -54,7 +60,9 @@
           "store": "Auswählen...",
           "start-date": "Bitte geben Sie ein Datum an...",
           "coupons": "Geben Sie Gutscheincodes ein...",
-          "expiration-date": "Bitte geben Sie ein Datum an..."
+          "expiration-date": "Bitte geben Sie ein Datum an...",
+          "localized-name": "Einen lokalisierten Namen angeben (z.B. „50 %“, „Gratis“ usw.)",
+          "localized-description": "Eine Beschreibung eingeben..."
         },
         "toolbar": {
           "coupons": "Gutscheine"

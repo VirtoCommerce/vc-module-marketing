@@ -36,7 +36,12 @@
           "per-customer-limit": "Begrensninger for individuelle kunder",
           "promotion-conditions": "Kampanjevilkår",
           "combined-with-others": "Gyldig med andre tilbud",
-          "exclusive": "Globalt eksklusiv"
+          "exclusive": "Globalt eksklusiv",
+          "is-public": "Offentlig",
+          "localized-name": "Lokalisert navn",
+          "localized-description": "Lokalisert beskrivelse",
+          "show-more-languages": "Vis flere språk",
+          "show-less-languages": "Vis færre språk"
         },
         "descr": {
           "promotion-name": "Gi kampanjen din et unikt navn som vil vises i kampanjelisten",
@@ -46,7 +51,8 @@
           "expiration-date": "Hvis du ikke angir en sluttdato, vil kampanjen være aktiv til du deaktiverer den",
           "priority": "Kampanjen med høyest prioritet brukes først",
           "exclusivity": "Hvis du velger 'Globalt eksklusiv', kan ikke kundene dine bruke andre kampanjer med lavere prioritet på ordren",
-          "is-combine-with-self": "Aktiver dette alternativet hvis flere kuponger kreves for å innløse tilbudet"
+          "is-combine-with-self": "Aktiver dette alternativet hvis flere kuponger kreves for å innløse tilbudet",
+          "is-public": "Vis denne kampanjen i butikkfronten"
         },
         "placeholders": {
           "promotion-name": "Skriv inn kampanjenavnet her...",
@@ -54,7 +60,9 @@
           "store": "Velg...",
           "start-date": "Angi en dato...",
           "coupons": "Skriv inn kupongkoder...",
-          "expiration-date": "Angi en dato..."
+          "expiration-date": "Angi en dato...",
+          "localized-name": "Oppgi et lokalisert navn (f.eks. \"50 %\", \"Gratis\" osv.)",
+          "localized-description": "Oppgi en beskrivelse..."
         },
         "toolbar": {
           "coupons": "Kuponger"
