@@ -60,6 +60,9 @@ public class PromotionEntity : AuditableEntity, IHasOuterId, IDataEntity<Promoti
     public bool IsPublic { get; set; }
 
     #region Navigation Properties
+    public ObservableCollection<PromotionLocalizedLabelEntity> LocalizedLabels { get; set; }
+    = new NullCollection<PromotionLocalizedLabelEntity>();
+
     public ObservableCollection<PromotionLocalizedDisplayNameEntity> LocalizedDisplayNames { get; set; }
         = new NullCollection<PromotionLocalizedDisplayNameEntity>();
 
@@ -112,6 +115,15 @@ public class PromotionEntity : AuditableEntity, IHasOuterId, IDataEntity<Promoti
             }
         }
 
+        if (LocalizedLabels != null)
+        {
+            model.LocalizedLabel = new LocalizedString();
+            foreach (var localizedLabel in LocalizedLabels)
+            {
+                model.LocalizedLabel.SetValue(localizedLabel.LanguageCode, localizedLabel.Value);
+            }
+        }
+
         if (LocalizedDisplayNames != null)
         {
             model.LocalizedDisplayName = new LocalizedString();
@@ -124,9 +136,9 @@ public class PromotionEntity : AuditableEntity, IHasOuterId, IDataEntity<Promoti
         if (LocalizedDescriptions != null)
         {
             model.LocalizedDescription = new LocalizedString();
-            foreach (var localizedName in LocalizedDescriptions)
+            foreach (var localizedDescription in LocalizedDescriptions)
             {
-                model.LocalizedDescription.SetValue(localizedName.LanguageCode, localizedName.Value);
+                model.LocalizedDescription.SetValue(localizedDescription.LanguageCode, localizedDescription.Value);
             }
         }
 
@@ -172,6 +184,18 @@ public class PromotionEntity : AuditableEntity, IHasOuterId, IDataEntity<Promoti
             {
                 PredicateVisualTreeSerialized = JsonConvert.SerializeObject(dynamicPromotion.DynamicExpression, new ConditionJsonConverter(doNotSerializeAvailCondition: true));
             }
+        }
+
+        if (model.LocalizedLabel != null)
+        {
+            LocalizedLabels = new ObservableCollection<PromotionLocalizedLabelEntity>(model.LocalizedLabel.Values
+                .Select(x =>
+                {
+                    var entity = AbstractTypeFactory<PromotionLocalizedLabelEntity>.TryCreateInstance();
+                    entity.LanguageCode = x.Key;
+                    entity.Value = x.Value;
+                    return entity;
+                }));
         }
 
         if (model.LocalizedDescription != null)
@@ -224,6 +248,12 @@ public class PromotionEntity : AuditableEntity, IHasOuterId, IDataEntity<Promoti
         {
             var comparer = AnonymousComparer.Create((PromotionStoreEntity entity) => entity.StoreId);
             Stores.Patch(target.Stores, comparer, (sourceEntity, targetEntity) => targetEntity.StoreId = sourceEntity.StoreId);
+        }
+
+        if (!LocalizedLabels.IsNullCollection())
+        {
+            var localizedLabelComparer = AnonymousComparer.Create((PromotionLocalizedLabelEntity x) => $"{x.Value}-{x.LanguageCode}");
+            LocalizedLabels.Patch(target.LocalizedLabels, localizedLabelComparer, (sourceValue, targetValue) => { });
         }
 
         if (!LocalizedDescriptions.IsNullCollection())

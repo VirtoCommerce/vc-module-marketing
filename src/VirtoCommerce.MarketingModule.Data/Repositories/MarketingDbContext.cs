@@ -49,6 +49,20 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
             #endregion
 
             #region PromotionLocalization
+            modelBuilder.Entity<PromotionLocalizedLabelEntity>(builder =>
+            {
+                builder.ToTable("PromotionLocalizedLabel").HasKey(x => x.Id);
+                builder.Property(x => x.Id).HasMaxLength(IdLength).ValueGeneratedOnAdd();
+
+                builder.HasOne(x => x.ParentEntity)
+                    .WithMany(x => x.LocalizedLabels)
+                    .HasForeignKey(x => x.ParentEntityId)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                builder.HasIndex(x => new { x.LanguageCode, x.ParentEntityId }).IsUnique()
+                    .HasDatabaseName("IX_PromotionLocalizedLabel_LanguageCode_ParentEntityId");
+            });
 
             modelBuilder.Entity<PromotionLocalizedDisplayNameEntity>(builder =>
             {

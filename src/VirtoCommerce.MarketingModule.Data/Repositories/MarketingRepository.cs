@@ -42,6 +42,7 @@ public class MarketingRepository(MarketingDbContext dbContext)
     {
         var promotions = await Promotions
             .Where(x => ids.Contains(x.Id))
+            .Include(x => x.LocalizedLabels)
             .Include(x => x.LocalizedDisplayNames)
             .Include(x => x.LocalizedDescriptions)
             .AsSplitQuery()
