@@ -38,6 +38,7 @@
           "combined-with-others": "Действительно с другими предложениями",
           "exclusive": "Эксклюзивно на глобальном уровне",
           "is-public": "Публичный",
+          "localized-label": "Метка",
           "localized-name": "Локализованное название",
           "localized-description": "Локализованное описание",
           "show-more-languages": "Показать больше языков",
@@ -61,7 +62,8 @@
           "start-date": "Укажите дату...",
           "coupons": "Введите коды купонов...",
           "expiration-date": "Укажите дату...",
-          "localized-name": "Укажите локализованное название (например, «50%», «Бесплатно» и т. д.)",
+          "localized-label": "Укажите метку...",
+          "localized-name": "Укажите локализованное название...",
           "localized-description": "Укажите описание..."
         },
         "toolbar": {

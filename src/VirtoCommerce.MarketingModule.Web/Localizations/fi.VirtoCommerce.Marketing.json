@@ -38,6 +38,7 @@
           "combined-with-others": "Voimassa muiden tarjousten kanssa",
           "exclusive": "Globaalisti eksklusiivinen",
           "is-public": "Julkinen",
+          "localized-label": "Tunniste",
           "localized-name": "Lokalisoitu nimi",
           "localized-description": "Lokalisoitu kuvaus",
           "show-more-languages": "Näytä lisää kieliä",
@@ -61,7 +62,8 @@
           "start-date": "Anna päivämäärä...",
           "coupons": "Syötä kuponkikoodit...",
           "expiration-date": "Anna päivämäärä...",
-          "localized-name": "Anna lokalisoitu nimi (esim. \"50 %\", \"Ilmainen\" jne.)",
+          "localized-label": "Anna tunniste...",
+          "localized-name": "Anna lokalisoitu nimi...",
           "localized-description": "Anna kuvaus..."
         },
         "toolbar": {

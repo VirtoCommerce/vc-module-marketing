@@ -38,6 +38,7 @@
           "combined-with-others": "Gyldig med andre tilbud",
           "exclusive": "Globalt eksklusiv",
           "is-public": "Offentlig",
+          "localized-label": "Etikett",
           "localized-name": "Lokalisert navn",
           "localized-description": "Lokalisert beskrivelse",
           "show-more-languages": "Vis flere språk",
@@ -61,7 +62,8 @@
           "start-date": "Angi en dato...",
           "coupons": "Skriv inn kupongkoder...",
           "expiration-date": "Angi en dato...",
-          "localized-name": "Oppgi et lokalisert navn (f.eks. \"50 %\", \"Gratis\" osv.)",
+          "localized-label": "Oppgi en etikett...",
+          "localized-name": "Oppgi et lokalisert navn...",
           "localized-description": "Oppgi en beskrivelse..."
         },
         "toolbar": {

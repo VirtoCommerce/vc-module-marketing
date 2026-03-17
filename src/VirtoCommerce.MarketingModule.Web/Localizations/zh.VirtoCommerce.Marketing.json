@@ -38,6 +38,7 @@
           "combined-with-others": "可与其他优惠同时使用",
           "exclusive": "全局独占",
           "is-public": "公开",
+          "localized-label": "标签",
           "localized-name": "本地化名称",
           "localized-description": "本地化描述",
           "show-more-languages": "显示更多语言",
@@ -61,7 +62,8 @@
           "start-date": "提供日期...",
           "coupons": "输入优惠券代码...",
           "expiration-date": "提供日期...",
-          "localized-name": "提供本地化名称（例如“50%”、“免费”等）",
+          "localized-label": "请输入标签...",
+          "localized-name": "请输入本地化名称...",
           "localized-description": "提供描述..."
         },
         "toolbar": {

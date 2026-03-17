@@ -38,6 +38,7 @@
           "combined-with-others": "Válido con otras ofertas",
           "exclusive": "Exclusividad global",
           "is-public": "Público",
+          "localized-label": "Etiqueta",
           "localized-name": "Nombre localizado",
           "localized-description": "Descripción localizada",
           "show-more-languages": "Mostrar más idiomas",
@@ -61,7 +62,8 @@
           "start-date": "Seleccionar fecha...",
           "coupons": "Introduce los códigos de los cupones...",
           "expiration-date": "Seleccionar fecha...",
-          "localized-name": "Proporciona un nombre localizado (p. ej., «50 %», «Gratis», etc.)",
+          "localized-label": "Proporcione una etiqueta...",
+          "localized-name": "Proporcione un nombre localizado...",
           "localized-description": "Proporciona una descripción..."
         },
         "toolbar": {

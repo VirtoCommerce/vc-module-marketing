@@ -38,6 +38,7 @@
           "combined-with-others": "他のオファーと併用可能",
           "exclusive": "グローバル排他的",
           "is-public": "公開",
+          "localized-label": "ラベル",
           "localized-name": "ローカライズ名",
           "localized-description": "ローカライズされた説明",
           "show-more-languages": "さらに言語を表示",
@@ -61,7 +62,8 @@
           "start-date": "日付を入力...",
           "coupons": "クーポンコードを入力...",
           "expiration-date": "日付を入力...",
-          "localized-name": "ローカライズ名を入力してください（例：「50%」「無料」など）",
+          "localized-label": "ラベルを入力してください...",
+          "localized-name": "ローカライズされた名前を入力してください...",
           "localized-description": "説明を入力してください..."
         },
         "toolbar": {
