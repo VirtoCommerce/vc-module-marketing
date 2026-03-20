@@ -36,7 +36,13 @@
           "per-customer-limit": "Límites por cliente",
           "promotion-conditions": "Condiciones de la promoción",
           "combined-with-others": "Válido con otras ofertas",
-          "exclusive": "Exclusividad global"
+          "exclusive": "Exclusividad global",
+          "is-public": "Público",
+          "localized-label": "Etiqueta",
+          "localized-name": "Nombre localizado",
+          "localized-description": "Descripción localizada",
+          "show-more-languages": "Mostrar más idiomas",
+          "show-less-languages": "Mostrar menos idiomas"
         },
         "descr": {
           "promotion-name": "Dale a tu promoción un nombre único que aparecerá en la lista de promociones",
@@ -46,7 +52,8 @@
           "expiration-date": "Si no especificas una fecha de finalización, la promoción estará activa hasta que la desactives",
           "priority": "La promoción con la prioridad más alta se aplicará primero",
           "exclusivity": "Si seleccionas 'Exclusividad global', tus clientes no podrán aplicar otras promociones con menor prioridad en la orden",
-          "is-combine-with-self": "Habilita esta opción si se requieren varios cupones para obtener la oferta"
+          "is-combine-with-self": "Habilita esta opción si se requieren varios cupones para obtener la oferta",
+          "is-public": "Mostrar esta promoción en la tienda"
         },
         "placeholders": {
           "promotion-name": "Escribe el nombre de tu promoción aquí...",
@@ -54,7 +61,10 @@
           "store": "Seleccionar...",
           "start-date": "Seleccionar fecha...",
           "coupons": "Introduce los códigos de los cupones...",
-          "expiration-date": "Seleccionar fecha..."
+          "expiration-date": "Seleccionar fecha...",
+          "localized-label": "Proporcione una etiqueta...",
+          "localized-name": "Proporcione un nombre localizado...",
+          "localized-description": "Proporciona una descripción..."
         },
         "toolbar": {
           "coupons": "Cupones"

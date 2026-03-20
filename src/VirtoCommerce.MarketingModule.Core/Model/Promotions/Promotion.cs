@@ -57,6 +57,14 @@ public class Promotion : AuditableEntity, ICloneable
 
     public string OuterId { get; set; }
 
+    public bool IsPublic { get; set; }
+
+    public LocalizedString LocalizedLabel { get; set; }
+
+    public LocalizedString LocalizedDisplayName { get; set; }
+
+    public LocalizedString LocalizedDescription { get; set; }
+
     public virtual void ReduceDetails(string responseGroup)
     {
         // Nothing to do

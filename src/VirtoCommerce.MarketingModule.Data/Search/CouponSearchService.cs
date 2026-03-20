@@ -47,6 +47,11 @@ public class CouponSearchService(
             query = query.Where(x => x.PromotionId == criteria.PromotionId);
         }
 
+        if (!criteria.PromotionIds.IsNullOrEmpty())
+        {
+            query = query.Where(x => criteria.PromotionIds.Contains(x.PromotionId));
+        }
+
         if (!criteria.Code.IsNullOrEmpty())
         {
             query = query.Where(x => x.Code == criteria.Code);

@@ -36,7 +36,13 @@
           "per-customer-limit": "单个客户限制",
           "promotion-conditions": "促销条件",
           "combined-with-others": "可与其他优惠同时使用",
-          "exclusive": "全局独占"
+          "exclusive": "全局独占",
+          "is-public": "公开",
+          "localized-label": "标签",
+          "localized-name": "本地化名称",
+          "localized-description": "本地化描述",
+          "show-more-languages": "显示更多语言",
+          "show-less-languages": "显示更少语言"
         },
         "descr": {
           "promotion-name": "为您的促销活动起一个独特的名称，该名称将显示在促销列表中",
@@ -46,7 +52,8 @@
           "expiration-date": "如果您不指定结束日期，促销活动将一直有效，直到您将其停用",
           "priority": "优先级最高的促销活动将首先应用",
           "exclusivity": "如果您选择\"全局独占\"，您的客户将无法将任何其他优先级较低的促销应用于订单",
-          "is-combine-with-self": "如果需要多个优惠券来兑换优惠，请启用此选项"
+          "is-combine-with-self": "如果需要多个优惠券来兑换优惠，请启用此选项",
+          "is-public": "在商店前台显示此促销活动"
         },
         "placeholders": {
           "promotion-name": "在此输入您的促销名称...",
@@ -54,7 +61,10 @@
           "store": "选择...",
           "start-date": "提供日期...",
           "coupons": "输入优惠券代码...",
-          "expiration-date": "提供日期..."
+          "expiration-date": "提供日期...",
+          "localized-label": "请输入标签...",
+          "localized-name": "请输入本地化名称...",
+          "localized-description": "提供描述..."
         },
         "toolbar": {
           "coupons": "优惠券"

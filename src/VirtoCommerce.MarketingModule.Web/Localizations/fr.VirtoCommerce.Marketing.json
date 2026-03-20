@@ -36,7 +36,13 @@
           "per-customer-limit": "Limites par client",
           "promotion-conditions": "Conditions de la promotion",
           "combined-with-others": "Valide avec d'autres offres",
-          "exclusive": "Exclusivité mondiale"
+          "exclusive": "Exclusivité mondiale",
+          "is-public": "Public",
+          "localized-label": "Libellé",
+          "localized-name": "Nom localisé",
+          "localized-description": "Description localisée",
+          "show-more-languages": "Afficher plus de langues",
+          "show-less-languages": "Afficher moins de langues"
         },
         "descr": {
           "promotion-name": "Donnez à votre promotion un nom unique qui apparaîtra dans la liste des promotions",
@@ -46,7 +52,8 @@
           "expiration-date": "Si vous ne spécifiez pas de date de fin, la promotion restera active jusqu'à ce que vous la désactiviez",
           "priority": "La promotion avec la plus haute priorité est appliquée en premier",
           "exclusivity": "Si vous sélectionnez 'Exclusivité mondiale', vos clients ne pourront pas appliquer d'autres promotions avec une priorité inférieure à la commande",
-          "is-combine-with-self": "Activez cette option si plusieurs coupons sont nécessaires pour obtenir l'offre"
+          "is-combine-with-self": "Activez cette option si plusieurs coupons sont nécessaires pour obtenir l'offre",
+          "is-public": "Afficher cette promotion sur la boutique"
         },
         "placeholders": {
           "promotion-name": "Tapez le nom de votre promotion ici...",
@@ -54,7 +61,10 @@
           "store": "Sélectionnez...",
           "start-date": "Indiquez une date...",
           "coupons": "Entrez les codes de coupons...",
-          "expiration-date": "Indiquez une date..."
+          "expiration-date": "Indiquez une date...",
+          "localized-label": "Fournissez un libellé...",
+          "localized-name": "Fournissez un nom localisé...",
+          "localized-description": "Fournir une description..."
         },
         "toolbar": {
           "coupons": "Coupons"

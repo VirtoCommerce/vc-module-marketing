@@ -57,9 +57,21 @@ public class PromotionEntity : AuditableEntity, IHasOuterId, IDataEntity<Promoti
     [StringLength(128)]
     public string OuterId { get; set; }
 
+    public bool IsPublic { get; set; }
+
     #region Navigation Properties
+    public ObservableCollection<PromotionLocalizedLabelEntity> LocalizedLabels { get; set; }
+    = new NullCollection<PromotionLocalizedLabelEntity>();
+
+    public ObservableCollection<PromotionLocalizedDisplayNameEntity> LocalizedDisplayNames { get; set; }
+        = new NullCollection<PromotionLocalizedDisplayNameEntity>();
+
+    public ObservableCollection<PromotionLocalizedDescriptionEntity> LocalizedDescriptions { get; set; }
+        = new NullCollection<PromotionLocalizedDescriptionEntity>();
 
     public virtual ObservableCollection<PromotionStoreEntity> Stores { get; set; } = new NullCollection<PromotionStoreEntity>();
+
+    public virtual ObservableCollection<CouponEntity> Coupons { get; set; } = new NullCollection<CouponEntity>();
 
     #endregion
 
@@ -84,8 +96,8 @@ public class PromotionEntity : AuditableEntity, IHasOuterId, IDataEntity<Promoti
         model.IsExclusive = IsExclusive;
         model.MaxPersonalUsageCount = PerCustomerLimit;
         model.MaxUsageCount = TotalLimit;
-        model.MaxPersonalUsageCount = PerCustomerLimit;
         model.HasCoupons = HasCoupons;
+        model.IsPublic = IsPublic;
 
         if (Stores != null)
         {
@@ -100,6 +112,33 @@ public class PromotionEntity : AuditableEntity, IHasOuterId, IDataEntity<Promoti
             if (PredicateVisualTreeSerialized != null)
             {
                 dynamicPromotion.DynamicExpression = JsonConvert.DeserializeObject<PromotionConditionAndRewardTree>(PredicateVisualTreeSerialized, new ConditionJsonConverter(), new PolymorphJsonConverter());
+            }
+        }
+
+        if (LocalizedLabels != null)
+        {
+            model.LocalizedLabel = new LocalizedString();
+            foreach (var localizedLabel in LocalizedLabels)
+            {
+                model.LocalizedLabel.SetValue(localizedLabel.LanguageCode, localizedLabel.Value);
+            }
+        }
+
+        if (LocalizedDisplayNames != null)
+        {
+            model.LocalizedDisplayName = new LocalizedString();
+            foreach (var localizedName in LocalizedDisplayNames)
+            {
+                model.LocalizedDisplayName.SetValue(localizedName.LanguageCode, localizedName.Value);
+            }
+        }
+
+        if (LocalizedDescriptions != null)
+        {
+            model.LocalizedDescription = new LocalizedString();
+            foreach (var localizedDescription in LocalizedDescriptions)
+            {
+                model.LocalizedDescription.SetValue(localizedDescription.LanguageCode, localizedDescription.Value);
             }
         }
 
@@ -130,7 +169,7 @@ public class PromotionEntity : AuditableEntity, IHasOuterId, IDataEntity<Promoti
 
         PerCustomerLimit = model.MaxPersonalUsageCount;
         TotalLimit = model.MaxUsageCount;
-        PerCustomerLimit = model.MaxPersonalUsageCount;
+        IsPublic = model.IsPublic;
 
         if (model.StoreIds != null)
         {
@@ -145,6 +184,42 @@ public class PromotionEntity : AuditableEntity, IHasOuterId, IDataEntity<Promoti
             {
                 PredicateVisualTreeSerialized = JsonConvert.SerializeObject(dynamicPromotion.DynamicExpression, new ConditionJsonConverter(doNotSerializeAvailCondition: true));
             }
+        }
+
+        if (model.LocalizedLabel != null)
+        {
+            LocalizedLabels = new ObservableCollection<PromotionLocalizedLabelEntity>(model.LocalizedLabel.Values
+                .Select(x =>
+                {
+                    var entity = AbstractTypeFactory<PromotionLocalizedLabelEntity>.TryCreateInstance();
+                    entity.LanguageCode = x.Key;
+                    entity.Value = x.Value;
+                    return entity;
+                }));
+        }
+
+        if (model.LocalizedDescription != null)
+        {
+            LocalizedDescriptions = new ObservableCollection<PromotionLocalizedDescriptionEntity>(model.LocalizedDescription.Values
+                .Select(x =>
+                {
+                    var entity = AbstractTypeFactory<PromotionLocalizedDescriptionEntity>.TryCreateInstance();
+                    entity.LanguageCode = x.Key;
+                    entity.Value = x.Value;
+                    return entity;
+                }));
+        }
+
+        if (model.LocalizedDisplayName != null)
+        {
+            LocalizedDisplayNames = new ObservableCollection<PromotionLocalizedDisplayNameEntity>(model.LocalizedDisplayName.Values
+                .Select(x =>
+                {
+                    var entity = AbstractTypeFactory<PromotionLocalizedDisplayNameEntity>.TryCreateInstance();
+                    entity.LanguageCode = x.Key;
+                    entity.Value = x.Value;
+                    return entity;
+                }));
         }
 
         return this;
@@ -166,13 +241,31 @@ public class PromotionEntity : AuditableEntity, IHasOuterId, IDataEntity<Promoti
         target.PredicateVisualTreeSerialized = PredicateVisualTreeSerialized;
         target.PerCustomerLimit = PerCustomerLimit;
         target.TotalLimit = TotalLimit;
-        target.PerCustomerLimit = PerCustomerLimit;
         target.IsAllowCombiningWithSelf = IsAllowCombiningWithSelf;
+        target.IsPublic = IsPublic;
 
         if (!Stores.IsNullCollection())
         {
             var comparer = AnonymousComparer.Create((PromotionStoreEntity entity) => entity.StoreId);
             Stores.Patch(target.Stores, comparer, (sourceEntity, targetEntity) => targetEntity.StoreId = sourceEntity.StoreId);
+        }
+
+        if (!LocalizedLabels.IsNullCollection())
+        {
+            var localizedLabelComparer = AnonymousComparer.Create((PromotionLocalizedLabelEntity x) => $"{x.Value}-{x.LanguageCode}");
+            LocalizedLabels.Patch(target.LocalizedLabels, localizedLabelComparer, (sourceValue, targetValue) => { });
+        }
+
+        if (!LocalizedDescriptions.IsNullCollection())
+        {
+            var localizedDescriptionComparer = AnonymousComparer.Create((PromotionLocalizedDescriptionEntity x) => $"{x.Value}-{x.LanguageCode}");
+            LocalizedDescriptions.Patch(target.LocalizedDescriptions, localizedDescriptionComparer, (sourceValue, targetValue) => { });
+        }
+
+        if (!LocalizedDisplayNames.IsNullCollection())
+        {
+            var localizedNameComparer = AnonymousComparer.Create((PromotionLocalizedDisplayNameEntity x) => $"{x.Value}-{x.LanguageCode}");
+            LocalizedDisplayNames.Patch(target.LocalizedDisplayNames, localizedNameComparer, (sourceValue, targetValue) => { });
         }
     }
 }

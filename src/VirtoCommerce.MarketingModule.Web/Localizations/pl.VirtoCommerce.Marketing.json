@@ -36,7 +36,13 @@
           "per-customer-limit": "Ograniczenia dla klientów indywidualnych",
           "promotion-conditions": "Warunki promocji",
           "combined-with-others": "Ważna z innymi ofertami",
-          "exclusive": "Globalnie ekskluzywna"
+          "exclusive": "Globalnie ekskluzywna",
+          "is-public": "Publiczne",
+          "localized-label": "Etykieta",
+          "localized-name": "Zlokalizowana nazwa",
+          "localized-description": "Zlokalizowany opis",
+          "show-more-languages": "Pokaż więcej języków",
+          "show-less-languages": "Pokaż mniej języków"
         },
         "descr": {
           "promotion-name": "Nadaj promocji unikalną nazwę, która zostanie wyświetlona na liście promocji",
@@ -46,7 +52,8 @@
           "expiration-date": "Jeśli nie określisz daty zakończenia, promocja będzie aktywna do momentu dezaktywacji",
           "priority": "Promocja z najwyższym priorytetem zostanie zastosowana jako pierwsza",
           "exclusivity": "Jeśli wybierzesz 'Globalnie Ekskluzywna', twoi klienci nie będą mogli zastosować żadnych innych promocji o niższym priorytecie do zamówienia",
-          "is-combine-with-self": "Włącz tę opcję, jeśli do realizacji oferty wymagane są wielokrotne kupony"
+          "is-combine-with-self": "Włącz tę opcję, jeśli do realizacji oferty wymagane są wielokrotne kupony",
+          "is-public": "Wyświetl tę promocję w sklepie"
         },
         "placeholders": {
           "promotion-name": "Wpisz tutaj nazwę promocji...",
@@ -54,7 +61,10 @@
           "store": "Wybierz...",
           "start-date": "Podaj datę...",
           "coupons": "Wprowadź kody kuponów...",
-          "expiration-date": "Podaj datę..."
+          "expiration-date": "Podaj datę...",
+          "localized-label": "Podaj etykietę...",
+          "localized-name": "Podaj zlokalizowaną nazwę...",
+          "localized-description": "Podaj opis..."
         },
         "toolbar": {
           "coupons": "Kupony"
