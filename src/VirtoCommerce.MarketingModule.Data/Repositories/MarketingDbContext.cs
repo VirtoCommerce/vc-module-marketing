@@ -24,7 +24,7 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
             modelBuilder.Entity<CouponEntity>().ToTable("Coupon");
             modelBuilder.Entity<CouponEntity>().HasKey(x => x.Id);
             modelBuilder.Entity<CouponEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
-            modelBuilder.Entity<CouponEntity>().HasOne(x => x.Promotion).WithMany()
+            modelBuilder.Entity<CouponEntity>().HasOne(x => x.Promotion).WithMany(x => x.Coupons)
                 .HasForeignKey(x => x.PromotionId).OnDelete(DeleteBehavior.Cascade).IsRequired();
             modelBuilder.Entity<CouponEntity>().HasIndex(i => new { i.Code, i.PromotionId }).IsUnique().HasDatabaseName("IX_CodeAndPromotionId");
 
@@ -45,6 +45,54 @@ namespace VirtoCommerce.MarketingModule.Data.Repositories
             modelBuilder.Entity<PromotionUsageEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
             modelBuilder.Entity<PromotionUsageEntity>().HasOne(x => x.Promotion).WithMany()
                 .HasForeignKey(x => x.PromotionId).OnDelete(DeleteBehavior.Cascade).IsRequired();
+
+            #endregion
+
+            #region PromotionLocalization
+            modelBuilder.Entity<PromotionLocalizedLabelEntity>(builder =>
+            {
+                builder.ToTable("PromotionLocalizedLabel").HasKey(x => x.Id);
+                builder.Property(x => x.Id).HasMaxLength(IdLength).ValueGeneratedOnAdd();
+
+                builder.HasOne(x => x.ParentEntity)
+                    .WithMany(x => x.LocalizedLabels)
+                    .HasForeignKey(x => x.ParentEntityId)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                builder.HasIndex(x => new { x.LanguageCode, x.ParentEntityId }).IsUnique()
+                    .HasDatabaseName("IX_PromotionLocalizedLabel_LanguageCode_ParentEntityId");
+            });
+
+            modelBuilder.Entity<PromotionLocalizedDisplayNameEntity>(builder =>
+            {
+                builder.ToTable("PromotionLocalizedDisplayName").HasKey(x => x.Id);
+                builder.Property(x => x.Id).HasMaxLength(IdLength).ValueGeneratedOnAdd();
+
+                builder.HasOne(x => x.ParentEntity)
+                    .WithMany(x => x.LocalizedDisplayNames)
+                    .HasForeignKey(x => x.ParentEntityId)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                builder.HasIndex(x => new { x.LanguageCode, x.ParentEntityId }).IsUnique()
+                    .HasDatabaseName("IX_PromotionLocalizedDisplayName_LanguageCode_ParentEntityId");
+            });
+
+            modelBuilder.Entity<PromotionLocalizedDescriptionEntity>(builder =>
+            {
+                builder.ToTable("PromotionLocalizedDescription").HasKey(x => x.Id);
+                builder.Property(x => x.Id).HasMaxLength(IdLength).ValueGeneratedOnAdd();
+
+                builder.HasOne(x => x.ParentEntity)
+                    .WithMany(x => x.LocalizedDescriptions)
+                    .HasForeignKey(x => x.ParentEntityId)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                builder.HasIndex(x => new { x.LanguageCode, x.ParentEntityId }).IsUnique()
+                    .HasDatabaseName("IX_PromotionLocalizedDescription_LanguageCode_ParentEntityId");
+            });
 
             #endregion
 

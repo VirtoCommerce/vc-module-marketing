@@ -36,7 +36,13 @@
           "per-customer-limit": "Rajoitukset yksittäisille asiakkaille",
           "promotion-conditions": "Kampanjan ehdot",
           "combined-with-others": "Voimassa muiden tarjousten kanssa",
-          "exclusive": "Globaalisti eksklusiivinen"
+          "exclusive": "Globaalisti eksklusiivinen",
+          "is-public": "Julkinen",
+          "localized-label": "Tunniste",
+          "localized-name": "Lokalisoitu nimi",
+          "localized-description": "Lokalisoitu kuvaus",
+          "show-more-languages": "Näytä lisää kieliä",
+          "show-less-languages": "Näytä vähemmän kieliä"
         },
         "descr": {
           "promotion-name": "Anna kampanjallesi yksilöllinen nimi, joka näkyy kampanjalistassa",
@@ -46,7 +52,8 @@
           "expiration-date": "Jos et määritä päättymispäivää, kampanja on aktiivinen, kunnes deaktivoit sen",
           "priority": "Korkeimman prioriteetin kampanja sovelletaan ensin",
           "exclusivity": "Jos valitset 'Globaalisti eksklusiivinen', asiakkaat eivät voi käyttää muita matalamman prioriteetin kampanjoita tilaukseen",
-          "is-combine-with-self": "Ota tämä vaihtoehto käyttöön, jos tarjouksen lunastamiseen vaaditaan useita kuponkeja"
+          "is-combine-with-self": "Ota tämä vaihtoehto käyttöön, jos tarjouksen lunastamiseen vaaditaan useita kuponkeja",
+          "is-public": "Näytä tämä kampanja kaupan etusivulla"
         },
         "placeholders": {
           "promotion-name": "Kirjoita kampanjan nimi tähän...",
@@ -54,7 +61,10 @@
           "store": "Valitse...",
           "start-date": "Anna päivämäärä...",
           "coupons": "Syötä kuponkikoodit...",
-          "expiration-date": "Anna päivämäärä..."
+          "expiration-date": "Anna päivämäärä...",
+          "localized-label": "Anna tunniste...",
+          "localized-name": "Anna lokalisoitu nimi...",
+          "localized-description": "Anna kuvaus..."
         },
         "toolbar": {
           "coupons": "Kupongit"

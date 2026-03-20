@@ -40,7 +40,13 @@ public class MarketingRepository(MarketingDbContext dbContext)
 
     public virtual async Task<IList<PromotionEntity>> GetPromotionsByIdsAsync(IList<string> ids)
     {
-        var promotions = await Promotions.Where(x => ids.Contains(x.Id)).ToListAsync();
+        var promotions = await Promotions
+            .Where(x => ids.Contains(x.Id))
+            .Include(x => x.LocalizedLabels)
+            .Include(x => x.LocalizedDisplayNames)
+            .Include(x => x.LocalizedDescriptions)
+            .AsSplitQuery()
+            .ToListAsync();
 
         if (promotions.Count > 0)
         {

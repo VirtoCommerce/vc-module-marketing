@@ -36,7 +36,13 @@
           "per-customer-limit": "Limitations for individual customers",
           "promotion-conditions": "Promotion conditions",
           "combined-with-others": "Valid with other offers",
-          "exclusive": "Globally exclusive"
+          "exclusive": "Globally exclusive",
+          "is-public": "Public",
+          "localized-label": "Label", 
+          "localized-name": "Localized name",
+          "localized-description": "Localized description",
+          "show-more-languages": "Show more languages",
+          "show-less-languages": "Show less languages"
         },
         "descr": {
           "promotion-name": "Give your promotion a unique name that will be displayed in the promotion list",
@@ -46,7 +52,8 @@
           "expiration-date": "If you do not specify an end date, the promotion will be active until you deactivate it",
           "priority": "The promotion with the highest priority is applied first",
           "exclusivity": "If you select 'Globally Exclusive', your customers will be unable to apply any other promotions with lower priority to the order",
-          "is-combine-with-self": "Enable this option if multiple coupons are required to redeem the offer"
+          "is-combine-with-self": "Enable this option if multiple coupons are required to redeem the offer",
+          "is-public": "Display this promotion on storefront"
         },
         "placeholders": {
           "promotion-name": "Type your promotion name here...",
@@ -54,7 +61,10 @@
           "store": "Select...",
           "start-date": "Provide a date...",
           "coupons": "Enter coupon codes...",
-          "expiration-date": "Provide a date..."
+          "expiration-date": "Provide a date...",
+          "localized-label": "Provide a label...",
+          "localized-name": "Provide a localized name...",
+          "localized-description": "Provide a description..."
         },
         "toolbar": {
           "coupons": "Coupons"

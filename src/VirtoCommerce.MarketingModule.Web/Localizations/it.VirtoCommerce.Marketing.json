@@ -36,7 +36,13 @@
           "per-customer-limit": "Limitazioni per singoli clienti",
           "promotion-conditions": "Condizioni promozionali",
           "combined-with-others": "Valido con altre offerte",
-          "exclusive": "Esclusività globale"
+          "exclusive": "Esclusività globale",
+          "is-public": "Pubblico",
+          "localized-label": "Etichetta",
+          "localized-name": "Nome localizzato",
+          "localized-description": "Descrizione localizzata",
+          "show-more-languages": "Mostra più lingue",
+          "show-less-languages": "Mostra meno lingue"
         },
         "descr": {
           "promotion-name": "Dai alla tua promozione un nome unico che verrà visualizzato nell'elenco delle promozioni",
@@ -46,7 +52,8 @@
           "expiration-date": "Se non specifichi una data di fine, la promozione sarà attiva fino alla disattivazione",
           "priority": "La promozione con la priorità più alta viene applicata per prima",
           "exclusivity": "Se selezioni 'Esclusività globale', i tuoi clienti non potranno applicare altre promozioni con priorità inferiore all'ordine",
-          "is-combine-with-self": "Abilita questa opzione se sono necessari più coupon per riscattare l'offerta"
+          "is-combine-with-self": "Abilita questa opzione se sono necessari più coupon per riscattare l'offerta",
+          "is-public": "Mostra questa promozione sullo store"
         },
         "placeholders": {
           "promotion-name": "Digita qui il nome della promozione...",
@@ -54,7 +61,10 @@
           "store": "Seleziona...",
           "start-date": "Fornisci una data...",
           "coupons": "Inserisci i codici coupon...",
-          "expiration-date": "Fornisci una data..."
+          "expiration-date": "Fornisci una data...",
+          "localized-label": "Fornisci un'etichetta...",
+          "localized-name": "Fornisci un nome localizzato...",
+          "localized-description": "Fornisci una descrizione..."
         },
         "toolbar": {
           "coupons": "Coupon"

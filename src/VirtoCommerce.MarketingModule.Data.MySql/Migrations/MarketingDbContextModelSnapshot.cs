@@ -397,6 +397,9 @@ namespace VirtoCommerce.MarketingModule.Data.MySql.Migrations
                     b.Property<bool>("IsExclusive")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(64)
                         .HasColumnType("varchar(64)");
@@ -441,6 +444,99 @@ namespace VirtoCommerce.MarketingModule.Data.MySql.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Promotion", (string)null);
+                });
+
+            modelBuilder.Entity("VirtoCommerce.MarketingModule.Data.Model.PromotionLocalizedDescriptionEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
+
+                    b.Property<string>("ParentEntityId")
+                        .IsRequired()
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentEntityId");
+
+                    b.HasIndex("LanguageCode", "ParentEntityId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_PromotionLocalizedDescription_LanguageCode_ParentEntityId");
+
+                    b.ToTable("PromotionLocalizedDescription", (string)null);
+                });
+
+            modelBuilder.Entity("VirtoCommerce.MarketingModule.Data.Model.PromotionLocalizedDisplayNameEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
+
+                    b.Property<string>("ParentEntityId")
+                        .IsRequired()
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentEntityId");
+
+                    b.HasIndex("LanguageCode", "ParentEntityId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_PromotionLocalizedDisplayName_LanguageCode_ParentEntityId");
+
+                    b.ToTable("PromotionLocalizedDisplayName", (string)null);
+                });
+
+            modelBuilder.Entity("VirtoCommerce.MarketingModule.Data.Model.PromotionLocalizedLabelEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
+
+                    b.Property<string>("ParentEntityId")
+                        .IsRequired()
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentEntityId");
+
+                    b.HasIndex("LanguageCode", "ParentEntityId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_PromotionLocalizedLabel_LanguageCode_ParentEntityId");
+
+                    b.ToTable("PromotionLocalizedLabel", (string)null);
                 });
 
             modelBuilder.Entity("VirtoCommerce.MarketingModule.Data.Model.PromotionStoreEntity", b =>
@@ -604,7 +700,7 @@ namespace VirtoCommerce.MarketingModule.Data.MySql.Migrations
             modelBuilder.Entity("VirtoCommerce.MarketingModule.Data.Model.CouponEntity", b =>
                 {
                     b.HasOne("VirtoCommerce.MarketingModule.Data.Model.PromotionEntity", "Promotion")
-                        .WithMany()
+                        .WithMany("Coupons")
                         .HasForeignKey("PromotionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -649,6 +745,39 @@ namespace VirtoCommerce.MarketingModule.Data.MySql.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Folder");
+                });
+
+            modelBuilder.Entity("VirtoCommerce.MarketingModule.Data.Model.PromotionLocalizedDescriptionEntity", b =>
+                {
+                    b.HasOne("VirtoCommerce.MarketingModule.Data.Model.PromotionEntity", "ParentEntity")
+                        .WithMany("LocalizedDescriptions")
+                        .HasForeignKey("ParentEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ParentEntity");
+                });
+
+            modelBuilder.Entity("VirtoCommerce.MarketingModule.Data.Model.PromotionLocalizedDisplayNameEntity", b =>
+                {
+                    b.HasOne("VirtoCommerce.MarketingModule.Data.Model.PromotionEntity", "ParentEntity")
+                        .WithMany("LocalizedDisplayNames")
+                        .HasForeignKey("ParentEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ParentEntity");
+                });
+
+            modelBuilder.Entity("VirtoCommerce.MarketingModule.Data.Model.PromotionLocalizedLabelEntity", b =>
+                {
+                    b.HasOne("VirtoCommerce.MarketingModule.Data.Model.PromotionEntity", "ParentEntity")
+                        .WithMany("LocalizedLabels")
+                        .HasForeignKey("ParentEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ParentEntity");
                 });
 
             modelBuilder.Entity("VirtoCommerce.MarketingModule.Data.Model.PromotionStoreEntity", b =>
@@ -731,6 +860,14 @@ namespace VirtoCommerce.MarketingModule.Data.MySql.Migrations
 
             modelBuilder.Entity("VirtoCommerce.MarketingModule.Data.Model.PromotionEntity", b =>
                 {
+                    b.Navigation("Coupons");
+
+                    b.Navigation("LocalizedDescriptions");
+
+                    b.Navigation("LocalizedDisplayNames");
+
+                    b.Navigation("LocalizedLabels");
+
                     b.Navigation("Stores");
                 });
 #pragma warning restore 612, 618

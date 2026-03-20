@@ -36,7 +36,13 @@
           "per-customer-limit": "顧客ごとの制限",
           "promotion-conditions": "プロモーション条件",
           "combined-with-others": "他のオファーと併用可能",
-          "exclusive": "グローバル排他的"
+          "exclusive": "グローバル排他的",
+          "is-public": "公開",
+          "localized-label": "ラベル",
+          "localized-name": "ローカライズ名",
+          "localized-description": "ローカライズされた説明",
+          "show-more-languages": "さらに言語を表示",
+          "show-less-languages": "表示する言語を減らす"
         },
         "descr": {
           "promotion-name": "プロモーションリストに表示される一意の名前を付けてください",
@@ -46,7 +52,8 @@
           "expiration-date": "終了日を指定しない場合、プロモーションは無効にするまで有効です",
           "priority": "優先度が最も高いプロモーションが最初に適用されます",
           "exclusivity": "「グローバル排他的」を選択すると、顧客は優先度の低い他のプロモーションを注文に適用できなくなります",
-          "is-combine-with-self": "オファーを利用するために複数のクーポンが必要な場合、このオプションを有効にします"
+          "is-combine-with-self": "オファーを利用するために複数のクーポンが必要な場合、このオプションを有効にします",
+          "is-public": "このプロモーションをストアフロントに表示する"
         },
         "placeholders": {
           "promotion-name": "ここにプロモーション名を入力してください...",
@@ -54,7 +61,10 @@
           "store": "選択...",
           "start-date": "日付を入力...",
           "coupons": "クーポンコードを入力...",
-          "expiration-date": "日付を入力..."
+          "expiration-date": "日付を入力...",
+          "localized-label": "ラベルを入力してください...",
+          "localized-name": "ローカライズされた名前を入力してください...",
+          "localized-description": "説明を入力してください..."
         },
         "toolbar": {
           "coupons": "クーポン"

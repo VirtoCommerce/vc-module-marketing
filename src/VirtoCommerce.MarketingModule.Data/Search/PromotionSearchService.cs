@@ -61,8 +61,8 @@ public class PromotionSearchService(
             {
                 case PromotionStatus.Active:
                     // Active: IsActive AND CurrentDate >= StartDate AND CurrentDate < EndDate (or EndDate is null)
-                    query = query.Where(x => x.IsActive && 
-                        (now >= x.StartDate) && 
+                    query = query.Where(x => x.IsActive &&
+                        (now >= x.StartDate) &&
                         (x.EndDate == null || x.EndDate >= now));
                     break;
                 case PromotionStatus.Upcoming:
@@ -90,6 +90,16 @@ public class PromotionSearchService(
         if (!criteria.Keyword.IsNullOrEmpty())
         {
             query = query.Where(x => x.Name.Contains(criteria.Keyword) || x.Description.Contains(criteria.Keyword));
+        }
+
+        if (criteria.IsPublic.HasValue)
+        {
+            query = query.Where(x => x.IsPublic == criteria.IsPublic.Value);
+        }
+
+        if (criteria.CouponCount.HasValue)
+        {
+            query = query.Where(x => x.Coupons.Count == criteria.CouponCount.Value);
         }
 
         return query;

@@ -25,6 +25,10 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions.Search
             }
         }
 
+        public bool? IsPublic { get; set; }
+
+        public int? CouponCount { get; set; }
+
         public virtual void PopulateFromEvalContext(PromotionEvaluationContext context)
         {
             //the Extension point for future extensions
