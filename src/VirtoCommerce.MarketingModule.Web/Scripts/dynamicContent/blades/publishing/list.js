@@ -96,8 +96,8 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentPublica
     $scope.deleteItems = function (items) {
         var dialog = {
             id: "confirmDeleteContentPublications",
-            title: "marketing.dialogs.content-item-folder-delete.title",
-            data: [{ key: 'marketing.dialogs.content-item-folder-delete.item', count: items.length }],
+            title: "marketing.dialogs.publication-delete.title",
+            data: [{ key: 'marketing.dialogs.publication-delete.publication', count: items.length }],
             callback: function (remove) {
                 if (remove) {
                     dynamicContentPublicationsApi.remove({
