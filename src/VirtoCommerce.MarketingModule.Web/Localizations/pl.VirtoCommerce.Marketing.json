@@ -386,11 +386,13 @@
       },
       "placeholders-folder-delete": {
         "title": "Potwierdź usunięcie",
-        "message": "Czy na pewno chcesz usunąć ten folder miejsca treści?"
+        "message": "Czy na pewno chcesz usunąć ten folder miejsca treści?",
+        "item": "{{count}} element(ów)"
       },
       "content-item-folder-delete": {
         "title": "Potwierdź usunięcie",
-        "message": "Czy na pewno chcesz usunąć ten folder elementu treści?"
+        "message": "Czy na pewno chcesz usunąć ten folder elementu treści?",
+        "item": "{{count}} element(ów)"
       },
       "content-folder-delete": {
         "title": "Potwierdź usunięcie",
@@ -398,7 +400,8 @@
       },
       "publication-delete": {
         "title": "Potwierdź usunięcie",
-        "message": "Czy na pewno chcesz usunąć tę publikację?"
+        "message": "Czy na pewno chcesz usunąć tę publikację?",
+        "publication": "{{count}} publikacja(e)"
       },
       "content-placeholder-delete": {
         "title": "Potwierdź usunięcie",
@@ -406,7 +409,8 @@
       },
       "promotions-delete": {
         "title": "Potwierdź usunięcie",
-        "message": "Czy na pewno chcesz usunąć wybrane promocje?"
+        "message": "Czy na pewno chcesz usunąć wybrane promocje?",
+        "promotion": "{{count}} promocja(e)"
       },
       "promotion-save": {
         "title": "Zapisz zmiany",
@@ -415,7 +419,8 @@
       "coupon-delete": {
         "title": "Potwierdź usunięcie",
         "message": "Czy na pewno chcesz usunąć wybrane kupony?",
-        "message-all": "Czy na pewno chcesz usunąć wszystkie kupony?"
+        "message-all": "Czy na pewno chcesz usunąć wszystkie kupony?",
+        "coupon": "{{count}} kupon(ów)"
       }
     },
     "commands": {

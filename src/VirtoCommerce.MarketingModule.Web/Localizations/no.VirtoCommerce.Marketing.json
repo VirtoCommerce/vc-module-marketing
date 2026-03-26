@@ -386,11 +386,13 @@
       },
       "placeholders-folder-delete": {
         "title": "Bekreft sletting",
-        "message": "Er du sikker på at du vil slette denne mappen for innholdsplassholdere?"
+        "message": "Er du sikker på at du vil slette denne mappen for innholdsplassholdere?",
+        "item": "{{count}} element(er)"
       },
       "content-item-folder-delete": {
         "title": "Bekreft sletting",
-        "message": "Er du sikker på at du vil slette denne mappen for innholdselementer?"
+        "message": "Er du sikker på at du vil slette denne mappen for innholdselementer?",
+        "item": "{{count}} element(er)"
       },
       "content-folder-delete": {
         "title": "Bekreft sletting",
@@ -398,7 +400,8 @@
       },
       "publication-delete": {
         "title": "Bekreft sletting",
-        "message": "Er du sikker på at du vil slette denne publikasjonen?"
+        "message": "Er du sikker på at du vil slette denne publikasjonen?",
+        "publication": "{{count}} publikasjon(er)"
       },
       "content-placeholder-delete": {
         "title": "Bekreft sletting",
@@ -406,7 +409,8 @@
       },
       "promotions-delete": {
         "title": "Bekreft sletting",
-        "message": "Er du sikker på at du vil slette de valgte kampanjene?"
+        "message": "Er du sikker på at du vil slette de valgte kampanjene?",
+        "promotion": "{{count}} kampanje(r)"
       },
       "promotion-save": {
         "title": "Lagre endringer",
@@ -415,7 +419,8 @@
       "coupon-delete": {
         "title": "Bekreft sletting",
         "message": "Er du sikker på at du vil slette de valgte kupongene?",
-        "message-all": "Er du sikker på at du vil slette alle kupongene?"
+        "message-all": "Er du sikker på at du vil slette alle kupongene?",
+        "coupon": "{{count}} kupong(er)"
       }
     },
     "commands": {

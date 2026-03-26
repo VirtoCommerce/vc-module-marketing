@@ -386,11 +386,13 @@
       },
       "placeholders-folder-delete": {
         "title": "Bekräfta radering",
-        "message": "Är du säker på att du vill radera denna mapp för innehållsplatshållare?"
+        "message": "Är du säker på att du vill radera denna mapp för innehållsplatshållare?",
+        "item": "{{count}} objekt"
       },
       "content-item-folder-delete": {
         "title": "Bekräfta radering",
-        "message": "Är du säker på att du vill radera denna mapp för innehållsartiklar?"
+        "message": "Är du säker på att du vill radera denna mapp för innehållsartiklar?",
+        "item": "{{count}} objekt"
       },
       "content-folder-delete": {
         "title": "Bekräfta radering",
@@ -398,7 +400,8 @@
       },
       "publication-delete": {
         "title": "Bekräfta radering",
-        "message": "Är du säker på att du vill radera denna publikation?"
+        "message": "Är du säker på att du vill radera denna publikation?",
+        "publication": "{{count}} publicering(ar)"
       },
       "content-placeholder-delete": {
         "title": "Bekräfta radering",
@@ -406,7 +409,8 @@
       },
       "promotions-delete": {
         "title": "Bekräfta radering",
-        "message": "Är du säker på att du vill radera de valda kampanjerna?"
+        "message": "Är du säker på att du vill radera de valda kampanjerna?",
+        "promotion": "{{count}} kampanj(er)"
       },
       "promotion-save": {
         "title": "Spara ändringar",
@@ -415,7 +419,8 @@
       "coupon-delete": {
         "title": "Bekräfta radering",
         "message": "Är du säker på att du vill radera de valda kupongerna?",
-        "message-all": "Är du säker på att du vill radera alla kuponger?"
+        "message-all": "Är du säker på att du vill radera alla kuponger?",
+        "coupon": "{{count}} kupong(er)"
       }
     },
     "commands": {

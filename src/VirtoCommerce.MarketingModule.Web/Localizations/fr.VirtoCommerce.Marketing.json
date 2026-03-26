@@ -386,11 +386,13 @@
       },
       "placeholders-folder-delete": {
         "title": "Confirmer la suppression",
-        "message": "Êtes-vous sûr de vouloir supprimer ce dossier d'espaces de contenu ?"
+        "message": "Êtes-vous sûr de vouloir supprimer ce dossier d'espaces de contenu ?",
+        "item": "{{count}} élément(s)"
       },
       "content-item-folder-delete": {
         "title": "Confirmer la suppression",
-        "message": "Êtes-vous sûr de vouloir supprimer ce dossier d'éléments de contenu ?"
+        "message": "Êtes-vous sûr de vouloir supprimer ce dossier d'éléments de contenu ?",
+        "item": "{{count}} élément(s)"
       },
       "content-folder-delete": {
         "title": "Confirmer la suppression",
@@ -398,7 +400,8 @@
       },
       "publication-delete": {
         "title": "Confirmer la suppression",
-        "message": "Êtes-vous sûr de vouloir supprimer cette publication ?"
+        "message": "Êtes-vous sûr de vouloir supprimer cette publication ?",
+        "publication": "{{count}} publication(s)"
       },
       "content-placeholder-delete": {
         "title": "Confirmer la suppression",
@@ -406,7 +409,8 @@
       },
       "promotions-delete": {
         "title": "Confirmer la suppression",
-        "message": "Êtes-vous sûr de vouloir supprimer les promotions sélectionnées ?"
+        "message": "Êtes-vous sûr de vouloir supprimer les promotions sélectionnées ?",
+        "promotion": "{{count}} promotion(s)"
       },
       "promotion-save": {
         "title": "Enregistrer les modifications",
@@ -415,7 +419,8 @@
       "coupon-delete": {
         "title": "Confirmer la suppression",
         "message": "Êtes-vous sûr de vouloir supprimer les coupons sélectionnés ?",
-        "message-all": "Êtes-vous sûr de vouloir supprimer tous les coupons ?"
+        "message-all": "Êtes-vous sûr de vouloir supprimer tous les coupons ?",
+        "coupon": "{{count}} coupon(s)"
       }
     },
     "commands": {

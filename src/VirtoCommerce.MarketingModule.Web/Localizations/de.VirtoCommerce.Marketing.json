@@ -386,11 +386,13 @@
       },
       "placeholders-folder-delete": {
         "title": "Löschen bestätigen",
-        "message": "Sind Sie sicher, dass Sie diesen Platzhalterordner löschen möchten?"
+        "message": "Sind Sie sicher, dass Sie diesen Platzhalterordner löschen möchten?",
+        "item": "{{count}} Element(e)"
       },
       "content-item-folder-delete": {
         "title": "Löschen bestätigen",
-        "message": "Sind Sie sicher, dass Sie diesen Inhaltselementordner löschen möchten?"
+        "message": "Sind Sie sicher, dass Sie diesen Inhaltselementordner löschen möchten?",
+        "item": "{{count}} Element(e)"
       },
       "content-folder-delete": {
         "title": "Löschen bestätigen",
@@ -398,7 +400,8 @@
       },
       "publication-delete": {
         "title": "Löschen bestätigen",
-        "message": "Sind Sie sicher, dass Sie diese Veröffentlichung löschen möchten?"
+        "message": "Sind Sie sicher, dass Sie diese Veröffentlichung löschen möchten?",
+        "publication": "{{count}} Veröffentlichung(en)"
       },
       "content-placeholder-delete": {
         "title": "Löschen bestätigen",
@@ -406,7 +409,8 @@
       },
       "promotions-delete": {
         "title": "Löschen bestätigen",
-        "message": "Sind Sie sicher, dass Sie die ausgewählten Promotions löschen möchten?"
+        "message": "Sind Sie sicher, dass Sie die ausgewählten Promotions löschen möchten?",
+        "promotion": "{{count}} Aktion(en)"
       },
       "promotion-save": {
         "title": "Änderungen speichern",
@@ -415,7 +419,8 @@
       "coupon-delete": {
         "title": "Löschen bestätigen",
         "message": "Sind Sie sicher, dass Sie die ausgewählten Gutscheine löschen möchten?",
-        "message-all": "Sind Sie sicher, dass Sie alle Gutscheine löschen möchten?"
+        "message-all": "Sind Sie sicher, dass Sie alle Gutscheine löschen möchten?",
+        "coupon": "{{count}} Gutschein(e)"
       }
     },
     "commands": {

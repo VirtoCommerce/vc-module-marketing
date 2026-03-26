@@ -386,11 +386,13 @@
       },
       "placeholders-folder-delete": {
         "title": "Confirmar exclusão",
-        "message": "Tem certeza de que deseja excluir esta pasta de espaço de conteúdo?"
+        "message": "Tem certeza de que deseja excluir esta pasta de espaço de conteúdo?",
+        "item": "{{count}} item(ns)"
       },
       "content-item-folder-delete": {
         "title": "Confirmar exclusão",
-        "message": "Tem certeza de que deseja excluir esta pasta de item de conteúdo?"
+        "message": "Tem certeza de que deseja excluir esta pasta de item de conteúdo?",
+        "item": "{{count}} item(ns)"
       },
       "content-folder-delete": {
         "title": "Confirmar exclusão",
@@ -398,7 +400,8 @@
       },
       "publication-delete": {
         "title": "Confirmar exclusão",
-        "message": "Tem certeza de que deseja excluir esta publicação?"
+        "message": "Tem certeza de que deseja excluir esta publicação?",
+        "publication": "{{count}} publicação(ões)"
       },
       "content-placeholder-delete": {
         "title": "Confirmar exclusão",
@@ -406,7 +409,8 @@
       },
       "promotions-delete": {
         "title": "Confirmar exclusão",
-        "message": "Tem certeza de que deseja excluir as promoções selecionadas?"
+        "message": "Tem certeza de que deseja excluir as promoções selecionadas?",
+        "promotion": "{{count}} promoção(ões)"
       },
       "promotion-save": {
         "title": "Salvar alterações",
@@ -415,7 +419,8 @@
       "coupon-delete": {
         "title": "Confirmar exclusão",
         "message": "Tem certeza de que deseja excluir os cupons selecionados?",
-        "message-all": "Tem certeza de que deseja excluir todos os cupons?"
+        "message-all": "Tem certeza de que deseja excluir todos os cupons?",
+        "coupon": "{{count}} cupão(ões)"
       }
     },
     "commands": {

@@ -386,11 +386,13 @@
     },
     "placeholders-folder-delete": {
       "title": "削除の確認",
-      "message": "このコンテンツプレースホルダーフォルダを削除してもよろしいですか？"
+      "message": "このコンテンツプレースホルダーフォルダを削除してもよろしいですか？",
+      "item": "{{count}} 件のアイテム"
     },
     "content-item-folder-delete": {
       "title": "削除の確認",
-      "message": "このコンテンツ項目フォルダを削除してもよろしいですか？"
+      "message": "このコンテンツ項目フォルダを削除してもよろしいですか？",
+      "item": "{{count}} 件のアイテム"
     },
     "content-folder-delete": {
       "title": "削除の確認",
@@ -398,7 +400,8 @@
     },
     "publication-delete": {
       "title": "削除の確認",
-      "message": "この公開を削除してもよろしいですか？"
+      "message": "この公開を削除してもよろしいですか？",
+      "publication": "{{count}} 件の公開"
     },
     "content-placeholder-delete": {
       "title": "削除の確認",
@@ -406,7 +409,8 @@
     },
     "promotions-delete": {
       "title": "削除の確認",
-      "message": "選択したプロモーションを削除してもよろしいですか？"
+      "message": "選択したプロモーションを削除してもよろしいですか？",
+      "promotion": "{{count}} 件のプロモーション"
     },
     "promotion-save": {
       "title": "変更を保存",
@@ -415,7 +419,8 @@
     "coupon-delete": {
       "title": "削除の確認",
       "message": "選択したクーポンを削除してもよろしいですか？",
-      "message-all": "すべてのクーポンを削除してもよろしいですか？"
+      "message-all": "すべてのクーポンを削除してもよろしいですか？",
+      "coupon": "{{count}} 件のクーポン"
     }
   },
   "commands": {

@@ -175,7 +175,7 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentFolders
             var dialog = {
                 id: "confirmDeleteContentItemsFolder",
                 title: "marketing.dialogs.content-item-folder-delete.title",
-                message: "marketing.dialogs.content-item-folder-delete.message",
+                data: [{ key: 'marketing.dialogs.content-item-folder-delete.item', count: items.length }],
                 callback: function (remove) {
                     if (remove) {
                         blade.isLoading = true;
@@ -194,7 +194,7 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentFolders
                     }
                 }
             };
-            dialogService.showConfirmationDialog(dialog);
+            dialogService.showDeleteConfirmationDialog(dialog);
         });
     };
 

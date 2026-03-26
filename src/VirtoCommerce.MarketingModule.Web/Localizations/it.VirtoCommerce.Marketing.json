@@ -386,11 +386,13 @@
       },
       "placeholders-folder-delete": {
         "title": "Conferma eliminazione",
-        "message": "Sei sicuro di voler eliminare questa cartella di segnaposti?"
+        "message": "Sei sicuro di voler eliminare questa cartella di segnaposti?",
+        "item": "{{count}} elemento(i)"
       },
       "content-item-folder-delete": {
         "title": "Conferma eliminazione",
-        "message": "Sei sicuro di voler eliminare questa cartella di elementi di contenuto?"
+        "message": "Sei sicuro di voler eliminare questa cartella di elementi di contenuto?",
+        "item": "{{count}} elemento(i)"
       },
       "content-folder-delete": {
         "title": "Conferma eliminazione",
@@ -398,7 +400,8 @@
       },
       "publication-delete": {
         "title": "Conferma eliminazione",
-        "message": "Sei sicuro di voler eliminare questa pubblicazione?"
+        "message": "Sei sicuro di voler eliminare questa pubblicazione?",
+        "publication": "{{count}} pubblicazione(i)"
       },
       "content-placeholder-delete": {
         "title": "Conferma eliminazione",
@@ -406,7 +409,8 @@
       },
       "promotions-delete": {
         "title": "Conferma eliminazione",
-        "message": "Sei sicuro di voler eliminare le promozioni selezionate?"
+        "message": "Sei sicuro di voler eliminare le promozioni selezionate?",
+        "promotion": "{{count}} promozione(i)"
       },
       "promotion-save": {
         "title": "Salva modifiche",
@@ -415,7 +419,8 @@
       "coupon-delete": {
         "title": "Conferma eliminazione",
         "message": "Sei sicuro di voler eliminare i coupon selezionati?",
-        "message-all": "Sei sicuro di voler eliminare tutti i coupon?"
+        "message-all": "Sei sicuro di voler eliminare tutti i coupon?",
+        "coupon": "{{count}} coupon"
       }
     },
     "commands": {
