@@ -382,11 +382,11 @@
     "dialogs": {
       "content-item-delete": {
         "title": "Confirmar exclusão",
-        "message": "Tem certeza de que deseja excluir este item de conteúdo?"
+        "message": "Tem certeza de que deseja excluir o item de conteúdo '{{name}}'?"
       },
       "placeholders-folder-delete": {
         "title": "Confirmar exclusão",
-        "message": "Tem certeza de que deseja excluir esta pasta de espaço de conteúdo?",
+        "message": "Tem certeza de que deseja excluir a pasta de espaço de conteúdo '{{name}}'?",
         "item": "{{count}} item(ns)"
       },
       "content-item-folder-delete": {
@@ -396,16 +396,16 @@
       },
       "content-folder-delete": {
         "title": "Confirmar exclusão",
-        "message": "Tem certeza de que deseja excluir esta pasta?"
+        "message": "Tem certeza de que deseja excluir a pasta '{{name}}'?"
       },
       "publication-delete": {
         "title": "Confirmar exclusão",
-        "message": "Tem certeza de que deseja excluir esta publicação?",
+        "message": "Tem certeza de que deseja excluir a publicação '{{name}}'?",
         "publication": "{{count}} publicação(ões)"
       },
       "content-placeholder-delete": {
         "title": "Confirmar exclusão",
-        "message": "Tem certeza de que deseja excluir este espaço de conteúdo?"
+        "message": "Tem certeza de que deseja excluir o espaço de conteúdo '{{name}}'?"
       },
       "promotions-delete": {
         "title": "Confirmar exclusão",

@@ -382,11 +382,11 @@
     "dialogs": {
       "content-item-delete": {
         "title": "Bekräfta radering",
-        "message": "Är du säker på att du vill radera denna innehållsartikel?"
+        "message": "Är du säker på att du vill radera innehållsartikeln '{{name}}'?"
       },
       "placeholders-folder-delete": {
         "title": "Bekräfta radering",
-        "message": "Är du säker på att du vill radera denna mapp för innehållsplatshållare?",
+        "message": "Är du säker på att du vill radera mappen för innehållsplatshållare '{{name}}'?",
         "item": "{{count}} objekt"
       },
       "content-item-folder-delete": {
@@ -396,16 +396,16 @@
       },
       "content-folder-delete": {
         "title": "Bekräfta radering",
-        "message": "Är du säker på att du vill radera denna mapp?"
+        "message": "Är du säker på att du vill radera mappen '{{name}}'?"
       },
       "publication-delete": {
         "title": "Bekräfta radering",
-        "message": "Är du säker på att du vill radera denna publikation?",
+        "message": "Är du säker på att du vill radera publikationen '{{name}}'?",
         "publication": "{{count}} publicering(ar)"
       },
       "content-placeholder-delete": {
         "title": "Bekräfta radering",
-        "message": "Är du säker på att du vill radera denna innehållsplatshållare?"
+        "message": "Är du säker på att du vill radera innehållsplatshållaren '{{name}}'?"
       },
       "promotions-delete": {
         "title": "Bekräfta radering",

@@ -94,7 +94,7 @@ angular.module('virtoCommerce.marketingModule')
             var dialog = {
                 id: "confirmDeleteItem",
                 title: "marketing.dialogs.promotions-delete.title",
-                data: [{ key: 'marketing.dialogs.promotions-delete.promotion', count: list.length }],
+                items: [{ key: 'marketing.dialogs.promotions-delete.promotion', count: list.length }],
                 callback: function (remove) {
                     if (remove) {
                         bladeNavigationService.closeChildrenBlades(blade, function () {

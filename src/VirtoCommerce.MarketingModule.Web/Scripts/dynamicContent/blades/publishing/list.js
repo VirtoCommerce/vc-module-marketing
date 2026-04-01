@@ -15,7 +15,7 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentPublica
             var dialog = {
                 id: 'confirmDeletePublishings',
                 title: 'marketing.dialogs.publication-delete.title',
-                data: [{ key: 'marketing.dialogs.publication-delete.publication', count: selectedRows.length }],
+                items: [{ key: 'marketing.dialogs.publication-delete.publication', count: selectedRows.length }],
                 callback: function (confirm) {
                     if (confirm) {
                         var publishingIds = _.pluck(selectedRows, 'id');
@@ -97,7 +97,7 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentPublica
         var dialog = {
             id: "confirmDeleteContentPublications",
             title: "marketing.dialogs.publication-delete.title",
-            data: [{ key: 'marketing.dialogs.publication-delete.publication', count: items.length }],
+            items: [{ key: 'marketing.dialogs.publication-delete.publication', count: items.length }],
             callback: function (remove) {
                 if (remove) {
                     dynamicContentPublicationsApi.remove({

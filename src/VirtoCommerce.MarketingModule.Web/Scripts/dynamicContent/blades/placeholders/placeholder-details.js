@@ -57,7 +57,7 @@ angular.module('virtoCommerce.marketingModule')
                             id: "confirmDeleteContentPlaceholder",
                             title: "marketing.dialogs.content-placeholder-delete.title",
                             message: "marketing.dialogs.content-placeholder-delete.message",
-                            name: blade.currentEntity.name,
+                            messageValues: { name: blade.currentEntity.name },
                             callback: function (remove) {
                                 if (remove) {
                                     blade.isLoading = true;

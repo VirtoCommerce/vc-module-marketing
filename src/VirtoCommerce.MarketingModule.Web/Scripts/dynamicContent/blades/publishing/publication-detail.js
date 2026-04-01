@@ -37,7 +37,7 @@ angular.module('virtoCommerce.marketingModule')
                                 id: "confirmDeleteContentItem",
                                 title: "marketing.dialogs.publication-delete.title",
                                 message: "marketing.dialogs.publication-delete.message",
-                                name: blade.currentEntity.name,
+                                messageValues: { name: blade.currentEntity.name },
                                 callback: function (remove) {
                                     if (remove) {
                                         blade.isLoading = true;

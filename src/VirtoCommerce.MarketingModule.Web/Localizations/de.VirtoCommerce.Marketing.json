@@ -382,11 +382,11 @@
     "dialogs": {
       "content-item-delete": {
         "title": "Löschen bestätigen",
-        "message": "Sind Sie sicher, dass Sie dieses Inhaltselement löschen möchten?"
+        "message": "Sind Sie sicher, dass Sie das Inhaltselement '{{name}}' löschen möchten?"
       },
       "placeholders-folder-delete": {
         "title": "Löschen bestätigen",
-        "message": "Sind Sie sicher, dass Sie diesen Platzhalterordner löschen möchten?",
+        "message": "Sind Sie sicher, dass Sie den Platzhalterordner '{{name}}' löschen möchten?",
         "item": "{{count}} Element(e)"
       },
       "content-item-folder-delete": {
@@ -396,16 +396,16 @@
       },
       "content-folder-delete": {
         "title": "Löschen bestätigen",
-        "message": "Sind Sie sicher, dass Sie diesen Ordner löschen möchten?"
+        "message": "Sind Sie sicher, dass Sie den Ordner '{{name}}' löschen möchten?"
       },
       "publication-delete": {
         "title": "Löschen bestätigen",
-        "message": "Sind Sie sicher, dass Sie diese Veröffentlichung löschen möchten?",
+        "message": "Sind Sie sicher, dass Sie die Veröffentlichung '{{name}}' löschen möchten?",
         "publication": "{{count}} Veröffentlichung(en)"
       },
       "content-placeholder-delete": {
         "title": "Löschen bestätigen",
-        "message": "Sind Sie sicher, dass Sie diesen Platzhalter löschen möchten?"
+        "message": "Sind Sie sicher, dass Sie den Platzhalter '{{name}}' löschen möchten?"
       },
       "promotions-delete": {
         "title": "Löschen bestätigen",

@@ -382,11 +382,11 @@
     "dialogs": {
       "content-item-delete": {
         "title": "Bekreft sletting",
-        "message": "Er du sikker på at du vil slette dette innholdselementet?"
+        "message": "Er du sikker på at du vil slette innholdselementet '{{name}}'?"
       },
       "placeholders-folder-delete": {
         "title": "Bekreft sletting",
-        "message": "Er du sikker på at du vil slette denne mappen for innholdsplassholdere?",
+        "message": "Er du sikker på at du vil slette mappen for innholdsplassholdere '{{name}}'?",
         "item": "{{count}} element(er)"
       },
       "content-item-folder-delete": {
@@ -396,16 +396,16 @@
       },
       "content-folder-delete": {
         "title": "Bekreft sletting",
-        "message": "Er du sikker på at du vil slette denne mappen?"
+        "message": "Er du sikker på at du vil slette mappen '{{name}}'?"
       },
       "publication-delete": {
         "title": "Bekreft sletting",
-        "message": "Er du sikker på at du vil slette denne publikasjonen?",
+        "message": "Er du sikker på at du vil slette publikasjonen '{{name}}'?",
         "publication": "{{count}} publikasjon(er)"
       },
       "content-placeholder-delete": {
         "title": "Bekreft sletting",
-        "message": "Er du sikker på at du vil slette denne innholdsplassholderen?"
+        "message": "Er du sikker på at du vil slette innholdsplassholderen '{{name}}'?"
       },
       "promotions-delete": {
         "title": "Bekreft sletting",

@@ -153,7 +153,7 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
         var dialog = {
             id: "confirmDeleteItem",
             title: "marketing.dialogs.coupon-delete.title",
-            data: [{ key: 'marketing.dialogs.coupon-delete.coupon', count: count }],
+            items: [{ key: 'marketing.dialogs.coupon-delete.coupon', count: count }],
             callback: function (remove) {
                 if (remove) {
                     bladeNavigationService.closeChildrenBlades(blade, function () {

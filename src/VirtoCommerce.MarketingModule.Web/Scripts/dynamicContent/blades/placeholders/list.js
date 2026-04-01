@@ -176,7 +176,7 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentFolders
             var dialog = {
                 id: "confirmDeleteContentPlaceholdersFolder",
                 title: "marketing.dialogs.placeholders-folder-delete.title",
-                data: [{ key: 'marketing.dialogs.placeholders-folder-delete.item', count: items.length }],
+                items: [{ key: 'marketing.dialogs.placeholders-folder-delete.item', count: items.length }],
                 callback: function (remove) {
                     if (remove) {
                         blade.isLoading = true;

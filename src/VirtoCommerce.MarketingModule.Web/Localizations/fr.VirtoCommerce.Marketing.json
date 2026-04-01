@@ -382,11 +382,11 @@
     "dialogs": {
       "content-item-delete": {
         "title": "Confirmer la suppression",
-        "message": "Êtes-vous sûr de vouloir supprimer cet élément de contenu ?"
+        "message": "Êtes-vous sûr de vouloir supprimer l'élément de contenu '{{name}}' ?"
       },
       "placeholders-folder-delete": {
         "title": "Confirmer la suppression",
-        "message": "Êtes-vous sûr de vouloir supprimer ce dossier d'espaces de contenu ?",
+        "message": "Êtes-vous sûr de vouloir supprimer le dossier d'espaces de contenu '{{name}}' ?",
         "item": "{{count}} élément(s)"
       },
       "content-item-folder-delete": {
@@ -396,16 +396,16 @@
       },
       "content-folder-delete": {
         "title": "Confirmer la suppression",
-        "message": "Êtes-vous sûr de vouloir supprimer ce dossier ?"
+        "message": "Êtes-vous sûr de vouloir supprimer le dossier '{{name}}' ?"
       },
       "publication-delete": {
         "title": "Confirmer la suppression",
-        "message": "Êtes-vous sûr de vouloir supprimer cette publication ?",
+        "message": "Êtes-vous sûr de vouloir supprimer la publication '{{name}}' ?",
         "publication": "{{count}} publication(s)"
       },
       "content-placeholder-delete": {
         "title": "Confirmer la suppression",
-        "message": "Êtes-vous sûr de vouloir supprimer cet espace de contenu ?"
+        "message": "Êtes-vous sûr de vouloir supprimer l'espace de contenu '{{name}}' ?"
       },
       "promotions-delete": {
         "title": "Confirmer la suppression",

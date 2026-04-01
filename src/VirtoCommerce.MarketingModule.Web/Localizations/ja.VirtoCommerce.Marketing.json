@@ -382,11 +382,11 @@
   "dialogs": {
     "content-item-delete": {
       "title": "削除の確認",
-      "message": "このコンテンツ項目を削除してもよろしいですか？"
+      "message": "コンテンツ項目 '{{name}}' を削除してもよろしいですか？"
     },
     "placeholders-folder-delete": {
       "title": "削除の確認",
-      "message": "このコンテンツプレースホルダーフォルダを削除してもよろしいですか？",
+      "message": "コンテンツプレースホルダーフォルダ '{{name}}' を削除してもよろしいですか？",
       "item": "{{count}} 件のアイテム"
     },
     "content-item-folder-delete": {
@@ -396,16 +396,16 @@
     },
     "content-folder-delete": {
       "title": "削除の確認",
-      "message": "このフォルダを削除してもよろしいですか？"
+      "message": "フォルダ '{{name}}' を削除してもよろしいですか？"
     },
     "publication-delete": {
       "title": "削除の確認",
-      "message": "この公開を削除してもよろしいですか？",
+      "message": "公開 '{{name}}' を削除してもよろしいですか？",
       "publication": "{{count}} 件の公開"
     },
     "content-placeholder-delete": {
       "title": "削除の確認",
-      "message": "このコンテンツプレースホルダーを削除してもよろしいですか？"
+      "message": "コンテンツプレースホルダー '{{name}}' を削除してもよろしいですか？"
     },
     "promotions-delete": {
       "title": "削除の確認",
