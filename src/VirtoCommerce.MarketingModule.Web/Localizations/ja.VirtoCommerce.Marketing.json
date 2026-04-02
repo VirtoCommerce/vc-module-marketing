@@ -382,31 +382,35 @@
   "dialogs": {
     "content-item-delete": {
       "title": "削除の確認",
-      "message": "このコンテンツ項目を削除してもよろしいですか？"
+      "message": "コンテンツ項目 '{{name}}' を削除してもよろしいですか？"
     },
     "placeholders-folder-delete": {
       "title": "削除の確認",
-      "message": "このコンテンツプレースホルダーフォルダを削除してもよろしいですか？"
+      "message": "コンテンツプレースホルダーフォルダ '{{name}}' を削除してもよろしいですか？",
+      "item": "{{count}} 件のアイテム"
     },
     "content-item-folder-delete": {
       "title": "削除の確認",
-      "message": "このコンテンツ項目フォルダを削除してもよろしいですか？"
+      "message": "このコンテンツ項目フォルダを削除してもよろしいですか？",
+      "item": "{{count}} 件のアイテム"
     },
     "content-folder-delete": {
       "title": "削除の確認",
-      "message": "このフォルダを削除してもよろしいですか？"
+      "message": "フォルダ '{{name}}' を削除してもよろしいですか？"
     },
     "publication-delete": {
       "title": "削除の確認",
-      "message": "この公開を削除してもよろしいですか？"
+      "message": "公開 '{{name}}' を削除してもよろしいですか？",
+      "publication": "{{count}} 件の公開"
     },
     "content-placeholder-delete": {
       "title": "削除の確認",
-      "message": "このコンテンツプレースホルダーを削除してもよろしいですか？"
+      "message": "コンテンツプレースホルダー '{{name}}' を削除してもよろしいですか？"
     },
     "promotions-delete": {
       "title": "削除の確認",
-      "message": "選択したプロモーションを削除してもよろしいですか？"
+      "message": "選択したプロモーションを削除してもよろしいですか？",
+      "promotion": "{{count}} 件のプロモーション"
     },
     "promotion-save": {
       "title": "変更を保存",
@@ -415,7 +419,8 @@
     "coupon-delete": {
       "title": "削除の確認",
       "message": "選択したクーポンを削除してもよろしいですか？",
-      "message-all": "すべてのクーポンを削除してもよろしいですか？"
+      "message-all": "すべてのクーポンを削除してもよろしいですか？",
+      "coupon": "{{count}} 件のクーポン"
     }
   },
   "commands": {

@@ -382,31 +382,35 @@
     "dialogs": {
       "content-item-delete": {
         "title": "Confirmer la suppression",
-        "message": "Êtes-vous sûr de vouloir supprimer cet élément de contenu ?"
+        "message": "Êtes-vous sûr de vouloir supprimer l'élément de contenu '{{name}}' ?"
       },
       "placeholders-folder-delete": {
         "title": "Confirmer la suppression",
-        "message": "Êtes-vous sûr de vouloir supprimer ce dossier d'espaces de contenu ?"
+        "message": "Êtes-vous sûr de vouloir supprimer le dossier d'espaces de contenu '{{name}}' ?",
+        "item": "{{count}} élément(s)"
       },
       "content-item-folder-delete": {
         "title": "Confirmer la suppression",
-        "message": "Êtes-vous sûr de vouloir supprimer ce dossier d'éléments de contenu ?"
+        "message": "Êtes-vous sûr de vouloir supprimer ce dossier d'éléments de contenu ?",
+        "item": "{{count}} élément(s)"
       },
       "content-folder-delete": {
         "title": "Confirmer la suppression",
-        "message": "Êtes-vous sûr de vouloir supprimer ce dossier ?"
+        "message": "Êtes-vous sûr de vouloir supprimer le dossier '{{name}}' ?"
       },
       "publication-delete": {
         "title": "Confirmer la suppression",
-        "message": "Êtes-vous sûr de vouloir supprimer cette publication ?"
+        "message": "Êtes-vous sûr de vouloir supprimer la publication '{{name}}' ?",
+        "publication": "{{count}} publication(s)"
       },
       "content-placeholder-delete": {
         "title": "Confirmer la suppression",
-        "message": "Êtes-vous sûr de vouloir supprimer cet espace de contenu ?"
+        "message": "Êtes-vous sûr de vouloir supprimer l'espace de contenu '{{name}}' ?"
       },
       "promotions-delete": {
         "title": "Confirmer la suppression",
-        "message": "Êtes-vous sûr de vouloir supprimer les promotions sélectionnées ?"
+        "message": "Êtes-vous sûr de vouloir supprimer les promotions sélectionnées ?",
+        "promotion": "{{count}} promotion(s)"
       },
       "promotion-save": {
         "title": "Enregistrer les modifications",
@@ -415,7 +419,8 @@
       "coupon-delete": {
         "title": "Confirmer la suppression",
         "message": "Êtes-vous sûr de vouloir supprimer les coupons sélectionnés ?",
-        "message-all": "Êtes-vous sûr de vouloir supprimer tous les coupons ?"
+        "message-all": "Êtes-vous sûr de vouloir supprimer tous les coupons ?",
+        "coupon": "{{count}} coupon(s)"
       }
     },
     "commands": {
