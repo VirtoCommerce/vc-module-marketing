@@ -34,7 +34,6 @@ using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.ExportImport;
-using VirtoCommerce.Platform.Core.Extensions;
 using VirtoCommerce.Platform.Core.JsonConverters;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
@@ -43,17 +42,17 @@ using VirtoCommerce.Platform.Data.Extensions;
 using VirtoCommerce.Platform.Data.MySql.Extensions;
 using VirtoCommerce.Platform.Data.PostgreSql.Extensions;
 using VirtoCommerce.Platform.Data.SqlServer.Extensions;
+using VirtoCommerce.Platform.Modules;
 
 namespace VirtoCommerce.MarketingModule.Web
 {
     [ExcludeFromCodeCoverage]
-    public class Module : IModule, IExportSupport, IImportSupport, IHasConfiguration, IHasModuleCatalog
+    public class Module : IModule, IExportSupport, IImportSupport, IHasConfiguration
     {
         private IApplicationBuilder _appBuilder;
 
         public ManifestModuleInfo ModuleInfo { get; set; }
         public IConfiguration Configuration { get; set; }
-        public IModuleCatalog ModuleCatalog { get; set; }
 
         private const string _ordersModuleId = "VirtoCommerce.Orders";
 
@@ -135,7 +134,7 @@ namespace VirtoCommerce.MarketingModule.Web
             serviceCollection.AddTransient<LogChangesChangedEventHandler>();
             serviceCollection.AddTransient<MarketingExportImport>();
 
-            if (ModuleCatalog.IsModuleInstalled(_ordersModuleId))
+            if (ModuleBootstrapper.Instance.IsInstalled(_ordersModuleId))
             {
                 serviceCollection.AddTransient<CouponUsageRecordHandler>();
             }
@@ -168,7 +167,7 @@ namespace VirtoCommerce.MarketingModule.Web
             });
 
             //Create order observer. record order coupon usage
-            if (ModuleCatalog.IsModuleInstalled(_ordersModuleId))
+            if (ModuleBootstrapper.Instance.IsInstalled(_ordersModuleId))
             {
                 appBuilder.RegisterEventHandler<OrderChangedEvent, CouponUsageRecordHandler>();
             }
