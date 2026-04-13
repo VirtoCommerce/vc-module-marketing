@@ -382,31 +382,35 @@
     "dialogs": {
       "content-item-delete": {
         "title": "Vahvista poisto",
-        "message": "Oletko varma, että haluat poistaa tämän sisältökohteen?"
+        "message": "Oletko varma, että haluat poistaa sisältökohteen '{{name}}'?"
       },
       "placeholders-folder-delete": {
         "title": "Vahvista poisto",
-        "message": "Oletko varma, että haluat poistaa tämän sisältöpaikanvaraajakansion?"
+        "message": "Oletko varma, että haluat poistaa sisältöpaikanvaraajakansion '{{name}}'?",
+        "item": "{{count}} kohde(tta)"
       },
       "content-item-folder-delete": {
         "title": "Vahvista poisto",
-        "message": "Oletko varma, että haluat poistaa tämän sisältökohteiden kansion?"
+        "message": "Oletko varma, että haluat poistaa tämän sisältökohteiden kansion?",
+        "item": "{{count}} kohde(tta)"
       },
       "content-folder-delete": {
         "title": "Vahvista poisto",
-        "message": "Oletko varma, että haluat poistaa tämän kansion?"
+        "message": "Oletko varma, että haluat poistaa kansion '{{name}}'?"
       },
       "publication-delete": {
         "title": "Vahvista poisto",
-        "message": "Oletko varma, että haluat poistaa tämän julkaisun?"
+        "message": "Oletko varma, että haluat poistaa julkaisun '{{name}}'?",
+        "publication": "{{count}} julkaisu(a)"
       },
       "content-placeholder-delete": {
         "title": "Vahvista poisto",
-        "message": "Oletko varma, että haluat poistaa tämän sisältöpaikanvaraajan?"
+        "message": "Oletko varma, että haluat poistaa sisältöpaikanvaraajan '{{name}}'?"
       },
       "promotions-delete": {
         "title": "Vahvista poisto",
-        "message": "Oletko varma, että haluat poistaa valitut kampanjat?"
+        "message": "Oletko varma, että haluat poistaa valitut kampanjat?",
+        "promotion": "{{count}} kampanja(a)"
       },
       "promotion-save": {
         "title": "Tallenna muutokset",
@@ -415,7 +419,8 @@
       "coupon-delete": {
         "title": "Vahvista poisto",
         "message": "Oletko varma, että haluat poistaa valitut kupongit?",
-        "message-all": "Oletko varma, että haluat poistaa kaikki kupongit?"
+        "message-all": "Oletko varma, että haluat poistaa kaikki kupongit?",
+        "coupon": "{{count}} kuponki(a)"
       }
     },
     "commands": {

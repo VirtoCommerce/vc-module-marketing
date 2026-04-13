@@ -149,10 +149,11 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
     }
 
     function removeCoupons(removeAll, promotionId) {
+        var count = removeAll ? $scope.pageSettings.totalItems : $scope.gridApi.selection.getSelectedRows().length;
         var dialog = {
             id: "confirmDeleteItem",
             title: "marketing.dialogs.coupon-delete.title",
-            message: removeAll ? "marketing.dialogs.coupon-delete.message-all": "marketing.dialogs.coupon-delete.message",
+            items: [{ key: 'marketing.dialogs.coupon-delete.coupon', count: count }],
             callback: function (remove) {
                 if (remove) {
                     bladeNavigationService.closeChildrenBlades(blade, function () {
@@ -173,7 +174,7 @@ function ($scope, $localStorage, dialogService, bladeUtils, uiGridHelper, promot
                 }
             }
         };
-        dialogService.showConfirmationDialog(dialog);
+        dialogService.showDeleteConfirmationDialog(dialog);
     }
 
     function showFilterDetailBlade(bladeData) {

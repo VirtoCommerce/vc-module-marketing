@@ -94,7 +94,7 @@ angular.module('virtoCommerce.marketingModule')
             var dialog = {
                 id: "confirmDeleteItem",
                 title: "marketing.dialogs.promotions-delete.title",
-                message: "marketing.dialogs.promotions-delete.message",
+                items: [{ key: 'marketing.dialogs.promotions-delete.promotion', count: list.length }],
                 callback: function (remove) {
                     if (remove) {
                         bladeNavigationService.closeChildrenBlades(blade, function () {
@@ -108,7 +108,7 @@ angular.module('virtoCommerce.marketingModule')
                     }
                 }
             };
-            dialogService.showConfirmationDialog(dialog);
+            dialogService.showDeleteConfirmationDialog(dialog);
         };
 
         blade.headIcon = 'fa fa-area-chart';
