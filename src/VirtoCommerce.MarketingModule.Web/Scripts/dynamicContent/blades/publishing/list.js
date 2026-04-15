@@ -15,7 +15,7 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentPublica
             var dialog = {
                 id: 'confirmDeletePublishings',
                 title: 'marketing.dialogs.publication-delete.title',
-                message: 'marketing.dialogs.publication-delete.message',
+                items: [{ key: 'marketing.dialogs.publication-delete.publication', count: selectedRows.length }],
                 callback: function (confirm) {
                     if (confirm) {
                         var publishingIds = _.pluck(selectedRows, 'id');
@@ -23,7 +23,7 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentPublica
                     }
                 }
             };
-            dialogService.showConfirmationDialog(dialog);
+            dialogService.showDeleteConfirmationDialog(dialog);
         });
     };
 
@@ -96,8 +96,8 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentPublica
     $scope.deleteItems = function (items) {
         var dialog = {
             id: "confirmDeleteContentPublications",
-            title: "marketing.dialogs.content-item-folder-delete.title",
-            message: "marketing.dialogs.content-item-folder-delete.message",
+            title: "marketing.dialogs.publication-delete.title",
+            items: [{ key: 'marketing.dialogs.publication-delete.publication', count: items.length }],
             callback: function (remove) {
                 if (remove) {
                     dynamicContentPublicationsApi.remove({
@@ -108,7 +108,7 @@ function ($scope, bladeUtils, uiGridHelper, dialogService, dynamicContentPublica
                 }
             }
         }
-        dialogService.showConfirmationDialog(dialog);
+        dialogService.showDeleteConfirmationDialog(dialog);
     }
 
     $scope.setGridOptions = function (gridOptions) {

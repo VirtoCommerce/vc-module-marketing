@@ -36,6 +36,7 @@ angular.module('virtoCommerce.marketingModule')
                                 id: "confirmDeleteContentItem",
                                 title: "marketing.dialogs.publication-delete.title",
                                 message: "marketing.dialogs.publication-delete.message",
+                                messageValues: { name: blade.currentEntity.name },
                                 callback: function (remove) {
                                     if (remove) {
                                         blade.isLoading = true;
@@ -46,7 +47,7 @@ angular.module('virtoCommerce.marketingModule')
                                     }
                                 }
                             };
-                            dialogService.showConfirmationDialog(dialog);
+                            dialogService.showDeleteConfirmationDialog(dialog);
                         },
                         canExecuteMethod: function () { return true; },
                         permission: blade.updatePermission
