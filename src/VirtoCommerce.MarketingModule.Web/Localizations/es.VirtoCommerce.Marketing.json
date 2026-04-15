@@ -372,31 +372,35 @@
     "dialogs": {
       "content-item-delete": {
         "title": "Confirmar eliminación",
-        "message": "¿Estás seguro de que deseas eliminar este elemento de contenido?"
+        "message": "¿Estás seguro de que deseas eliminar el elemento de contenido '{{name}}'?"
       },
       "placeholders-folder-delete": {
         "title": "Confirmar eliminación",
-        "message": "¿Estás seguro de que deseas eliminar esta carpeta de espacios de contenido?"
+        "message": "¿Estás seguro de que deseas eliminar la carpeta de espacios de contenido '{{name}}'?",
+        "item": "{{count}} elemento(s)"
       },
       "content-item-folder-delete": {
         "title": "Confirmar eliminación",
-        "message": "¿Estás seguro de que deseas eliminar esta carpeta de elementos de contenido?"
+        "message": "¿Estás seguro de que deseas eliminar esta carpeta de elementos de contenido?",
+        "item": "{{count}} elemento(s)"
       },
       "content-folder-delete": {
         "title": "Confirmar eliminación",
-        "message": "¿Estás seguro de que deseas eliminar esta carpeta?"
+        "message": "¿Estás seguro de que deseas eliminar la carpeta '{{name}}'?"
       },
       "publication-delete": {
         "title": "Confirmar eliminación",
-        "message": "¿Estás seguro de que deseas eliminar esta publicación?"
+        "message": "¿Estás seguro de que deseas eliminar la publicación '{{name}}'?",
+        "publication": "{{count}} publicación(es)"
       },
       "content-placeholder-delete": {
         "title": "Confirmar eliminación",
-        "message": "¿Estás seguro de que deseas eliminar este espacio de contenido?"
+        "message": "¿Estás seguro de que deseas eliminar el espacio de contenido '{{name}}'?"
       },
       "promotions-delete": {
         "title": "Confirmar eliminación",
-        "message": "¿Estás seguro de que deseas eliminar las promociones seleccionadas?"
+        "message": "¿Estás seguro de que deseas eliminar las promociones seleccionadas?",
+        "promotion": "{{count}} promoción(es)"
       },
       "promotion-save": {
         "title": "Guardar cambios",
@@ -405,7 +409,8 @@
       "coupon-delete": {
         "title": "Confirmar eliminación",
         "message": "¿Estás seguro de que deseas eliminar los cupones seleccionados?",
-        "message-all": "¿Estás seguro de que deseas eliminar todos los cupones?"
+        "message-all": "¿Estás seguro de que deseas eliminar todos los cupones?",
+        "coupon": "{{count}} cupón(es)"
       }
     },
     "commands": {

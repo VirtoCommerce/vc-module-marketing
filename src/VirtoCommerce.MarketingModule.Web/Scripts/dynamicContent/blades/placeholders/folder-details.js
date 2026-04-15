@@ -53,6 +53,7 @@ angular.module('virtoCommerce.marketingModule')
                         id: "confirmDeleteContentPlaceholdersFolder",
                         title: "marketing.dialogs.placeholders-folder-delete.title",
                         message: "marketing.dialogs.placeholders-folder-delete.message",
+                        messageValues: { name: blade.currentEntity.name },
                         callback: function (remove) {
                             if (remove) {
                                 blade.isLoading = true;
@@ -67,7 +68,7 @@ angular.module('virtoCommerce.marketingModule')
                             }
                         }
                     };
-                    dialogService.showConfirmationDialog(dialog);
+                    dialogService.showDeleteConfirmationDialog(dialog);
                 },
                 canExecuteMethod: function () {
                     return true;

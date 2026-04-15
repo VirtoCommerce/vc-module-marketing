@@ -372,31 +372,35 @@
     "dialogs": {
       "content-item-delete": {
         "title": "确认删除",
-        "message": "您确定要删除此内容项目吗？"
+        "message": "您确定要删除内容项目 '{{name}}' 吗？"
       },
       "placeholders-folder-delete": {
         "title": "确认删除",
-        "message": "您确定要删除此内容占位符文件夹吗？"
+        "message": "您确定要删除内容占位符文件夹 '{{name}}' 吗？",
+        "item": "{{count}} 个项目"
       },
       "content-item-folder-delete": {
         "title": "确认删除",
-        "message": "您确定要删除此内容项目文件夹吗？"
+        "message": "您确定要删除此内容项目文件夹吗？",
+        "item": "{{count}} 个项目"
       },
       "content-folder-delete": {
         "title": "确认删除",
-        "message": "您确定要删除此文件夹吗？"
+        "message": "您确定要删除文件夹 '{{name}}' 吗？"
       },
       "publication-delete": {
         "title": "确认删除",
-        "message": "您确定要删除此发布内容吗？"
+        "message": "您确定要删除发布内容 '{{name}}' 吗？",
+        "publication": "{{count}} 个发布"
       },
       "content-placeholder-delete": {
         "title": "确认删除",
-        "message": "您确定要删除此内容占位符吗？"
+        "message": "您确定要删除内容占位符 '{{name}}' 吗？"
       },
       "promotions-delete": {
         "title": "确认删除",
-        "message": "您确定要删除所选促销活动吗？"
+        "message": "您确定要删除所选促销活动吗？",
+        "promotion": "{{count}} 个促销"
       },
       "promotion-save": {
         "title": "保存更改",
@@ -405,7 +409,8 @@
       "coupon-delete": {
         "title": "确认删除",
         "message": "您确定要删除所选优惠券吗？",
-        "message-all": "您确定要删除所有优惠券吗？"
+        "message-all": "您确定要删除所有优惠券吗？",
+        "coupon": "{{count}} 个优惠券"
       }
     },
     "commands": {

@@ -373,31 +373,35 @@
     "dialogs": {
       "content-item-delete": {
         "title": "Confirm delete",
-        "message": "Are you sure you want to delete this content item?"
+        "message": "Are you sure you want to delete content item '{{name}}'?"
       },
       "placeholders-folder-delete": {
         "title": "Confirm delete",
-        "message": "Are you sure you want to delete this content placeholder folder?"
+        "message": "Are you sure you want to delete content placeholder folder '{{name}}'?",
+        "item": "{{count}} item(s)"
       },
       "content-item-folder-delete": {
         "title": "Confirm delete",
-        "message": "Are you sure you want to delete this content item folder?"
+        "message": "Are you sure you want to delete this content item folder?",
+        "item": "{{count}} item(s)"
       },
       "content-folder-delete": {
         "title": "Confirm delete",
-        "message": "Are you sure you want to delete this folder?"
+        "message": "Are you sure you want to delete folder '{{name}}'?"
       },
       "publication-delete": {
         "title": "Confirm delete",
-        "message": "Are you sure you want to delete this publication?"
+        "message": "Are you sure you want to delete publication '{{name}}'?",
+        "publication": "{{count}} publication(s)"
       },
       "content-placeholder-delete": {
         "title": "Confirm delete",
-        "message": "Are you sure you want to delete this content placeholder?"
+        "message": "Are you sure you want to delete content placeholder '{{name}}'?"
       },
       "promotions-delete": {
         "title": "Confirm delete",
-        "message": "Are you sure you want to delete the selected promotions?"
+        "message": "Are you sure you want to delete the selected promotions?",
+        "promotion": "{{count}} promotion(s)"
       },
       "promotion-save": {
         "title": "Save changes",
@@ -406,7 +410,8 @@
       "coupon-delete": {
         "title": "Confirm delete",
         "message": "Are you sure you want to delete the selected coupons?",
-        "message-all": "Are you sure you want to delete all coupons?"
+        "message-all": "Are you sure you want to delete all coupons?",
+        "coupon": "{{count}} coupon(s)"
       }
     },
     "commands": {

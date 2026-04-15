@@ -372,31 +372,35 @@
     "dialogs": {
       "content-item-delete": {
         "title": "Potwierdź usunięcie",
-        "message": "Czy na pewno chcesz usunąć ten element treści?"
+        "message": "Czy na pewno chcesz usunąć element treści '{{name}}'?"
       },
       "placeholders-folder-delete": {
         "title": "Potwierdź usunięcie",
-        "message": "Czy na pewno chcesz usunąć ten folder miejsca treści?"
+        "message": "Czy na pewno chcesz usunąć folder miejsca treści '{{name}}'?",
+        "item": "{{count}} element(ów)"
       },
       "content-item-folder-delete": {
         "title": "Potwierdź usunięcie",
-        "message": "Czy na pewno chcesz usunąć ten folder elementu treści?"
+        "message": "Czy na pewno chcesz usunąć ten folder elementu treści?",
+        "item": "{{count}} element(ów)"
       },
       "content-folder-delete": {
         "title": "Potwierdź usunięcie",
-        "message": "Czy na pewno chcesz usunąć ten folder?"
+        "message": "Czy na pewno chcesz usunąć folder '{{name}}'?"
       },
       "publication-delete": {
         "title": "Potwierdź usunięcie",
-        "message": "Czy na pewno chcesz usunąć tę publikację?"
+        "message": "Czy na pewno chcesz usunąć publikację '{{name}}'?",
+        "publication": "{{count}} publikacja(e)"
       },
       "content-placeholder-delete": {
         "title": "Potwierdź usunięcie",
-        "message": "Czy na pewno chcesz usunąć ten miejsce treści?"
+        "message": "Czy na pewno chcesz usunąć miejsce treści '{{name}}'?"
       },
       "promotions-delete": {
         "title": "Potwierdź usunięcie",
-        "message": "Czy na pewno chcesz usunąć wybrane promocje?"
+        "message": "Czy na pewno chcesz usunąć wybrane promocje?",
+        "promotion": "{{count}} promocja(e)"
       },
       "promotion-save": {
         "title": "Zapisz zmiany",
@@ -405,7 +409,8 @@
       "coupon-delete": {
         "title": "Potwierdź usunięcie",
         "message": "Czy na pewno chcesz usunąć wybrane kupony?",
-        "message-all": "Czy na pewno chcesz usunąć wszystkie kupony?"
+        "message-all": "Czy na pewno chcesz usunąć wszystkie kupony?",
+        "coupon": "{{count}} kupon(ów)"
       }
     },
     "commands": {

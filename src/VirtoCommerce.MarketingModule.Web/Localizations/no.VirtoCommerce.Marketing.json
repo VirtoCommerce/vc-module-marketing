@@ -372,31 +372,35 @@
     "dialogs": {
       "content-item-delete": {
         "title": "Bekreft sletting",
-        "message": "Er du sikker på at du vil slette dette innholdselementet?"
+        "message": "Er du sikker på at du vil slette innholdselementet '{{name}}'?"
       },
       "placeholders-folder-delete": {
         "title": "Bekreft sletting",
-        "message": "Er du sikker på at du vil slette denne mappen for innholdsplassholdere?"
+        "message": "Er du sikker på at du vil slette mappen for innholdsplassholdere '{{name}}'?",
+        "item": "{{count}} element(er)"
       },
       "content-item-folder-delete": {
         "title": "Bekreft sletting",
-        "message": "Er du sikker på at du vil slette denne mappen for innholdselementer?"
+        "message": "Er du sikker på at du vil slette denne mappen for innholdselementer?",
+        "item": "{{count}} element(er)"
       },
       "content-folder-delete": {
         "title": "Bekreft sletting",
-        "message": "Er du sikker på at du vil slette denne mappen?"
+        "message": "Er du sikker på at du vil slette mappen '{{name}}'?"
       },
       "publication-delete": {
         "title": "Bekreft sletting",
-        "message": "Er du sikker på at du vil slette denne publikasjonen?"
+        "message": "Er du sikker på at du vil slette publikasjonen '{{name}}'?",
+        "publication": "{{count}} publikasjon(er)"
       },
       "content-placeholder-delete": {
         "title": "Bekreft sletting",
-        "message": "Er du sikker på at du vil slette denne innholdsplassholderen?"
+        "message": "Er du sikker på at du vil slette innholdsplassholderen '{{name}}'?"
       },
       "promotions-delete": {
         "title": "Bekreft sletting",
-        "message": "Er du sikker på at du vil slette de valgte kampanjene?"
+        "message": "Er du sikker på at du vil slette de valgte kampanjene?",
+        "promotion": "{{count}} kampanje(r)"
       },
       "promotion-save": {
         "title": "Lagre endringer",
@@ -405,7 +409,8 @@
       "coupon-delete": {
         "title": "Bekreft sletting",
         "message": "Er du sikker på at du vil slette de valgte kupongene?",
-        "message-all": "Er du sikker på at du vil slette alle kupongene?"
+        "message-all": "Er du sikker på at du vil slette alle kupongene?",
+        "coupon": "{{count}} kupong(er)"
       }
     },
     "commands": {
