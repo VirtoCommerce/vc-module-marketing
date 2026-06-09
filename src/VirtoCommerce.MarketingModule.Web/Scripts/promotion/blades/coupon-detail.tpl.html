@@ -20,7 +20,7 @@
                         <div class="form-group __info list">
                             <label class="form-label" ng-bind="'marketing.blades.coupon-detail.labels.coupon-code' | translate"></label>
                             <div class="form-input">
-                                <input placeholder="{{ 'marketing.blades.coupon-detail.labels.enter-value' | translate }}" required="required" type="text" ng-model="blade.currentEntity.code" />
+                                <input placeholder="{{ 'marketing.blades.coupon-detail.labels.enter-value' | translate }}" required="required" type="text" ng-model="blade.currentEntity.code" ng-pattern="/^[a-zA-Z0-9]+$/" />
                             </div>
                             <div class="list-descr" ng-bind="'marketing.blades.coupon-detail.labels.code-description' | translate"></div>
                         </div>
