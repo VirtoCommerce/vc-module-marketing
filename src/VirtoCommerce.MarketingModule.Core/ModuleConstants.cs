@@ -39,7 +39,7 @@ namespace VirtoCommerce.MarketingModule.Core
                     Name = "Marketing.Coupon.CodeValidationPattern",
                     ValueType = SettingValueType.ShortText,
                     GroupName = "Marketing|General",
-                    DefaultValue = "^[a-zA-Z0-9]+$",
+                    DefaultValue = "^[\\-a-zA-Z0-9]+$",
                 };
 
                 public static IEnumerable<SettingDescriptor> AllSettings
