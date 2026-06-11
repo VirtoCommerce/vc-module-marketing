@@ -76,7 +76,7 @@
         "title": "クーポン",
         "labels": {
           "coupon-code": "コード",
-          "code-description": "クーポンコードには英数字のみを含めることができます",
+          "code-description": "デフォルトでは、クーポンコードには英数字のみを含めることができます。これは「クーポンコード検証パターン」設定で変更できます",
           "max-uses-number": "最大使用回数",
           "max-uses-per-user": "顧客ごとの最大使用回数",
           "max-uses-number-description": "このクーポンを使用できる回数を指定します。制限を設けない場合は0を入力してください",
@@ -439,6 +439,10 @@
     "Marketing.Promotion.CombinePolicy": {
       "description": "最適な報酬：買い物客に最も魅力的なプロモーション報酬を選択します。複数のオファーが有効：ストアに複数のアクティブなプロモーションがある場合、買い物客は同時に複数のプロモーションの対象となることができます",
       "title": "複数のアクティブなプロモーションを使用する選択されたポリシー"
+    },
+    "Marketing.Coupon.CodeValidationPattern": {
+      "description": "保存時にクーポンコードを検証するために使用される正規表現です。デフォルトでは英数字のみが許可されます。値を空にすると、クーポンコードの検証が無効になります",
+      "title": "クーポンコード検証パターン"
     },
     "Marketing.ExportImport.Description": {
       "description": "プロモーションとダイナミックコンテンツ（場所、コンテンツ、公開）をエクスポートおよびインポート",

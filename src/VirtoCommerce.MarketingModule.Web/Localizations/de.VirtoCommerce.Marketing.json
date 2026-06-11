@@ -76,7 +76,7 @@
         "title": "Gutschein",
         "labels": {
           "coupon-code": "Code",
-          "code-description": "Der Gutscheincode darf nur alphanumerische Zeichen enthalten",
+          "code-description": "Standardmäßig darf der Gutscheincode nur alphanumerische Zeichen enthalten. Dies kann über die Einstellung 'Validierungsmuster für Gutscheincodes' geändert werden",
           "max-uses-number": "Maximale Nutzungsanzahl",
           "max-uses-per-user": "Maximale Nutzungen pro Kunde",
           "max-uses-number-description": "Geben Sie die Anzahl der Male an, die dieser Gutschein eingelöst werden kann. Wenn Sie keine Begrenzung festlegen möchten, geben Sie 0 ein",
@@ -440,6 +440,10 @@
     "Marketing.Promotion.CombinePolicy": {
       "description": "Beste Belohnung: Wählen Sie Promotionsbelohnungen, die für die Käufer am ansprechendsten sind. Mehrere Angebote gültig: Wenn Ihr Geschäft mehrere aktive Promotions hat, können Käufer für mehrere Promotions gleichzeitig qualifiziert werden",
       "title": "Ausgewählte Richtlinie zur Nutzung mehrerer aktiver Promotions"
+    },
+    "Marketing.Coupon.CodeValidationPattern": {
+      "description": "Regulärer Ausdruck zur Validierung von Gutscheincodes beim Speichern. Standardmäßig sind nur alphanumerische Zeichen erlaubt. Lassen Sie den Wert leer, um die Validierung von Gutscheincodes zu deaktivieren",
+      "title": "Validierungsmuster für Gutscheincodes"
     },
     "Marketing.ExportImport.Description": {
       "description": "Exportieren und importieren Sie Promotions und dynamische Inhalte (Orte, Inhalte, Veröffentlichungen)",
