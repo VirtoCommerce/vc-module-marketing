@@ -38,7 +38,7 @@ public class CouponServiceCodeValidationTests
     }
 
     [Theory]
-    [InlineData("SUMMER-2026")]
+    [InlineData("SUMMER_2026")]
     [InlineData("sale 10")]
     [InlineData("promo!")]
     public async Task SaveChangesAsync_CodeViolatesPattern_Throws(string code)
