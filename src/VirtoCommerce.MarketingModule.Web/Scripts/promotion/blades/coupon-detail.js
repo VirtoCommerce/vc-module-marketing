@@ -35,7 +35,7 @@ angular.module('virtoCommerce.marketingModule')
                             blade.currentEntity = response;
                             blade.parentBlade.refresh();
                         }, function (error) {
-                            bladeNavigationService.setError('Error ' + error.status, blade);
+                            bladeNavigationService.setError(`Error ${error.status}`, blade);
                         });
                     }
                 }
@@ -77,8 +77,8 @@ angular.module('virtoCommerce.marketingModule')
                         bladeNavigationService.closeBlade(blade);
                     }, function (error) {
                         blade.isLoading = false;
-                        var message = error.data && error.data.message ? ': ' + error.data.message : '';
-                        bladeNavigationService.setError('Error ' + error.status + message, blade);
+                        var message = error.data && error.data.message ? `: ${error.data.message}` : '';
+                        bladeNavigationService.setError(`Error ${error.status}${message}`, blade);
                     });
                 }
 
