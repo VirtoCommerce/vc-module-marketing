@@ -76,7 +76,7 @@
         "title": "Coupon",
         "labels": {
           "coupon-code": "Code",
-          "code-description": "Coupon code may contain only alphanumeric characters",
+          "code-description": "By default, a coupon code may contain only alphanumeric characters. This can be changed via the 'Coupon code validation pattern' setting",
           "max-uses-number": "Maximum use number",
           "max-uses-per-user": "Maximum uses per customer",
           "max-uses-number-description": "Specify the number of times this coupon may be redeemed. If you do not want to set any limit, put 0",
@@ -441,6 +441,10 @@
     "Marketing.Promotion.CombinePolicy": {
       "description": "Define how multiple promotions are applied: 'Best reward' selects the most beneficial offer, while 'Multiple offers' allows stacking several promotions",
       "title": "Selected policy of using multiple active promotions"
+    },
+    "Marketing.Coupon.CodeValidationPattern": {
+      "description": "Regular expression used to validate coupon codes on save. By default, only alphanumeric characters are allowed. Leave the value empty to disable coupon code validation",
+      "title": "Coupon code validation pattern"
     },
     "Marketing.ExportImport.Description": {
       "description": "Export and import promotions and dynamic content (places, content, publications)",

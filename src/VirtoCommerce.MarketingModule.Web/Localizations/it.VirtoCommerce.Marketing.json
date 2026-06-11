@@ -76,7 +76,7 @@
         "title": "Coupon",
         "labels": {
           "coupon-code": "Codice",
-          "code-description": "Il codice coupon può contenere solo caratteri alfanumerici",
+          "code-description": "Per impostazione predefinita, il codice coupon può contenere solo caratteri alfanumerici. È possibile modificarlo tramite l'impostazione 'Modello di convalida del codice coupon'",
           "max-uses-number": "Numero massimo di utilizzi",
           "max-uses-per-user": "Utilizzi massimi per cliente",
           "max-uses-number-description": "Specifica il numero di volte in cui questo coupon può essere riscattato. Se non vuoi impostare alcun limite, metti 0",
@@ -440,6 +440,10 @@
     "Marketing.Promotion.CombinePolicy": {
       "description": "Migliore ricompensa: Seleziona le ricompense promozionali che attireranno maggiormente i clienti. Offerte multiple valide: Se il tuo negozio ha più promozioni attive, i clienti possono qualificarsi per più promozioni contemporaneamente",
       "title": "Politica selezionata per l'utilizzo di più promozioni attive"
+    },
+    "Marketing.Coupon.CodeValidationPattern": {
+      "description": "Espressione regolare utilizzata per convalidare i codici coupon al salvataggio. Per impostazione predefinita sono consentiti solo caratteri alfanumerici. Lasciare il valore vuoto per disabilitare la convalida dei codici coupon",
+      "title": "Modello di convalida del codice coupon"
     },
     "Marketing.ExportImport.Description": {
       "description": "Esporta e importa promozioni e contenuti dinamici (luoghi, contenuti, pubblicazioni)",

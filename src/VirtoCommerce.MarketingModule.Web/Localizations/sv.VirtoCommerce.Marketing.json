@@ -76,7 +76,7 @@
         "title": "Kupong",
         "labels": {
           "coupon-code": "Kod",
-          "code-description": "Kupongkoden får endast innehålla alfanumeriska tecken",
+          "code-description": "Som standard får kupongkoden endast innehålla alfanumeriska tecken. Detta kan ändras via inställningen 'Valideringsmönster för kupongkod'",
           "max-uses-number": "Maximalt antal användningar",
           "max-uses-per-user": "Maximalt antal användningar per kund",
           "max-uses-number-description": "Ange hur många gånger denna kupong kan användas. Om du inte vill sätta någon gräns, ange 0",
@@ -440,6 +440,10 @@
     "Marketing.Promotion.CombinePolicy": {
       "description": "Bästa belöning: Välj kampanjbelöningar som tilltalar kunderna mest. Flera erbjudanden giltiga: Om din butik har flera aktiva kampanjer kan kunder kvalificera sig för flera kampanjer samtidigt",
       "title": "Vald policy för användning av flera aktiva kampanjer"
+    },
+    "Marketing.Coupon.CodeValidationPattern": {
+      "description": "Reguljärt uttryck som används för att validera kupongkoder vid sparande. Som standard tillåts endast alfanumeriska tecken. Lämna värdet tomt för att inaktivera validering av kupongkoder",
+      "title": "Valideringsmönster för kupongkod"
     },
     "Marketing.ExportImport.Description": {
       "description": "Exportera och importera kampanjer och dynamiskt innehåll (platser, innehåll, publikationer)",

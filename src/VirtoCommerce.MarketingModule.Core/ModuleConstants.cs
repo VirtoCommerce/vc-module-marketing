@@ -34,12 +34,20 @@ namespace VirtoCommerce.MarketingModule.Core
                     AllowedValues = new object[] { "BestReward", "CombineStackable" },
                 };
 
+                public static SettingDescriptor CouponCodeValidationPattern { get; } = new()
+                {
+                    Name = "Marketing.Coupon.CodeValidationPattern",
+                    ValueType = SettingValueType.ShortText,
+                    GroupName = "Marketing|General",
+                    DefaultValue = "^[a-zA-Z0-9]+$",
+                };
 
                 public static IEnumerable<SettingDescriptor> AllSettings
                 {
                     get
                     {
                         yield return CombinePolicy;
+                        yield return CouponCodeValidationPattern;
                     }
                 }
             }

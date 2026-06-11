@@ -2,14 +2,30 @@ angular.module('virtoCommerce.marketingModule')
     .controller('virtoCommerce.marketingModule.couponDetailController',
         ['$scope', "$injector",
             'platformWebApp.bladeNavigationService',
+            'platformWebApp.settings',
             'virtoCommerce.marketingModule.promotions',
             function ($scope, $injector,
                 bladeNavigationService,
+                settings,
                 promotionsApi) {
                 var blade = $scope.blade;
                 blade.isLoading = false;
 
                 $scope.customerModuleInstalled = $injector.has('virtoCommerce.customerModule');
+
+                // Coupon code pattern is configurable via the Marketing.Coupon.CodeValidationPattern setting;
+                // undefined (empty setting or invalid regex) disables client-side validation, the server validates on save
+                $scope.couponCodePattern = undefined;
+                settings.getValues({ id: 'Marketing.Coupon.CodeValidationPattern' }, function (data) {
+                    var pattern = data && data.length ? data[0] : null;
+                    if (pattern) {
+                        try {
+                            $scope.couponCodePattern = new RegExp(pattern);
+                        } catch (e) {
+                            // invalid pattern configured - rely on server-side validation
+                        }
+                    }
+                });
 
                 blade.refresh = function (parentRefresh) {
                     if (!blade.isNew) {
@@ -60,7 +76,9 @@ angular.module('virtoCommerce.marketingModule')
                         blade.parentBlade.refresh();
                         bladeNavigationService.closeBlade(blade);
                     }, function (error) {
-                        bladeNavigationService.setError('Error ' + error.status, blade);
+                        blade.isLoading = false;
+                        var message = error.data && error.data.message ? ': ' + error.data.message : '';
+                        bladeNavigationService.setError('Error ' + error.status + message, blade);
                     });
                 }
 
