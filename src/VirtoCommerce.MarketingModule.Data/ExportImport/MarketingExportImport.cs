@@ -1,4 +1,5 @@
-using System;
+using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ public class MarketingExportImport(
         Stream outputStream,
         ExportImportOptions options,
         Action<ExportImportProgressInfo> progressCallback,
-        ICancellationToken cancellationToken)
+        CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
         var progressInfo = new ExportImportProgressInfo { Description = "loading data..." };
@@ -179,7 +180,7 @@ public class MarketingExportImport(
         Stream inputStream,
         ExportImportOptions options,
         Action<ExportImportProgressInfo> progressCallback,
-        ICancellationToken cancellationToken)
+        CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
