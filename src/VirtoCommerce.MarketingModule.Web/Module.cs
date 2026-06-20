@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -42,17 +43,17 @@ using VirtoCommerce.Platform.Data.Extensions;
 using VirtoCommerce.Platform.Data.MySql.Extensions;
 using VirtoCommerce.Platform.Data.PostgreSql.Extensions;
 using VirtoCommerce.Platform.Data.SqlServer.Extensions;
-using VirtoCommerce.Platform.Modules;
 
 namespace VirtoCommerce.MarketingModule.Web
 {
     [ExcludeFromCodeCoverage]
-    public class Module : IModule, IExportSupport, IImportSupport, IHasConfiguration
+    public class Module : IModule, IExportSupport, IImportSupport, IHasConfiguration, IHasModuleService
     {
         private IApplicationBuilder _appBuilder;
 
         public ManifestModuleInfo ModuleInfo { get; set; }
         public IConfiguration Configuration { get; set; }
+        public IModuleService ModuleService { get; set; }
 
         private const string _ordersModuleId = "VirtoCommerce.Orders";
 
@@ -134,7 +135,7 @@ namespace VirtoCommerce.MarketingModule.Web
             serviceCollection.AddTransient<LogChangesChangedEventHandler>();
             serviceCollection.AddTransient<MarketingExportImport>();
 
-            if (ModuleBootstrapper.Instance.IsInstalled(_ordersModuleId))
+            if (ModuleService.IsInstalled(_ordersModuleId))
             {
                 serviceCollection.AddTransient<CouponUsageRecordHandler>();
             }
@@ -167,7 +168,7 @@ namespace VirtoCommerce.MarketingModule.Web
             });
 
             //Create order observer. record order coupon usage
-            if (ModuleBootstrapper.Instance.IsInstalled(_ordersModuleId))
+            if (ModuleService.IsInstalled(_ordersModuleId))
             {
                 appBuilder.RegisterEventHandler<OrderChangedEvent, CouponUsageRecordHandler>();
             }
@@ -233,12 +234,12 @@ namespace VirtoCommerce.MarketingModule.Web
             // Method intentionally left empty.
         }
 
-        public Task ExportAsync(Stream outStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
+        public Task ExportAsync(Stream outStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback, CancellationToken cancellationToken)
         {
             return _appBuilder.ApplicationServices.GetRequiredService<MarketingExportImport>().DoExportAsync(outStream, options, progressCallback, cancellationToken);
         }
 
-        public Task ImportAsync(Stream inputStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
+        public Task ImportAsync(Stream inputStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback, CancellationToken cancellationToken)
         {
             return _appBuilder.ApplicationServices.GetRequiredService<MarketingExportImport>().DoImportAsync(inputStream, options, progressCallback, cancellationToken);
         }
