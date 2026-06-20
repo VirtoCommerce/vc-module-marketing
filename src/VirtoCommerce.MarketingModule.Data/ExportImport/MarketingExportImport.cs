@@ -1,4 +1,6 @@
 using System;
+
+using System.Threading;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -37,7 +39,7 @@ public class MarketingExportImport(
         Stream outputStream,
         ExportImportOptions options,
         Action<ExportImportProgressInfo> progressCallback,
-        ICancellationToken cancellationToken)
+        CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
         var progressInfo = new ExportImportProgressInfo { Description = "loading data..." };
@@ -45,12 +47,12 @@ public class MarketingExportImport(
 
         await using var streamWriter = new StreamWriter(outputStream);
         await using var writer = new JsonTextWriter(streamWriter);
-        await writer.WriteStartObjectAsync();
+        await writer.WriteStartObjectAsync(cancellationToken);
 
         progressInfo.Description = "Promotions exporting...";
         progressCallback(progressInfo);
 
-        await writer.WritePropertyNameAsync("Promotions");
+        await writer.WritePropertyNameAsync("Promotions", cancellationToken);
 
         await writer.SerializeArrayWithPagingAsync(jsonSerializer, _batchSize, async (skip, take) =>
             (GenericSearchResult<Promotion>)await LoadPromotionsPageAsync(skip, take, options, progressCallback),
@@ -64,7 +66,7 @@ public class MarketingExportImport(
         progressInfo.Description = "Dynamic content folders exporting...";
         progressCallback(progressInfo);
 
-        await writer.WritePropertyNameAsync("DynamicContentFolders");
+        await writer.WritePropertyNameAsync("DynamicContentFolders", cancellationToken);
         await writer.SerializeArrayWithPagingAsync(jsonSerializer, _batchSize, async (_, _) =>
             {
                 var searchResult = AbstractTypeFactory<DynamicContentFolderSearchResult>.TryCreateInstance();
@@ -83,7 +85,7 @@ public class MarketingExportImport(
         progressInfo.Description = "Dynamic content items exporting...";
         progressCallback(progressInfo);
 
-        await writer.WritePropertyNameAsync("DynamicContentItems");
+        await writer.WritePropertyNameAsync("DynamicContentItems", cancellationToken);
         await writer.SerializeArrayWithPagingAsync(jsonSerializer, _batchSize, async (skip, take) =>
             {
                 var searchCriteria = AbstractTypeFactory<DynamicContentItemSearchCriteria>.TryCreateInstance();
@@ -101,7 +103,7 @@ public class MarketingExportImport(
         progressInfo.Description = "Dynamic content places exporting...";
         progressCallback(progressInfo);
 
-        await writer.WritePropertyNameAsync("DynamicContentPlaces");
+        await writer.WritePropertyNameAsync("DynamicContentPlaces", cancellationToken);
         await writer.SerializeArrayWithPagingAsync(jsonSerializer, _batchSize, async (skip, take) =>
             {
                 var searchCriteria = AbstractTypeFactory<DynamicContentPlaceSearchCriteria>.TryCreateInstance();
@@ -119,7 +121,7 @@ public class MarketingExportImport(
         progressInfo.Description = "Dynamic content publications exporting...";
         progressCallback(progressInfo);
 
-        await writer.WritePropertyNameAsync("DynamicContentPublications");
+        await writer.WritePropertyNameAsync("DynamicContentPublications", cancellationToken);
         await writer.SerializeArrayWithPagingAsync(jsonSerializer, _batchSize, async (skip, take) =>
             {
                 var searchCriteria = AbstractTypeFactory<DynamicContentPublicationSearchCriteria>.TryCreateInstance();
@@ -138,7 +140,7 @@ public class MarketingExportImport(
         progressInfo.Description = "Coupons exporting...";
         progressCallback(progressInfo);
 
-        await writer.WritePropertyNameAsync("Coupons");
+        await writer.WritePropertyNameAsync("Coupons", cancellationToken);
         await writer.SerializeArrayWithPagingAsync(jsonSerializer, _batchSize, async (skip, take) =>
             {
                 var searchCriteria = AbstractTypeFactory<CouponSearchCriteria>.TryCreateInstance();
@@ -156,7 +158,7 @@ public class MarketingExportImport(
         progressInfo.Description = "Usages exporting...";
         progressCallback(progressInfo);
 
-        await writer.WritePropertyNameAsync("Usages");
+        await writer.WritePropertyNameAsync("Usages", cancellationToken);
         await writer.SerializeArrayWithPagingAsync(jsonSerializer, _batchSize, async (skip, take) =>
             {
                 var searchCriteria = AbstractTypeFactory<PromotionUsageSearchCriteria>.TryCreateInstance();
@@ -171,15 +173,15 @@ public class MarketingExportImport(
             },
             cancellationToken);
 
-        await writer.WriteEndObjectAsync();
-        await writer.FlushAsync();
+        await writer.WriteEndObjectAsync(cancellationToken);
+        await writer.FlushAsync(cancellationToken);
     }
 
     public virtual async Task DoImportAsync(
         Stream inputStream,
         ExportImportOptions options,
         Action<ExportImportProgressInfo> progressCallback,
-        ICancellationToken cancellationToken)
+        CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
@@ -188,7 +190,7 @@ public class MarketingExportImport(
         using var streamReader = new StreamReader(inputStream);
         await using var reader = new JsonTextReader(streamReader);
 
-        while (await reader.ReadAsync())
+        while (await reader.ReadAsync(cancellationToken))
         {
             if (reader.TokenType == JsonToken.PropertyName)
             {
