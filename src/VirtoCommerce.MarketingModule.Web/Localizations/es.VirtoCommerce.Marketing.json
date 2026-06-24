@@ -76,7 +76,7 @@
         "title": "Cupón",
         "labels": {
           "coupon-code": "Código",
-          "code-description": "El código del cupón solo puede contener caracteres alfanuméricos",
+          "code-description": "De forma predeterminada, el código del cupón solo puede contener caracteres alfanuméricos. Esto se puede cambiar mediante la configuración 'Patrón de validación del código de cupón'",
           "max-uses-number": "Número máximo de usos",
           "max-uses-per-user": "Máximos usos por cliente",
           "max-uses-number-description": "Especifica cuántas veces se puede usar este cupón. Si no deseas establecer un límite, introduce 0",
@@ -440,6 +440,10 @@
     "Marketing.Promotion.CombinePolicy": {
       "description": "Mejor recompensa: selecciona las recompensas de promoción que más atraigan a los compradores. Varias ofertas válidas: si tu tienda tiene varias promociones activas, los compradores pueden calificar para varias promociones al mismo tiempo.",
       "title": "Política seleccionada para el uso de múltiples promociones activas"
+    },
+    "Marketing.Coupon.CodeValidationPattern": {
+      "description": "Expresión regular utilizada para validar los códigos de cupón al guardar. De forma predeterminada, solo se permiten caracteres alfanuméricos. Deje el valor vacío para desactivar la validación del código de cupón",
+      "title": "Patrón de validación del código de cupón"
     },
     "Marketing.ExportImport.Description": {
       "description": "Exportar e importar promociones y contenido dinámico (lugares, contenido, publicaciones)",

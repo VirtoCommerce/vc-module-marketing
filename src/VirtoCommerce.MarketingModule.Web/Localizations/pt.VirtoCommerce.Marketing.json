@@ -76,7 +76,7 @@
         "title": "Cupom",
         "labels": {
           "coupon-code": "Código",
-          "code-description": "O código do cupom pode conter apenas caracteres alfanuméricos",
+          "code-description": "Por padrão, o código do cupom pode conter apenas caracteres alfanuméricos. Isso pode ser alterado por meio da configuração 'Padrão de validação do código do cupom'",
           "max-uses-number": "Número máximo de usos",
           "max-uses-per-user": "Usos máximos por cliente",
           "max-uses-number-description": "Especifique o número de vezes que este cupom pode ser resgatado. Se você não quiser definir um limite, insira 0",
@@ -440,6 +440,10 @@
     "Marketing.Promotion.CombinePolicy": {
       "description": "Melhor recompensa: Selecione as recompensas promocionais que mais atrairão os clientes. Várias ofertas válidas: Se sua loja tiver várias promoções ativas, os clientes podem se qualificar para várias promoções ao mesmo tempo",
       "title": "Política selecionada para o uso de várias promoções ativas"
+    },
+    "Marketing.Coupon.CodeValidationPattern": {
+      "description": "Expressão regular usada para validar os códigos de cupom ao salvar. Por padrão, apenas caracteres alfanuméricos são permitidos. Deixe o valor vazio para desativar a validação do código do cupom",
+      "title": "Padrão de validação do código do cupom"
     },
     "Marketing.ExportImport.Description": {
       "description": "Exportar e importar promoções e conteúdo dinâmico (locais, conteúdo, publicações)",

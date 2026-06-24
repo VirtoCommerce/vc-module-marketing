@@ -76,7 +76,7 @@
         "title": "Kupon",
         "labels": {
           "coupon-code": "Kod",
-          "code-description": "Kod kuponu może zawierać tylko znaki alfanumeryczne",
+          "code-description": "Domyślnie kod kuponu może zawierać tylko znaki alfanumeryczne. Można to zmienić za pomocą ustawienia 'Wzorzec walidacji kodu kuponu'",
           "max-uses-number": "Maksymalna liczba użyć",
           "max-uses-per-user": "Maksymalna liczba użyć na użytkownika",
           "max-uses-number-description": "Określ liczbę razy, ile ten kupon może zostać zrealizowany. Jeśli nie chcesz ustawiać limitu, wpisz 0",
@@ -440,6 +440,10 @@
     "Marketing.Promotion.CombinePolicy": {
       "description": "Najlepsza nagroda: Wybierz nagrody promocyjne, które będą najbardziej atrakcyjne dla klientów. Ważne oferty wielokrotne: Jeśli w twoim sklepie jest wiele aktywnych promocji, klienci mogą zakwalifikować się do kilku promocji jednocześnie",
       "title": "Wybrana polityka używania wielu aktywnych promocji"
+    },
+    "Marketing.Coupon.CodeValidationPattern": {
+      "description": "Wyrażenie regularne używane do walidacji kodów kuponów podczas zapisywania. Domyślnie dozwolone są tylko znaki alfanumeryczne. Pozostaw wartość pustą, aby wyłączyć walidację kodów kuponów",
+      "title": "Wzorzec walidacji kodu kuponu"
     },
     "Marketing.ExportImport.Description": {
       "description": "Eksportuj i importuj promocje oraz treści dynamiczne (miejsca, treści, publikacje)",

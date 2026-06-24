@@ -76,7 +76,7 @@
         "title": "优惠券",
         "labels": {
           "coupon-code": "代码",
-          "code-description": "优惠券代码只能包含字母数字字符",
+          "code-description": "默认情况下，优惠券代码只能包含字母数字字符。可通过“优惠券代码验证模式”设置进行更改",
           "max-uses-number": "最大使用次数",
           "max-uses-per-user": "每位客户最大使用次数",
           "max-uses-number-description": "指定此优惠券可以兑换的次数。如果您不想设置任何限制，请输入0",
@@ -440,6 +440,10 @@
     "Marketing.Promotion.CombinePolicy": {
       "description": "最佳奖励：选择最能吸引购物者的促销奖励。多重优惠有效：如果您的商店有多个活动促销，购物者可以同时获得多个促销资格",
       "title": "使用多个活动促销的选定策略"
+    },
+    "Marketing.Coupon.CodeValidationPattern": {
+      "description": "保存时用于验证优惠券代码的正则表达式。默认情况下仅允许字母数字字符。将值留空可禁用优惠券代码验证",
+      "title": "优惠券代码验证模式"
     },
     "Marketing.ExportImport.Description": {
       "description": "导出和导入促销活动和动态内容（位置、内容、发布）",

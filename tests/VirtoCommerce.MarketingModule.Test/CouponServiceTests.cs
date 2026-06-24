@@ -12,6 +12,7 @@ using VirtoCommerce.Platform.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Domain;
 using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.Platform.Core.Settings;
 using Xunit;
 
 namespace VirtoCommerce.MarketingModule.Test;
@@ -61,6 +62,7 @@ public class CouponServiceTests
         return new CouponService(
             () => _repositoryMock.Object,
             platformMemoryCache,
-            Mock.Of<IEventPublisher>());
+            Mock.Of<IEventPublisher>(),
+            Mock.Of<ISettingsManager>());
     }
 }
