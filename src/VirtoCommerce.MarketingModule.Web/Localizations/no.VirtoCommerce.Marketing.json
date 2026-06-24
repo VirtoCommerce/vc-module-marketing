@@ -76,7 +76,7 @@
         "title": "Kupong",
         "labels": {
           "coupon-code": "Kode",
-          "code-description": "Kupongkoden kan kun inneholde alfanumeriske tegn",
+          "code-description": "Som standard kan kupongkoden kun inneholde alfanumeriske tegn. Dette kan endres via innstillingen 'Valideringsmønster for kupongkode'",
           "max-uses-number": "Maksimalt antall bruk",
           "max-uses-per-user": "Maksimalt antall bruk per kunde",
           "max-uses-number-description": "Angi antall ganger denne kupongen kan innløses. Hvis du ikke vil sette noen grense, sett 0",
@@ -440,6 +440,10 @@
     "Marketing.Promotion.CombinePolicy": {
       "description": "Beste belønning: Velg kampanjebelønninger som vil appellere mest til kundene. Flere tilbud gyldige: Hvis butikken din har flere aktive kampanjer, kan kunder kvalifisere seg for flere kampanjer samtidig",
       "title": "Valgt policy for bruk av flere aktive kampanjer"
+    },
+    "Marketing.Coupon.CodeValidationPattern": {
+      "description": "Regulært uttrykk som brukes til å validere kupongkoder ved lagring. Som standard er kun alfanumeriske tegn tillatt. La verdien stå tom for å deaktivere validering av kupongkoder",
+      "title": "Valideringsmønster for kupongkode"
     },
     "Marketing.ExportImport.Description": {
       "description": "Eksporter og importer kampanjer og dynamisk innhold (plasser, innhold, publikasjoner)",

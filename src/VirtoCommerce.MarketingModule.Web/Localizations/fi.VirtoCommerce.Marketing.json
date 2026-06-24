@@ -76,7 +76,7 @@
         "title": "Kuponki",
         "labels": {
           "coupon-code": "Koodi",
-          "code-description": "Kuponkikoodi voi sisältää vain aakkosnumeerisia merkkejä",
+          "code-description": "Oletuksena kuponkikoodi voi sisältää vain aakkosnumeerisia merkkejä. Tämän voi muuttaa asetuksella 'Kuponkikoodin validointimalli'",
           "max-uses-number": "Maksimikäyttömäärä",
           "max-uses-per-user": "Maksimikäytöt asiakasta kohden",
           "max-uses-number-description": "Määritä, kuinka monta kertaa tätä kuponkia voidaan käyttää. Jos et halua asettaa rajaa, syötä 0",
@@ -440,6 +440,10 @@
     "Marketing.Promotion.CombinePolicy": {
       "description": "Paras palkinto: Valitse kampanjapalkinnot, jotka vetoavat eniten ostajiin. Useat tarjoukset voimassa: Jos kaupassasi on useita aktiivisia kampanjoita, ostajat voivat saada useita kampanjoita samanaikaisesti",
       "title": "Valittu käytäntö useiden aktiivisten kampanjoiden käyttöön"
+    },
+    "Marketing.Coupon.CodeValidationPattern": {
+      "description": "Säännöllinen lauseke, jolla kuponkikoodit validoidaan tallennettaessa. Oletuksena vain aakkosnumeeriset merkit ovat sallittuja. Jätä arvo tyhjäksi poistaaksesi kuponkikoodien validoinnin käytöstä",
+      "title": "Kuponkikoodin validointimalli"
     },
     "Marketing.ExportImport.Description": {
       "description": "Vie ja tuo kampanjoita sekä dynaamista sisältöä (paikat, sisältö, julkaisut)",
