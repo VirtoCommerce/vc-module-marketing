@@ -34,20 +34,6 @@ namespace VirtoCommerce.MarketingModule.Core.Model.Promotions
         public bool RoundAmountPerItem { get; set; }
 
         /// <summary>
-        ///  Get per item reward amount for given items quantity and price
-        /// </summary>
-        /// <param name="price">Price per item</param>
-        /// <param name="quantity">Total items quantity</param>
-        /// <returns></returns>
-        [Obsolete("Use GetAmountPerItem(decimal price, int quantity, Currency currency) or GetTotalAmount(decimal price, int quantity, Currency currency)", DiagnosticId = "VC0010", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
-        public virtual decimal GetRewardAmount(decimal price, int quantity)
-        {
-            var totalAmount = GetTotalAmount(price, quantity);
-
-            return totalAmount / quantity;
-        }
-
-        /// <summary>
         /// Get per item reward amount for given items quantity and price
         /// </summary>
         /// <param name="price">Price per item</param>

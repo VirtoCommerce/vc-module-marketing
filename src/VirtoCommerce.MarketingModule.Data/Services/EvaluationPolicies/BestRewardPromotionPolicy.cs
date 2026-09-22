@@ -100,43 +100,6 @@ public class BestRewardPromotionPolicy(
         return result;
     }
 
-    [Obsolete("Use GetBestAmountReward(decimal price, int quantity, Currency currency, IEnumerable<AmountBasedReward> rewards)", DiagnosticId = "VC0010", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
-    protected virtual AmountBasedReward GetBestAmountReward(decimal currentAmount, IEnumerable<AmountBasedReward> reward)
-    {
-        return GetBestAmountReward(currentAmount, 1, reward);
-    }
-
-    [Obsolete("Use GetBestAmountReward(decimal price, int quantity, Currency currency, IEnumerable<AmountBasedReward> rewards)", DiagnosticId = "VC0010", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
-    protected virtual AmountBasedReward GetBestAmountReward(decimal currentAmount, int quantity, IEnumerable<AmountBasedReward> reward)
-    {
-        AmountBasedReward retVal = null;
-        var maxAbsoluteReward = reward
-            .Where(y => y.AmountType == RewardAmountType.Absolute)
-            .OrderByDescending(y => y.GetRewardAmount(currentAmount, quantity)).FirstOrDefault();
-
-        var maxRelativeReward = reward
-            .Where(y => y.AmountType == RewardAmountType.Relative)
-            .OrderByDescending(y => y.GetRewardAmount(currentAmount, quantity)).FirstOrDefault();
-
-        var absDiscountAmount = maxAbsoluteReward != null ? maxAbsoluteReward.GetRewardAmount(currentAmount, quantity) : 0;
-        var relDiscountAmount = maxRelativeReward != null ? currentAmount * maxRelativeReward.GetRewardAmount(currentAmount, quantity) : 0;
-
-        if (maxAbsoluteReward != null && maxRelativeReward != null)
-        {
-            retVal = absDiscountAmount > relDiscountAmount ? maxAbsoluteReward : maxRelativeReward;
-        }
-        else if (maxAbsoluteReward != null)
-        {
-            retVal = maxAbsoluteReward;
-        }
-        else if (maxRelativeReward != null)
-        {
-            retVal = maxRelativeReward;
-        }
-
-        return retVal;
-    }
-
     protected virtual AmountBasedReward GetBestAmountReward(decimal price, int quantity, Currency currency, IEnumerable<AmountBasedReward> rewards)
     {
         var bestReward = rewards
