@@ -102,14 +102,6 @@ namespace VirtoCommerce.MarketingModule.Web
             serviceCollection.AddTransient<IDynamicContentPublicationService, DynamicContentPublicationService>();
             serviceCollection.AddTransient<IDynamicContentPublicationSearchService, DynamicContentPublicationSearchService>();
 
-#pragma warning disable VC0011 // Type or member is obsolete
-            serviceCollection.AddTransient<IDynamicContentService, DynamicContentService>();
-            serviceCollection.AddTransient<IFolderSearchService, FolderSearchService>();
-            serviceCollection.AddTransient<IContentItemsSearchService, ContentItemsSearchService>();
-            serviceCollection.AddTransient<IContentPlacesSearchService, ContentPlacesSearchService>();
-            serviceCollection.AddTransient<IContentPublicationsSearchService, ContentPublicationsSearchService>();
-#pragma warning restore VC0011 // Type or member is obsolete
-
             serviceCollection.AddTransient<IPromotionRewardEvaluator, DefaultPromotionRewardEvaluator>();
             serviceCollection.AddTransient<IMarketingDynamicContentEvaluator, DefaultDynamicContentEvaluator>();
 

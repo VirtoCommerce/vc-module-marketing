@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.MarketingModule.Core.Events;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
@@ -22,25 +21,6 @@ public class PromotionUsageService(
         (repositoryFactory, platformMemoryCache, eventPublisher),
         IPromotionUsageService
 {
-    [Obsolete("Use GetAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
-    public virtual async Task<PromotionUsage[]> GetByIdsAsync(string[] ids)
-    {
-        return (await GetAsync(ids)).ToArray();
-    }
-
-    [Obsolete("Use SaveChangesAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
-    public virtual Task SaveUsagesAsync(PromotionUsage[] usages)
-    {
-        return SaveChangesAsync(usages);
-    }
-
-    [Obsolete("Use DeleteAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
-    public virtual Task DeleteUsagesAsync(string[] ids)
-    {
-        return DeleteAsync(ids);
-    }
-
-
     protected override Task<IList<PromotionUsageEntity>> LoadEntities(IRepository repository, IList<string> ids, string responseGroup)
     {
         return ((IMarketingRepository)repository).GetMarketingUsagesByIdsAsync(ids);

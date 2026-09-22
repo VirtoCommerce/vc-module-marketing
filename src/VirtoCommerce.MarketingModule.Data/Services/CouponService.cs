@@ -29,25 +29,6 @@ public class CouponService(
 {
     private static readonly TimeSpan _regexMatchTimeout = TimeSpan.FromSeconds(1);
 
-    [Obsolete("Use GetAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
-    public async Task<Coupon[]> GetByIdsAsync(string[] ids)
-    {
-        return (await GetAsync(ids)).ToArray();
-    }
-
-    [Obsolete("Use SaveChangesAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
-    public Task SaveCouponsAsync(Coupon[] coupons)
-    {
-        return SaveChangesAsync(coupons);
-    }
-
-    [Obsolete("Use DeleteAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
-    public Task DeleteCouponsAsync(string[] ids)
-    {
-        return DeleteAsync(ids);
-    }
-
-
     protected override async Task BeforeSaveChanges(IList<Coupon> models)
     {
         await base.BeforeSaveChanges(models);
