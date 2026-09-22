@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
@@ -25,19 +24,6 @@ public class CouponSearchService(
         (repositoryFactory, platformMemoryCache, crudService, crudOptions),
         ICouponSearchService
 {
-    [Obsolete("Use SearchAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
-    public Task<CouponSearchResult> SearchCouponsAsync(CouponSearchCriteria criteria)
-    {
-        return SearchAsync(criteria);
-    }
-
-
-    [Obsolete("Use BuildQuery(IRepository repository, CouponSearchCriteria criteria)", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
-    protected virtual IQueryable<CouponEntity> BuildQuery(CouponSearchCriteria criteria, IMarketingRepository repository)
-    {
-        return BuildQuery(repository, criteria);
-    }
-
     protected override IQueryable<CouponEntity> BuildQuery(IRepository repository, CouponSearchCriteria criteria)
     {
         var query = ((IMarketingRepository)repository).Coupons;
@@ -63,12 +49,6 @@ public class CouponSearchService(
         }
 
         return query;
-    }
-
-    [Obsolete("Use BuildSortExpression()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
-    protected virtual IList<SortInfo> BuildSearchExpression(CouponSearchCriteria criteria)
-    {
-        return BuildSortExpression(criteria);
     }
 
     protected override IList<SortInfo> BuildSortExpression(CouponSearchCriteria criteria)

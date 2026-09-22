@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
@@ -25,19 +24,6 @@ public class PromotionSearchService(
         (repositoryFactory, platformMemoryCache, crudService, crudOptions),
         IPromotionSearchService
 {
-    [Obsolete("Use SearchAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
-    public virtual Task<PromotionSearchResult> SearchPromotionsAsync(PromotionSearchCriteria criteria)
-    {
-        return SearchAsync(criteria);
-    }
-
-
-    [Obsolete("Use BuildQuery(IRepository repository, PromotionSearchCriteria criteria)", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
-    protected virtual IQueryable<PromotionEntity> BuildQuery(IMarketingRepository repository, PromotionSearchCriteria criteria)
-    {
-        return BuildQuery((IRepository)repository, criteria);
-    }
-
     protected override IQueryable<PromotionEntity> BuildQuery(IRepository repository, PromotionSearchCriteria criteria)
     {
         var query = ((IMarketingRepository)repository).Promotions;
