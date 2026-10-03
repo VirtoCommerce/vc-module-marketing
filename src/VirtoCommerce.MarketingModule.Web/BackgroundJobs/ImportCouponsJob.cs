@@ -3,21 +3,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using VirtoCommerce.AssetsModule.Core.Assets;
-using VirtoCommerce.MarketingModule.Core.Model;
-using VirtoCommerce.MarketingModule.Core.Model.PushNotifications;
 using VirtoCommerce.MarketingModule.Web.ExportImport;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Jobs;
 using VirtoCommerce.Platform.Core.PushNotifications;
 
 namespace VirtoCommerce.MarketingModule.Web.BackgroundJobs;
-
-public class ImportCouponsJobPayload
-{
-    public ImportRequest Request { get; set; }
-
-    public ImportNotification Notification { get; set; }
-}
 
 /// <summary>
 /// Imports promotion coupons from a CSV file and reports progress through the push notification returned to the
