@@ -45,11 +45,9 @@ public class MarketingModulePromotionControllerTests
             promoSearchService: _mockPromotionSearch.Object,
             userNameResolver: new Mock<IUserNameResolver>().Object,
             notifier: new Mock<IPushNotificationManager>().Object,
-            blobStorageProvider: new Mock<IBlobStorageProvider>().Object,
             repositoryFactory: _mockRepositoryFactory.Object,
             couponSearchService: _mockCouponSearch.Object,
-            authorizationService: _mockAuthorization.Object,
-            csvCouponImporter: null);
+            authorizationService: _mockAuthorization.Object);
     }
 
     [Fact]

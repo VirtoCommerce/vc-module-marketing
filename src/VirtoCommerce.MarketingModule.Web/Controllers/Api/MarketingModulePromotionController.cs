@@ -1,10 +1,8 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.MarketingModule.Core.Model;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
@@ -15,9 +13,9 @@ using VirtoCommerce.MarketingModule.Core.Services;
 using VirtoCommerce.MarketingModule.Data.Authorization;
 using VirtoCommerce.MarketingModule.Data.Repositories;
 using VirtoCommerce.MarketingModule.Web.Authorization;
-using VirtoCommerce.MarketingModule.Web.ExportImport;
+using VirtoCommerce.MarketingModule.Web.BackgroundJobs;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.ExportImport;
+using VirtoCommerce.Platform.Core.Jobs;
 using VirtoCommerce.Platform.Core.PushNotifications;
 using VirtoCommerce.Platform.Core.Security;
 using Permissions = VirtoCommerce.MarketingModule.Core.ModuleConstants.Security.Permissions;
@@ -34,8 +32,6 @@ public class MarketingModulePromotionController(
     IPromotionSearchService promoSearchService,
     IUserNameResolver userNameResolver,
     IPushNotificationManager notifier,
-    IBlobStorageProvider blobStorageProvider,
-    CsvCouponImporter csvCouponImporter,
     Func<IMarketingRepository> repositoryFactory,
     ICouponSearchService couponSearchService,
     IAuthorizationService authorizationService)
@@ -273,42 +269,32 @@ public class MarketingModulePromotionController(
 
         await notifier.SendAsync(notification);
 
-        BackgroundJob.Enqueue(() => BackgroundImportAsync(request, notification));
+        await EnqueueImport(request, notification);
 
         return Ok(notification);
     }
 
+    /// <summary>
+    /// Kept for background jobs enqueued by an earlier version, which reference this method by name.
+    /// Hands the work to <see cref="ImportCouponsJob"/>; remove this once no such job can still be pending.
+    /// </summary>
+    // Signature is byte-identical on purpose: Hangfire persists a queued job as type name + method name +
+    // parameter types + serialized args, so changing any of them would strand already-queued entries as Failed.
     [ApiExplorerSettings(IgnoreApi = true)]
-    public async Task BackgroundImportAsync(ImportRequest request, ImportNotification notification)
+    [Obsolete("Enqueued indirectly by legacy Hangfire jobs only; new work uses ImportCouponsJob.", DiagnosticId = "VC0015", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
+    public Task BackgroundImportAsync(ImportRequest request, ImportNotification notification)
     {
-        await using var stream = await blobStorageProvider.OpenReadAsync(request.FileUrl);
+        return EnqueueImport(request, notification);
+    }
 
-        try
-        {
-            await csvCouponImporter.DoImportAsync(stream, request.Delimiter, request.PromotionId, request.ExpirationDate, ProgressCallback);
-        }
-        catch (Exception exception)
-        {
-            notification.Description = "Import error";
-            notification.ErrorCount++;
-            notification.Errors.Add(exception.ToString());
-        }
-        finally
-        {
-            notification.Finished = DateTime.UtcNow;
-            notification.Description = "Import finished" + (notification.Errors.Any() ? " with errors" : " successfully");
-            await notifier.SendAsync(notification);
-        }
+    // The static facade rather than an injected IBackgroundJob avoids another constructor parameter, and it also works
+    // when Hangfire activates this controller outside a request to run a legacy job.
+    private static Task EnqueueImport(ImportRequest request, ImportNotification notification)
+    {
+        var payload = AbstractTypeFactory<ImportCouponsJobPayload>.TryCreateInstance();
+        payload.Request = request;
+        payload.Notification = notification;
 
-        return;
-
-        void ProgressCallback(ExportImportProgressInfo c)
-        {
-            notification.Description = c.Description;
-            notification.Errors = c.Errors;
-            notification.ErrorCount = c.ErrorCount;
-
-            notifier.Send(notification);
-        }
+        return BackgroundJob.Enqueue<ImportCouponsJob>(payload);
     }
 }
