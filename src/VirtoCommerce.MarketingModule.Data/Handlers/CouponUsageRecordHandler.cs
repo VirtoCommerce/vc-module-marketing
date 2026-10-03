@@ -2,16 +2,17 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using Hangfire;
 using VirtoCommerce.CoreModule.Core.Common;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Model.Promotions.Search;
 using VirtoCommerce.MarketingModule.Core.Search;
 using VirtoCommerce.MarketingModule.Core.Services;
+using VirtoCommerce.MarketingModule.Data.BackgroundJobs;
 using VirtoCommerce.OrdersModule.Core.Events;
 using VirtoCommerce.OrdersModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.Platform.Core.Jobs;
 
 namespace VirtoCommerce.MarketingModule.Data.Handlers;
 
@@ -35,19 +36,22 @@ public class CouponUsageRecordHandler(
 
         if (couponUsageJobArguments.Length > 0)
         {
-            BackgroundJob.Enqueue(() => HandleCouponUsages(couponUsageJobArguments));
+            var payload = AbstractTypeFactory<CouponUsageRecordJobPayload>.TryCreateInstance();
+            payload.JobArguments = couponUsageJobArguments;
+
+            // The static facade, not an injected IBackgroundJob: RegisterEventHandler resolves this handler once from
+            // the root provider and holds it for the process lifetime, so it must not capture a Scoped dependency.
+            return BackgroundJob.Enqueue<CouponUsageRecordJob>(payload);
         }
 
         return Task.CompletedTask;
     }
 
-    [DisableConcurrentExecution(10)]
-    // "DisableConcurrentExecutionAttribute" prevents to start simultaneous job payloads.
-    // Should have short timeout, because this attribute implemented by following manner: newly started job falls into "processing" state immediately.
-    // Then it tries to receive job lock during timeout. If the lock received, the job starts payload.
-    // When the job is awaiting desired timeout for lock release, it is stuck in "processing" anyway. (Therefore, you should not to set long timeouts (like 24*60*60), this will cause a lot of stuck jobs and performance degradation.)
-    // Then, if timeout is over and the lock NOT acquired, the job falls into "scheduled" state (this is default fail-retry scenario).
-    // Failed job goes to "Failed" state (by default) after retries exhausted.
+    /// <summary>
+    /// Records coupon usages. Runs from <see cref="CouponUsageRecordJob"/>, which takes the distributed lock that
+    /// replaced Hangfire's [DisableConcurrentExecution]. Its signature is unchanged on purpose: jobs queued by an
+    /// earlier version reference this method by name.
+    /// </summary>
     public virtual async Task HandleCouponUsages(CouponUsageRecordJobArgument[] jobArguments)
     {
         foreach (var jobArgument in jobArguments)

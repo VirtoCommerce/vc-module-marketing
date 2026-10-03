@@ -19,6 +19,7 @@ using VirtoCommerce.MarketingModule.Core.Model.Promotions;
 using VirtoCommerce.MarketingModule.Core.Promotions;
 using VirtoCommerce.MarketingModule.Core.Search;
 using VirtoCommerce.MarketingModule.Core.Services;
+using VirtoCommerce.MarketingModule.Data.BackgroundJobs;
 using VirtoCommerce.MarketingModule.Data.ExportImport;
 using VirtoCommerce.MarketingModule.Data.Handlers;
 using VirtoCommerce.MarketingModule.Data.MySql;
@@ -28,6 +29,7 @@ using VirtoCommerce.MarketingModule.Data.Search;
 using VirtoCommerce.MarketingModule.Data.Services;
 using VirtoCommerce.MarketingModule.Data.SqlServer;
 using VirtoCommerce.MarketingModule.Web.Authorization;
+using VirtoCommerce.MarketingModule.Web.BackgroundJobs;
 using VirtoCommerce.MarketingModule.Web.ExportImport;
 using VirtoCommerce.OrdersModule.Core.Events;
 using VirtoCommerce.Platform.Core.Caching;
@@ -35,6 +37,7 @@ using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.ExportImport;
+using VirtoCommerce.Platform.Core.Jobs;
 using VirtoCommerce.Platform.Core.JsonConverters;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
@@ -106,6 +109,7 @@ namespace VirtoCommerce.MarketingModule.Web
             serviceCollection.AddTransient<IMarketingDynamicContentEvaluator, DefaultDynamicContentEvaluator>();
 
             serviceCollection.AddTransient<CsvCouponImporter>();
+            serviceCollection.AddBackgroundJob<ImportCouponsJob, ImportCouponsJobPayload>(triggerable: false);
 
             serviceCollection.AddTransient<IMarketingPromoEvaluator>(provider =>
             {
@@ -125,11 +129,13 @@ namespace VirtoCommerce.MarketingModule.Web
             });
 
             serviceCollection.AddTransient<LogChangesChangedEventHandler>();
+            serviceCollection.AddBackgroundJob<LogEntityChangesJobHandler, LogEntityChangesJobPayload>(triggerable: false);
             serviceCollection.AddTransient<MarketingExportImport>();
 
             if (ModuleService.IsInstalled(_ordersModuleId))
             {
                 serviceCollection.AddTransient<CouponUsageRecordHandler>();
+                serviceCollection.AddBackgroundJob<CouponUsageRecordJob, CouponUsageRecordJobPayload>(triggerable: false);
             }
 
             serviceCollection.AddTransient<IAuthorizationHandler, MarketingAuthorizationHandler>();
