@@ -1,0 +1,13 @@
+export { default as MarketingPromotions } from "./promotions-list.vue";
+export { default as MarketingPromotionDetails } from "./promotion-details.vue";
+export { default as MarketingPromotionFilter } from "./promotion-filter.vue";
+export { default as MarketingCoupons } from "./coupons.vue";
+export { default as MarketingCouponDetails } from "./coupon-details.vue";
+export { default as MarketingCouponImport } from "./coupon-import.vue";
+export { default as MarketingPromotionOrders } from "./promotion-orders.vue";
+export { default as MarketingPublications } from "./publications.vue";
+export { default as MarketingPublicationDetails } from "./publication-details.vue";
+export { default as MarketingContentList } from "./content-list.vue";
+export { default as MarketingContentItemDetails } from "./content-item-details.vue";
+export { default as MarketingContentPlaceDetails } from "./content-place-details.vue";
+export { default as MarketingContentFolderDetails } from "./content-folder-details.vue";

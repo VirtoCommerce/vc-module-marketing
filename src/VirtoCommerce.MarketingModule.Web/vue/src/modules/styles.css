@@ -1,0 +1,25 @@
+/* classes shared by several marketing blades */
+
+/* the design's blade body padding (as Orders' details) */
+.mk-form {
+  padding: 20px 22px 36px;
+}
+
+.mk-form__switches {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 26px;
+}
+
+.mk-form__lang {
+  width: 140px;
+}
+
+.mk-conditions .vc-card__body {
+  padding: 0;
+}
+
+.mk-list__primary {
+  color: var(--neutrals-900);
+}
