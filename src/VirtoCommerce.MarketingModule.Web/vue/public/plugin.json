@@ -15,11 +15,11 @@
       {
         "id": "marketing.dynamicContent",
         "sectionId": "marketing",
-        "title": "Dynamic content",
+        "title": "Dynamic Content",
         "icon": "lucide-layout-template",
         "route": "/dynamic-content",
         "permission": "marketing:access",
-        "priority": 11
+        "priority": 21
       }
     ]
   }
