@@ -96,15 +96,10 @@ const { getApiClient } = useApiClient(MarketingModuleDynamicContentClient);
 const places = computed(() => options.value?.kind === "places");
 // pick mode: the publication's "add placeholders / add content items" steps — browse folders, click an entry to add it
 const pick = computed(() => !!options.value?.pick);
-const title = computed(() =>
-  pick.value
-    ? places.value
-      ? "MARKETING.PAGES.CONTENT.ADD_PLACES_TITLE"
-      : "MARKETING.PAGES.CONTENT.ADD_ITEMS_TITLE"
-    : places.value
-      ? "MARKETING.PAGES.CONTENT.PLACES_TITLE"
-      : "MARKETING.PAGES.CONTENT.ITEMS_TITLE",
-);
+const title = computed(() => {
+  if (pick.value) return places.value ? "MARKETING.PAGES.CONTENT.ADD_PLACES_TITLE" : "MARKETING.PAGES.CONTENT.ADD_ITEMS_TITLE";
+  return places.value ? "MARKETING.PAGES.CONTENT.PLACES_TITLE" : "MARKETING.PAGES.CONTENT.ITEMS_TITLE";
+});
 // entries already in the publication are marked "Added" (the AngularJS steps hid them)
 const chosen = ref(new Set<string>());
 const root = computed(() => ({ id: places.value ? "ContentPlace" : "ContentItem", name: t(places.value ? "MARKETING.PAGES.CONTENT.PLACES_ROOT" : "MARKETING.PAGES.CONTENT.ITEMS_ROOT") }));
@@ -162,8 +157,9 @@ async function goTo(index: number) {
 }
 
 function openDetails(entry: Entry | undefined, folder: boolean) {
+  const itemBlade = places.value ? "MarketingContentPlaceDetails" : "MarketingContentItemDetails";
   openBlade({
-    name: folder ? "MarketingContentFolderDetails" : places.value ? "MarketingContentPlaceDetails" : "MarketingContentItemDetails",
+    name: folder ? "MarketingContentFolderDetails" : itemBlade,
     param: entry?.id,
     options: { folderId: folderId.value },
   });

@@ -201,7 +201,10 @@ function set(path: string, value: unknown) {
   const keys = path.split(".");
   const last = keys.pop()!;
   let target = props.node;
-  for (const k of keys) target = (target[k] ??= {}) as Node;
+  for (const k of keys) {
+    target[k] ??= {};
+    target = target[k] as Node;
+  }
   target[last] = value;
 }
 const prefix = () => ("prefix" in props.part && props.part.prefix) || "";

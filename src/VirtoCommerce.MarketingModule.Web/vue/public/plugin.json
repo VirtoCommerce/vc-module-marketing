@@ -1,6 +1,4 @@
 {
-  // Marketing admin UI for the Admin Shell host (Module Federation remote).
-  // Promotions replace the legacy "Marketing" item in place; dynamic content gets its own item next to it.
   "remote": { "name": "marketing_admin", "exposed": "./Module" },
   "contributions": {
     "menu": [

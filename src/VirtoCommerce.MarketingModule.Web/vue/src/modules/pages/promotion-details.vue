@@ -298,8 +298,10 @@ async function storeOptions(keyword?: string, skip?: number, ids?: string[]) {
 const { languages, language } = useLanguagePicker();
 const localized = (field: LocalizedField) => (item.value[field]?.values ?? {})[language.value] ?? "";
 function setLocalized(field: LocalizedField, value: unknown) {
-  const target = (item.value[field] ??= { values: {} }) as { values?: Record<string, string> };
-  (target.values ??= {})[language.value] = String(value ?? "");
+  item.value[field] ??= { values: {} };
+  const target = item.value[field] as { values?: Record<string, string> };
+  target.values ??= {};
+  target.values[language.value] = String(value ?? "");
 }
 
 async function refreshCounts() {

@@ -57,7 +57,7 @@ let dictionary: Promise<DictionaryItem[]> | undefined;
 async function dictionaryItems(_propertyId?: string, keyword?: string) {
   dictionary ??= getApiClient()
     .then((client) => client.getAllDictionaryItems(props.property.id ?? ""))
-    .then((items) => (items ?? []).map((x) => ({ id: x.id!, alias: x.name ?? x.id!, value: x.name ?? x.id! })))
+    .then((loaded) => (loaded ?? []).map((x) => ({ id: x.id!, alias: x.name ?? x.id!, value: x.name ?? x.id! })))
     .catch(() => []);
   const items = [...(await dictionary)];
   for (const v of values()) if (v.valueId && !items.some((x) => x.id === v.valueId)) items.push({ id: v.valueId, alias: String(v.value ?? v.valueId), value: String(v.value ?? v.valueId) });

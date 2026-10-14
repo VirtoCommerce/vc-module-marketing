@@ -28,7 +28,11 @@ const qs = (name: string, values: string[]) => values.map((v) => `${name}=${enco
 // caches a parameterless loader for the session (methods, currencies, settings...)
 function once<T>(load: () => Promise<T>): () => Promise<T> {
   let p: Promise<T> | undefined;
-  return () => (p ??= load().catch((e) => ((p = undefined), Promise.reject(e))));
+  return () =>
+    (p ??= load().catch((e) => {
+      p = undefined;
+      return Promise.reject(e);
+    }));
 }
 
 const PAGE = 20;

@@ -136,7 +136,8 @@ const menuOpen = ref(false);
 
 // a new child is a copy of the server's prototype, so it carries exactly the server's field set
 function add(item: AddItem) {
-  (props.node.children ??= []).push(JSON.parse(JSON.stringify(item.prototype)) as Node);
+  props.node.children ??= [];
+  props.node.children.push(JSON.parse(JSON.stringify(item.prototype)) as Node);
 }
 
 // stable keys without writing anything onto the API objects

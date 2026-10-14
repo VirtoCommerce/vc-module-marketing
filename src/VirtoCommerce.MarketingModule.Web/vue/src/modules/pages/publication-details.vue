@@ -198,7 +198,14 @@ watch(
 
 // "Add placeholders" / "Add content items" steps: the folder browser in pick mode adds what is clicked here
 type Kind = "places" | "items";
-const listOf = (kind: Kind) => (kind === "places" ? (item.value.contentPlaces ??= []) : (item.value.contentItems ??= []));
+function listOf(kind: Kind) {
+  if (kind === "places") {
+    item.value.contentPlaces ??= [];
+    return item.value.contentPlaces;
+  }
+  item.value.contentItems ??= [];
+  return item.value.contentItems;
+}
 const browse = (kind: Kind) => openBlade({ name: "MarketingContentList", options: { kind, pick: true } });
 exposeToChildren({
   chosen: (kind: Kind) => listOf(kind).map((x) => x.id),
