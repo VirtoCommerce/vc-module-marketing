@@ -1,6 +1,6 @@
 <template>
   <VcBlade
-    :title="$t('MARKETING.PAGES.PUBLICATIONS.TITLE')"
+    :title="$t('MARKETING.MENU.DYNAMIC_CONTENT')"
     :toolbar-items="bladeToolbar"
     :loading="loading"
     width="50%"

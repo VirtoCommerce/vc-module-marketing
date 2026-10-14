@@ -178,7 +178,6 @@
         }
       },
       "PUBLICATIONS": {
-        "TITLE": "Dynamic Content",
         "EMPTY": "No publications",
         "COLUMNS": {
           "NAME": "Name",
