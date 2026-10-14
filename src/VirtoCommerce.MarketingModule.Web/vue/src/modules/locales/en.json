@@ -2,7 +2,7 @@
   "MARKETING": {
     "MENU": {
       "PROMOTIONS": "Promotions",
-      "DYNAMIC_CONTENT": "Dynamic content"
+      "DYNAMIC_CONTENT": "Dynamic Content"
     },
     "UNKNOWN": "unknown",
     "UNLIMITED": "Unlimited",
@@ -178,7 +178,7 @@
         }
       },
       "PUBLICATIONS": {
-        "TITLE": "Content publications",
+        "TITLE": "Dynamic Content",
         "EMPTY": "No publications",
         "COLUMNS": {
           "NAME": "Name",
