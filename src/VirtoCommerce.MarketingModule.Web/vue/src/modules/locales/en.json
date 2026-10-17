@@ -2,7 +2,40 @@
   "MARKETING": {
     "MENU": {
       "PROMOTIONS": "Promotions",
-      "DYNAMIC_CONTENT": "Dynamic Content"
+      "DYNAMIC_CONTENT": "Banners"
+    },
+    "LIBRARY": {
+      "INTRO": "Banners are what shows, slots are where on the storefront, and placements put a banner in a slot on a site, for a time and an audience.",
+      "TABS": {
+        "BANNERS": "Banners",
+        "SLOTS": "Slots",
+        "PLACEMENTS": "Placements"
+      },
+      "SEARCH_BANNERS": "Search banners",
+      "EMPTY_BANNERS": "No banners yet",
+      "EMPTY_SLOTS": "No slots yet",
+      "USED_ON": "Not used on any site | Used on {n} site | Used on {n} sites",
+      "ADD_BANNER": "Add banner",
+      "ADD_SLOT": "Add slot",
+      "FOLDERS": "Folders",
+      "COLUMNS": {
+        "SLOT": "Slot",
+        "WHERE": "Where",
+        "BANNERS": "Banners",
+        "PLACEMENT": "Placement",
+        "SITE": "Site",
+        "STATUS": "Status",
+        "STARTS": "Starts",
+        "ENDS": "Ends"
+      },
+      "EMPTY_PLACEMENTS": "No placements yet",
+      "ADD_PLACEMENT": "Add placement",
+      "STATUS": {
+        "SHOWING": "Showing",
+        "SCHEDULED": "Scheduled",
+        "ENDED": "Ended",
+        "OFF": "Off"
+      }
     },
     "UNKNOWN": "unknown",
     "UNLIMITED": "Unlimited",
@@ -20,8 +53,8 @@
     "ACTIONS": {
       "ADD": "Add",
       "ADD_FOLDER": "Add folder",
-      "ADD_ITEM": "Add content item",
-      "ADD_PLACE": "Add placeholder",
+      "ADD_ITEM": "Add banner",
+      "ADD_PLACE": "Add slot",
       "CLONE": "Clone",
       "COPY_ID": "Copy ID",
       "CREATE": "Create",
@@ -36,7 +69,7 @@
       "CLOSE_CONFIRMATION": "You have unsaved changes. Close anyway?",
       "DELETE_PROMOTIONS": "Delete {count} promotion(s)?",
       "DELETE_COUPONS": "Delete {count} coupon(s)?",
-      "DELETE_PUBLICATIONS": "Delete {count} publication(s)?",
+      "DELETE_PUBLICATIONS": "Delete {count} placement(s)?",
       "DELETE_CONTENT": "Delete {count} selected entries?",
       "DELETE_NAMED": "Delete \"{name}\"?",
       "DELETE_FOLDER": "Delete folder \"{name}\"?"
@@ -178,31 +211,30 @@
         }
       },
       "PUBLICATIONS": {
-        "EMPTY": "No publications",
         "COLUMNS": {
           "NAME": "Name",
-          "STORE": "Store"
+          "STORE": "Site"
         }
       },
       "PUBLICATION": {
-        "TITLE": "Publication",
-        "NEW_TITLE": "New publication",
-        "NAME_PLACEHOLDER": "Enter publication name",
+        "TITLE": "Placement",
+        "NEW_TITLE": "New placement",
+        "NAME_PLACEHOLDER": "Enter placement name",
         "DESCRIPTION_PLACEHOLDER": "Enter description",
         "STORE_PLACEHOLDER": "Select store",
-        "PLACES_PLACEHOLDER": "Select placeholders",
-        "ITEMS_PLACEHOLDER": "Select content items",
+        "PLACES_PLACEHOLDER": "Select slots",
+        "ITEMS_PLACEHOLDER": "Select banners",
         "CONDITIONS": "Publishing conditions",
         "BROWSE": "Browse"
       },
       "CONTENT": {
-        "ITEMS_TITLE": "Content items",
-        "PLACES_TITLE": "Content placeholders",
-        "ITEMS_ROOT": "Content items",
-        "PLACES_ROOT": "Placeholders",
-        "ADD_PLACES_TITLE": "Add placeholders",
-        "ADD_ITEMS_TITLE": "Add content items",
-        "PICK_HINT": "Click an entry to add it to the publication, a folder to open it",
+        "ITEMS_TITLE": "Banners",
+        "PLACES_TITLE": "Slots",
+        "ITEMS_ROOT": "Banners",
+        "PLACES_ROOT": "Slots",
+        "ADD_PLACES_TITLE": "Add slots",
+        "ADD_ITEMS_TITLE": "Add banners",
+        "PICK_HINT": "Click an entry to add it to the placement, a folder to open it",
         "ADDED": "Added",
         "EMPTY": "This folder is empty",
         "COLUMNS": {
@@ -211,17 +243,17 @@
         }
       },
       "CONTENT_ITEM": {
-        "NEW_TITLE": "New content item",
-        "NAME_PLACEHOLDER": "Enter content item name",
+        "NEW_TITLE": "New banner",
+        "NAME_PLACEHOLDER": "Enter banner name",
         "DESCRIPTION_PLACEHOLDER": "Enter description",
         "PROPERTIES": "Properties",
-        "NO_PROPERTIES": "No properties are defined for content items"
+        "NO_PROPERTIES": "No properties are defined for banners"
       },
       "CONTENT_PLACE": {
-        "NEW_TITLE": "New placeholder",
-        "NAME_PLACEHOLDER": "Enter placeholder name",
+        "NEW_TITLE": "New slot",
+        "NAME_PLACEHOLDER": "Enter slot name",
         "DESCRIPTION_PLACEHOLDER": "Enter description",
-        "IMAGE": "Placeholder image"
+        "IMAGE": "Slot image"
       },
       "CONTENT_FOLDER": {
         "NEW_TITLE": "New folder",

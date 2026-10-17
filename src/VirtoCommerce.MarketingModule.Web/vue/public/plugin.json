@@ -1,5 +1,8 @@
 {
-  "remote": { "name": "marketing_admin", "exposed": "./Module" },
+  "remote": {
+    "name": "marketing_admin",
+    "exposed": "./Module"
+  },
   "contributions": {
     "menu": [
       {
@@ -15,11 +18,11 @@
       {
         "id": "marketing.dynamicContent",
         "sectionId": "marketing",
-        "title": "Dynamic Content",
-        "icon": "lucide-layout-template",
+        "title": "Banners",
+        "icon": "lucide-image",
         "route": "/dynamic-content",
         "permission": "marketing:access",
-        "priority": 21
+        "priority": 45
       }
     ]
   }

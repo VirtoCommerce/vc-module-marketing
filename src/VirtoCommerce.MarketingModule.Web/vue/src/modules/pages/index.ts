@@ -5,7 +5,7 @@ export { default as MarketingCoupons } from "./coupons.vue";
 export { default as MarketingCouponDetails } from "./coupon-details.vue";
 export { default as MarketingCouponImport } from "./coupon-import.vue";
 export { default as MarketingPromotionOrders } from "./promotion-orders.vue";
-export { default as MarketingPublications } from "./publications.vue";
+export { default as MarketingBannerLibrary } from "./banner-library.vue";
 export { default as MarketingPublicationDetails } from "./publication-details.vue";
 export { default as MarketingContentList } from "./content-list.vue";
 export { default as MarketingContentItemDetails } from "./content-item-details.vue";
