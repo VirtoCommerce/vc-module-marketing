@@ -1,0 +1,29 @@
+{
+  "remote": {
+    "name": "marketing_admin",
+    "exposed": "./Module"
+  },
+  "contributions": {
+    "menu": [
+      {
+        "id": "marketing",
+        "sectionId": "marketing",
+        "title": "Promotions",
+        "icon": "lucide-flag",
+        "route": "/marketing",
+        "permission": "marketing:access",
+        "priority": 10,
+        "replaces": "legacy.marketing"
+      },
+      {
+        "id": "marketing.dynamicContent",
+        "sectionId": "marketing",
+        "title": "Banners",
+        "icon": "lucide-image",
+        "route": "/dynamic-content",
+        "permission": "marketing:access",
+        "priority": 45
+      }
+    ]
+  }
+}

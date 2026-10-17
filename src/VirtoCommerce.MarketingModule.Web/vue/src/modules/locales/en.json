@@ -1,0 +1,265 @@
+{
+  "MARKETING": {
+    "MENU": {
+      "PROMOTIONS": "Promotions",
+      "DYNAMIC_CONTENT": "Banners"
+    },
+    "LIBRARY": {
+      "INTRO": "Banners are what shows, slots are where on the storefront, and placements put a banner in a slot on a site, for a time and an audience.",
+      "TABS": {
+        "BANNERS": "Banners",
+        "SLOTS": "Slots",
+        "PLACEMENTS": "Placements"
+      },
+      "SEARCH_BANNERS": "Search banners",
+      "EMPTY_BANNERS": "No banners yet",
+      "EMPTY_SLOTS": "No slots yet",
+      "USED_ON": "Not used on any site | Used on {n} site | Used on {n} sites",
+      "ADD_BANNER": "Add banner",
+      "ADD_SLOT": "Add slot",
+      "FOLDERS": "Folders",
+      "COLUMNS": {
+        "SLOT": "Slot",
+        "WHERE": "Where",
+        "BANNERS": "Banners",
+        "PLACEMENT": "Placement",
+        "SITE": "Site",
+        "STATUS": "Status",
+        "STARTS": "Starts",
+        "ENDS": "Ends"
+      },
+      "EMPTY_PLACEMENTS": "No placements yet",
+      "ADD_PLACEMENT": "Add placement",
+      "STATUS": {
+        "SHOWING": "Showing",
+        "SCHEDULED": "Scheduled",
+        "ENDED": "Ended",
+        "OFF": "Off"
+      }
+    },
+    "UNKNOWN": "unknown",
+    "UNLIMITED": "Unlimited",
+    "STATUS": {
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive"
+    },
+    "PROMOTION_STATUS": {
+      "ACTIVE": "Active",
+      "UPCOMING": "Upcoming",
+      "ARCHIVED": "Archived",
+      "DEACTIVATED": "Deactivated",
+      "ALL": "All"
+    },
+    "ACTIONS": {
+      "ADD": "Add",
+      "ADD_FOLDER": "Add folder",
+      "ADD_ITEM": "Add banner",
+      "ADD_PLACE": "Add slot",
+      "CLONE": "Clone",
+      "COPY_ID": "Copy ID",
+      "CREATE": "Create",
+      "DELETE": "Delete",
+      "IMPORT": "Import",
+      "MANAGE": "Manage",
+      "REFRESH": "Refresh",
+      "RESET": "Reset",
+      "SAVE": "Save"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "You have unsaved changes. Close anyway?",
+      "DELETE_PROMOTIONS": "Delete {count} promotion(s)?",
+      "DELETE_COUPONS": "Delete {count} coupon(s)?",
+      "DELETE_PUBLICATIONS": "Delete {count} placement(s)?",
+      "DELETE_CONTENT": "Delete {count} selected entries?",
+      "DELETE_NAMED": "Delete \"{name}\"?",
+      "DELETE_FOLDER": "Delete folder \"{name}\"?"
+    },
+    "VALIDATION": {
+      "REQUIRED": "This field is required",
+      "CODE_PATTERN": "The code contains characters that aren't allowed"
+    },
+    "WIDGETS": {
+      "COUPONS": "Coupons",
+      "USAGE": "Usage history"
+    },
+    "EXPRESSIONS": {
+      "ADD": "Add",
+      "REMOVE": "Remove",
+      "EXCLUDING": "excluding",
+      "EXCLUDE_CATEGORIES": "categories",
+      "EXCLUDE_PRODUCTS": "products"
+    },
+    "PAGES": {
+      "PROMOTIONS": {
+        "TITLE": "Promotions",
+        "EMPTY": "No promotions found",
+        "COLUMNS": {
+          "NAME": "Name",
+          "STATUS": "Status",
+          "COUPONS": "Coupons",
+          "START": "Start date",
+          "END": "Expiration date",
+          "DESCRIPTION": "Description"
+        },
+        "FILTERS": {
+          "STATUS": "Status",
+          "STORE": "Store"
+        },
+        "SAVED_FILTERS": {
+          "PLACEHOLDER": "Select filter",
+          "EDIT": "Edit filter",
+          "NEW": "+ New filter"
+        }
+      },
+      "FILTER": {
+        "NEW_TITLE": "New filter",
+        "NAME": "Filter name",
+        "UNNAMED": "Unnamed filter",
+        "ALL": "All",
+        "APPLY": "Apply filter"
+      },
+      "PROMOTION": {
+        "TITLE": "Promotion",
+        "NEW_TITLE": "New promotion",
+        "CONDITIONS": "Conditions and rewards",
+        "LOCALIZATION": "Storefront texts",
+        "EXCLUSIVITY": {
+          "COMBINED": "Can be combined with other promotions",
+          "EXCLUSIVE": "Exclusive (cannot be combined)"
+        },
+        "FIELDS": {
+          "NAME": "Promotion name",
+          "NAME_PLACEHOLDER": "Enter promotion name",
+          "NAME_HINT": "Internal name, shown in the admin",
+          "ACTIVE": "Active",
+          "PUBLIC": "Public (visible on the storefront)",
+          "START": "Start date",
+          "START_HINT": "The promotion starts working on this date",
+          "END": "Expiration date",
+          "END_HINT": "The promotion stops working after this date",
+          "STORES": "Stores",
+          "STORES_PLACEHOLDER": "All stores",
+          "STORES_HINT": "Leave empty to apply in every store",
+          "EXCLUSIVITY": "Combination",
+          "EXCLUSIVITY_HINT": "Whether other promotions can apply together with this one",
+          "PRIORITY": "Priority",
+          "PRIORITY_HINT": "Higher priority promotions are applied first",
+          "COMBINE_WITH_SELF": "Combine with itself",
+          "COMBINE_WITH_SELF_HINT": "Several coupons of this promotion can apply to one order",
+          "DESCRIPTION": "Description",
+          "DESCRIPTION_PLACEHOLDER": "Enter description",
+          "LANGUAGE": "Language",
+          "LABEL": "Label",
+          "LABEL_PLACEHOLDER": "Short label, e.g. a badge text",
+          "DISPLAY_NAME": "Display name",
+          "DISPLAY_NAME_PLACEHOLDER": "Name shown to customers",
+          "LOCALIZED_DESCRIPTION": "Customer description",
+          "LOCALIZED_DESCRIPTION_PLACEHOLDER": "Description shown to customers"
+        }
+      },
+      "COUPONS": {
+        "SEARCH": "Search by code",
+        "EMPTY": "No coupons",
+        "COLUMNS": {
+          "CODE": "Code",
+          "USED": "Times used",
+          "MAX_USES": "Max uses",
+          "EXPIRES": "Expires"
+        }
+      },
+      "COUPON": {
+        "NEW_TITLE": "New coupon",
+        "FIELDS": {
+          "CODE": "Coupon code",
+          "CODE_PLACEHOLDER": "Enter code",
+          "CODE_HINT": "The code customers enter at checkout",
+          "EXPIRATION": "Expiration date",
+          "EXPIRATION_HINT": "The coupon can't be used after this date",
+          "MAX_USES": "Maximum uses",
+          "MAX_USES_HINT": "0 = unlimited",
+          "MAX_PER_USER": "Maximum uses per customer",
+          "MAX_PER_USER_HINT": "0 = unlimited",
+          "MEMBER": "Customer or organization",
+          "MEMBER_PLACEHOLDER": "Anyone"
+        }
+      },
+      "IMPORT": {
+        "TITLE": "Import coupons",
+        "DELIMITER": "Column delimiter",
+        "DELIMITER_PLACEHOLDER": "Select delimiter",
+        "DELIMITERS": {
+          "SPACE": "Space",
+          "COMMA": "Comma",
+          "SEMICOLON": "Semicolon",
+          "TAB": "Tab"
+        },
+        "FILE": "CSV file without header: code, max uses, customer ID",
+        "UPLOADED": "Uploaded file",
+        "START": "Start import",
+        "PROGRESS": "Import progress",
+        "PROCESSED": "Processed {processed} of {total}",
+        "FINISHED": "Finished"
+      },
+      "USAGE": {
+        "EMPTY": "The promotion hasn't been used in orders",
+        "COLUMNS": {
+          "NUMBER": "Order number",
+          "CUSTOMER": "Customer",
+          "STATUS": "Status",
+          "CREATED": "Created",
+          "TOTAL": "Total"
+        }
+      },
+      "PUBLICATIONS": {
+        "COLUMNS": {
+          "NAME": "Name",
+          "STORE": "Site"
+        }
+      },
+      "PUBLICATION": {
+        "TITLE": "Placement",
+        "NEW_TITLE": "New placement",
+        "NAME_PLACEHOLDER": "Enter placement name",
+        "DESCRIPTION_PLACEHOLDER": "Enter description",
+        "STORE_PLACEHOLDER": "Select store",
+        "PLACES_PLACEHOLDER": "Select slots",
+        "ITEMS_PLACEHOLDER": "Select banners",
+        "CONDITIONS": "Publishing conditions",
+        "BROWSE": "Browse"
+      },
+      "CONTENT": {
+        "ITEMS_TITLE": "Banners",
+        "PLACES_TITLE": "Slots",
+        "ITEMS_ROOT": "Banners",
+        "PLACES_ROOT": "Slots",
+        "ADD_PLACES_TITLE": "Add slots",
+        "ADD_ITEMS_TITLE": "Add banners",
+        "PICK_HINT": "Click an entry to add it to the placement, a folder to open it",
+        "ADDED": "Added",
+        "EMPTY": "This folder is empty",
+        "COLUMNS": {
+          "NAME": "Name",
+          "DESCRIPTION": "Description"
+        }
+      },
+      "CONTENT_ITEM": {
+        "NEW_TITLE": "New banner",
+        "NAME_PLACEHOLDER": "Enter banner name",
+        "DESCRIPTION_PLACEHOLDER": "Enter description",
+        "PROPERTIES": "Properties",
+        "NO_PROPERTIES": "No properties are defined for banners"
+      },
+      "CONTENT_PLACE": {
+        "NEW_TITLE": "New slot",
+        "NAME_PLACEHOLDER": "Enter slot name",
+        "DESCRIPTION_PLACEHOLDER": "Enter description",
+        "IMAGE": "Slot image"
+      },
+      "CONTENT_FOLDER": {
+        "NEW_TITLE": "New folder",
+        "NAME_PLACEHOLDER": "Enter folder name",
+        "DESCRIPTION_PLACEHOLDER": "Enter description"
+      }
+    }
+  }
+}
