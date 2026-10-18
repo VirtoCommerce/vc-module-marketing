@@ -1,0 +1,440 @@
+{
+  "MARKETING": {
+    "MENU": {
+      "PROMOTIONS": "Kampanjer",
+      "DYNAMIC_CONTENT": "Bannere"
+    },
+    "LIBRARY": {
+      "INTRO": "Bannere er det som vises, plasser er hvor i nettbutikken, og plasseringer setter et banner på en plass på et nettsted, for en periode og en målgruppe.",
+      "TABS": {
+        "BANNERS": "Bannere",
+        "SLOTS": "Plasser",
+        "PLACEMENTS": "Plasseringer"
+      },
+      "SEARCH_BANNERS": "Søk i bannere",
+      "EMPTY_BANNERS": "Ingen bannere ennå",
+      "EMPTY_SLOTS": "Ingen plasser ennå",
+      "USED_ON": "Ikke brukt på noe nettsted | Brukt på {n} nettsted | Brukt på {n} nettsteder",
+      "ADD_BANNER": "Legg til banner",
+      "ADD_SLOT": "Legg til plass",
+      "FOLDERS": "Mapper",
+      "COLUMNS": {
+        "SLOT": "Plass",
+        "WHERE": "Hvor",
+        "BANNERS": "Bannere",
+        "PLACEMENT": "Plassering",
+        "SITE": "Nettsted",
+        "STATUS": "Status",
+        "STARTS": "Starter",
+        "ENDS": "Slutter"
+      },
+      "EMPTY_PLACEMENTS": "Ingen plasseringer ennå",
+      "ADD_PLACEMENT": "Legg til plassering",
+      "STATUS": {
+        "SHOWING": "Vises",
+        "SCHEDULED": "Planlagt",
+        "ENDED": "Avsluttet",
+        "OFF": "Av"
+      }
+    },
+    "UNKNOWN": "ukjent",
+    "UNLIMITED": "Ubegrenset",
+    "STATUS": {
+      "ACTIVE": "Aktiv",
+      "INACTIVE": "Inaktiv"
+    },
+    "PROMOTION_STATUS": {
+      "ACTIVE": "Aktiv",
+      "UPCOMING": "Kommende",
+      "ARCHIVED": "Arkivert",
+      "DEACTIVATED": "Deaktivert",
+      "ALL": "Alle"
+    },
+    "ACTIONS": {
+      "ADD": "Legg til",
+      "ADD_FOLDER": "Legg til mappe",
+      "ADD_ITEM": "Legg til banner",
+      "ADD_PLACE": "Legg til plass",
+      "CLONE": "Klon",
+      "COPY_ID": "Kopier ID",
+      "CREATE": "Opprett",
+      "DELETE": "Slett",
+      "IMPORT": "Importer",
+      "MANAGE": "Administrer",
+      "REFRESH": "Oppdater",
+      "RESET": "Tilbakestill",
+      "SAVE": "Lagre"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Du har endringer som ikke er lagret. Vil du lukke likevel?",
+      "DELETE_PROMOTIONS": "Slette {count} kampanje(r)?",
+      "DELETE_COUPONS": "Slette {count} kupong(er)?",
+      "DELETE_PUBLICATIONS": "Slette {count} plassering(er)?",
+      "DELETE_CONTENT": "Slette {count} valgte oppføringer?",
+      "DELETE_NAMED": "Slette «{name}»?",
+      "DELETE_FOLDER": "Slette mappen «{name}»?"
+    },
+    "VALIDATION": {
+      "REQUIRED": "Dette feltet er obligatorisk",
+      "CODE_PATTERN": "Koden inneholder tegn som ikke er tillatt"
+    },
+    "WIDGETS": {
+      "COUPONS": "Kuponger",
+      "USAGE": "Brukshistorikk"
+    },
+    "EXPRESSIONS": {
+      "ADD": "Legg til",
+      "REMOVE": "Fjern",
+      "EXCLUDING": "unntatt",
+      "EXCLUDE_CATEGORIES": "kategorier",
+      "EXCLUDE_PRODUCTS": "produkter",
+      "ADD_USER_GROUP": "Legg til brukergruppe",
+      "ADD_CONDITION": "Legg til vilkår",
+      "ADD_REWARD": "Legg til belønning",
+      "NO_CRITERION": "Kampanjen må ha minst ett kvalifikasjonskriterium",
+      "NO_REWARD": "Kampanjen må ha minst én belønning",
+      "GROUPS": {
+        "SHOPPER_PROFILE": "Kundeprofil",
+        "CATALOG": "Katalog",
+        "BROWSE_BEHAVIOR": "Nettleseratferd",
+        "LOCATION": "Sted"
+      },
+      "NAMES": {
+        "EVERYONE": "Alle",
+        "FIRST_TIME_CUSTOMERS": "Førstegangskunder",
+        "REGISTERED_USERS": "Registrerte brukere",
+        "USER_GROUP_CONTAINS": "Brukergruppen inneholder ...",
+        "USER_GROUP_IS": "Brukergruppen er ...",
+        "SPECIFIC_CATEGORY": "Bestemt kategori",
+        "SPECIFIC_PRODUCT": "Bestemt produkt",
+        "CODE_CONTAINS": "Produktkoden inneholder...",
+        "CURRENCY_IS": "Valutaen er...",
+        "IN_STOCK_QUANTITY": "Lagerantallet er...",
+        "FULL_PRICE_ONLY": "Gjelder bare varer til full pris, ikke salgsvarer",
+        "ITEMS_IN_CART": "Antall varer i handlekurven",
+        "CATEGORY_ITEMS_IN_CART": "Antall varer fra en kategori i handlekurven",
+        "PRODUCT_ITEMS_IN_CART": "Antall varer av et bestemt produkt i handlekurven",
+        "PAYMENT_IS": "Betalingstypen er...",
+        "SHIPPING_IS": "Leveringstypen er...",
+        "CART_SUBTOTAL": "Delsummen i handlekurven er...",
+        "CART_ABS_OFF": "$... rabatt på delsummen i handlekurven",
+        "CART_REL_OFF": "...% rabatt på delsummen i handlekurven, maks. $...",
+        "FREE_ITEMS": "... gratis varer av produktet ...",
+        "ITEM_ABS_OFF": "$... rabatt",
+        "ITEM_ABS_OFF_FOR_NUM": "$... rabatt på ... varer av et bestemt produkt",
+        "ITEM_REL_OFF": "...% rabatt på produktet ..., maks. $...",
+        "ITEM_REL_OFF_FOR_NUM": "...% rabatt på ... varer av et bestemt produkt, maks. $...",
+        "GIFT": "... varer av produktet ... i gave",
+        "SHIPPING_ABS_OFF": "$... rabatt på levering med ...",
+        "SHIPPING_REL_OFF": "% rabatt på levering med ..., maks. $...",
+        "PAYMENT_ABS_OFF": "$... rabatt ved betaling med ...",
+        "PAYMENT_REL_OFF": "...% rabatt ved betaling med ..., maks. $...",
+        "EVERY_NTH_OFF": "...% rabatt på ... av hver ... varer av et bestemt produkt",
+        "EVERY_NTH_OTHER_OFF": "...% rabatt på ... varer av ett produkt per ... varer av et annet produkt",
+        "TAGS_CONTAIN": "Taggene inneholder ...",
+        "SEARCHED_PHRASE": "Kunden søkte etter ... i butikken",
+        "LANGUAGE_IS": "Brukerens språk er...",
+        "AGE_IS": "Kundens alder er ...",
+        "GENDER_IS": "Kundens kjønn er ...",
+        "TIME_ZONE": "Tidssone",
+        "ZIP_CODE": "Postnummer",
+        "CITY": "By",
+        "COUNTRY": "Land",
+        "STATE": "Region/stat/provins"
+      },
+      "TEXT": {
+        "CUSTOMERS_MATCHING": "Kunder som oppfyller",
+        "OF_FOLLOWING_CRITERIA": "av følgende kriterier:",
+        "EVERYONE": "Alle",
+        "FIRST_TIME_BUYER": "Førstegangskjøper",
+        "REGISTERED_USER": "Registrert bruker",
+        "USER_GROUP_CONTAINS": "Brukergruppen inneholder",
+        "USER_GROUP_IS": "Brukergruppen er",
+        "IF": "Hvis",
+        "CATALOG_CONDITIONS_ARE": "av disse katalogvilkårene er",
+        "CATEGORY": "Kategori:",
+        "PRODUCT": "Produkt:",
+        "ALL_VARIANTS": "Gjelder alle produktvarianter:",
+        "CODE_CONTAINS": "Produktkoden inneholder",
+        "CURRENCY_IS": "Valutaen er",
+        "IN_STOCK_QUANTITY": "Lagerantallet er",
+        "ITEMS": "vare(r)",
+        "FULL_PRICE_ONLY": "Gjelder bare varer til full pris, ikke salgsvarer",
+        "CART_CONDITIONS_ARE": "av disse handlekurvvilkårene er",
+        "ITEMS_IN_CART": "varer er i handlekurven",
+        "ITEMS_FROM_CATEGORY": "varer fra denne kategorien:",
+        "ARE_IN_CART": "er i handlekurven",
+        "SPECIFIC_PRODUCT_ITEMS": "varer av dette produktet:",
+        "PAYMENT_IS": "Betalingstypen er",
+        "SHIPPING_IS": "Leveringstypen er",
+        "CART_SUBTOTAL_IS": "Delsummen i handlekurven er",
+        "GET_REWARDS": "Få følgende belønninger:",
+        "CURRENCY": "$",
+        "OFF_CART_SUBTOTAL": "rabatt på delsummen i handlekurven",
+        "PCT_OFF_CART_SUBTOTAL_MAX": "% rabatt på delsummen i handlekurven, maks. $",
+        "FREE_ITEMS_OF_PRODUCT": "gratis varer av dette produktet:",
+        "OFF_FOR": "rabatt på",
+        "ITEMS_OF_PRODUCT": "varer av dette produktet:",
+        "COMMA": ",",
+        "AMOUNT_PER_ITEM": "beløpet per vare",
+        "PCT_OFF_FOR": "% rabatt på",
+        "NO_MORE_THAN_AMOUNT": ", maks. $",
+        "PCT_OFF_MAX": "% rabatt, maks. $",
+        "FOR_ITEMS": "for",
+        "AS_GIFT": "i gave. Detaljer:",
+        "OFF_FOR_SHIPPING": "rabatt på levering av denne typen:",
+        "PCT_OFF_FOR_SHIPPING": "% rabatt på levering av denne typen:",
+        "OFF_FOR_PAYMENT": "rabatt ved bruk av denne betalingsmåten:",
+        "PCT_OFF_FOR_PAYMENT": "% rabatt ved bruk av denne betalingsmåten:",
+        "FOR": "For",
+        "OF_EVERY": "av hver",
+        "RECEIVE": "får",
+        "PCT_OFF_MAX_ITEMS": "% rabatt, maks.",
+        "ITEMS_AND_MAX_AMOUNT": "varer og maks. $",
+        "CONDITIONS_ARE_TRUE": "av disse vilkårene er oppfylt",
+        "TAGS_CONTAIN": "Taggene inneholder",
+        "SEARCHED_PHRASE": "Kunden søkte etter en frase som",
+        "LANGUAGE_IS": "Brukerens språk er satt til",
+        "AGE_IS": "Kundens alder er",
+        "GENDER_IS": "Kundens kjønn er",
+        "FROM_TIME_ZONE": "Besøker fra en tidssone som er",
+        "FROM_ZIP_CODE": "Besøker fra et sted med postnummer som",
+        "FROM_CITY": "Besøker fra denne byen:",
+        "FROM_COUNTRY": "Besøker fra dette landet:",
+        "FROM_STATE": "Besøker fra denne staten eller provinsen:",
+        "AND": "og"
+      },
+      "OPTIONS": {
+        "ALL": "alle",
+        "ANY": "noen",
+        "TRUE": "sanne",
+        "FALSE": "usanne",
+        "ROUND": "rund av",
+        "DONT_ROUND": "ikke rund av",
+        "YES": "ja",
+        "NO": "nei",
+        "EXACTLY": "nøyaktig",
+        "AT_LEAST": "minst",
+        "EXACTLY_OR_LESS": "nøyaktig eller mindre enn",
+        "BETWEEN": "mellom",
+        "ANYTHING_BUT": "alt unntatt",
+        "GREATER_THAN": "større enn",
+        "GREATER_OR_EQUAL": "større enn eller lik",
+        "LESS_THAN": "mindre enn",
+        "LESS_OR_EQUAL": "mindre enn eller lik",
+        "CONTAINING": "inneholder",
+        "NOT_CONTAINING": "ikke inneholder",
+        "BEING_EXACTLY": "er nøyaktig",
+        "BEING_ANYTHING_BUT": "er alt unntatt",
+        "FEMALE": "kvinne",
+        "MALE": "mann"
+      },
+      "FIELDS": {
+        "NAME": "Navn",
+        "MEASURE_UNIT": "Måleenhet",
+        "IMAGE_URL": "Bilde-URL",
+        "DESCRIPTION": "Beskrivelse",
+        "AMOUNT": "Beløp",
+        "MAX_AMOUNT": "Maksbeløp",
+        "MAX_ITEMS": "Maks. antall varer",
+        "QUANTITY": "Antall",
+        "NTH_QUANTITY": "Rabatterte varer",
+        "EVERY_NTH": "Av hver",
+        "SUBTOTAL": "Delsum",
+        "UPPER_VALUE": "Øvre verdi",
+        "VALUE": "Verdi"
+      },
+      "PLACEHOLDERS": {
+        "ENTER_GROUP": "Skriv inn gruppe",
+        "ENTER_CODE": "Skriv inn kode",
+        "ENTER_TAG": "Skriv inn tagg",
+        "ENTER_NAME": "Skriv inn navn",
+        "ENTER_MEASURE_UNIT": "Angi måleenhet",
+        "ENTER_URL": "Skriv inn URL",
+        "ENTER_DESCRIPTION": "Skriv inn beskrivelse",
+        "SELECT_CATEGORY": "velg kategori",
+        "SELECT_PRODUCT": "velg produkt",
+        "SELECT_PRODUCTS": "velg produkter",
+        "SELECT_CURRENCY": "velg valuta",
+        "SELECT_SHIPPING_METHOD": "velg leveringsmåte",
+        "SELECT_PAYMENT_METHOD": "velg betalingsmåte",
+        "SELECT_LANGUAGE": "velg språk",
+        "SELECT_GROUPS": "velg grupper",
+        "SELECT_COUNTRY": "velg land",
+        "SELECT_TIME_ZONE": "velg tidssone"
+      }
+    },
+    "PAGES": {
+      "PROMOTIONS": {
+        "TITLE": "Kampanjer",
+        "EMPTY": "Fant ingen kampanjer",
+        "COLUMNS": {
+          "NAME": "Navn",
+          "STATUS": "Status",
+          "COUPONS": "Kuponger",
+          "START": "Startdato",
+          "END": "Utløpsdato",
+          "DESCRIPTION": "Beskrivelse"
+        },
+        "FILTERS": {
+          "STATUS": "Status",
+          "STORE": "Butikk"
+        },
+        "SAVED_FILTERS": {
+          "PLACEHOLDER": "Velg filter",
+          "EDIT": "Rediger filter",
+          "NEW": "+ Nytt filter"
+        }
+      },
+      "FILTER": {
+        "NEW_TITLE": "Nytt filter",
+        "NAME": "Filternavn",
+        "UNNAMED": "Filter uten navn",
+        "ALL": "Alle",
+        "APPLY": "Bruk filter"
+      },
+      "PROMOTION": {
+        "TITLE": "Kampanje",
+        "NEW_TITLE": "Ny kampanje",
+        "CONDITIONS": "Betingelser og belønninger",
+        "LOCALIZATION": "Tekster i nettbutikken",
+        "EXCLUSIVITY": {
+          "COMBINED": "Kan kombineres med andre kampanjer",
+          "EXCLUSIVE": "Eksklusiv (kan ikke kombineres)"
+        },
+        "FIELDS": {
+          "NAME": "Kampanjenavn",
+          "NAME_PLACEHOLDER": "Skriv inn kampanjenavn",
+          "NAME_HINT": "Internt navn, vises i administrasjonen",
+          "ACTIVE": "Aktiv",
+          "PUBLIC": "Offentlig (synlig i nettbutikken)",
+          "START": "Startdato",
+          "START_HINT": "Kampanjen gjelder fra denne datoen",
+          "END": "Utløpsdato",
+          "END_HINT": "Kampanjen gjelder ikke etter denne datoen",
+          "STORES": "Butikker",
+          "STORES_PLACEHOLDER": "Alle butikker",
+          "STORES_HINT": "La stå tomt for å bruke den i alle butikker",
+          "EXCLUSIVITY": "Kombinering",
+          "EXCLUSIVITY_HINT": "Om andre kampanjer kan brukes sammen med denne",
+          "PRIORITY": "Prioritet",
+          "PRIORITY_HINT": "Kampanjer med høyere prioritet brukes først",
+          "COMBINE_WITH_SELF": "Kombiner med seg selv",
+          "COMBINE_WITH_SELF_HINT": "Flere kuponger fra denne kampanjen kan brukes på én bestilling",
+          "DESCRIPTION": "Beskrivelse",
+          "DESCRIPTION_PLACEHOLDER": "Skriv inn beskrivelse",
+          "LANGUAGE": "Språk",
+          "LABEL": "Etikett",
+          "LABEL_PLACEHOLDER": "Kort etikett, f.eks. tekst på et merke",
+          "DISPLAY_NAME": "Visningsnavn",
+          "DISPLAY_NAME_PLACEHOLDER": "Navn som vises for kunder",
+          "LOCALIZED_DESCRIPTION": "Beskrivelse for kunder",
+          "LOCALIZED_DESCRIPTION_PLACEHOLDER": "Beskrivelse som vises for kunder"
+        }
+      },
+      "COUPONS": {
+        "SEARCH": "Søk etter kode",
+        "EMPTY": "Ingen kuponger",
+        "COLUMNS": {
+          "CODE": "Kode",
+          "USED": "Ganger brukt",
+          "MAX_USES": "Maks. bruk",
+          "EXPIRES": "Utløper"
+        }
+      },
+      "COUPON": {
+        "NEW_TITLE": "Ny kupong",
+        "FIELDS": {
+          "CODE": "Kupongkode",
+          "CODE_PLACEHOLDER": "Skriv inn kode",
+          "CODE_HINT": "Koden kundene skriver inn i kassen",
+          "EXPIRATION": "Utløpsdato",
+          "EXPIRATION_HINT": "Kupongen kan ikke brukes etter denne datoen",
+          "MAX_USES": "Maksimalt antall bruk",
+          "MAX_USES_HINT": "0 = ubegrenset",
+          "MAX_PER_USER": "Maksimalt antall bruk per kunde",
+          "MAX_PER_USER_HINT": "0 = ubegrenset",
+          "MEMBER": "Kunde eller organisasjon",
+          "MEMBER_PLACEHOLDER": "Hvem som helst"
+        }
+      },
+      "IMPORT": {
+        "TITLE": "Importer kuponger",
+        "DELIMITER": "Kolonneskilletegn",
+        "DELIMITER_PLACEHOLDER": "Velg skilletegn",
+        "DELIMITERS": {
+          "SPACE": "Mellomrom",
+          "COMMA": "Komma",
+          "SEMICOLON": "Semikolon",
+          "TAB": "Tabulator"
+        },
+        "FILE": "CSV-fil uten overskriftsrad: kode, maks. bruk, kunde-ID",
+        "UPLOADED": "Opplastet fil",
+        "START": "Start import",
+        "PROGRESS": "Importfremdrift",
+        "PROCESSED": "Behandlet {processed} av {total}",
+        "FINISHED": "Fullført"
+      },
+      "USAGE": {
+        "EMPTY": "Kampanjen er ikke brukt i noen bestillinger",
+        "COLUMNS": {
+          "NUMBER": "Bestillingsnummer",
+          "CUSTOMER": "Kunde",
+          "STATUS": "Status",
+          "CREATED": "Opprettet",
+          "TOTAL": "Totalt"
+        }
+      },
+      "PUBLICATIONS": {
+        "COLUMNS": {
+          "NAME": "Navn",
+          "STORE": "Nettsted"
+        }
+      },
+      "PUBLICATION": {
+        "TITLE": "Plassering",
+        "NEW_TITLE": "Ny plassering",
+        "NAME_PLACEHOLDER": "Skriv inn navn på plasseringen",
+        "DESCRIPTION_PLACEHOLDER": "Skriv inn beskrivelse",
+        "STORE_PLACEHOLDER": "Velg butikk",
+        "PLACES_PLACEHOLDER": "Velg plasser",
+        "ITEMS_PLACEHOLDER": "Velg bannere",
+        "CONDITIONS": "Publiseringsbetingelser",
+        "BROWSE": "Bla gjennom"
+      },
+      "CONTENT": {
+        "ITEMS_TITLE": "Bannere",
+        "PLACES_TITLE": "Plasser",
+        "ITEMS_ROOT": "Bannere",
+        "PLACES_ROOT": "Plasser",
+        "ADD_PLACES_TITLE": "Legg til plasser",
+        "ADD_ITEMS_TITLE": "Legg til bannere",
+        "PICK_HINT": "Klikk på en oppføring for å legge den til i plasseringen, eller på en mappe for å åpne den",
+        "ADDED": "Lagt til",
+        "EMPTY": "Denne mappen er tom",
+        "COLUMNS": {
+          "NAME": "Navn",
+          "DESCRIPTION": "Beskrivelse"
+        }
+      },
+      "CONTENT_ITEM": {
+        "NEW_TITLE": "Nytt banner",
+        "NAME_PLACEHOLDER": "Skriv inn navn på banneret",
+        "DESCRIPTION_PLACEHOLDER": "Skriv inn beskrivelse",
+        "PROPERTIES": "Egenskaper",
+        "NO_PROPERTIES": "Ingen egenskaper er definert for bannere"
+      },
+      "CONTENT_PLACE": {
+        "NEW_TITLE": "Ny plass",
+        "NAME_PLACEHOLDER": "Skriv inn navn på plassen",
+        "DESCRIPTION_PLACEHOLDER": "Skriv inn beskrivelse",
+        "IMAGE": "Bilde av plassen"
+      },
+      "CONTENT_FOLDER": {
+        "NEW_TITLE": "Ny mappe",
+        "NAME_PLACEHOLDER": "Skriv inn mappenavn",
+        "DESCRIPTION_PLACEHOLDER": "Skriv inn beskrivelse"
+      }
+    }
+  }
+}

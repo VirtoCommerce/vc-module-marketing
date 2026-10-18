@@ -1,0 +1,440 @@
+{
+  "MARKETING": {
+    "MENU": {
+      "PROMOTIONS": "Kampanjer",
+      "DYNAMIC_CONTENT": "Banners"
+    },
+    "LIBRARY": {
+      "INTRO": "Banners är det som visas, platser anger var i webbutiken, och placeringar visar en banner på en plats på en webbplats under en viss tid och för en viss målgrupp.",
+      "TABS": {
+        "BANNERS": "Banners",
+        "SLOTS": "Platser",
+        "PLACEMENTS": "Placeringar"
+      },
+      "SEARCH_BANNERS": "Sök banners",
+      "EMPTY_BANNERS": "Inga banners ännu",
+      "EMPTY_SLOTS": "Inga platser ännu",
+      "USED_ON": "Används inte på någon webbplats | Används på {n} webbplats | Används på {n} webbplatser",
+      "ADD_BANNER": "Lägg till banner",
+      "ADD_SLOT": "Lägg till plats",
+      "FOLDERS": "Mappar",
+      "COLUMNS": {
+        "SLOT": "Plats",
+        "WHERE": "Var",
+        "BANNERS": "Banners",
+        "PLACEMENT": "Placering",
+        "SITE": "Webbplats",
+        "STATUS": "Status",
+        "STARTS": "Startar",
+        "ENDS": "Slutar"
+      },
+      "EMPTY_PLACEMENTS": "Inga placeringar ännu",
+      "ADD_PLACEMENT": "Lägg till placering",
+      "STATUS": {
+        "SHOWING": "Visas",
+        "SCHEDULED": "Schemalagd",
+        "ENDED": "Avslutad",
+        "OFF": "Av"
+      }
+    },
+    "UNKNOWN": "okänd",
+    "UNLIMITED": "Obegränsat",
+    "STATUS": {
+      "ACTIVE": "Aktiv",
+      "INACTIVE": "Inaktiv"
+    },
+    "PROMOTION_STATUS": {
+      "ACTIVE": "Aktiv",
+      "UPCOMING": "Kommande",
+      "ARCHIVED": "Arkiverad",
+      "DEACTIVATED": "Inaktiverad",
+      "ALL": "Alla"
+    },
+    "ACTIONS": {
+      "ADD": "Lägg till",
+      "ADD_FOLDER": "Lägg till mapp",
+      "ADD_ITEM": "Lägg till banner",
+      "ADD_PLACE": "Lägg till plats",
+      "CLONE": "Klona",
+      "COPY_ID": "Kopiera ID",
+      "CREATE": "Skapa",
+      "DELETE": "Ta bort",
+      "IMPORT": "Importera",
+      "MANAGE": "Hantera",
+      "REFRESH": "Uppdatera",
+      "RESET": "Återställ",
+      "SAVE": "Spara"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Du har osparade ändringar. Vill du stänga ändå?",
+      "DELETE_PROMOTIONS": "Ta bort {count} kampanj(er)?",
+      "DELETE_COUPONS": "Ta bort {count} kupong(er)?",
+      "DELETE_PUBLICATIONS": "Ta bort {count} placering(ar)?",
+      "DELETE_CONTENT": "Ta bort {count} markerade poster?",
+      "DELETE_NAMED": "Ta bort ”{name}”?",
+      "DELETE_FOLDER": "Ta bort mappen ”{name}”?"
+    },
+    "VALIDATION": {
+      "REQUIRED": "Det här fältet är obligatoriskt",
+      "CODE_PATTERN": "Koden innehåller otillåtna tecken"
+    },
+    "WIDGETS": {
+      "COUPONS": "Kuponger",
+      "USAGE": "Användningshistorik"
+    },
+    "EXPRESSIONS": {
+      "ADD": "Lägg till",
+      "REMOVE": "Ta bort",
+      "EXCLUDING": "exklusive",
+      "EXCLUDE_CATEGORIES": "kategorier",
+      "EXCLUDE_PRODUCTS": "produkter",
+      "ADD_USER_GROUP": "Lägg till användargrupp",
+      "ADD_CONDITION": "Lägg till villkor",
+      "ADD_REWARD": "Lägg till belöning",
+      "NO_CRITERION": "Kampanjen måste ha minst ett behörighetskriterium",
+      "NO_REWARD": "Kampanjen måste ha minst en belöning",
+      "GROUPS": {
+        "SHOPPER_PROFILE": "Kundprofil",
+        "CATALOG": "Katalog",
+        "BROWSE_BEHAVIOR": "Surfbeteende",
+        "LOCATION": "Plats"
+      },
+      "NAMES": {
+        "EVERYONE": "Alla",
+        "FIRST_TIME_CUSTOMERS": "Förstagångskunder",
+        "REGISTERED_USERS": "Registrerade användare",
+        "USER_GROUP_CONTAINS": "Användargruppen innehåller ...",
+        "USER_GROUP_IS": "Användargruppen är ...",
+        "SPECIFIC_CATEGORY": "Specifik kategori",
+        "SPECIFIC_PRODUCT": "Specifik produkt",
+        "CODE_CONTAINS": "Produktkoden innehåller...",
+        "CURRENCY_IS": "Valutan är...",
+        "IN_STOCK_QUANTITY": "Lagersaldot är...",
+        "FULL_PRICE_ONLY": "Gäller endast varor till fullpris, inte reavaror",
+        "ITEMS_IN_CART": "Antal varor i varukorgen",
+        "CATEGORY_ITEMS_IN_CART": "Antal varor från en kategori i varukorgen",
+        "PRODUCT_ITEMS_IN_CART": "Antal varor av en specifik produkt i varukorgen",
+        "PAYMENT_IS": "Betalningstypen är...",
+        "SHIPPING_IS": "Leveranstypen är...",
+        "CART_SUBTOTAL": "Varukorgens delsumma är...",
+        "CART_ABS_OFF": "$... rabatt på varukorgens delsumma",
+        "CART_REL_OFF": "...% rabatt på varukorgens delsumma, högst $...",
+        "FREE_ITEMS": "... gratis varor av produkten ...",
+        "ITEM_ABS_OFF": "$... rabatt",
+        "ITEM_ABS_OFF_FOR_NUM": "$... rabatt på ... varor av en specifik produkt",
+        "ITEM_REL_OFF": "...% rabatt på produkten ..., högst $...",
+        "ITEM_REL_OFF_FOR_NUM": "...% rabatt på ... varor av en specifik produkt, högst $...",
+        "GIFT": "... varor av produkten ... i present",
+        "SHIPPING_ABS_OFF": "$... rabatt på leverans med ...",
+        "SHIPPING_REL_OFF": "% rabatt på leverans med ..., högst $...",
+        "PAYMENT_ABS_OFF": "$... rabatt vid betalning med ...",
+        "PAYMENT_REL_OFF": "...% rabatt vid betalning med ..., högst $...",
+        "EVERY_NTH_OFF": "...% rabatt på ... av varje ... varor av en specifik produkt",
+        "EVERY_NTH_OTHER_OFF": "...% rabatt på ... varor av en produkt per ... varor av en annan produkt",
+        "TAGS_CONTAIN": "Taggarna innehåller ...",
+        "SEARCHED_PHRASE": "Kunden sökte efter ... i butiken",
+        "LANGUAGE_IS": "Användarens språk är...",
+        "AGE_IS": "Kundens ålder är ...",
+        "GENDER_IS": "Kundens kön är ...",
+        "TIME_ZONE": "Tidszon",
+        "ZIP_CODE": "Postnummer",
+        "CITY": "Stad",
+        "COUNTRY": "Land",
+        "STATE": "Region/delstat/provins"
+      },
+      "TEXT": {
+        "CUSTOMERS_MATCHING": "Kunder som uppfyller",
+        "OF_FOLLOWING_CRITERIA": "av följande kriterier:",
+        "EVERYONE": "Alla",
+        "FIRST_TIME_BUYER": "Förstagångsköpare",
+        "REGISTERED_USER": "Registrerad användare",
+        "USER_GROUP_CONTAINS": "Användargruppen innehåller",
+        "USER_GROUP_IS": "Användargruppen är",
+        "IF": "Om",
+        "CATALOG_CONDITIONS_ARE": "av dessa katalogvillkor är",
+        "CATEGORY": "Kategori:",
+        "PRODUCT": "Produkt:",
+        "ALL_VARIANTS": "Gäller alla produktvarianter:",
+        "CODE_CONTAINS": "Produktkoden innehåller",
+        "CURRENCY_IS": "Valutan är",
+        "IN_STOCK_QUANTITY": "Lagersaldot är",
+        "ITEMS": "st.",
+        "FULL_PRICE_ONLY": "Gäller endast varor till fullpris, inte reavaror",
+        "CART_CONDITIONS_ARE": "av dessa varukorgsvillkor är",
+        "ITEMS_IN_CART": "varor finns i varukorgen",
+        "ITEMS_FROM_CATEGORY": "varor från denna kategori:",
+        "ARE_IN_CART": "finns i varukorgen",
+        "SPECIFIC_PRODUCT_ITEMS": "varor av denna produkt:",
+        "PAYMENT_IS": "Betalningstypen är",
+        "SHIPPING_IS": "Leveranstypen är",
+        "CART_SUBTOTAL_IS": "Varukorgens delsumma är",
+        "GET_REWARDS": "Få följande belöningar:",
+        "CURRENCY": "$",
+        "OFF_CART_SUBTOTAL": "rabatt på varukorgens delsumma",
+        "PCT_OFF_CART_SUBTOTAL_MAX": "% rabatt på varukorgens delsumma, högst $",
+        "FREE_ITEMS_OF_PRODUCT": "gratis varor av denna produkt:",
+        "OFF_FOR": "rabatt på",
+        "ITEMS_OF_PRODUCT": "varor av denna produkt:",
+        "COMMA": ",",
+        "AMOUNT_PER_ITEM": "beloppet per vara",
+        "PCT_OFF_FOR": "% rabatt på",
+        "NO_MORE_THAN_AMOUNT": ", högst $",
+        "PCT_OFF_MAX": "% rabatt, högst $",
+        "FOR_ITEMS": "för",
+        "AS_GIFT": "i present. Detaljer:",
+        "OFF_FOR_SHIPPING": "rabatt på leverans av denna typ:",
+        "PCT_OFF_FOR_SHIPPING": "% rabatt på leverans av denna typ:",
+        "OFF_FOR_PAYMENT": "rabatt vid betalning med detta betalningssätt:",
+        "PCT_OFF_FOR_PAYMENT": "% rabatt vid betalning med detta betalningssätt:",
+        "FOR": "För",
+        "OF_EVERY": "av varje",
+        "RECEIVE": "får",
+        "PCT_OFF_MAX_ITEMS": "% rabatt, högst",
+        "ITEMS_AND_MAX_AMOUNT": "varor och högst $",
+        "CONDITIONS_ARE_TRUE": "av dessa villkor är uppfyllda",
+        "TAGS_CONTAIN": "Taggarna innehåller",
+        "SEARCHED_PHRASE": "Kunden sökte efter en fras som",
+        "LANGUAGE_IS": "Användarens språk är inställt på",
+        "AGE_IS": "Kundens ålder är",
+        "GENDER_IS": "Kundens kön är",
+        "FROM_TIME_ZONE": "Besöker från en tidszon som är",
+        "FROM_ZIP_CODE": "Besöker från en plats med postnummer som",
+        "FROM_CITY": "Besöker från denna stad:",
+        "FROM_COUNTRY": "Besöker från detta land:",
+        "FROM_STATE": "Besöker från denna delstat eller provins:",
+        "AND": "och"
+      },
+      "OPTIONS": {
+        "ALL": "alla",
+        "ANY": "något",
+        "TRUE": "sanna",
+        "FALSE": "falska",
+        "ROUND": "avrunda",
+        "DONT_ROUND": "avrunda inte",
+        "YES": "ja",
+        "NO": "nej",
+        "EXACTLY": "exakt",
+        "AT_LEAST": "minst",
+        "EXACTLY_OR_LESS": "exakt eller mindre än",
+        "BETWEEN": "mellan",
+        "ANYTHING_BUT": "allt utom",
+        "GREATER_THAN": "större än",
+        "GREATER_OR_EQUAL": "större än eller lika med",
+        "LESS_THAN": "mindre än",
+        "LESS_OR_EQUAL": "mindre än eller lika med",
+        "CONTAINING": "innehåller",
+        "NOT_CONTAINING": "inte innehåller",
+        "BEING_EXACTLY": "är exakt",
+        "BEING_ANYTHING_BUT": "är allt utom",
+        "FEMALE": "kvinna",
+        "MALE": "man"
+      },
+      "FIELDS": {
+        "NAME": "Namn",
+        "MEASURE_UNIT": "Måttenhet",
+        "IMAGE_URL": "Bild-URL",
+        "DESCRIPTION": "Beskrivning",
+        "AMOUNT": "Belopp",
+        "MAX_AMOUNT": "Maxbelopp",
+        "MAX_ITEMS": "Max antal varor",
+        "QUANTITY": "Antal",
+        "NTH_QUANTITY": "Rabatterade varor",
+        "EVERY_NTH": "Av varje",
+        "SUBTOTAL": "Delsumma",
+        "UPPER_VALUE": "Övre värde",
+        "VALUE": "Värde"
+      },
+      "PLACEHOLDERS": {
+        "ENTER_GROUP": "Ange grupp",
+        "ENTER_CODE": "Ange kod",
+        "ENTER_TAG": "Ange tagg",
+        "ENTER_NAME": "Ange namn",
+        "ENTER_MEASURE_UNIT": "Ange måttenhet",
+        "ENTER_URL": "Ange URL",
+        "ENTER_DESCRIPTION": "Ange beskrivning",
+        "SELECT_CATEGORY": "välj kategori",
+        "SELECT_PRODUCT": "välj produkt",
+        "SELECT_PRODUCTS": "välj produkter",
+        "SELECT_CURRENCY": "välj valuta",
+        "SELECT_SHIPPING_METHOD": "välj leveranssätt",
+        "SELECT_PAYMENT_METHOD": "välj betalningssätt",
+        "SELECT_LANGUAGE": "välj språk",
+        "SELECT_GROUPS": "välj grupper",
+        "SELECT_COUNTRY": "välj land",
+        "SELECT_TIME_ZONE": "välj tidszon"
+      }
+    },
+    "PAGES": {
+      "PROMOTIONS": {
+        "TITLE": "Kampanjer",
+        "EMPTY": "Inga kampanjer hittades",
+        "COLUMNS": {
+          "NAME": "Namn",
+          "STATUS": "Status",
+          "COUPONS": "Kuponger",
+          "START": "Startdatum",
+          "END": "Utgångsdatum",
+          "DESCRIPTION": "Beskrivning"
+        },
+        "FILTERS": {
+          "STATUS": "Status",
+          "STORE": "Butik"
+        },
+        "SAVED_FILTERS": {
+          "PLACEHOLDER": "Välj filter",
+          "EDIT": "Redigera filter",
+          "NEW": "+ Nytt filter"
+        }
+      },
+      "FILTER": {
+        "NEW_TITLE": "Nytt filter",
+        "NAME": "Filternamn",
+        "UNNAMED": "Namnlöst filter",
+        "ALL": "Alla",
+        "APPLY": "Använd filter"
+      },
+      "PROMOTION": {
+        "TITLE": "Kampanj",
+        "NEW_TITLE": "Ny kampanj",
+        "CONDITIONS": "Villkor och belöningar",
+        "LOCALIZATION": "Texter i webbutiken",
+        "EXCLUSIVITY": {
+          "COMBINED": "Kan kombineras med andra kampanjer",
+          "EXCLUSIVE": "Exklusiv (kan inte kombineras)"
+        },
+        "FIELDS": {
+          "NAME": "Kampanjnamn",
+          "NAME_PLACEHOLDER": "Ange kampanjnamn",
+          "NAME_HINT": "Internt namn, visas i administrationen",
+          "ACTIVE": "Aktiv",
+          "PUBLIC": "Offentlig (synlig i webbutiken)",
+          "START": "Startdatum",
+          "START_HINT": "Kampanjen börjar gälla detta datum",
+          "END": "Utgångsdatum",
+          "END_HINT": "Kampanjen slutar gälla efter detta datum",
+          "STORES": "Butiker",
+          "STORES_PLACEHOLDER": "Alla butiker",
+          "STORES_HINT": "Lämna tomt för att tillämpa i alla butiker",
+          "EXCLUSIVITY": "Kombination",
+          "EXCLUSIVITY_HINT": "Om andra kampanjer kan tillämpas tillsammans med denna",
+          "PRIORITY": "Prioritet",
+          "PRIORITY_HINT": "Kampanjer med högre prioritet tillämpas först",
+          "COMBINE_WITH_SELF": "Kombinera med sig själv",
+          "COMBINE_WITH_SELF_HINT": "Flera kuponger från denna kampanj kan tillämpas på en order",
+          "DESCRIPTION": "Beskrivning",
+          "DESCRIPTION_PLACEHOLDER": "Ange beskrivning",
+          "LANGUAGE": "Språk",
+          "LABEL": "Etikett",
+          "LABEL_PLACEHOLDER": "Kort etikett, t.ex. text på en märkning",
+          "DISPLAY_NAME": "Visningsnamn",
+          "DISPLAY_NAME_PLACEHOLDER": "Namn som visas för kunder",
+          "LOCALIZED_DESCRIPTION": "Beskrivning för kunder",
+          "LOCALIZED_DESCRIPTION_PLACEHOLDER": "Beskrivning som visas för kunder"
+        }
+      },
+      "COUPONS": {
+        "SEARCH": "Sök på kod",
+        "EMPTY": "Inga kuponger",
+        "COLUMNS": {
+          "CODE": "Kod",
+          "USED": "Antal användningar",
+          "MAX_USES": "Max. användningar",
+          "EXPIRES": "Upphör"
+        }
+      },
+      "COUPON": {
+        "NEW_TITLE": "Ny kupong",
+        "FIELDS": {
+          "CODE": "Kupongkod",
+          "CODE_PLACEHOLDER": "Ange kod",
+          "CODE_HINT": "Koden som kunderna anger i kassan",
+          "EXPIRATION": "Utgångsdatum",
+          "EXPIRATION_HINT": "Kupongen kan inte användas efter detta datum",
+          "MAX_USES": "Maximalt antal användningar",
+          "MAX_USES_HINT": "0 = obegränsat",
+          "MAX_PER_USER": "Maximalt antal användningar per kund",
+          "MAX_PER_USER_HINT": "0 = obegränsat",
+          "MEMBER": "Kund eller organisation",
+          "MEMBER_PLACEHOLDER": "Vem som helst"
+        }
+      },
+      "IMPORT": {
+        "TITLE": "Importera kuponger",
+        "DELIMITER": "Kolumnavgränsare",
+        "DELIMITER_PLACEHOLDER": "Välj avgränsare",
+        "DELIMITERS": {
+          "SPACE": "Mellanslag",
+          "COMMA": "Komma",
+          "SEMICOLON": "Semikolon",
+          "TAB": "Tabb"
+        },
+        "FILE": "CSV-fil utan rubrikrad: kod, max. användningar, kund-ID",
+        "UPLOADED": "Uppladdad fil",
+        "START": "Starta import",
+        "PROGRESS": "Importförlopp",
+        "PROCESSED": "Bearbetat {processed} av {total}",
+        "FINISHED": "Klart"
+      },
+      "USAGE": {
+        "EMPTY": "Kampanjen har inte använts i några ordrar",
+        "COLUMNS": {
+          "NUMBER": "Ordernummer",
+          "CUSTOMER": "Kund",
+          "STATUS": "Status",
+          "CREATED": "Skapad",
+          "TOTAL": "Totalt"
+        }
+      },
+      "PUBLICATIONS": {
+        "COLUMNS": {
+          "NAME": "Namn",
+          "STORE": "Webbplats"
+        }
+      },
+      "PUBLICATION": {
+        "TITLE": "Placering",
+        "NEW_TITLE": "Ny placering",
+        "NAME_PLACEHOLDER": "Ange placeringens namn",
+        "DESCRIPTION_PLACEHOLDER": "Ange beskrivning",
+        "STORE_PLACEHOLDER": "Välj butik",
+        "PLACES_PLACEHOLDER": "Välj platser",
+        "ITEMS_PLACEHOLDER": "Välj banners",
+        "CONDITIONS": "Publiceringsvillkor",
+        "BROWSE": "Bläddra"
+      },
+      "CONTENT": {
+        "ITEMS_TITLE": "Banners",
+        "PLACES_TITLE": "Platser",
+        "ITEMS_ROOT": "Banners",
+        "PLACES_ROOT": "Platser",
+        "ADD_PLACES_TITLE": "Lägg till platser",
+        "ADD_ITEMS_TITLE": "Lägg till banners",
+        "PICK_HINT": "Klicka på en post för att lägga till den i placeringen, eller på en mapp för att öppna den",
+        "ADDED": "Tillagd",
+        "EMPTY": "Mappen är tom",
+        "COLUMNS": {
+          "NAME": "Namn",
+          "DESCRIPTION": "Beskrivning"
+        }
+      },
+      "CONTENT_ITEM": {
+        "NEW_TITLE": "Ny banner",
+        "NAME_PLACEHOLDER": "Ange bannerns namn",
+        "DESCRIPTION_PLACEHOLDER": "Ange beskrivning",
+        "PROPERTIES": "Egenskaper",
+        "NO_PROPERTIES": "Inga egenskaper har definierats för banners"
+      },
+      "CONTENT_PLACE": {
+        "NEW_TITLE": "Ny plats",
+        "NAME_PLACEHOLDER": "Ange platsens namn",
+        "DESCRIPTION_PLACEHOLDER": "Ange beskrivning",
+        "IMAGE": "Bild för platsen"
+      },
+      "CONTENT_FOLDER": {
+        "NEW_TITLE": "Ny mapp",
+        "NAME_PLACEHOLDER": "Ange mappnamn",
+        "DESCRIPTION_PLACEHOLDER": "Ange beskrivning"
+      }
+    }
+  }
+}

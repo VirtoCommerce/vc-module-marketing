@@ -1,0 +1,440 @@
+{
+  "MARKETING": {
+    "MENU": {
+      "PROMOTIONS": "促销",
+      "DYNAMIC_CONTENT": "横幅"
+    },
+    "LIBRARY": {
+      "INTRO": "横幅决定展示什么内容，广告位决定在店面的哪个位置展示，投放则将横幅放入站点上的广告位，并指定展示时段和受众。",
+      "TABS": {
+        "BANNERS": "横幅",
+        "SLOTS": "广告位",
+        "PLACEMENTS": "投放"
+      },
+      "SEARCH_BANNERS": "搜索横幅",
+      "EMPTY_BANNERS": "暂无横幅",
+      "EMPTY_SLOTS": "暂无广告位",
+      "USED_ON": "未在任何站点使用 | 已在 {n} 个站点使用 | 已在 {n} 个站点使用",
+      "ADD_BANNER": "添加横幅",
+      "ADD_SLOT": "添加广告位",
+      "FOLDERS": "文件夹",
+      "COLUMNS": {
+        "SLOT": "广告位",
+        "WHERE": "位置",
+        "BANNERS": "横幅",
+        "PLACEMENT": "投放",
+        "SITE": "站点",
+        "STATUS": "状态",
+        "STARTS": "开始",
+        "ENDS": "结束"
+      },
+      "EMPTY_PLACEMENTS": "暂无投放",
+      "ADD_PLACEMENT": "添加投放",
+      "STATUS": {
+        "SHOWING": "展示中",
+        "SCHEDULED": "已计划",
+        "ENDED": "已结束",
+        "OFF": "已关闭"
+      }
+    },
+    "UNKNOWN": "未知",
+    "UNLIMITED": "不限",
+    "STATUS": {
+      "ACTIVE": "活动",
+      "INACTIVE": "非活动"
+    },
+    "PROMOTION_STATUS": {
+      "ACTIVE": "活动",
+      "UPCOMING": "即将开始",
+      "ARCHIVED": "已归档",
+      "DEACTIVATED": "已停用",
+      "ALL": "全部"
+    },
+    "ACTIONS": {
+      "ADD": "添加",
+      "ADD_FOLDER": "添加文件夹",
+      "ADD_ITEM": "添加横幅",
+      "ADD_PLACE": "添加广告位",
+      "CLONE": "克隆",
+      "COPY_ID": "复制 ID",
+      "CREATE": "创建",
+      "DELETE": "删除",
+      "IMPORT": "导入",
+      "MANAGE": "管理",
+      "REFRESH": "刷新",
+      "RESET": "重置",
+      "SAVE": "保存"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "有未保存的更改。仍要关闭吗？",
+      "DELETE_PROMOTIONS": "要删除 {count} 个促销吗？",
+      "DELETE_COUPONS": "要删除 {count} 张优惠券吗？",
+      "DELETE_PUBLICATIONS": "要删除 {count} 个投放吗？",
+      "DELETE_CONTENT": "要删除所选的 {count} 个条目吗？",
+      "DELETE_NAMED": "要删除“{name}”吗？",
+      "DELETE_FOLDER": "要删除文件夹“{name}”吗？"
+    },
+    "VALIDATION": {
+      "REQUIRED": "此字段为必填项",
+      "CODE_PATTERN": "代码包含不允许的字符"
+    },
+    "WIDGETS": {
+      "COUPONS": "优惠券",
+      "USAGE": "使用历史"
+    },
+    "EXPRESSIONS": {
+      "ADD": "添加",
+      "REMOVE": "移除",
+      "EXCLUDING": "排除",
+      "EXCLUDE_CATEGORIES": "类别",
+      "EXCLUDE_PRODUCTS": "商品",
+      "ADD_USER_GROUP": "添加用户组",
+      "ADD_CONDITION": "添加条件",
+      "ADD_REWARD": "添加奖励",
+      "NO_CRITERION": "促销必须至少有一个参与条件",
+      "NO_REWARD": "促销必须至少有一个奖励",
+      "GROUPS": {
+        "SHOPPER_PROFILE": "购物者资料",
+        "CATALOG": "目录",
+        "BROWSE_BEHAVIOR": "浏览行为",
+        "LOCATION": "位置"
+      },
+      "NAMES": {
+        "EVERYONE": "所有人",
+        "FIRST_TIME_CUSTOMERS": "首次购买的客户",
+        "REGISTERED_USERS": "注册用户",
+        "USER_GROUP_CONTAINS": "用户组包含 ...",
+        "USER_GROUP_IS": "用户组为 ...",
+        "SPECIFIC_CATEGORY": "指定类别",
+        "SPECIFIC_PRODUCT": "指定商品",
+        "CODE_CONTAINS": "商品代码包含...",
+        "CURRENCY_IS": "货币为...",
+        "IN_STOCK_QUANTITY": "库存数量为...",
+        "FULL_PRICE_ONLY": "仅适用于原价商品，不适用于促销商品",
+        "ITEMS_IN_CART": "购物车中的商品数量",
+        "CATEGORY_ITEMS_IN_CART": "购物车中某类别的商品数量",
+        "PRODUCT_ITEMS_IN_CART": "购物车中指定商品的数量",
+        "PAYMENT_IS": "支付方式为...",
+        "SHIPPING_IS": "配送方式为...",
+        "CART_SUBTOTAL": "购物车小计为...",
+        "CART_ABS_OFF": "购物车小计减 $...",
+        "CART_REL_OFF": "购物车小计减 ...%，最多 $...",
+        "FREE_ITEMS": "商品 ... 免费 ... 件",
+        "ITEM_ABS_OFF": "减 $...",
+        "ITEM_ABS_OFF_FOR_NUM": "指定商品 ... 件减 $...",
+        "ITEM_REL_OFF": "商品 ... 减 ...%，最多 $...",
+        "ITEM_REL_OFF_FOR_NUM": "指定商品 ... 件减 ...%，最多 $...",
+        "GIFT": "赠送商品 ... 共 ... 件",
+        "SHIPPING_ABS_OFF": "使用 ... 配送减 $...",
+        "SHIPPING_REL_OFF": "使用 ... 配送减 %，最多 $...",
+        "PAYMENT_ABS_OFF": "使用 ... 支付减 $...",
+        "PAYMENT_REL_OFF": "使用 ... 支付减 ...%，最多 $...",
+        "EVERY_NTH_OFF": "指定商品每 ... 件中 ... 件减 ...%",
+        "EVERY_NTH_OTHER_OFF": "另一商品每 ... 件，指定商品 ... 件减 ...%",
+        "TAGS_CONTAIN": "标签包含 ...",
+        "SEARCHED_PHRASE": "购物者在商店中搜索了 ...",
+        "LANGUAGE_IS": "用户语言设置为...",
+        "AGE_IS": "购物者年龄为 ...",
+        "GENDER_IS": "购物者性别为 ...",
+        "TIME_ZONE": "时区",
+        "ZIP_CODE": "邮政编码",
+        "CITY": "城市",
+        "COUNTRY": "国家/地区",
+        "STATE": "地区/州/省"
+      },
+      "TEXT": {
+        "CUSTOMERS_MATCHING": "满足以下",
+        "OF_FOLLOWING_CRITERIA": "条件的客户：",
+        "EVERYONE": "所有人",
+        "FIRST_TIME_BUYER": "首次购买者",
+        "REGISTERED_USER": "注册用户",
+        "USER_GROUP_CONTAINS": "用户组包含",
+        "USER_GROUP_IS": "用户组为",
+        "IF": "如果",
+        "CATALOG_CONDITIONS_ARE": "目录条件为",
+        "CATEGORY": "类别：",
+        "PRODUCT": "商品：",
+        "ALL_VARIANTS": "适用于所有商品变体：",
+        "CODE_CONTAINS": "商品代码包含",
+        "CURRENCY_IS": "货币为",
+        "IN_STOCK_QUANTITY": "库存数量为",
+        "ITEMS": "件",
+        "FULL_PRICE_ONLY": "仅适用于原价商品，不适用于促销商品",
+        "CART_CONDITIONS_ARE": "购物车条件为",
+        "ITEMS_IN_CART": "件商品在购物车中",
+        "ITEMS_FROM_CATEGORY": "件此类别的商品：",
+        "ARE_IN_CART": "在购物车中",
+        "SPECIFIC_PRODUCT_ITEMS": "件此商品：",
+        "PAYMENT_IS": "支付方式为",
+        "SHIPPING_IS": "配送方式为",
+        "CART_SUBTOTAL_IS": "购物车小计为",
+        "GET_REWARDS": "获得以下奖励：",
+        "CURRENCY": "$",
+        "OFF_CART_SUBTOTAL": "从购物车小计中扣减",
+        "PCT_OFF_CART_SUBTOTAL_MAX": "% 从购物车小计中扣减，最多 $",
+        "FREE_ITEMS_OF_PRODUCT": "件免费，商品：",
+        "OFF_FOR": "折扣，适用于：",
+        "ITEMS_OF_PRODUCT": "件此商品：",
+        "COMMA": "，",
+        "AMOUNT_PER_ITEM": "每件金额",
+        "PCT_OFF_FOR": "% 折扣，适用于：",
+        "NO_MORE_THAN_AMOUNT": "，最多 $",
+        "PCT_OFF_MAX": "% 折扣，最多 $",
+        "FOR_ITEMS": "，适用于",
+        "AS_GIFT": "作为赠品。详情：",
+        "OFF_FOR_SHIPPING": "折扣，适用于此配送方式：",
+        "PCT_OFF_FOR_SHIPPING": "% 折扣，适用于此配送方式：",
+        "OFF_FOR_PAYMENT": "折扣，使用此支付方式时：",
+        "PCT_OFF_FOR_PAYMENT": "% 折扣，使用此支付方式时：",
+        "FOR": "对于",
+        "OF_EVERY": "／每",
+        "RECEIVE": "获得",
+        "PCT_OFF_MAX_ITEMS": "% 折扣，最多",
+        "ITEMS_AND_MAX_AMOUNT": "件且最多 $",
+        "CONDITIONS_ARE_TRUE": "条件成立",
+        "TAGS_CONTAIN": "标签包含",
+        "SEARCHED_PHRASE": "购物者搜索的短语",
+        "LANGUAGE_IS": "用户语言设置为",
+        "AGE_IS": "购物者年龄",
+        "GENDER_IS": "购物者性别为",
+        "FROM_TIME_ZONE": "浏览来源时区",
+        "FROM_ZIP_CODE": "浏览来源邮政编码",
+        "FROM_CITY": "浏览来源城市：",
+        "FROM_COUNTRY": "浏览来源国家/地区：",
+        "FROM_STATE": "浏览来源州/省：",
+        "AND": "至"
+      },
+      "OPTIONS": {
+        "ALL": "全部",
+        "ANY": "任一",
+        "TRUE": "真",
+        "FALSE": "假",
+        "ROUND": "四舍五入",
+        "DONT_ROUND": "不四舍五入",
+        "YES": "是",
+        "NO": "否",
+        "EXACTLY": "正好",
+        "AT_LEAST": "至少",
+        "EXACTLY_OR_LESS": "至多",
+        "BETWEEN": "介于",
+        "ANYTHING_BUT": "不等于",
+        "GREATER_THAN": "大于",
+        "GREATER_OR_EQUAL": "大于或等于",
+        "LESS_THAN": "小于",
+        "LESS_OR_EQUAL": "小于或等于",
+        "CONTAINING": "包含",
+        "NOT_CONTAINING": "不包含",
+        "BEING_EXACTLY": "完全等于",
+        "BEING_ANYTHING_BUT": "不等于",
+        "FEMALE": "女",
+        "MALE": "男"
+      },
+      "FIELDS": {
+        "NAME": "名称",
+        "MEASURE_UNIT": "计量单位",
+        "IMAGE_URL": "图片 URL",
+        "DESCRIPTION": "描述",
+        "AMOUNT": "金额",
+        "MAX_AMOUNT": "最高金额",
+        "MAX_ITEMS": "最大件数",
+        "QUANTITY": "数量",
+        "NTH_QUANTITY": "折扣件数",
+        "EVERY_NTH": "每组件数",
+        "SUBTOTAL": "小计",
+        "UPPER_VALUE": "上限值",
+        "VALUE": "值"
+      },
+      "PLACEHOLDERS": {
+        "ENTER_GROUP": "输入组",
+        "ENTER_CODE": "输入代码",
+        "ENTER_TAG": "输入标签",
+        "ENTER_NAME": "输入名称",
+        "ENTER_MEASURE_UNIT": "指定计量单位",
+        "ENTER_URL": "输入 URL",
+        "ENTER_DESCRIPTION": "输入描述",
+        "SELECT_CATEGORY": "选择类别",
+        "SELECT_PRODUCT": "选择商品",
+        "SELECT_PRODUCTS": "选择商品（可多选）",
+        "SELECT_CURRENCY": "选择货币",
+        "SELECT_SHIPPING_METHOD": "选择配送方式",
+        "SELECT_PAYMENT_METHOD": "选择支付方式",
+        "SELECT_LANGUAGE": "选择语言",
+        "SELECT_GROUPS": "选择组",
+        "SELECT_COUNTRY": "选择国家/地区",
+        "SELECT_TIME_ZONE": "选择时区"
+      }
+    },
+    "PAGES": {
+      "PROMOTIONS": {
+        "TITLE": "促销",
+        "EMPTY": "未找到促销",
+        "COLUMNS": {
+          "NAME": "名称",
+          "STATUS": "状态",
+          "COUPONS": "优惠券",
+          "START": "开始日期",
+          "END": "到期日期",
+          "DESCRIPTION": "描述"
+        },
+        "FILTERS": {
+          "STATUS": "状态",
+          "STORE": "商店"
+        },
+        "SAVED_FILTERS": {
+          "PLACEHOLDER": "选择筛选器",
+          "EDIT": "编辑筛选器",
+          "NEW": "+ 新建筛选器"
+        }
+      },
+      "FILTER": {
+        "NEW_TITLE": "新建筛选器",
+        "NAME": "筛选器名称",
+        "UNNAMED": "未命名筛选器",
+        "ALL": "全部",
+        "APPLY": "应用筛选器"
+      },
+      "PROMOTION": {
+        "TITLE": "促销",
+        "NEW_TITLE": "新建促销",
+        "CONDITIONS": "条件和奖励",
+        "LOCALIZATION": "店面文本",
+        "EXCLUSIVITY": {
+          "COMBINED": "可与其他促销叠加",
+          "EXCLUSIVE": "排他（不可叠加）"
+        },
+        "FIELDS": {
+          "NAME": "促销名称",
+          "NAME_PLACEHOLDER": "输入促销名称",
+          "NAME_HINT": "内部名称，显示在管理后台中",
+          "ACTIVE": "活动",
+          "PUBLIC": "公开（在店面中可见）",
+          "START": "开始日期",
+          "START_HINT": "促销从此日期开始生效",
+          "END": "到期日期",
+          "END_HINT": "促销在此日期之后失效",
+          "STORES": "商店",
+          "STORES_PLACEHOLDER": "所有商店",
+          "STORES_HINT": "留空则适用于所有商店",
+          "EXCLUSIVITY": "叠加",
+          "EXCLUSIVITY_HINT": "其他促销能否与此促销同时应用",
+          "PRIORITY": "优先级",
+          "PRIORITY_HINT": "优先级较高的促销先应用",
+          "COMBINE_WITH_SELF": "与自身叠加",
+          "COMBINE_WITH_SELF_HINT": "此促销的多张优惠券可用于同一订单",
+          "DESCRIPTION": "描述",
+          "DESCRIPTION_PLACEHOLDER": "输入描述",
+          "LANGUAGE": "语言",
+          "LABEL": "标签",
+          "LABEL_PLACEHOLDER": "简短标签，例如徽章文字",
+          "DISPLAY_NAME": "显示名称",
+          "DISPLAY_NAME_PLACEHOLDER": "向客户显示的名称",
+          "LOCALIZED_DESCRIPTION": "客户描述",
+          "LOCALIZED_DESCRIPTION_PLACEHOLDER": "向客户显示的描述"
+        }
+      },
+      "COUPONS": {
+        "SEARCH": "按代码搜索",
+        "EMPTY": "没有优惠券",
+        "COLUMNS": {
+          "CODE": "代码",
+          "USED": "已使用次数",
+          "MAX_USES": "最大使用次数",
+          "EXPIRES": "到期"
+        }
+      },
+      "COUPON": {
+        "NEW_TITLE": "新建优惠券",
+        "FIELDS": {
+          "CODE": "优惠券代码",
+          "CODE_PLACEHOLDER": "输入代码",
+          "CODE_HINT": "客户在结账时输入的代码",
+          "EXPIRATION": "到期日期",
+          "EXPIRATION_HINT": "此日期之后优惠券将无法使用",
+          "MAX_USES": "最大使用次数",
+          "MAX_USES_HINT": "0 = 不限",
+          "MAX_PER_USER": "每位客户最大使用次数",
+          "MAX_PER_USER_HINT": "0 = 不限",
+          "MEMBER": "客户或组织",
+          "MEMBER_PLACEHOLDER": "任何人"
+        }
+      },
+      "IMPORT": {
+        "TITLE": "导入优惠券",
+        "DELIMITER": "列分隔符",
+        "DELIMITER_PLACEHOLDER": "选择分隔符",
+        "DELIMITERS": {
+          "SPACE": "空格",
+          "COMMA": "逗号",
+          "SEMICOLON": "分号",
+          "TAB": "制表符"
+        },
+        "FILE": "无标题行的 CSV 文件：代码、最大使用次数、客户 ID",
+        "UPLOADED": "已上传的文件",
+        "START": "开始导入",
+        "PROGRESS": "导入进度",
+        "PROCESSED": "已处理 {processed} / {total}",
+        "FINISHED": "已完成"
+      },
+      "USAGE": {
+        "EMPTY": "该促销尚未在订单中使用",
+        "COLUMNS": {
+          "NUMBER": "订单号",
+          "CUSTOMER": "客户",
+          "STATUS": "状态",
+          "CREATED": "创建时间",
+          "TOTAL": "总计"
+        }
+      },
+      "PUBLICATIONS": {
+        "COLUMNS": {
+          "NAME": "名称",
+          "STORE": "站点"
+        }
+      },
+      "PUBLICATION": {
+        "TITLE": "投放",
+        "NEW_TITLE": "新建投放",
+        "NAME_PLACEHOLDER": "输入投放名称",
+        "DESCRIPTION_PLACEHOLDER": "输入描述",
+        "STORE_PLACEHOLDER": "选择商店",
+        "PLACES_PLACEHOLDER": "选择广告位",
+        "ITEMS_PLACEHOLDER": "选择横幅",
+        "CONDITIONS": "发布条件",
+        "BROWSE": "浏览"
+      },
+      "CONTENT": {
+        "ITEMS_TITLE": "横幅",
+        "PLACES_TITLE": "广告位",
+        "ITEMS_ROOT": "横幅",
+        "PLACES_ROOT": "广告位",
+        "ADD_PLACES_TITLE": "添加广告位",
+        "ADD_ITEMS_TITLE": "添加横幅",
+        "PICK_HINT": "单击条目可将其添加到投放，单击文件夹可将其打开",
+        "ADDED": "已添加",
+        "EMPTY": "此文件夹为空",
+        "COLUMNS": {
+          "NAME": "名称",
+          "DESCRIPTION": "描述"
+        }
+      },
+      "CONTENT_ITEM": {
+        "NEW_TITLE": "新建横幅",
+        "NAME_PLACEHOLDER": "输入横幅名称",
+        "DESCRIPTION_PLACEHOLDER": "输入描述",
+        "PROPERTIES": "属性",
+        "NO_PROPERTIES": "尚未为横幅定义任何属性"
+      },
+      "CONTENT_PLACE": {
+        "NEW_TITLE": "新建广告位",
+        "NAME_PLACEHOLDER": "输入广告位名称",
+        "DESCRIPTION_PLACEHOLDER": "输入描述",
+        "IMAGE": "广告位图片"
+      },
+      "CONTENT_FOLDER": {
+        "NEW_TITLE": "新建文件夹",
+        "NAME_PLACEHOLDER": "输入文件夹名称",
+        "DESCRIPTION_PLACEHOLDER": "输入描述"
+      }
+    }
+  }
+}
