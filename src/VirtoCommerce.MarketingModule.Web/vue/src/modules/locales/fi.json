@@ -1,0 +1,265 @@
+{
+  "MARKETING": {
+    "MENU": {
+      "PROMOTIONS": "Kampanjat",
+      "DYNAMIC_CONTENT": "Bannerit"
+    },
+    "LIBRARY": {
+      "INTRO": "Bannerit määrittävät, mitä näytetään, paikat määrittävät, missä kohdassa verkkokauppaa, ja sijoittelut näyttävät bannerin sivuston paikassa tiettynä aikana tietylle yleisölle.",
+      "TABS": {
+        "BANNERS": "Bannerit",
+        "SLOTS": "Paikat",
+        "PLACEMENTS": "Sijoittelut"
+      },
+      "SEARCH_BANNERS": "Hae bannereita",
+      "EMPTY_BANNERS": "Ei vielä bannereita",
+      "EMPTY_SLOTS": "Ei vielä paikkoja",
+      "USED_ON": "Ei käytössä millään sivustolla | Käytössä {n} sivustolla | Käytössä {n} sivustolla",
+      "ADD_BANNER": "Lisää banneri",
+      "ADD_SLOT": "Lisää paikka",
+      "FOLDERS": "Kansiot",
+      "COLUMNS": {
+        "SLOT": "Paikka",
+        "WHERE": "Sijainti",
+        "BANNERS": "Bannerit",
+        "PLACEMENT": "Sijoittelu",
+        "SITE": "Sivusto",
+        "STATUS": "Tila",
+        "STARTS": "Alkaa",
+        "ENDS": "Päättyy"
+      },
+      "EMPTY_PLACEMENTS": "Ei vielä sijoitteluja",
+      "ADD_PLACEMENT": "Lisää sijoittelu",
+      "STATUS": {
+        "SHOWING": "Näkyvissä",
+        "SCHEDULED": "Ajastettu",
+        "ENDED": "Päättynyt",
+        "OFF": "Pois päältä"
+      }
+    },
+    "UNKNOWN": "tuntematon",
+    "UNLIMITED": "Rajoittamaton",
+    "STATUS": {
+      "ACTIVE": "Aktiivinen",
+      "INACTIVE": "Ei aktiivinen"
+    },
+    "PROMOTION_STATUS": {
+      "ACTIVE": "Aktiivinen",
+      "UPCOMING": "Tulossa",
+      "ARCHIVED": "Arkistoitu",
+      "DEACTIVATED": "Poistettu käytöstä",
+      "ALL": "Kaikki"
+    },
+    "ACTIONS": {
+      "ADD": "Lisää",
+      "ADD_FOLDER": "Lisää kansio",
+      "ADD_ITEM": "Lisää banneri",
+      "ADD_PLACE": "Lisää paikka",
+      "CLONE": "Kloonaa",
+      "COPY_ID": "Kopioi ID",
+      "CREATE": "Luo",
+      "DELETE": "Poista",
+      "IMPORT": "Tuo",
+      "MANAGE": "Hallitse",
+      "REFRESH": "Päivitä",
+      "RESET": "Palauta",
+      "SAVE": "Tallenna"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Muutoksia ei ole tallennettu. Suljetaanko silti?",
+      "DELETE_PROMOTIONS": "Poistetaanko {count} kampanja(a)?",
+      "DELETE_COUPONS": "Poistetaanko {count} kuponki(a)?",
+      "DELETE_PUBLICATIONS": "Poistetaanko {count} sijoittelu(a)?",
+      "DELETE_CONTENT": "Poistetaanko {count} valittua kohdetta?",
+      "DELETE_NAMED": "Poistetaanko ”{name}”?",
+      "DELETE_FOLDER": "Poistetaanko kansio ”{name}”?"
+    },
+    "VALIDATION": {
+      "REQUIRED": "Tämä kenttä on pakollinen",
+      "CODE_PATTERN": "Koodi sisältää merkkejä, jotka eivät ole sallittuja"
+    },
+    "WIDGETS": {
+      "COUPONS": "Kupongit",
+      "USAGE": "Käyttöhistoria"
+    },
+    "EXPRESSIONS": {
+      "ADD": "Lisää",
+      "REMOVE": "Poista",
+      "EXCLUDING": "pois lukien",
+      "EXCLUDE_CATEGORIES": "kategoriat",
+      "EXCLUDE_PRODUCTS": "tuotteet"
+    },
+    "PAGES": {
+      "PROMOTIONS": {
+        "TITLE": "Kampanjat",
+        "EMPTY": "Kampanjoita ei löytynyt",
+        "COLUMNS": {
+          "NAME": "Nimi",
+          "STATUS": "Tila",
+          "COUPONS": "Kupongit",
+          "START": "Aloituspäivä",
+          "END": "Vanhenemispäivä",
+          "DESCRIPTION": "Kuvaus"
+        },
+        "FILTERS": {
+          "STATUS": "Tila",
+          "STORE": "Kauppa"
+        },
+        "SAVED_FILTERS": {
+          "PLACEHOLDER": "Valitse suodatin",
+          "EDIT": "Muokkaa suodatinta",
+          "NEW": "+ Uusi suodatin"
+        }
+      },
+      "FILTER": {
+        "NEW_TITLE": "Uusi suodatin",
+        "NAME": "Suodattimen nimi",
+        "UNNAMED": "Nimetön suodatin",
+        "ALL": "Kaikki",
+        "APPLY": "Käytä suodatinta"
+      },
+      "PROMOTION": {
+        "TITLE": "Kampanja",
+        "NEW_TITLE": "Uusi kampanja",
+        "CONDITIONS": "Ehdot ja edut",
+        "LOCALIZATION": "Verkkokaupan tekstit",
+        "EXCLUSIVITY": {
+          "COMBINED": "Voidaan yhdistää muihin kampanjoihin",
+          "EXCLUSIVE": "Eksklusiivinen (ei voida yhdistää)"
+        },
+        "FIELDS": {
+          "NAME": "Kampanjan nimi",
+          "NAME_PLACEHOLDER": "Anna kampanjan nimi",
+          "NAME_HINT": "Sisäinen nimi, näkyy hallinnassa",
+          "ACTIVE": "Aktiivinen",
+          "PUBLIC": "Julkinen (näkyy verkkokaupassa)",
+          "START": "Aloituspäivä",
+          "START_HINT": "Kampanja on voimassa tästä päivästä alkaen",
+          "END": "Vanhenemispäivä",
+          "END_HINT": "Kampanja ei ole voimassa tämän päivän jälkeen",
+          "STORES": "Kaupat",
+          "STORES_PLACEHOLDER": "Kaikki kaupat",
+          "STORES_HINT": "Jätä tyhjäksi, jos kampanja koskee kaikkia kauppoja",
+          "EXCLUSIVITY": "Yhdistettävyys",
+          "EXCLUSIVITY_HINT": "Voidaanko muita kampanjoita soveltaa yhdessä tämän kanssa",
+          "PRIORITY": "Prioriteetti",
+          "PRIORITY_HINT": "Korkeamman prioriteetin kampanjoita sovelletaan ensin",
+          "COMBINE_WITH_SELF": "Yhdistä itsensä kanssa",
+          "COMBINE_WITH_SELF_HINT": "Samaan tilaukseen voidaan käyttää useita tämän kampanjan kuponkeja",
+          "DESCRIPTION": "Kuvaus",
+          "DESCRIPTION_PLACEHOLDER": "Anna kuvaus",
+          "LANGUAGE": "Kieli",
+          "LABEL": "Tunniste",
+          "LABEL_PLACEHOLDER": "Lyhyt tunniste, esim. merkin teksti",
+          "DISPLAY_NAME": "Näyttönimi",
+          "DISPLAY_NAME_PLACEHOLDER": "Asiakkaille näytettävä nimi",
+          "LOCALIZED_DESCRIPTION": "Kuvaus asiakkaille",
+          "LOCALIZED_DESCRIPTION_PLACEHOLDER": "Asiakkaille näytettävä kuvaus"
+        }
+      },
+      "COUPONS": {
+        "SEARCH": "Hae koodilla",
+        "EMPTY": "Ei kuponkeja",
+        "COLUMNS": {
+          "CODE": "Koodi",
+          "USED": "Käyttökerrat",
+          "MAX_USES": "Enimmäiskäytöt",
+          "EXPIRES": "Vanhenee"
+        }
+      },
+      "COUPON": {
+        "NEW_TITLE": "Uusi kuponki",
+        "FIELDS": {
+          "CODE": "Kuponkikoodi",
+          "CODE_PLACEHOLDER": "Anna koodi",
+          "CODE_HINT": "Koodi, jonka asiakkaat syöttävät kassalla",
+          "EXPIRATION": "Vanhenemispäivä",
+          "EXPIRATION_HINT": "Kuponkia ei voi käyttää tämän päivän jälkeen",
+          "MAX_USES": "Maksimikäyttömäärä",
+          "MAX_USES_HINT": "0 = rajoittamaton",
+          "MAX_PER_USER": "Maksimikäytöt asiakasta kohden",
+          "MAX_PER_USER_HINT": "0 = rajoittamaton",
+          "MEMBER": "Asiakas tai organisaatio",
+          "MEMBER_PLACEHOLDER": "Kuka tahansa"
+        }
+      },
+      "IMPORT": {
+        "TITLE": "Tuo kuponkeja",
+        "DELIMITER": "Sarake-erotin",
+        "DELIMITER_PLACEHOLDER": "Valitse erotin",
+        "DELIMITERS": {
+          "SPACE": "Välilyönti",
+          "COMMA": "Pilkku",
+          "SEMICOLON": "Puolipiste",
+          "TAB": "Sarkain"
+        },
+        "FILE": "CSV-tiedosto ilman otsikkoriviä: koodi, enimmäiskäytöt, asiakastunnus",
+        "UPLOADED": "Ladattu tiedosto",
+        "START": "Aloita tuonti",
+        "PROGRESS": "Tuonnin edistyminen",
+        "PROCESSED": "Käsitelty {processed}/{total}",
+        "FINISHED": "Valmis"
+      },
+      "USAGE": {
+        "EMPTY": "Kampanjaa ei ole käytetty tilauksissa",
+        "COLUMNS": {
+          "NUMBER": "Tilausnumero",
+          "CUSTOMER": "Asiakas",
+          "STATUS": "Tila",
+          "CREATED": "Luotu",
+          "TOTAL": "Yhteensä"
+        }
+      },
+      "PUBLICATIONS": {
+        "COLUMNS": {
+          "NAME": "Nimi",
+          "STORE": "Sivusto"
+        }
+      },
+      "PUBLICATION": {
+        "TITLE": "Sijoittelu",
+        "NEW_TITLE": "Uusi sijoittelu",
+        "NAME_PLACEHOLDER": "Anna sijoittelun nimi",
+        "DESCRIPTION_PLACEHOLDER": "Anna kuvaus",
+        "STORE_PLACEHOLDER": "Valitse kauppa",
+        "PLACES_PLACEHOLDER": "Valitse paikat",
+        "ITEMS_PLACEHOLDER": "Valitse bannerit",
+        "CONDITIONS": "Julkaisuehdot",
+        "BROWSE": "Selaa"
+      },
+      "CONTENT": {
+        "ITEMS_TITLE": "Bannerit",
+        "PLACES_TITLE": "Paikat",
+        "ITEMS_ROOT": "Bannerit",
+        "PLACES_ROOT": "Paikat",
+        "ADD_PLACES_TITLE": "Lisää paikkoja",
+        "ADD_ITEMS_TITLE": "Lisää bannereita",
+        "PICK_HINT": "Lisää kohde sijoitteluun napsauttamalla sitä tai avaa kansio napsauttamalla sitä",
+        "ADDED": "Lisätty",
+        "EMPTY": "Tämä kansio on tyhjä",
+        "COLUMNS": {
+          "NAME": "Nimi",
+          "DESCRIPTION": "Kuvaus"
+        }
+      },
+      "CONTENT_ITEM": {
+        "NEW_TITLE": "Uusi banneri",
+        "NAME_PLACEHOLDER": "Anna bannerin nimi",
+        "DESCRIPTION_PLACEHOLDER": "Anna kuvaus",
+        "PROPERTIES": "Ominaisuudet",
+        "NO_PROPERTIES": "Bannereille ei ole määritetty ominaisuuksia"
+      },
+      "CONTENT_PLACE": {
+        "NEW_TITLE": "Uusi paikka",
+        "NAME_PLACEHOLDER": "Anna paikan nimi",
+        "DESCRIPTION_PLACEHOLDER": "Anna kuvaus",
+        "IMAGE": "Paikan kuva"
+      },
+      "CONTENT_FOLDER": {
+        "NEW_TITLE": "Uusi kansio",
+        "NAME_PLACEHOLDER": "Anna kansion nimi",
+        "DESCRIPTION_PLACEHOLDER": "Anna kuvaus"
+      }
+    }
+  }
+}

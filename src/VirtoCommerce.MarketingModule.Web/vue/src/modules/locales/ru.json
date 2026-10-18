@@ -1,0 +1,265 @@
+{
+  "MARKETING": {
+    "MENU": {
+      "PROMOTIONS": "Акции",
+      "DYNAMIC_CONTENT": "Баннеры"
+    },
+    "LIBRARY": {
+      "INTRO": "Баннеры определяют, что показывается, слоты — где на витрине магазина, а размещения показывают баннер в слоте на сайте в течение заданного периода для заданной аудитории.",
+      "TABS": {
+        "BANNERS": "Баннеры",
+        "SLOTS": "Слоты",
+        "PLACEMENTS": "Размещения"
+      },
+      "SEARCH_BANNERS": "Поиск баннеров",
+      "EMPTY_BANNERS": "Баннеров пока нет",
+      "EMPTY_SLOTS": "Слотов пока нет",
+      "USED_ON": "Не используется ни на одном сайте | Используется на {n} сайте | Используется на {n} сайтах",
+      "ADD_BANNER": "Добавить баннер",
+      "ADD_SLOT": "Добавить слот",
+      "FOLDERS": "Папки",
+      "COLUMNS": {
+        "SLOT": "Слот",
+        "WHERE": "Где",
+        "BANNERS": "Баннеры",
+        "PLACEMENT": "Размещение",
+        "SITE": "Сайт",
+        "STATUS": "Статус",
+        "STARTS": "Начало",
+        "ENDS": "Окончание"
+      },
+      "EMPTY_PLACEMENTS": "Размещений пока нет",
+      "ADD_PLACEMENT": "Добавить размещение",
+      "STATUS": {
+        "SHOWING": "Показывается",
+        "SCHEDULED": "Запланировано",
+        "ENDED": "Завершено",
+        "OFF": "Выключено"
+      }
+    },
+    "UNKNOWN": "неизвестно",
+    "UNLIMITED": "Без ограничений",
+    "STATUS": {
+      "ACTIVE": "Активно",
+      "INACTIVE": "Неактивно"
+    },
+    "PROMOTION_STATUS": {
+      "ACTIVE": "Активная",
+      "UPCOMING": "Предстоящая",
+      "ARCHIVED": "Архивная",
+      "DEACTIVATED": "Деактивированная",
+      "ALL": "Все"
+    },
+    "ACTIONS": {
+      "ADD": "Добавить",
+      "ADD_FOLDER": "Добавить папку",
+      "ADD_ITEM": "Добавить баннер",
+      "ADD_PLACE": "Добавить слот",
+      "CLONE": "Клонировать",
+      "COPY_ID": "Копировать ID",
+      "CREATE": "Создать",
+      "DELETE": "Удалить",
+      "IMPORT": "Импортировать",
+      "MANAGE": "Управлять",
+      "REFRESH": "Обновить",
+      "RESET": "Сбросить",
+      "SAVE": "Сохранить"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Есть несохранённые изменения. Всё равно закрыть?",
+      "DELETE_PROMOTIONS": "Удалить акции ({count})?",
+      "DELETE_COUPONS": "Удалить купоны ({count})?",
+      "DELETE_PUBLICATIONS": "Удалить размещения ({count})?",
+      "DELETE_CONTENT": "Удалить выбранные записи ({count})?",
+      "DELETE_NAMED": "Удалить «{name}»?",
+      "DELETE_FOLDER": "Удалить папку «{name}»?"
+    },
+    "VALIDATION": {
+      "REQUIRED": "Это поле обязательно",
+      "CODE_PATTERN": "Код содержит недопустимые символы"
+    },
+    "WIDGETS": {
+      "COUPONS": "Купоны",
+      "USAGE": "История использования"
+    },
+    "EXPRESSIONS": {
+      "ADD": "Добавить",
+      "REMOVE": "Удалить",
+      "EXCLUDING": "исключая",
+      "EXCLUDE_CATEGORIES": "категории",
+      "EXCLUDE_PRODUCTS": "товары"
+    },
+    "PAGES": {
+      "PROMOTIONS": {
+        "TITLE": "Акции",
+        "EMPTY": "Акции не найдены",
+        "COLUMNS": {
+          "NAME": "Название",
+          "STATUS": "Статус",
+          "COUPONS": "Купоны",
+          "START": "Дата начала",
+          "END": "Дата окончания",
+          "DESCRIPTION": "Описание"
+        },
+        "FILTERS": {
+          "STATUS": "Статус",
+          "STORE": "Магазин"
+        },
+        "SAVED_FILTERS": {
+          "PLACEHOLDER": "Выберите фильтр",
+          "EDIT": "Изменить фильтр",
+          "NEW": "+ Новый фильтр"
+        }
+      },
+      "FILTER": {
+        "NEW_TITLE": "Новый фильтр",
+        "NAME": "Название фильтра",
+        "UNNAMED": "Фильтр без названия",
+        "ALL": "Все",
+        "APPLY": "Применить фильтр"
+      },
+      "PROMOTION": {
+        "TITLE": "Акция",
+        "NEW_TITLE": "Новая акция",
+        "CONDITIONS": "Условия и вознаграждения",
+        "LOCALIZATION": "Тексты для витрины",
+        "EXCLUSIVITY": {
+          "COMBINED": "Можно сочетать с другими акциями",
+          "EXCLUSIVE": "Эксклюзивная (нельзя сочетать)"
+        },
+        "FIELDS": {
+          "NAME": "Название акции",
+          "NAME_PLACEHOLDER": "Введите название акции",
+          "NAME_HINT": "Внутреннее название, отображается в панели администратора",
+          "ACTIVE": "Активна",
+          "PUBLIC": "Публичная (видна на витрине)",
+          "START": "Дата начала",
+          "START_HINT": "Акция начинает действовать с этой даты",
+          "END": "Дата окончания",
+          "END_HINT": "Акция перестаёт действовать после этой даты",
+          "STORES": "Магазины",
+          "STORES_PLACEHOLDER": "Все магазины",
+          "STORES_HINT": "Оставьте пустым, чтобы применять во всех магазинах",
+          "EXCLUSIVITY": "Сочетаемость",
+          "EXCLUSIVITY_HINT": "Можно ли применять другие акции вместе с этой",
+          "PRIORITY": "Приоритет",
+          "PRIORITY_HINT": "Акции с более высоким приоритетом применяются первыми",
+          "COMBINE_WITH_SELF": "Сочетать с самой собой",
+          "COMBINE_WITH_SELF_HINT": "К одному заказу можно применить несколько купонов этой акции",
+          "DESCRIPTION": "Описание",
+          "DESCRIPTION_PLACEHOLDER": "Введите описание",
+          "LANGUAGE": "Язык",
+          "LABEL": "Метка",
+          "LABEL_PLACEHOLDER": "Короткая метка, например текст значка",
+          "DISPLAY_NAME": "Отображаемое название",
+          "DISPLAY_NAME_PLACEHOLDER": "Название, которое видят клиенты",
+          "LOCALIZED_DESCRIPTION": "Описание для клиентов",
+          "LOCALIZED_DESCRIPTION_PLACEHOLDER": "Описание, которое видят клиенты"
+        }
+      },
+      "COUPONS": {
+        "SEARCH": "Поиск по коду",
+        "EMPTY": "Купонов нет",
+        "COLUMNS": {
+          "CODE": "Код",
+          "USED": "Использований",
+          "MAX_USES": "Макс. использований",
+          "EXPIRES": "Истекает"
+        }
+      },
+      "COUPON": {
+        "NEW_TITLE": "Новый купон",
+        "FIELDS": {
+          "CODE": "Код купона",
+          "CODE_PLACEHOLDER": "Введите код",
+          "CODE_HINT": "Код, который клиенты вводят при оформлении заказа",
+          "EXPIRATION": "Дата окончания",
+          "EXPIRATION_HINT": "После этой даты купон нельзя использовать",
+          "MAX_USES": "Максимальное количество использований",
+          "MAX_USES_HINT": "0 = без ограничений",
+          "MAX_PER_USER": "Максимальное количество использований на клиента",
+          "MAX_PER_USER_HINT": "0 = без ограничений",
+          "MEMBER": "Клиент или организация",
+          "MEMBER_PLACEHOLDER": "Любой"
+        }
+      },
+      "IMPORT": {
+        "TITLE": "Импорт купонов",
+        "DELIMITER": "Разделитель столбцов",
+        "DELIMITER_PLACEHOLDER": "Выберите разделитель",
+        "DELIMITERS": {
+          "SPACE": "Пробел",
+          "COMMA": "Запятая",
+          "SEMICOLON": "Точка с запятой",
+          "TAB": "Табуляция"
+        },
+        "FILE": "CSV-файл без заголовка: код, макс. количество использований, ID клиента",
+        "UPLOADED": "Загруженный файл",
+        "START": "Начать импорт",
+        "PROGRESS": "Ход импорта",
+        "PROCESSED": "Обработано {processed} из {total}",
+        "FINISHED": "Завершено"
+      },
+      "USAGE": {
+        "EMPTY": "Акция ещё не использовалась в заказах",
+        "COLUMNS": {
+          "NUMBER": "Номер заказа",
+          "CUSTOMER": "Клиент",
+          "STATUS": "Статус",
+          "CREATED": "Создан",
+          "TOTAL": "Итого"
+        }
+      },
+      "PUBLICATIONS": {
+        "COLUMNS": {
+          "NAME": "Название",
+          "STORE": "Сайт"
+        }
+      },
+      "PUBLICATION": {
+        "TITLE": "Размещение",
+        "NEW_TITLE": "Новое размещение",
+        "NAME_PLACEHOLDER": "Введите название размещения",
+        "DESCRIPTION_PLACEHOLDER": "Введите описание",
+        "STORE_PLACEHOLDER": "Выберите магазин",
+        "PLACES_PLACEHOLDER": "Выберите слоты",
+        "ITEMS_PLACEHOLDER": "Выберите баннеры",
+        "CONDITIONS": "Условия публикации",
+        "BROWSE": "Обзор"
+      },
+      "CONTENT": {
+        "ITEMS_TITLE": "Баннеры",
+        "PLACES_TITLE": "Слоты",
+        "ITEMS_ROOT": "Баннеры",
+        "PLACES_ROOT": "Слоты",
+        "ADD_PLACES_TITLE": "Добавить слоты",
+        "ADD_ITEMS_TITLE": "Добавить баннеры",
+        "PICK_HINT": "Нажмите на запись, чтобы добавить её в размещение, или на папку, чтобы открыть её",
+        "ADDED": "Добавлено",
+        "EMPTY": "Эта папка пуста",
+        "COLUMNS": {
+          "NAME": "Название",
+          "DESCRIPTION": "Описание"
+        }
+      },
+      "CONTENT_ITEM": {
+        "NEW_TITLE": "Новый баннер",
+        "NAME_PLACEHOLDER": "Введите название баннера",
+        "DESCRIPTION_PLACEHOLDER": "Введите описание",
+        "PROPERTIES": "Свойства",
+        "NO_PROPERTIES": "Для баннеров не определены свойства"
+      },
+      "CONTENT_PLACE": {
+        "NEW_TITLE": "Новый слот",
+        "NAME_PLACEHOLDER": "Введите название слота",
+        "DESCRIPTION_PLACEHOLDER": "Введите описание",
+        "IMAGE": "Изображение слота"
+      },
+      "CONTENT_FOLDER": {
+        "NEW_TITLE": "Новая папка",
+        "NAME_PLACEHOLDER": "Введите название папки",
+        "DESCRIPTION_PLACEHOLDER": "Введите описание"
+      }
+    }
+  }
+}

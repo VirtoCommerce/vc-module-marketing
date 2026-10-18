@@ -1,0 +1,265 @@
+{
+  "MARKETING": {
+    "MENU": {
+      "PROMOTIONS": "Kampanjer",
+      "DYNAMIC_CONTENT": "Banners"
+    },
+    "LIBRARY": {
+      "INTRO": "Banners är det som visas, platser anger var i webbutiken, och placeringar visar en banner på en plats på en webbplats under en viss tid och för en viss målgrupp.",
+      "TABS": {
+        "BANNERS": "Banners",
+        "SLOTS": "Platser",
+        "PLACEMENTS": "Placeringar"
+      },
+      "SEARCH_BANNERS": "Sök banners",
+      "EMPTY_BANNERS": "Inga banners ännu",
+      "EMPTY_SLOTS": "Inga platser ännu",
+      "USED_ON": "Används inte på någon webbplats | Används på {n} webbplats | Används på {n} webbplatser",
+      "ADD_BANNER": "Lägg till banner",
+      "ADD_SLOT": "Lägg till plats",
+      "FOLDERS": "Mappar",
+      "COLUMNS": {
+        "SLOT": "Plats",
+        "WHERE": "Var",
+        "BANNERS": "Banners",
+        "PLACEMENT": "Placering",
+        "SITE": "Webbplats",
+        "STATUS": "Status",
+        "STARTS": "Startar",
+        "ENDS": "Slutar"
+      },
+      "EMPTY_PLACEMENTS": "Inga placeringar ännu",
+      "ADD_PLACEMENT": "Lägg till placering",
+      "STATUS": {
+        "SHOWING": "Visas",
+        "SCHEDULED": "Schemalagd",
+        "ENDED": "Avslutad",
+        "OFF": "Av"
+      }
+    },
+    "UNKNOWN": "okänd",
+    "UNLIMITED": "Obegränsat",
+    "STATUS": {
+      "ACTIVE": "Aktiv",
+      "INACTIVE": "Inaktiv"
+    },
+    "PROMOTION_STATUS": {
+      "ACTIVE": "Aktiv",
+      "UPCOMING": "Kommande",
+      "ARCHIVED": "Arkiverad",
+      "DEACTIVATED": "Inaktiverad",
+      "ALL": "Alla"
+    },
+    "ACTIONS": {
+      "ADD": "Lägg till",
+      "ADD_FOLDER": "Lägg till mapp",
+      "ADD_ITEM": "Lägg till banner",
+      "ADD_PLACE": "Lägg till plats",
+      "CLONE": "Klona",
+      "COPY_ID": "Kopiera ID",
+      "CREATE": "Skapa",
+      "DELETE": "Ta bort",
+      "IMPORT": "Importera",
+      "MANAGE": "Hantera",
+      "REFRESH": "Uppdatera",
+      "RESET": "Återställ",
+      "SAVE": "Spara"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Du har osparade ändringar. Vill du stänga ändå?",
+      "DELETE_PROMOTIONS": "Ta bort {count} kampanj(er)?",
+      "DELETE_COUPONS": "Ta bort {count} kupong(er)?",
+      "DELETE_PUBLICATIONS": "Ta bort {count} placering(ar)?",
+      "DELETE_CONTENT": "Ta bort {count} markerade poster?",
+      "DELETE_NAMED": "Ta bort ”{name}”?",
+      "DELETE_FOLDER": "Ta bort mappen ”{name}”?"
+    },
+    "VALIDATION": {
+      "REQUIRED": "Det här fältet är obligatoriskt",
+      "CODE_PATTERN": "Koden innehåller otillåtna tecken"
+    },
+    "WIDGETS": {
+      "COUPONS": "Kuponger",
+      "USAGE": "Användningshistorik"
+    },
+    "EXPRESSIONS": {
+      "ADD": "Lägg till",
+      "REMOVE": "Ta bort",
+      "EXCLUDING": "exklusive",
+      "EXCLUDE_CATEGORIES": "kategorier",
+      "EXCLUDE_PRODUCTS": "produkter"
+    },
+    "PAGES": {
+      "PROMOTIONS": {
+        "TITLE": "Kampanjer",
+        "EMPTY": "Inga kampanjer hittades",
+        "COLUMNS": {
+          "NAME": "Namn",
+          "STATUS": "Status",
+          "COUPONS": "Kuponger",
+          "START": "Startdatum",
+          "END": "Utgångsdatum",
+          "DESCRIPTION": "Beskrivning"
+        },
+        "FILTERS": {
+          "STATUS": "Status",
+          "STORE": "Butik"
+        },
+        "SAVED_FILTERS": {
+          "PLACEHOLDER": "Välj filter",
+          "EDIT": "Redigera filter",
+          "NEW": "+ Nytt filter"
+        }
+      },
+      "FILTER": {
+        "NEW_TITLE": "Nytt filter",
+        "NAME": "Filternamn",
+        "UNNAMED": "Namnlöst filter",
+        "ALL": "Alla",
+        "APPLY": "Använd filter"
+      },
+      "PROMOTION": {
+        "TITLE": "Kampanj",
+        "NEW_TITLE": "Ny kampanj",
+        "CONDITIONS": "Villkor och belöningar",
+        "LOCALIZATION": "Texter i webbutiken",
+        "EXCLUSIVITY": {
+          "COMBINED": "Kan kombineras med andra kampanjer",
+          "EXCLUSIVE": "Exklusiv (kan inte kombineras)"
+        },
+        "FIELDS": {
+          "NAME": "Kampanjnamn",
+          "NAME_PLACEHOLDER": "Ange kampanjnamn",
+          "NAME_HINT": "Internt namn, visas i administrationen",
+          "ACTIVE": "Aktiv",
+          "PUBLIC": "Offentlig (synlig i webbutiken)",
+          "START": "Startdatum",
+          "START_HINT": "Kampanjen börjar gälla detta datum",
+          "END": "Utgångsdatum",
+          "END_HINT": "Kampanjen slutar gälla efter detta datum",
+          "STORES": "Butiker",
+          "STORES_PLACEHOLDER": "Alla butiker",
+          "STORES_HINT": "Lämna tomt för att tillämpa i alla butiker",
+          "EXCLUSIVITY": "Kombination",
+          "EXCLUSIVITY_HINT": "Om andra kampanjer kan tillämpas tillsammans med denna",
+          "PRIORITY": "Prioritet",
+          "PRIORITY_HINT": "Kampanjer med högre prioritet tillämpas först",
+          "COMBINE_WITH_SELF": "Kombinera med sig själv",
+          "COMBINE_WITH_SELF_HINT": "Flera kuponger från denna kampanj kan tillämpas på en order",
+          "DESCRIPTION": "Beskrivning",
+          "DESCRIPTION_PLACEHOLDER": "Ange beskrivning",
+          "LANGUAGE": "Språk",
+          "LABEL": "Etikett",
+          "LABEL_PLACEHOLDER": "Kort etikett, t.ex. text på en märkning",
+          "DISPLAY_NAME": "Visningsnamn",
+          "DISPLAY_NAME_PLACEHOLDER": "Namn som visas för kunder",
+          "LOCALIZED_DESCRIPTION": "Beskrivning för kunder",
+          "LOCALIZED_DESCRIPTION_PLACEHOLDER": "Beskrivning som visas för kunder"
+        }
+      },
+      "COUPONS": {
+        "SEARCH": "Sök på kod",
+        "EMPTY": "Inga kuponger",
+        "COLUMNS": {
+          "CODE": "Kod",
+          "USED": "Antal användningar",
+          "MAX_USES": "Max. användningar",
+          "EXPIRES": "Upphör"
+        }
+      },
+      "COUPON": {
+        "NEW_TITLE": "Ny kupong",
+        "FIELDS": {
+          "CODE": "Kupongkod",
+          "CODE_PLACEHOLDER": "Ange kod",
+          "CODE_HINT": "Koden som kunderna anger i kassan",
+          "EXPIRATION": "Utgångsdatum",
+          "EXPIRATION_HINT": "Kupongen kan inte användas efter detta datum",
+          "MAX_USES": "Maximalt antal användningar",
+          "MAX_USES_HINT": "0 = obegränsat",
+          "MAX_PER_USER": "Maximalt antal användningar per kund",
+          "MAX_PER_USER_HINT": "0 = obegränsat",
+          "MEMBER": "Kund eller organisation",
+          "MEMBER_PLACEHOLDER": "Vem som helst"
+        }
+      },
+      "IMPORT": {
+        "TITLE": "Importera kuponger",
+        "DELIMITER": "Kolumnavgränsare",
+        "DELIMITER_PLACEHOLDER": "Välj avgränsare",
+        "DELIMITERS": {
+          "SPACE": "Mellanslag",
+          "COMMA": "Komma",
+          "SEMICOLON": "Semikolon",
+          "TAB": "Tabb"
+        },
+        "FILE": "CSV-fil utan rubrikrad: kod, max. användningar, kund-ID",
+        "UPLOADED": "Uppladdad fil",
+        "START": "Starta import",
+        "PROGRESS": "Importförlopp",
+        "PROCESSED": "Bearbetat {processed} av {total}",
+        "FINISHED": "Klart"
+      },
+      "USAGE": {
+        "EMPTY": "Kampanjen har inte använts i några ordrar",
+        "COLUMNS": {
+          "NUMBER": "Ordernummer",
+          "CUSTOMER": "Kund",
+          "STATUS": "Status",
+          "CREATED": "Skapad",
+          "TOTAL": "Totalt"
+        }
+      },
+      "PUBLICATIONS": {
+        "COLUMNS": {
+          "NAME": "Namn",
+          "STORE": "Webbplats"
+        }
+      },
+      "PUBLICATION": {
+        "TITLE": "Placering",
+        "NEW_TITLE": "Ny placering",
+        "NAME_PLACEHOLDER": "Ange placeringens namn",
+        "DESCRIPTION_PLACEHOLDER": "Ange beskrivning",
+        "STORE_PLACEHOLDER": "Välj butik",
+        "PLACES_PLACEHOLDER": "Välj platser",
+        "ITEMS_PLACEHOLDER": "Välj banners",
+        "CONDITIONS": "Publiceringsvillkor",
+        "BROWSE": "Bläddra"
+      },
+      "CONTENT": {
+        "ITEMS_TITLE": "Banners",
+        "PLACES_TITLE": "Platser",
+        "ITEMS_ROOT": "Banners",
+        "PLACES_ROOT": "Platser",
+        "ADD_PLACES_TITLE": "Lägg till platser",
+        "ADD_ITEMS_TITLE": "Lägg till banners",
+        "PICK_HINT": "Klicka på en post för att lägga till den i placeringen, eller på en mapp för att öppna den",
+        "ADDED": "Tillagd",
+        "EMPTY": "Mappen är tom",
+        "COLUMNS": {
+          "NAME": "Namn",
+          "DESCRIPTION": "Beskrivning"
+        }
+      },
+      "CONTENT_ITEM": {
+        "NEW_TITLE": "Ny banner",
+        "NAME_PLACEHOLDER": "Ange bannerns namn",
+        "DESCRIPTION_PLACEHOLDER": "Ange beskrivning",
+        "PROPERTIES": "Egenskaper",
+        "NO_PROPERTIES": "Inga egenskaper har definierats för banners"
+      },
+      "CONTENT_PLACE": {
+        "NEW_TITLE": "Ny plats",
+        "NAME_PLACEHOLDER": "Ange platsens namn",
+        "DESCRIPTION_PLACEHOLDER": "Ange beskrivning",
+        "IMAGE": "Bild för platsen"
+      },
+      "CONTENT_FOLDER": {
+        "NEW_TITLE": "Ny mapp",
+        "NAME_PLACEHOLDER": "Ange mappnamn",
+        "DESCRIPTION_PLACEHOLDER": "Ange beskrivning"
+      }
+    }
+  }
+}

@@ -1,0 +1,265 @@
+{
+  "MARKETING": {
+    "MENU": {
+      "PROMOTIONS": "Promotions",
+      "DYNAMIC_CONTENT": "Banner"
+    },
+    "LIBRARY": {
+      "INTRO": "Banner legen fest, was angezeigt wird, Slots, wo im Onlineshop, und Platzierungen zeigen ein Banner in einem Slot auf einer Website an – für einen Zeitraum und eine Zielgruppe.",
+      "TABS": {
+        "BANNERS": "Banner",
+        "SLOTS": "Slots",
+        "PLACEMENTS": "Platzierungen"
+      },
+      "SEARCH_BANNERS": "Banner suchen",
+      "EMPTY_BANNERS": "Noch keine Banner",
+      "EMPTY_SLOTS": "Noch keine Slots",
+      "USED_ON": "Auf keiner Website verwendet | Auf {n} Website verwendet | Auf {n} Websites verwendet",
+      "ADD_BANNER": "Banner hinzufügen",
+      "ADD_SLOT": "Slot hinzufügen",
+      "FOLDERS": "Ordner",
+      "COLUMNS": {
+        "SLOT": "Slot",
+        "WHERE": "Ort",
+        "BANNERS": "Banner",
+        "PLACEMENT": "Platzierung",
+        "SITE": "Website",
+        "STATUS": "Status",
+        "STARTS": "Beginn",
+        "ENDS": "Ende"
+      },
+      "EMPTY_PLACEMENTS": "Noch keine Platzierungen",
+      "ADD_PLACEMENT": "Platzierung hinzufügen",
+      "STATUS": {
+        "SHOWING": "Wird angezeigt",
+        "SCHEDULED": "Geplant",
+        "ENDED": "Beendet",
+        "OFF": "Aus"
+      }
+    },
+    "UNKNOWN": "unbekannt",
+    "UNLIMITED": "Unbegrenzt",
+    "STATUS": {
+      "ACTIVE": "Aktiv",
+      "INACTIVE": "Inaktiv"
+    },
+    "PROMOTION_STATUS": {
+      "ACTIVE": "Aktiv",
+      "UPCOMING": "Bevorstehend",
+      "ARCHIVED": "Archiviert",
+      "DEACTIVATED": "Deaktiviert",
+      "ALL": "Alle"
+    },
+    "ACTIONS": {
+      "ADD": "Hinzufügen",
+      "ADD_FOLDER": "Ordner hinzufügen",
+      "ADD_ITEM": "Banner hinzufügen",
+      "ADD_PLACE": "Slot hinzufügen",
+      "CLONE": "Klonen",
+      "COPY_ID": "ID kopieren",
+      "CREATE": "Erstellen",
+      "DELETE": "Löschen",
+      "IMPORT": "Importieren",
+      "MANAGE": "Verwalten",
+      "REFRESH": "Aktualisieren",
+      "RESET": "Zurücksetzen",
+      "SAVE": "Speichern"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Sie haben nicht gespeicherte Änderungen. Trotzdem schließen?",
+      "DELETE_PROMOTIONS": "{count} Promotion(s) löschen?",
+      "DELETE_COUPONS": "{count} Gutschein(e) löschen?",
+      "DELETE_PUBLICATIONS": "{count} Platzierung(en) löschen?",
+      "DELETE_CONTENT": "{count} ausgewählte Einträge löschen?",
+      "DELETE_NAMED": "„{name}“ löschen?",
+      "DELETE_FOLDER": "Ordner „{name}“ löschen?"
+    },
+    "VALIDATION": {
+      "REQUIRED": "Dieses Feld ist erforderlich",
+      "CODE_PATTERN": "Der Code enthält unzulässige Zeichen"
+    },
+    "WIDGETS": {
+      "COUPONS": "Gutscheine",
+      "USAGE": "Nutzungsverlauf"
+    },
+    "EXPRESSIONS": {
+      "ADD": "Hinzufügen",
+      "REMOVE": "Entfernen",
+      "EXCLUDING": "ausgenommen",
+      "EXCLUDE_CATEGORIES": "Kategorien",
+      "EXCLUDE_PRODUCTS": "Produkte"
+    },
+    "PAGES": {
+      "PROMOTIONS": {
+        "TITLE": "Promotions",
+        "EMPTY": "Keine Promotions gefunden",
+        "COLUMNS": {
+          "NAME": "Name",
+          "STATUS": "Status",
+          "COUPONS": "Gutscheine",
+          "START": "Startdatum",
+          "END": "Ablaufdatum",
+          "DESCRIPTION": "Beschreibung"
+        },
+        "FILTERS": {
+          "STATUS": "Status",
+          "STORE": "Geschäft"
+        },
+        "SAVED_FILTERS": {
+          "PLACEHOLDER": "Filter auswählen",
+          "EDIT": "Filter bearbeiten",
+          "NEW": "+ Neuer Filter"
+        }
+      },
+      "FILTER": {
+        "NEW_TITLE": "Neuer Filter",
+        "NAME": "Filtername",
+        "UNNAMED": "Unbenannter Filter",
+        "ALL": "Alle",
+        "APPLY": "Filter anwenden"
+      },
+      "PROMOTION": {
+        "TITLE": "Promotion",
+        "NEW_TITLE": "Neue Promotion",
+        "CONDITIONS": "Bedingungen und Belohnungen",
+        "LOCALIZATION": "Texte im Onlineshop",
+        "EXCLUSIVITY": {
+          "COMBINED": "Mit anderen Promotions kombinierbar",
+          "EXCLUSIVE": "Exklusiv (nicht kombinierbar)"
+        },
+        "FIELDS": {
+          "NAME": "Name der Promotion",
+          "NAME_PLACEHOLDER": "Namen der Promotion eingeben",
+          "NAME_HINT": "Interner Name, wird im Admin-Bereich angezeigt",
+          "ACTIVE": "Aktiv",
+          "PUBLIC": "Öffentlich (im Onlineshop sichtbar)",
+          "START": "Startdatum",
+          "START_HINT": "Die Promotion gilt ab diesem Datum",
+          "END": "Ablaufdatum",
+          "END_HINT": "Nach diesem Datum gilt die Promotion nicht mehr",
+          "STORES": "Geschäfte",
+          "STORES_PLACEHOLDER": "Alle Geschäfte",
+          "STORES_HINT": "Leer lassen, um sie in allen Geschäften anzuwenden",
+          "EXCLUSIVITY": "Kombinierbarkeit",
+          "EXCLUSIVITY_HINT": "Ob andere Promotions zusammen mit dieser angewendet werden können",
+          "PRIORITY": "Priorität",
+          "PRIORITY_HINT": "Promotions mit höherer Priorität werden zuerst angewendet",
+          "COMBINE_WITH_SELF": "Mit sich selbst kombinieren",
+          "COMBINE_WITH_SELF_HINT": "Mehrere Gutscheine dieser Promotion können auf eine Bestellung angewendet werden",
+          "DESCRIPTION": "Beschreibung",
+          "DESCRIPTION_PLACEHOLDER": "Beschreibung eingeben",
+          "LANGUAGE": "Sprache",
+          "LABEL": "Bezeichnung",
+          "LABEL_PLACEHOLDER": "Kurze Bezeichnung, z. B. ein Badge-Text",
+          "DISPLAY_NAME": "Anzeigename",
+          "DISPLAY_NAME_PLACEHOLDER": "Für Kunden angezeigter Name",
+          "LOCALIZED_DESCRIPTION": "Beschreibung für Kunden",
+          "LOCALIZED_DESCRIPTION_PLACEHOLDER": "Für Kunden angezeigte Beschreibung"
+        }
+      },
+      "COUPONS": {
+        "SEARCH": "Nach Code suchen",
+        "EMPTY": "Keine Gutscheine",
+        "COLUMNS": {
+          "CODE": "Code",
+          "USED": "Verwendungen",
+          "MAX_USES": "Max. Verwendungen",
+          "EXPIRES": "Läuft ab"
+        }
+      },
+      "COUPON": {
+        "NEW_TITLE": "Neuer Gutschein",
+        "FIELDS": {
+          "CODE": "Gutscheincode",
+          "CODE_PLACEHOLDER": "Code eingeben",
+          "CODE_HINT": "Der Code, den Kunden beim Bezahlen eingeben",
+          "EXPIRATION": "Ablaufdatum",
+          "EXPIRATION_HINT": "Nach diesem Datum kann der Gutschein nicht mehr verwendet werden",
+          "MAX_USES": "Maximale Nutzungsanzahl",
+          "MAX_USES_HINT": "0 = unbegrenzt",
+          "MAX_PER_USER": "Maximale Nutzungen pro Kunde",
+          "MAX_PER_USER_HINT": "0 = unbegrenzt",
+          "MEMBER": "Kunde oder Organisation",
+          "MEMBER_PLACEHOLDER": "Alle"
+        }
+      },
+      "IMPORT": {
+        "TITLE": "Gutscheine importieren",
+        "DELIMITER": "Spaltentrennzeichen",
+        "DELIMITER_PLACEHOLDER": "Trennzeichen auswählen",
+        "DELIMITERS": {
+          "SPACE": "Leerzeichen",
+          "COMMA": "Komma",
+          "SEMICOLON": "Semikolon",
+          "TAB": "Tabulator"
+        },
+        "FILE": "CSV-Datei ohne Kopfzeile: Code, max. Verwendungen, Kunden-ID",
+        "UPLOADED": "Hochgeladene Datei",
+        "START": "Import starten",
+        "PROGRESS": "Importfortschritt",
+        "PROCESSED": "{processed} von {total} verarbeitet",
+        "FINISHED": "Abgeschlossen"
+      },
+      "USAGE": {
+        "EMPTY": "Die Promotion wurde noch in keiner Bestellung verwendet",
+        "COLUMNS": {
+          "NUMBER": "Bestellnummer",
+          "CUSTOMER": "Kunde",
+          "STATUS": "Status",
+          "CREATED": "Erstellt",
+          "TOTAL": "Gesamt"
+        }
+      },
+      "PUBLICATIONS": {
+        "COLUMNS": {
+          "NAME": "Name",
+          "STORE": "Website"
+        }
+      },
+      "PUBLICATION": {
+        "TITLE": "Platzierung",
+        "NEW_TITLE": "Neue Platzierung",
+        "NAME_PLACEHOLDER": "Namen der Platzierung eingeben",
+        "DESCRIPTION_PLACEHOLDER": "Beschreibung eingeben",
+        "STORE_PLACEHOLDER": "Geschäft auswählen",
+        "PLACES_PLACEHOLDER": "Slots auswählen",
+        "ITEMS_PLACEHOLDER": "Banner auswählen",
+        "CONDITIONS": "Veröffentlichungsbedingungen",
+        "BROWSE": "Durchsuchen"
+      },
+      "CONTENT": {
+        "ITEMS_TITLE": "Banner",
+        "PLACES_TITLE": "Slots",
+        "ITEMS_ROOT": "Banner",
+        "PLACES_ROOT": "Slots",
+        "ADD_PLACES_TITLE": "Slots hinzufügen",
+        "ADD_ITEMS_TITLE": "Banner hinzufügen",
+        "PICK_HINT": "Klicken Sie auf einen Eintrag, um ihn der Platzierung hinzuzufügen, oder auf einen Ordner, um ihn zu öffnen",
+        "ADDED": "Hinzugefügt",
+        "EMPTY": "Dieser Ordner ist leer",
+        "COLUMNS": {
+          "NAME": "Name",
+          "DESCRIPTION": "Beschreibung"
+        }
+      },
+      "CONTENT_ITEM": {
+        "NEW_TITLE": "Neues Banner",
+        "NAME_PLACEHOLDER": "Namen des Banners eingeben",
+        "DESCRIPTION_PLACEHOLDER": "Beschreibung eingeben",
+        "PROPERTIES": "Eigenschaften",
+        "NO_PROPERTIES": "Für Banner sind keine Eigenschaften definiert"
+      },
+      "CONTENT_PLACE": {
+        "NEW_TITLE": "Neuer Slot",
+        "NAME_PLACEHOLDER": "Namen des Slots eingeben",
+        "DESCRIPTION_PLACEHOLDER": "Beschreibung eingeben",
+        "IMAGE": "Slot-Bild"
+      },
+      "CONTENT_FOLDER": {
+        "NEW_TITLE": "Neuer Ordner",
+        "NAME_PLACEHOLDER": "Ordnernamen eingeben",
+        "DESCRIPTION_PLACEHOLDER": "Beschreibung eingeben"
+      }
+    }
+  }
+}
