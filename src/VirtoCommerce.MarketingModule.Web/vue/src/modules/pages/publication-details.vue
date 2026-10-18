@@ -269,7 +269,7 @@ onMounted(async () => {
 
 <style lang="scss">
 .mk-browse {
-  margin-left: 8px;
+  margin-inline-start: 8px;
   white-space: nowrap;
 }
 </style>

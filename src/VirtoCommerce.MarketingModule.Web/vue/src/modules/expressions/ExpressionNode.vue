@@ -188,8 +188,8 @@ const keyOf = (o: object) => keys.get(o) ?? (keys.set(o, ++seq), seq);
 
   &__children {
     margin: 8px 0 4px 6px;
-    padding-left: 14px;
-    border-left: 2px solid var(--neutrals-200);
+    padding-inline-start: 14px;
+    border-inline-start: 2px solid var(--neutrals-200);
     display: flex;
     flex-direction: column;
     gap: 8px;
