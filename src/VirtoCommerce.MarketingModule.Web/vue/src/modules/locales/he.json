@@ -1,0 +1,440 @@
+{
+  "MARKETING": {
+    "MENU": {
+      "PROMOTIONS": "מבצעים",
+      "DYNAMIC_CONTENT": "באנרים"
+    },
+    "LIBRARY": {
+      "INTRO": "באנרים הם מה שמוצג, משבצות הן המקום בחזית החנות, ושיבוצים מציבים באנר במשבצת באתר, לזמן מוגדר ולקהל מוגדר.",
+      "TABS": {
+        "BANNERS": "באנרים",
+        "SLOTS": "משבצות",
+        "PLACEMENTS": "שיבוצים"
+      },
+      "SEARCH_BANNERS": "חיפוש באנרים",
+      "EMPTY_BANNERS": "אין עדיין באנרים",
+      "EMPTY_SLOTS": "אין עדיין משבצות",
+      "USED_ON": "לא בשימוש באף אתר | בשימוש באתרים: {n} | בשימוש באתרים: {n}",
+      "ADD_BANNER": "הוספת באנר",
+      "ADD_SLOT": "הוספת משבצת",
+      "FOLDERS": "תיקיות",
+      "COLUMNS": {
+        "SLOT": "משבצת",
+        "WHERE": "מיקום",
+        "BANNERS": "באנרים",
+        "PLACEMENT": "שיבוץ",
+        "SITE": "אתר",
+        "STATUS": "סטטוס",
+        "STARTS": "התחלה",
+        "ENDS": "סיום"
+      },
+      "EMPTY_PLACEMENTS": "אין עדיין שיבוצים",
+      "ADD_PLACEMENT": "הוספת שיבוץ",
+      "STATUS": {
+        "SHOWING": "מוצג",
+        "SCHEDULED": "מתוזמן",
+        "ENDED": "הסתיים",
+        "OFF": "כבוי"
+      }
+    },
+    "UNKNOWN": "לא ידוע",
+    "UNLIMITED": "ללא הגבלה",
+    "STATUS": {
+      "ACTIVE": "פעיל",
+      "INACTIVE": "לא פעיל"
+    },
+    "PROMOTION_STATUS": {
+      "ACTIVE": "פעיל",
+      "UPCOMING": "עתידי",
+      "ARCHIVED": "בארכיון",
+      "DEACTIVATED": "מושבת",
+      "ALL": "הכול"
+    },
+    "ACTIONS": {
+      "ADD": "הוספה",
+      "ADD_FOLDER": "הוספת תיקייה",
+      "ADD_ITEM": "הוספת באנר",
+      "ADD_PLACE": "הוספת משבצת",
+      "CLONE": "שכפול",
+      "COPY_ID": "העתקת מזהה",
+      "CREATE": "יצירה",
+      "DELETE": "מחיקה",
+      "IMPORT": "ייבוא",
+      "MANAGE": "ניהול",
+      "REFRESH": "רענון",
+      "RESET": "איפוס",
+      "SAVE": "שמירה"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "יש שינויים שלא נשמרו. האם לסגור בכל זאת?",
+      "DELETE_PROMOTIONS": "האם למחוק את המבצעים שנבחרו ({count})?",
+      "DELETE_COUPONS": "האם למחוק את הקופונים שנבחרו ({count})?",
+      "DELETE_PUBLICATIONS": "האם למחוק את השיבוצים שנבחרו ({count})?",
+      "DELETE_CONTENT": "האם למחוק את הרשומות שנבחרו ({count})?",
+      "DELETE_NAMED": "האם למחוק את \"{name}\"?",
+      "DELETE_FOLDER": "האם למחוק את התיקייה \"{name}\"?"
+    },
+    "VALIDATION": {
+      "REQUIRED": "זהו שדה חובה",
+      "CODE_PATTERN": "הקוד מכיל תווים שאינם מותרים"
+    },
+    "WIDGETS": {
+      "COUPONS": "קופונים",
+      "USAGE": "היסטוריית שימוש"
+    },
+    "EXPRESSIONS": {
+      "ADD": "הוספה",
+      "REMOVE": "הסרה",
+      "EXCLUDING": "למעט",
+      "EXCLUDE_CATEGORIES": "קטגוריות",
+      "EXCLUDE_PRODUCTS": "מוצרים",
+      "ADD_USER_GROUP": "הוספת קבוצת משתמשים",
+      "ADD_CONDITION": "הוספת תנאי",
+      "ADD_REWARD": "הוספת הטבה",
+      "NO_CRITERION": "למבצע צריך להיות לפחות קריטריון זכאות אחד",
+      "NO_REWARD": "למבצע צריכה להיות לפחות הטבה אחת",
+      "GROUPS": {
+        "SHOPPER_PROFILE": "פרופיל הקונה",
+        "CATALOG": "קטלוג",
+        "BROWSE_BEHAVIOR": "התנהגות גלישה",
+        "LOCATION": "מיקום"
+      },
+      "NAMES": {
+        "EVERYONE": "כולם",
+        "FIRST_TIME_CUSTOMERS": "לקוחות בקנייה ראשונה",
+        "REGISTERED_USERS": "משתמשים רשומים",
+        "USER_GROUP_CONTAINS": "קבוצת המשתמשים מכילה ...",
+        "USER_GROUP_IS": "קבוצת המשתמשים היא ...",
+        "SPECIFIC_CATEGORY": "קטגוריה מסוימת",
+        "SPECIFIC_PRODUCT": "מוצר מסוים",
+        "CODE_CONTAINS": "קוד המוצר מכיל...",
+        "CURRENCY_IS": "המטבע הוא...",
+        "IN_STOCK_QUANTITY": "הכמות במלאי היא...",
+        "FULL_PRICE_ONLY": "החלה רק על פריטים במחיר מלא, לא על פריטים מוזלים",
+        "ITEMS_IN_CART": "מספר הפריטים בעגלת הקניות",
+        "CATEGORY_ITEMS_IN_CART": "מספר הפריטים מקטגוריה בעגלת הקניות",
+        "PRODUCT_ITEMS_IN_CART": "מספר הפריטים של מוצר מסוים בעגלת הקניות",
+        "PAYMENT_IS": "אמצעי התשלום הוא...",
+        "SHIPPING_IS": "שיטת המשלוח היא...",
+        "CART_SUBTOTAL": "סכום הביניים של העגלה הוא...",
+        "CART_ABS_OFF": "הנחה של $... מסכום הביניים של העגלה",
+        "CART_REL_OFF": "הנחה של ...% מסכום הביניים של העגלה, עד $...",
+        "FREE_ITEMS": "... פריטים חינם של המוצר ...",
+        "ITEM_ABS_OFF": "הנחה של $...",
+        "ITEM_ABS_OFF_FOR_NUM": "הנחה של $... על ... פריטים של מוצר מסוים",
+        "ITEM_REL_OFF": "הנחה של ...% על המוצר ..., עד $...",
+        "ITEM_REL_OFF_FOR_NUM": "הנחה של ...% על ... פריטים של מוצר מסוים, עד $...",
+        "GIFT": "... פריטים של המוצר ... כמתנה",
+        "SHIPPING_ABS_OFF": "הנחה של $... על משלוח בשיטה ...",
+        "SHIPPING_REL_OFF": "הנחה של ...% על משלוח בשיטה ..., עד $...",
+        "PAYMENT_ABS_OFF": "הנחה של $... על שימוש באמצעי התשלום ...",
+        "PAYMENT_REL_OFF": "הנחה של ...% על שימוש באמצעי התשלום ..., עד $...",
+        "EVERY_NTH_OFF": "הנחה של ...% על ... מכל ... פריטים של מוצר מסוים",
+        "EVERY_NTH_OTHER_OFF": "הנחה של ...% על ... פריטים של מוצר מסוים לכל ... פריטים של מוצר אחר",
+        "TAGS_CONTAIN": "התגיות מכילות ...",
+        "SEARCHED_PHRASE": "ביטוי החיפוש של הקונה בחנות: ...",
+        "LANGUAGE_IS": "שפת המשתמש היא...",
+        "AGE_IS": "גיל הקונה ...",
+        "GENDER_IS": "מגדר הקונה הוא ...",
+        "TIME_ZONE": "אזור זמן",
+        "ZIP_CODE": "מיקוד",
+        "CITY": "עיר",
+        "COUNTRY": "מדינה",
+        "STATE": "אזור/מדינה/מחוז"
+      },
+      "TEXT": {
+        "CUSTOMERS_MATCHING": "לקוחות שעבורם",
+        "OF_FOLLOWING_CRITERIA": "מהקריטריונים הבאים מתקיים:",
+        "EVERYONE": "כולם",
+        "FIRST_TIME_BUYER": "לקוח בקנייה ראשונה",
+        "REGISTERED_USER": "משתמש רשום",
+        "USER_GROUP_CONTAINS": "קבוצת המשתמשים מכילה",
+        "USER_GROUP_IS": "קבוצת המשתמשים היא",
+        "IF": "אם",
+        "CATALOG_CONDITIONS_ARE": "מתנאי הקטלוג האלה",
+        "CATEGORY": "קטגוריה:",
+        "PRODUCT": "מוצר:",
+        "ALL_VARIANTS": "החלה על כל הווריאציות של המוצר:",
+        "CODE_CONTAINS": "קוד המוצר מכיל",
+        "CURRENCY_IS": "המטבע הוא",
+        "IN_STOCK_QUANTITY": "הכמות במלאי היא",
+        "ITEMS": "פריטים",
+        "FULL_PRICE_ONLY": "החלה רק על פריטים במחיר מלא, לא על פריטים מוזלים",
+        "CART_CONDITIONS_ARE": "מתנאי העגלה האלה",
+        "ITEMS_IN_CART": "פריטים נמצאים בעגלת הקניות",
+        "ITEMS_FROM_CATEGORY": "פריטים מהקטגוריה:",
+        "ARE_IN_CART": "נמצאים בעגלת הקניות",
+        "SPECIFIC_PRODUCT_ITEMS": "פריטים של המוצר:",
+        "PAYMENT_IS": "אמצעי התשלום הוא",
+        "SHIPPING_IS": "שיטת המשלוח היא",
+        "CART_SUBTOTAL_IS": "סכום הביניים של העגלה הוא",
+        "GET_REWARDS": "קבלת ההטבות הבאות:",
+        "CURRENCY": "$",
+        "OFF_CART_SUBTOTAL": "הנחה מסכום הביניים של העגלה",
+        "PCT_OFF_CART_SUBTOTAL_MAX": "% הנחה מסכום הביניים של העגלה, עד $",
+        "FREE_ITEMS_OF_PRODUCT": "פריטים חינם של המוצר:",
+        "OFF_FOR": "הנחה על",
+        "ITEMS_OF_PRODUCT": "פריטים של המוצר:",
+        "COMMA": ",",
+        "AMOUNT_PER_ITEM": "הסכום לכל פריט",
+        "PCT_OFF_FOR": "% הנחה על",
+        "NO_MORE_THAN_AMOUNT": ", עד $",
+        "PCT_OFF_MAX": "% הנחה, עד $",
+        "FOR_ITEMS": "על",
+        "AS_GIFT": "כמתנה. פרטים:",
+        "OFF_FOR_SHIPPING": "הנחה על משלוח בשיטה:",
+        "PCT_OFF_FOR_SHIPPING": "% הנחה על משלוח בשיטה:",
+        "OFF_FOR_PAYMENT": "הנחה על שימוש באמצעי התשלום:",
+        "PCT_OFF_FOR_PAYMENT": "% הנחה על שימוש באמצעי התשלום:",
+        "FOR": "עבור",
+        "OF_EVERY": "מכל",
+        "RECEIVE": "תינתן הנחה של",
+        "PCT_OFF_MAX_ITEMS": "%, עד",
+        "ITEMS_AND_MAX_AMOUNT": "פריטים ועד $",
+        "CONDITIONS_ARE_TRUE": "מהתנאים האלה מתקיים",
+        "TAGS_CONTAIN": "התגיות מכילות",
+        "SEARCHED_PHRASE": "ביטוי החיפוש של הקונה:",
+        "LANGUAGE_IS": "שפת המשתמש היא",
+        "AGE_IS": "גיל הקונה",
+        "GENDER_IS": "מגדר הקונה הוא",
+        "FROM_TIME_ZONE": "גלישה מאזור זמן",
+        "FROM_ZIP_CODE": "גלישה ממיקום שהמיקוד שלו",
+        "FROM_CITY": "גלישה מהעיר:",
+        "FROM_COUNTRY": "גלישה מהמדינה:",
+        "FROM_STATE": "גלישה מהמדינה או המחוז:",
+        "AND": "ל-"
+      },
+      "OPTIONS": {
+        "ALL": "כל אחד",
+        "ANY": "אחד לפחות",
+        "TRUE": "מתקיים",
+        "FALSE": "לא מתקיים",
+        "ROUND": "עיגול",
+        "DONT_ROUND": "ללא עיגול",
+        "YES": "כן",
+        "NO": "לא",
+        "EXACTLY": "בדיוק",
+        "AT_LEAST": "לפחות",
+        "EXACTLY_OR_LESS": "לכל היותר",
+        "BETWEEN": "בין",
+        "ANYTHING_BUT": "שונה מ-",
+        "GREATER_THAN": "גדול מ-",
+        "GREATER_OR_EQUAL": "גדול או שווה ל-",
+        "LESS_THAN": "קטן מ-",
+        "LESS_OR_EQUAL": "קטן או שווה ל-",
+        "CONTAINING": "מכיל",
+        "NOT_CONTAINING": "לא מכיל",
+        "BEING_EXACTLY": "זהה ל-",
+        "BEING_ANYTHING_BUT": "שונה מ-",
+        "FEMALE": "נקבה",
+        "MALE": "זכר"
+      },
+      "FIELDS": {
+        "NAME": "שם",
+        "MEASURE_UNIT": "יחידת מידה",
+        "IMAGE_URL": "URL של התמונה",
+        "DESCRIPTION": "תיאור",
+        "AMOUNT": "סכום",
+        "MAX_AMOUNT": "סכום מרבי",
+        "MAX_ITEMS": "מספר פריטים מרבי",
+        "QUANTITY": "כמות",
+        "NTH_QUANTITY": "פריטים בהנחה",
+        "EVERY_NTH": "מתוך כל",
+        "SUBTOTAL": "סכום ביניים",
+        "UPPER_VALUE": "ערך עליון",
+        "VALUE": "ערך"
+      },
+      "PLACEHOLDERS": {
+        "ENTER_GROUP": "יש להזין קבוצה",
+        "ENTER_CODE": "יש להזין קוד",
+        "ENTER_TAG": "יש להזין תגית",
+        "ENTER_NAME": "יש להזין שם",
+        "ENTER_MEASURE_UNIT": "יש לציין יחידת מידה",
+        "ENTER_URL": "יש להזין URL",
+        "ENTER_DESCRIPTION": "יש להזין תיאור",
+        "SELECT_CATEGORY": "יש לבחור קטגוריה",
+        "SELECT_PRODUCT": "יש לבחור מוצר",
+        "SELECT_PRODUCTS": "יש לבחור מוצרים",
+        "SELECT_CURRENCY": "יש לבחור מטבע",
+        "SELECT_SHIPPING_METHOD": "יש לבחור שיטת משלוח",
+        "SELECT_PAYMENT_METHOD": "יש לבחור אמצעי תשלום",
+        "SELECT_LANGUAGE": "יש לבחור שפה",
+        "SELECT_GROUPS": "יש לבחור קבוצות",
+        "SELECT_COUNTRY": "יש לבחור מדינה",
+        "SELECT_TIME_ZONE": "יש לבחור אזור זמן"
+      }
+    },
+    "PAGES": {
+      "PROMOTIONS": {
+        "TITLE": "מבצעים",
+        "EMPTY": "לא נמצאו מבצעים",
+        "COLUMNS": {
+          "NAME": "שם",
+          "STATUS": "סטטוס",
+          "COUPONS": "קופונים",
+          "START": "תאריך התחלה",
+          "END": "תאריך תפוגה",
+          "DESCRIPTION": "תיאור"
+        },
+        "FILTERS": {
+          "STATUS": "סטטוס",
+          "STORE": "חנות"
+        },
+        "SAVED_FILTERS": {
+          "PLACEHOLDER": "יש לבחור מסנן",
+          "EDIT": "עריכת מסנן",
+          "NEW": "+ מסנן חדש"
+        }
+      },
+      "FILTER": {
+        "NEW_TITLE": "מסנן חדש",
+        "NAME": "שם המסנן",
+        "UNNAMED": "מסנן ללא שם",
+        "ALL": "הכול",
+        "APPLY": "החלת מסנן"
+      },
+      "PROMOTION": {
+        "TITLE": "מבצע",
+        "NEW_TITLE": "מבצע חדש",
+        "CONDITIONS": "תנאים והטבות",
+        "LOCALIZATION": "טקסטים בחזית החנות",
+        "EXCLUSIVITY": {
+          "COMBINED": "ניתן לשילוב עם מבצעים אחרים",
+          "EXCLUSIVE": "בלעדי (לא ניתן לשילוב)"
+        },
+        "FIELDS": {
+          "NAME": "שם המבצע",
+          "NAME_PLACEHOLDER": "יש להזין שם מבצע",
+          "NAME_HINT": "שם פנימי, מוצג בממשק הניהול",
+          "ACTIVE": "פעיל",
+          "PUBLIC": "ציבורי (גלוי בחזית החנות)",
+          "START": "תאריך התחלה",
+          "START_HINT": "המבצע מתחיל לפעול בתאריך זה",
+          "END": "תאריך תפוגה",
+          "END_HINT": "המבצע מפסיק לפעול אחרי תאריך זה",
+          "STORES": "חנויות",
+          "STORES_PLACEHOLDER": "כל החנויות",
+          "STORES_HINT": "יש להשאיר ריק כדי להחיל בכל החנויות",
+          "EXCLUSIVITY": "שילוב",
+          "EXCLUSIVITY_HINT": "האם מבצעים אחרים יכולים לחול יחד עם מבצע זה",
+          "PRIORITY": "עדיפות",
+          "PRIORITY_HINT": "מבצעים בעדיפות גבוהה יותר מוחלים ראשונים",
+          "COMBINE_WITH_SELF": "שילוב עם עצמו",
+          "COMBINE_WITH_SELF_HINT": "כמה קופונים של מבצע זה יכולים לחול על הזמנה אחת",
+          "DESCRIPTION": "תיאור",
+          "DESCRIPTION_PLACEHOLDER": "יש להזין תיאור",
+          "LANGUAGE": "שפה",
+          "LABEL": "תווית",
+          "LABEL_PLACEHOLDER": "תווית קצרה, למשל טקסט של תג",
+          "DISPLAY_NAME": "שם תצוגה",
+          "DISPLAY_NAME_PLACEHOLDER": "השם שמוצג ללקוחות",
+          "LOCALIZED_DESCRIPTION": "תיאור ללקוחות",
+          "LOCALIZED_DESCRIPTION_PLACEHOLDER": "התיאור שמוצג ללקוחות"
+        }
+      },
+      "COUPONS": {
+        "SEARCH": "חיפוש לפי קוד",
+        "EMPTY": "אין קופונים",
+        "COLUMNS": {
+          "CODE": "קוד",
+          "USED": "מספר שימושים",
+          "MAX_USES": "שימושים מרביים",
+          "EXPIRES": "תפוגה"
+        }
+      },
+      "COUPON": {
+        "NEW_TITLE": "קופון חדש",
+        "FIELDS": {
+          "CODE": "קוד קופון",
+          "CODE_PLACEHOLDER": "יש להזין קוד",
+          "CODE_HINT": "הקוד שהלקוחות מזינים בקופה",
+          "EXPIRATION": "תאריך תפוגה",
+          "EXPIRATION_HINT": "לא ניתן להשתמש בקופון אחרי תאריך זה",
+          "MAX_USES": "מספר שימושים מרבי",
+          "MAX_USES_HINT": "0 = ללא הגבלה",
+          "MAX_PER_USER": "מספר שימושים מרבי ללקוח",
+          "MAX_PER_USER_HINT": "0 = ללא הגבלה",
+          "MEMBER": "לקוח או ארגון",
+          "MEMBER_PLACEHOLDER": "כל אחד"
+        }
+      },
+      "IMPORT": {
+        "TITLE": "ייבוא קופונים",
+        "DELIMITER": "מפריד עמודות",
+        "DELIMITER_PLACEHOLDER": "יש לבחור מפריד",
+        "DELIMITERS": {
+          "SPACE": "רווח",
+          "COMMA": "פסיק",
+          "SEMICOLON": "נקודה-פסיק",
+          "TAB": "טאב"
+        },
+        "FILE": "קובץ CSV ללא שורת כותרת: קוד, מספר שימושים מרבי, מזהה לקוח",
+        "UPLOADED": "הקובץ שהועלה",
+        "START": "התחלת ייבוא",
+        "PROGRESS": "התקדמות הייבוא",
+        "PROCESSED": "עובדו {processed} מתוך {total}",
+        "FINISHED": "הסתיים"
+      },
+      "USAGE": {
+        "EMPTY": "המבצע לא נוצל בהזמנות",
+        "COLUMNS": {
+          "NUMBER": "מספר הזמנה",
+          "CUSTOMER": "לקוח",
+          "STATUS": "סטטוס",
+          "CREATED": "נוצרה",
+          "TOTAL": "סה״כ"
+        }
+      },
+      "PUBLICATIONS": {
+        "COLUMNS": {
+          "NAME": "שם",
+          "STORE": "אתר"
+        }
+      },
+      "PUBLICATION": {
+        "TITLE": "שיבוץ",
+        "NEW_TITLE": "שיבוץ חדש",
+        "NAME_PLACEHOLDER": "יש להזין שם שיבוץ",
+        "DESCRIPTION_PLACEHOLDER": "יש להזין תיאור",
+        "STORE_PLACEHOLDER": "יש לבחור חנות",
+        "PLACES_PLACEHOLDER": "יש לבחור משבצות",
+        "ITEMS_PLACEHOLDER": "יש לבחור באנרים",
+        "CONDITIONS": "תנאי פרסום",
+        "BROWSE": "עיון"
+      },
+      "CONTENT": {
+        "ITEMS_TITLE": "באנרים",
+        "PLACES_TITLE": "משבצות",
+        "ITEMS_ROOT": "באנרים",
+        "PLACES_ROOT": "משבצות",
+        "ADD_PLACES_TITLE": "הוספת משבצות",
+        "ADD_ITEMS_TITLE": "הוספת באנרים",
+        "PICK_HINT": "יש ללחוץ על רשומה כדי להוסיף אותה לשיבוץ, או על תיקייה כדי לפתוח אותה",
+        "ADDED": "נוסף",
+        "EMPTY": "התיקייה ריקה",
+        "COLUMNS": {
+          "NAME": "שם",
+          "DESCRIPTION": "תיאור"
+        }
+      },
+      "CONTENT_ITEM": {
+        "NEW_TITLE": "באנר חדש",
+        "NAME_PLACEHOLDER": "יש להזין שם באנר",
+        "DESCRIPTION_PLACEHOLDER": "יש להזין תיאור",
+        "PROPERTIES": "מאפיינים",
+        "NO_PROPERTIES": "לא הוגדרו מאפיינים לבאנרים"
+      },
+      "CONTENT_PLACE": {
+        "NEW_TITLE": "משבצת חדשה",
+        "NAME_PLACEHOLDER": "יש להזין שם משבצת",
+        "DESCRIPTION_PLACEHOLDER": "יש להזין תיאור",
+        "IMAGE": "תמונת המשבצת"
+      },
+      "CONTENT_FOLDER": {
+        "NEW_TITLE": "תיקייה חדשה",
+        "NAME_PLACEHOLDER": "יש להזין שם תיקייה",
+        "DESCRIPTION_PLACEHOLDER": "יש להזין תיאור"
+      }
+    }
+  }
+}
