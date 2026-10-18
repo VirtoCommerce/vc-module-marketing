@@ -13,7 +13,7 @@
           <span
             v-if="typeof part === 'string'"
             class="mk-expr__text"
-            >{{ part }}</span
+            >{{ $t(part) }}</span
           >
           <ExpressionField
             v-else
@@ -43,13 +43,13 @@
       <ExpressionField
         v-if="Array.isArray(node.excludingCategoryIds)"
         :node="node"
-        :part="{ kind: 'ids', path: 'excludingCategoryIds', of: 'category', placeholder: $t('MARKETING.EXPRESSIONS.EXCLUDE_CATEGORIES') }"
+        :part="{ kind: 'ids', path: 'excludingCategoryIds', of: 'category', placeholder: 'MARKETING.EXPRESSIONS.EXCLUDE_CATEGORIES' }"
         :disabled="disabled"
       />
       <ExpressionField
         v-if="Array.isArray(node.excludingProductIds)"
         :node="node"
-        :part="{ kind: 'ids', path: 'excludingProductIds', of: 'product', placeholder: $t('MARKETING.EXPRESSIONS.EXCLUDE_PRODUCTS') }"
+        :part="{ kind: 'ids', path: 'excludingProductIds', of: 'product', placeholder: 'MARKETING.EXPRESSIONS.EXCLUDE_PRODUCTS' }"
         :disabled="disabled"
       />
     </div>
@@ -93,7 +93,7 @@
           size="sm"
           icon="lucide-plus"
           @click="toggle"
-          >{{ def.addLabel || $t("MARKETING.EXPRESSIONS.ADD") }}</VcButton
+          >{{ $t(def.addLabel || "MARKETING.EXPRESSIONS.ADD") }}</VcButton
         >
       </template>
     </VcDropdown>
@@ -102,6 +102,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import { VcButton, VcDropdown, VcHint } from "@vc-shell/framework/ui";
 import ExpressionField from "./ExpressionField.vue";
 import { defOf } from "./defs";
@@ -116,19 +117,21 @@ interface AddItem {
 defineOptions({ name: "ExpressionNode" });
 const props = defineProps<{ node: Node; depth?: number; removable?: boolean; disabled?: boolean }>();
 defineEmits<{ remove: [] }>();
+const { t } = useI18n({ useScope: "global" });
 
 const depth = computed(() => props.depth ?? 0);
 const def = computed(() => defOf(props.node));
 const children = computed(() => props.node.children ?? []);
 const hasExcluding = computed(() => Array.isArray(props.node.excludingCategoryIds) || Array.isArray(props.node.excludingProductIds));
-const error = computed(() => (def.value.requireChild && !children.value.length ? def.value.requireChild : undefined));
+const error = computed(() => (def.value.requireChild && !children.value.length ? t(def.value.requireChild) : undefined));
 
 // the "Add ..." menu lists the prototypes the API sends with the node (availableChildren), grouped where the editor groups them
 const addable = computed<AddItem[]>(() =>
   (props.node.availableChildren ?? [])
     .map((prototype) => {
       const d = defOf(prototype);
-      return { label: d.group ? `${d.group}: ${d.label}` : (d.label ?? String(prototype.id)), group: d.group, prototype };
+      const label = d.label ? t(d.label) : String(prototype.id);
+      return { label: d.group ? `${t(d.group)}: ${label}` : label, group: d.group, prototype };
     })
     .sort((a, b) => (a.group ? a.label.localeCompare(b.label) : 0)),
 );

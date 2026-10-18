@@ -5,7 +5,7 @@
     class="mk-field mk-field--num"
     size="small"
     :type="f.int ? 'integer' : 'number'"
-    :aria-label="f.path"
+    :aria-label="pathLabel(f.path)"
     :model-value="get(f.path) as number"
     :disabled="disabled"
     @update:model-value="(v) => set(f.path, toNumber(v))"
@@ -16,8 +16,8 @@
     <VcTextarea
       v-if="f.multiline"
       class="mk-field mk-field--row"
-      :label="f.label"
-      :placeholder="f.placeholder"
+      :label="tr(f.label)"
+      :placeholder="tr(f.placeholder)"
       :model-value="(get(f.path) as string) ?? ''"
       :disabled="disabled"
       @update:model-value="(v) => set(f.path, v)"
@@ -27,9 +27,9 @@
       class="mk-field"
       :class="f.label ? 'mk-field--row' : 'mk-field--text'"
       :size="f.label ? 'default' : 'small'"
-      :label="f.label"
-      :aria-label="f.label ? undefined : f.placeholder || f.path"
-      :placeholder="f.placeholder"
+      :label="tr(f.label)"
+      :aria-label="f.label ? undefined : tr(f.placeholder) || pathLabel(f.path)"
+      :placeholder="tr(f.placeholder)"
       :model-value="(get(f.path) as string) ?? ''"
       :disabled="disabled"
       @update:model-value="(v) => set(f.path, v)"
@@ -43,7 +43,7 @@
     size="small"
     :options="f.options"
     option-value="value"
-    option-label="label"
+    :option-label="optionLabel"
     :clearable="false"
     :model-value="f.bool ? String(!!get(f.path)) : (get(f.path) as string)"
     :disabled="disabled"
@@ -57,7 +57,7 @@
       size="small"
       :options="f.options ?? qtyCompare"
       option-value="value"
-      option-label="label"
+      :option-label="optionLabel"
       :clearable="false"
       :model-value="get('compareCondition') as string"
       :disabled="disabled"
@@ -67,18 +67,18 @@
       class="mk-field mk-field--num"
       size="small"
       :type="f.int ? 'integer' : 'number'"
-      :aria-label="f.path"
+      :aria-label="pathLabel(f.path)"
       :model-value="get(f.path) as number"
       :disabled="disabled"
       @update:model-value="(v) => set(f.path, toNumber(v))"
     />
     <template v-if="get('compareCondition') === 'Between'">
-      <span>and</span>
+      <span>{{ $t("MARKETING.EXPRESSIONS.TEXT.AND") }}</span>
       <VcInput
         class="mk-field mk-field--num"
         size="small"
         :type="f.int ? 'integer' : 'number'"
-        :aria-label="f.second"
+        :aria-label="pathLabel(f.second)"
         :model-value="get(f.second) as number"
         :disabled="disabled"
         @update:model-value="(v) => set(f.second, toNumber(v))"
@@ -97,7 +97,7 @@
     :options="lookupOptions"
     option-value="id"
     option-label="name"
-    :placeholder="lookupPlaceholders[f.source]"
+    :placeholder="$t(lookupPlaceholders[f.source])"
     :model-value="(get(f.path) as string | string[] | null) ?? (f.multiple ? [] : null)"
     :disabled="disabled"
     @update:model-value="(v) => set(f.path, f.multiple && !(v as string[])?.length ? null : (v ?? null))"
@@ -112,7 +112,7 @@
     :options="categoryOptions"
     option-value="id"
     option-label="name"
-    placeholder="select category"
+    :placeholder="$t('MARKETING.EXPRESSIONS.PLACEHOLDERS.SELECT_CATEGORY')"
     :model-value="(get(p('categoryId')) as string) ?? null"
     :disabled="disabled"
     @update:model-value="onCategory"
@@ -127,7 +127,7 @@
     :options="productOptions"
     option-value="id"
     :option-label="productLabel"
-    placeholder="select product"
+    :placeholder="$t('MARKETING.EXPRESSIONS.PLACEHOLDERS.SELECT_PRODUCT')"
     :model-value="(get(p('productId')) as string) ?? null"
     :disabled="disabled"
     @update:model-value="onProduct"
@@ -143,7 +143,7 @@
     :options="productsOptions"
     option-value="id"
     :option-label="productLabel"
-    placeholder="select products"
+    :placeholder="$t('MARKETING.EXPRESSIONS.PLACEHOLDERS.SELECT_PRODUCTS')"
     :model-value="productIds"
     :disabled="disabled"
     @update:model-value="onProducts"
@@ -159,7 +159,7 @@
     :options="idsOptions"
     option-value="id"
     :option-label="productLabel"
-    :placeholder="f.placeholder"
+    :placeholder="tr(f.placeholder)"
     :model-value="(get(f.path) as string[]) ?? []"
     :disabled="disabled"
     @update:model-value="(v) => set(f.path, (v as string[]) ?? [])"
@@ -168,6 +168,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import { VcInput, VcSelect, VcTextarea } from "@vc-shell/framework/ui";
 import { qtyCompare, type ChoiceOption, type Part } from "./defs";
 import { lookups, searchCategories, searchProducts, type LookupSource, type Option, type Page } from "../lookups";
@@ -176,6 +177,7 @@ type Node = Record<string, unknown>;
 type FieldPart = Exclude<Part, string>;
 
 const props = defineProps<{ node: Node; part: FieldPart; disabled?: boolean }>();
+const { t } = useI18n({ useScope: "global" });
 
 // the template reads the part through one loose shape (each v-if branch only touches its own kind's keys)
 type Loose = {
@@ -211,13 +213,37 @@ const prefix = () => ("prefix" in props.part && props.part.prefix) || "";
 const p = (name: string) => prefix() + name;
 
 const lookupPlaceholders: Record<LookupSource, string> = {
-  currencies: "select currency",
-  shippingMethods: "select shipping method",
-  paymentMethods: "select payment method",
-  languages: "select language",
-  memberGroups: "select groups",
-  countries: "select country",
-  timeZones: "select time zone",
+  currencies: "MARKETING.EXPRESSIONS.PLACEHOLDERS.SELECT_CURRENCY",
+  shippingMethods: "MARKETING.EXPRESSIONS.PLACEHOLDERS.SELECT_SHIPPING_METHOD",
+  paymentMethods: "MARKETING.EXPRESSIONS.PLACEHOLDERS.SELECT_PAYMENT_METHOD",
+  languages: "MARKETING.EXPRESSIONS.PLACEHOLDERS.SELECT_LANGUAGE",
+  memberGroups: "MARKETING.EXPRESSIONS.PLACEHOLDERS.SELECT_GROUPS",
+  countries: "MARKETING.EXPRESSIONS.PLACEHOLDERS.SELECT_COUNTRY",
+  timeZones: "MARKETING.EXPRESSIONS.PLACEHOLDERS.SELECT_TIME_ZONE",
+};
+
+// labels and placeholders are i18n keys (or, for nodes defs.ts doesn't know, property names shown as they are)
+const tr = (key?: string) => (key ? t(key) : undefined);
+const optionLabel = (x: ChoiceOption) => t(x.label);
+
+// accessible names of the inputs without a label or placeholder (the sentence around them says what they are)
+const pathLabels: Record<string, string> = {
+  amount: "AMOUNT",
+  maxLimit: "MAX_AMOUNT",
+  itemLimit: "MAX_ITEMS",
+  numItem: "QUANTITY",
+  quantity: "QUANTITY",
+  forNthQuantity: "NTH_QUANTITY",
+  inEveryNthQuantity: "EVERY_NTH",
+  subTotal: "SUBTOTAL",
+  numItemSecond: "UPPER_VALUE",
+  quantitySecond: "UPPER_VALUE",
+  subTotalSecond: "UPPER_VALUE",
+  value: "VALUE",
+};
+const pathLabel = (path: string) => {
+  const key = pathLabels[path.split(".").pop()!];
+  return key ? t(`MARKETING.EXPRESSIONS.FIELDS.${key}`) : path;
 };
 
 // the API stores non-nullable numbers: an emptied field is 0, as the AngularJS inputs required a value

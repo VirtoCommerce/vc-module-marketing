@@ -2,6 +2,7 @@
 // node's own properties (the API objects are edited in place and saved back untouched otherwise).
 // Ported from the AngularJS templates in Scripts/dynamicConditions/templates.html (marketing) and
 // vc-module-core Scripts/dynamicConditions/all-templates.html (shared geo/shopper conditions).
+// Every text below is an i18n key (MARKETING.EXPRESSIONS in locales/*.json); the components translate it.
 import type { LookupSource } from "../lookups";
 
 export interface ChoiceOption {
@@ -37,240 +38,247 @@ export interface Def {
   requireChild?: string;
 }
 
-const opts = (...pairs: [string, string][]): ChoiceOption[] => pairs.map(([value, label]) => ({ value, label }));
+const k = (key: string) => `MARKETING.EXPRESSIONS.${key}`;
+const opts = (...pairs: [string, string][]): ChoiceOption[] => pairs.map(([value, label]) => ({ value, label: k(`OPTIONS.${label}`) }));
 
-const allAny: Part = { kind: "choice", path: "all", bool: true, options: opts(["true", "all"], ["false", "any"]) };
+const allAny: Part = { kind: "choice", path: "all", bool: true, options: opts(["true", "ALL"], ["false", "ANY"]) };
 // "not" is shown as the truth value of the block: not=false reads "true"
-const trueFalse: Part = { kind: "choice", path: "not", bool: true, options: opts(["false", "true"], ["true", "false"]) };
+const trueFalse: Part = { kind: "choice", path: "not", bool: true, options: opts(["false", "TRUE"], ["true", "FALSE"]) };
 const round: Part = {
   kind: "choice",
   path: "roundAmountPerItem",
   bool: true,
-  options: opts(["true", "round"], ["false", "don't round"]),
+  options: opts(["true", "ROUND"], ["false", "DONT_ROUND"]),
 };
-const yesNo = (path: string): Part => ({ kind: "choice", path, bool: true, options: opts(["true", "yes"], ["false", "no"]) });
+const yesNo = (path: string): Part => ({ kind: "choice", path, bool: true, options: opts(["true", "YES"], ["false", "NO"]) });
 
 // ConditionInStockQuantity / cart item counts / subtotal
-export const qtyCompare = opts(["Exactly", "exactly"], ["AtLeast", "at least"], ["IsLessThanOrEqual", "exactly or less than"], ["Between", "between"]);
+export const qtyCompare = opts(["Exactly", "EXACTLY"], ["AtLeast", "AT_LEAST"], ["IsLessThanOrEqual", "EXACTLY_OR_LESS"], ["Between", "BETWEEN"]);
 // shopper age / time zone
 const valueCompare = opts(
   // the server's default for new age/time zone conditions; same as "greater than or equals"
-  ["AtLeast", "at least"],
-  ["IsMatching", "exactly"],
-  ["IsNotMatching", "anything but"],
-  ["IsGreaterThan", "greater than"],
-  ["IsGreaterThanOrEqual", "greater than or equals"],
-  ["IsLessThan", "less than"],
-  ["IsLessThanOrEqual", "less than or equals"],
+  ["AtLeast", "AT_LEAST"],
+  ["IsMatching", "EXACTLY"],
+  ["IsNotMatching", "ANYTHING_BUT"],
+  ["IsGreaterThan", "GREATER_THAN"],
+  ["IsGreaterThanOrEqual", "GREATER_OR_EQUAL"],
+  ["IsLessThan", "LESS_THAN"],
+  ["IsLessThanOrEqual", "LESS_OR_EQUAL"],
 );
 const match: Part = {
   kind: "choice",
   path: "matchCondition",
-  options: opts(["Contains", "containing"], ["NotContains", "not containing"], ["Matching", "being exactly"], ["NotMatching", "being anything but"]),
+  options: opts(["Contains", "CONTAINING"], ["NotContains", "NOT_CONTAINING"], ["Matching", "BEING_EXACTLY"], ["NotMatching", "BEING_ANYTHING_BUT"]),
 };
 
 const num = (path: string): Part => ({ kind: "number", path });
 const int = (path: string): Part => ({ kind: "number", path, int: true });
-const text = (path: string, placeholder?: string): Part => ({ kind: "text", path, placeholder });
+const text = (path: string, placeholder?: string): Part => ({ kind: "text", path, placeholder: placeholder && k(`PLACEHOLDERS.${placeholder}`) });
 const product: Part = { kind: "product" };
 const category: Part = { kind: "category" };
+// sentence fragments, "Add ..." menu names and groups
+const say = (key: string) => k(`TEXT.${key}`);
+const menu = (key: string) => k(`NAMES.${key}`);
+const group = (key: string) => k(`GROUPS.${key}`);
+const dollar = say("CURRENCY");
+const comma = say("COMMA");
 
 export const defs: Record<string, Def> = {
   // ---- promotion: customer
   BlockCustomerCondition: {
-    parts: ["Customers matching", allAny, "of the following criteria:"],
-    addLabel: "Add user group",
-    requireChild: "Your promotion must have at least one eligibility criterion",
+    parts: [say("CUSTOMERS_MATCHING"), allAny, say("OF_FOLLOWING_CRITERIA")],
+    addLabel: k("ADD_USER_GROUP"),
+    requireChild: k("NO_CRITERION"),
   },
-  ConditionIsEveryone: { label: "Everyone", parts: ["Everyone"] },
-  ConditionIsFirstTimeBuyer: { label: "First time customers", parts: ["First time buyer"] },
-  ConditionIsRegisteredUser: { label: "Registered users", parts: ["Registered user"] },
+  ConditionIsEveryone: { label: menu("EVERYONE"), parts: [say("EVERYONE")] },
+  ConditionIsFirstTimeBuyer: { label: menu("FIRST_TIME_CUSTOMERS"), parts: [say("FIRST_TIME_BUYER")] },
+  ConditionIsRegisteredUser: { label: menu("REGISTERED_USERS"), parts: [say("REGISTERED_USER")] },
   UserGroupsContainsCondition: {
-    label: "User group contains ...",
-    group: "Shopper profile",
-    parts: ["User group contains", text("group", "Enter group")],
+    label: menu("USER_GROUP_CONTAINS"),
+    group: group("SHOPPER_PROFILE"),
+    parts: [say("USER_GROUP_CONTAINS"), text("group", "ENTER_GROUP")],
   },
   UserGroupIsCondition: {
-    label: "User group is ...",
-    group: "Shopper profile",
-    parts: ["User group is", { kind: "lookup", path: "groups", source: "memberGroups", multiple: true }],
+    label: menu("USER_GROUP_IS"),
+    group: group("SHOPPER_PROFILE"),
+    parts: [say("USER_GROUP_IS"), { kind: "lookup", path: "groups", source: "memberGroups", multiple: true }],
   },
 
   // ---- promotion: catalog
-  BlockCatalogCondition: { parts: ["If", allAny, "of these catalog conditions are", trueFalse], addLabel: "Add condition" },
-  ConditionCategoryIs: { label: "Specific category", parts: ["Category:", category] },
+  BlockCatalogCondition: { parts: [say("IF"), allAny, say("CATALOG_CONDITIONS_ARE"), trueFalse], addLabel: k("ADD_CONDITION") },
+  ConditionCategoryIs: { label: menu("SPECIFIC_CATEGORY"), parts: [say("CATEGORY"), category] },
   ConditionEntryIs: {
-    label: "Specific product",
-    parts: ["Product:", { kind: "products" }, "Apply to all product variants:", yesNo("applyToAllVariants")],
+    label: menu("SPECIFIC_PRODUCT"),
+    parts: [say("PRODUCT"), { kind: "products" }, say("ALL_VARIANTS"), yesNo("applyToAllVariants")],
   },
-  ConditionCodeContains: { label: "Product code contains...", parts: ["Product code contains", text("keyword", "Enter code")] },
-  ConditionCurrencyIs: { label: "Currency is...", parts: ["Currency is", { kind: "lookup", path: "currency", source: "currencies" }] },
+  ConditionCodeContains: { label: menu("CODE_CONTAINS"), parts: [say("CODE_CONTAINS"), text("keyword", "ENTER_CODE")] },
+  ConditionCurrencyIs: { label: menu("CURRENCY_IS"), parts: [say("CURRENCY_IS"), { kind: "lookup", path: "currency", source: "currencies" }] },
   ConditionInStockQuantity: {
-    label: "In stock quantity is...",
-    parts: ["In stock quantity is", { kind: "range", path: "quantity", second: "quantitySecond", int: true }, "item(s)"],
+    label: menu("IN_STOCK_QUANTITY"),
+    parts: [say("IN_STOCK_QUANTITY"), { kind: "range", path: "quantity", second: "quantitySecond", int: true }, say("ITEMS")],
   },
   ConditionHasNoSalePrice: {
-    label: "Apply only to full price items and not sales items",
-    parts: ["Apply only to full price items and not sales items"],
+    label: menu("FULL_PRICE_ONLY"),
+    parts: [say("FULL_PRICE_ONLY")],
   },
 
   // ---- promotion: cart
-  BlockCartCondition: { parts: ["If", allAny, "of these cart conditions are", trueFalse], addLabel: "Add condition" },
+  BlockCartCondition: { parts: [say("IF"), allAny, say("CART_CONDITIONS_ARE"), trueFalse], addLabel: k("ADD_CONDITION") },
   ConditionAtNumItemsInCart: {
-    label: "Number of items in the shopping cart",
-    parts: [{ kind: "range", path: "numItem", second: "numItemSecond", int: true }, "items are in the shopping cart"],
+    label: menu("ITEMS_IN_CART"),
+    parts: [{ kind: "range", path: "numItem", second: "numItemSecond", int: true }, say("ITEMS_IN_CART")],
   },
   ConditionAtNumItemsInCategoryAreInCart: {
-    label: "Number of items out of a category in the shopping cart",
-    parts: [{ kind: "range", path: "numItem", second: "numItemSecond", int: true }, "items from this category:", category, "are in shopping cart"],
+    label: menu("CATEGORY_ITEMS_IN_CART"),
+    parts: [{ kind: "range", path: "numItem", second: "numItemSecond", int: true }, say("ITEMS_FROM_CATEGORY"), category, say("ARE_IN_CART")],
   },
   ConditionAtNumItemsOfEntryAreInCart: {
-    label: "Number of specific product items in the shopping cart",
-    parts: [{ kind: "range", path: "numItem", second: "numItemSecond", int: true }, "specific product items:", product, "are in the shopping cart"],
+    label: menu("PRODUCT_ITEMS_IN_CART"),
+    parts: [{ kind: "range", path: "numItem", second: "numItemSecond", int: true }, say("SPECIFIC_PRODUCT_ITEMS"), product, say("ARE_IN_CART")],
   },
-  PaymentIsCondition: { label: "Payment type is...", parts: ["Payment type is", { kind: "lookup", path: "paymentMethod", source: "paymentMethods" }] },
-  ShippingIsCondition: { label: "Shipping type is...", parts: ["Shipping type is", { kind: "lookup", path: "shippingMethod", source: "shippingMethods" }] },
+  PaymentIsCondition: { label: menu("PAYMENT_IS"), parts: [say("PAYMENT_IS"), { kind: "lookup", path: "paymentMethod", source: "paymentMethods" }] },
+  ShippingIsCondition: { label: menu("SHIPPING_IS"), parts: [say("SHIPPING_IS"), { kind: "lookup", path: "shippingMethod", source: "shippingMethods" }] },
   ConditionCartSubtotalLeast: {
-    label: "Cart subtotal is...",
-    parts: ["Cart subtotal is", { kind: "range", path: "subTotal", second: "subTotalSecond" }],
+    label: menu("CART_SUBTOTAL"),
+    parts: [say("CART_SUBTOTAL_IS"), { kind: "range", path: "subTotal", second: "subTotalSecond" }],
   },
 
   // ---- promotion: rewards
   BlockReward: {
-    parts: ["Get the following rewards:"],
-    addLabel: "Add reward",
-    requireChild: "Your promotion must have at least one reward",
+    parts: [say("GET_REWARDS")],
+    addLabel: k("ADD_REWARD"),
+    requireChild: k("NO_REWARD"),
   },
-  RewardCartGetOfAbsSubtotal: { label: "$... off cart subtotal", parts: ["$", num("amount"), "off cart subtotal"] },
+  RewardCartGetOfAbsSubtotal: { label: menu("CART_ABS_OFF"), parts: [dollar, num("amount"), say("OFF_CART_SUBTOTAL")] },
   RewardCartGetOfRelSubtotal: {
-    label: "...% off cart subtotal, no more than $...",
-    parts: [num("amount"), "% off cart subtotal, no more than $", num("maxLimit")],
+    label: menu("CART_REL_OFF"),
+    parts: [num("amount"), say("PCT_OFF_CART_SUBTOTAL_MAX"), num("maxLimit")],
   },
-  RewardItemGetFreeNumItemOfProduct: { label: "... free items of ... product", parts: [int("numItem"), "free items of this product:", product] },
-  RewardItemGetOfAbs: { label: "$... off", parts: ["$", num("amount"), "off for", product] },
+  RewardItemGetFreeNumItemOfProduct: { label: menu("FREE_ITEMS"), parts: [int("numItem"), say("FREE_ITEMS_OF_PRODUCT"), product] },
+  RewardItemGetOfAbs: { label: menu("ITEM_ABS_OFF"), parts: [dollar, num("amount"), say("OFF_FOR"), product] },
   RewardItemGetOfAbsForNum: {
-    label: "$... off for ... specific product items",
-    parts: ["$", num("amount"), "off for", int("numItem"), "items of this product:", product, ",", round, "amount per item"],
+    label: menu("ITEM_ABS_OFF_FOR_NUM"),
+    parts: [dollar, num("amount"), say("OFF_FOR"), int("numItem"), say("ITEMS_OF_PRODUCT"), product, comma, round, say("AMOUNT_PER_ITEM")],
   },
   RewardItemGetOfRel: {
-    label: "...% off for product ..., no more than $...",
-    parts: [num("amount"), "% off for", product, ", no more than $", num("maxLimit"), ",", round, "amount per item"],
+    label: menu("ITEM_REL_OFF"),
+    parts: [num("amount"), say("PCT_OFF_FOR"), product, say("NO_MORE_THAN_AMOUNT"), num("maxLimit"), comma, round, say("AMOUNT_PER_ITEM")],
   },
   RewardItemGetOfRelForNum: {
-    label: "...% off for ... specific product items, no more than $...",
-    parts: [num("amount"), "% off, no more than $", num("maxLimit"), "for", int("numItem"), "items of this product:", product, ",", round, "amount per item"],
+    label: menu("ITEM_REL_OFF_FOR_NUM"),
+    parts: [num("amount"), say("PCT_OFF_MAX"), num("maxLimit"), say("FOR_ITEMS"), int("numItem"), say("ITEMS_OF_PRODUCT"), product, comma, round, say("AMOUNT_PER_ITEM")],
   },
   RewardItemGiftNumItem: {
-    label: "... items of ... product as a gift",
+    label: menu("GIFT"),
     parts: [
       int("quantity"),
-      "items of this product:",
+      say("ITEMS_OF_PRODUCT"),
       product,
-      "as a gift. Details:",
-      { kind: "text", path: "name", label: "Name", placeholder: "Enter name" },
-      { kind: "text", path: "measureUnit", label: "Measurement unit", placeholder: "Specify measurement" },
-      { kind: "text", path: "imageUrl", label: "Image URL", placeholder: "Enter URL" },
-      { kind: "text", path: "description", label: "Description", placeholder: "Enter description", multiline: true },
+      say("AS_GIFT"),
+      { kind: "text", path: "name", label: k("FIELDS.NAME"), placeholder: k("PLACEHOLDERS.ENTER_NAME") },
+      { kind: "text", path: "measureUnit", label: k("FIELDS.MEASURE_UNIT"), placeholder: k("PLACEHOLDERS.ENTER_MEASURE_UNIT") },
+      { kind: "text", path: "imageUrl", label: k("FIELDS.IMAGE_URL"), placeholder: k("PLACEHOLDERS.ENTER_URL") },
+      { kind: "text", path: "description", label: k("FIELDS.DESCRIPTION"), placeholder: k("PLACEHOLDERS.ENTER_DESCRIPTION"), multiline: true },
     ],
   },
   RewardShippingGetOfAbsShippingMethod: {
-    label: "$... off for shipping at ...",
-    parts: ["$", num("amount"), "off for shipping of this type:", { kind: "lookup", path: "shippingMethod", source: "shippingMethods" }],
+    label: menu("SHIPPING_ABS_OFF"),
+    parts: [dollar, num("amount"), say("OFF_FOR_SHIPPING"), { kind: "lookup", path: "shippingMethod", source: "shippingMethods" }],
   },
   RewardShippingGetOfRelShippingMethod: {
-    label: "% off for shipping at ..., no more than $...",
-    parts: [num("amount"), "% off for shipping of this type:", { kind: "lookup", path: "shippingMethod", source: "shippingMethods" }, ", no more than $", num("maxLimit")],
+    label: menu("SHIPPING_REL_OFF"),
+    parts: [num("amount"), say("PCT_OFF_FOR_SHIPPING"), { kind: "lookup", path: "shippingMethod", source: "shippingMethods" }, say("NO_MORE_THAN_AMOUNT"), num("maxLimit")],
   },
   RewardPaymentGetOfAbs: {
-    label: "$... off for using ... payment method",
-    parts: ["$", num("amount"), "off for using this payment method:", { kind: "lookup", path: "paymentMethod", source: "paymentMethods" }],
+    label: menu("PAYMENT_ABS_OFF"),
+    parts: [dollar, num("amount"), say("OFF_FOR_PAYMENT"), { kind: "lookup", path: "paymentMethod", source: "paymentMethods" }],
   },
   RewardPaymentGetOfRel: {
-    label: "...% off for using ... payment method, no more than $...",
-    parts: [num("amount"), "% off for using this payment method:", { kind: "lookup", path: "paymentMethod", source: "paymentMethods" }, ", no more than $", num("maxLimit")],
+    label: menu("PAYMENT_REL_OFF"),
+    parts: [num("amount"), say("PCT_OFF_FOR_PAYMENT"), { kind: "lookup", path: "paymentMethod", source: "paymentMethods" }, say("NO_MORE_THAN_AMOUNT"), num("maxLimit")],
   },
   RewardItemForEveryNumInGetOfRel: {
-    label: "...% off for ... of every ... specific product items",
+    label: menu("EVERY_NTH_OFF"),
     parts: [
-      "For",
+      say("FOR"),
       int("forNthQuantity"),
-      "of every",
+      say("OF_EVERY"),
       int("inEveryNthQuantity"),
-      "items of this product:",
+      say("ITEMS_OF_PRODUCT"),
       { kind: "product", prefix: "product." },
-      "receive",
+      say("RECEIVE"),
       num("amount"),
-      "% off, no more than",
+      say("PCT_OFF_MAX_ITEMS"),
       int("itemLimit"),
-      "items and no more than $",
+      say("ITEMS_AND_MAX_AMOUNT"),
       num("maxLimit"),
-      ",",
+      comma,
       round,
-      "amount per item",
+      say("AMOUNT_PER_ITEM"),
     ],
   },
   RewardItemForEveryNumOtherItemInGetOfRel: {
-    label: "...% off for ... items of a specific product per every ... items of another product",
+    label: menu("EVERY_NTH_OTHER_OFF"),
     parts: [
-      "For",
+      say("FOR"),
       int("forNthQuantity"),
-      "items of this product:",
+      say("ITEMS_OF_PRODUCT"),
       { kind: "product", prefix: "product." },
-      "of every",
+      say("OF_EVERY"),
       int("inEveryNthQuantity"),
-      "items of this product:",
+      say("ITEMS_OF_PRODUCT"),
       { kind: "product", prefix: "conditionalProduct." },
-      "receive",
+      say("RECEIVE"),
       num("amount"),
-      "% off, no more than",
+      say("PCT_OFF_MAX_ITEMS"),
       int("itemLimit"),
-      "items and no more than $",
+      say("ITEMS_AND_MAX_AMOUNT"),
       num("maxLimit"),
     ],
   },
 
   // ---- dynamic content publishing
-  BlockContentCondition: { parts: ["If", allAny, "of these conditions are true"], addLabel: "Add condition" },
-  DynamicContentConditionCategoryIs: { label: "Specific category", group: "Catalog", parts: ["Category:", category] },
-  DynamicContentConditionProductIs: { label: "Specific product", group: "Catalog", parts: ["Product:", { kind: "products" }] },
-  TagsContainsCondition: { label: "Tags contain ...", parts: ["Tags contain", text("tag", "Enter tag")] },
+  BlockContentCondition: { parts: [say("IF"), allAny, say("CONDITIONS_ARE_TRUE")], addLabel: k("ADD_CONDITION") },
+  DynamicContentConditionCategoryIs: { label: menu("SPECIFIC_CATEGORY"), group: group("CATALOG"), parts: [say("CATEGORY"), category] },
+  DynamicContentConditionProductIs: { label: menu("SPECIFIC_PRODUCT"), group: group("CATALOG"), parts: [say("PRODUCT"), { kind: "products" }] },
+  TagsContainsCondition: { label: menu("TAGS_CONTAIN"), parts: [say("TAGS_CONTAIN"), text("tag", "ENTER_TAG")] },
   ConditionStoreSearchedPhrase: {
-    label: "Shopper searched for ... in the store",
-    group: "Browse behavior",
-    parts: ["Shopper searched for a phrase:", match, text("value")],
+    label: menu("SEARCHED_PHRASE"),
+    group: group("BROWSE_BEHAVIOR"),
+    parts: [say("SEARCHED_PHRASE"), match, text("value")],
   },
   ConditionLanguageIs: {
-    label: "User language is set to...",
-    group: "Browse behavior",
-    parts: ["The user language is set to", { kind: "lookup", path: "value", source: "languages" }],
+    label: menu("LANGUAGE_IS"),
+    group: group("BROWSE_BEHAVIOR"),
+    parts: [say("LANGUAGE_IS"), { kind: "lookup", path: "value", source: "languages" }],
   },
   ConditionAgeIs: {
-    label: "Shopper age is ...",
-    group: "Shopper profile",
-    parts: ["Shopper age is", { kind: "choice", path: "compareCondition", options: valueCompare }, int("value")],
+    label: menu("AGE_IS"),
+    group: group("SHOPPER_PROFILE"),
+    parts: [say("AGE_IS"), { kind: "choice", path: "compareCondition", options: valueCompare }, int("value")],
   },
   ConditionGenderIs: {
-    label: "Shopper gender is ...",
-    group: "Shopper profile",
-    parts: ["Shopper gender is", { kind: "choice", path: "value", options: opts(["female", "female"], ["male", "male"]) }],
+    label: menu("GENDER_IS"),
+    group: group("SHOPPER_PROFILE"),
+    parts: [say("GENDER_IS"), { kind: "choice", path: "value", options: opts(["female", "FEMALE"], ["male", "MALE"]) }],
   },
   ConditionGeoTimeZone: {
-    label: "Time zone",
-    group: "Location",
+    label: menu("TIME_ZONE"),
+    group: group("LOCATION"),
     parts: [
-      "Browsing from a time zone that is",
+      say("FROM_TIME_ZONE"),
       { kind: "choice", path: "compareCondition", options: valueCompare },
       { kind: "lookup", path: "value", source: "timeZones" },
     ],
   },
-  ConditionGeoZipCode: { label: "Zip/postal code", group: "Location", parts: ["Browsing from a location with ZIP/postal code:", match, text("value")] },
-  ConditionGeoCity: { label: "City", group: "Location", parts: ["Browsing from this city:", text("value")] },
+  ConditionGeoZipCode: { label: menu("ZIP_CODE"), group: group("LOCATION"), parts: [say("FROM_ZIP_CODE"), match, text("value")] },
+  ConditionGeoCity: { label: menu("CITY"), group: group("LOCATION"), parts: [say("FROM_CITY"), text("value")] },
   ConditionGeoCountry: {
-    label: "Country",
-    group: "Location",
-    parts: ["Browsing from this country:", { kind: "lookup", path: "value", source: "countries" }],
+    label: menu("COUNTRY"),
+    group: group("LOCATION"),
+    parts: [say("FROM_COUNTRY"), { kind: "lookup", path: "value", source: "countries" }],
   },
-  ConditionGeoState: { label: "Region/state/province", group: "Location", parts: ["Browsing from this state or province:", text("value")] },
+  ConditionGeoState: { label: menu("STATE"), group: group("LOCATION"), parts: [say("FROM_STATE"), text("value")] },
 };
 
 const SKIP = new Set(["id", "availableChildren", "children"]);
