@@ -1,0 +1,440 @@
+{
+  "MARKETING": {
+    "MENU": {
+      "PROMOTIONS": "العروض الترويجية",
+      "DYNAMIC_CONTENT": "اللافتات"
+    },
+    "LIBRARY": {
+      "INTRO": "تحدد اللافتات ما يُعرض، والخانات مكان عرضه في واجهة المتجر، أما مواضع العرض فتضع لافتة في خانة على موقع لفترة زمنية ولجمهور محدد.",
+      "TABS": {
+        "BANNERS": "اللافتات",
+        "SLOTS": "الخانات",
+        "PLACEMENTS": "مواضع العرض"
+      },
+      "SEARCH_BANNERS": "البحث في اللافتات",
+      "EMPTY_BANNERS": "لا توجد لافتات بعد",
+      "EMPTY_SLOTS": "لا توجد خانات بعد",
+      "USED_ON": "غير مستخدمة في أي موقع | المواقع المستخدمة فيها: {n} | المواقع المستخدمة فيها: {n}",
+      "ADD_BANNER": "إضافة لافتة",
+      "ADD_SLOT": "إضافة خانة",
+      "FOLDERS": "المجلدات",
+      "COLUMNS": {
+        "SLOT": "الخانة",
+        "WHERE": "المكان",
+        "BANNERS": "اللافتات",
+        "PLACEMENT": "موضع العرض",
+        "SITE": "الموقع",
+        "STATUS": "الحالة",
+        "STARTS": "البداية",
+        "ENDS": "النهاية"
+      },
+      "EMPTY_PLACEMENTS": "لا توجد مواضع عرض بعد",
+      "ADD_PLACEMENT": "إضافة موضع عرض",
+      "STATUS": {
+        "SHOWING": "معروض",
+        "SCHEDULED": "مجدول",
+        "ENDED": "منتهٍ",
+        "OFF": "متوقف"
+      }
+    },
+    "UNKNOWN": "غير معروف",
+    "UNLIMITED": "غير محدود",
+    "STATUS": {
+      "ACTIVE": "نشط",
+      "INACTIVE": "غير نشط"
+    },
+    "PROMOTION_STATUS": {
+      "ACTIVE": "نشط",
+      "UPCOMING": "قادم",
+      "ARCHIVED": "مؤرشف",
+      "DEACTIVATED": "معطّل",
+      "ALL": "الكل"
+    },
+    "ACTIONS": {
+      "ADD": "إضافة",
+      "ADD_FOLDER": "إضافة مجلد",
+      "ADD_ITEM": "إضافة لافتة",
+      "ADD_PLACE": "إضافة خانة",
+      "CLONE": "استنساخ",
+      "COPY_ID": "نسخ المعرّف",
+      "CREATE": "إنشاء",
+      "DELETE": "حذف",
+      "IMPORT": "استيراد",
+      "MANAGE": "إدارة",
+      "REFRESH": "تحديث",
+      "RESET": "إعادة تعيين",
+      "SAVE": "حفظ"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "لديك تغييرات غير محفوظة. هل تريد الإغلاق على أي حال؟",
+      "DELETE_PROMOTIONS": "هل تريد حذف العروض الترويجية المحددة ({count})؟",
+      "DELETE_COUPONS": "هل تريد حذف القسائم المحددة ({count})؟",
+      "DELETE_PUBLICATIONS": "هل تريد حذف مواضع العرض المحددة ({count})؟",
+      "DELETE_CONTENT": "هل تريد حذف الإدخالات المحددة ({count})؟",
+      "DELETE_NAMED": "هل تريد حذف \"{name}\"؟",
+      "DELETE_FOLDER": "هل تريد حذف المجلد \"{name}\"؟"
+    },
+    "VALIDATION": {
+      "REQUIRED": "هذا الحقل مطلوب",
+      "CODE_PATTERN": "يحتوي الرمز على أحرف غير مسموح بها"
+    },
+    "WIDGETS": {
+      "COUPONS": "القسائم",
+      "USAGE": "سجل الاستخدام"
+    },
+    "EXPRESSIONS": {
+      "ADD": "إضافة",
+      "REMOVE": "إزالة",
+      "EXCLUDING": "باستثناء",
+      "EXCLUDE_CATEGORIES": "الفئات",
+      "EXCLUDE_PRODUCTS": "المنتجات",
+      "ADD_USER_GROUP": "إضافة مجموعة مستخدمين",
+      "ADD_CONDITION": "إضافة شرط",
+      "ADD_REWARD": "إضافة مكافأة",
+      "NO_CRITERION": "يجب أن يتضمن العرض الترويجي معيار أهلية واحدًا على الأقل",
+      "NO_REWARD": "يجب أن يتضمن العرض الترويجي مكافأة واحدة على الأقل",
+      "GROUPS": {
+        "SHOPPER_PROFILE": "ملف المتسوق",
+        "CATALOG": "الكتالوج",
+        "BROWSE_BEHAVIOR": "سلوك التصفح",
+        "LOCATION": "الموقع الجغرافي"
+      },
+      "NAMES": {
+        "EVERYONE": "الجميع",
+        "FIRST_TIME_CUSTOMERS": "العملاء الذين يشترون لأول مرة",
+        "REGISTERED_USERS": "المستخدمون المسجّلون",
+        "USER_GROUP_CONTAINS": "مجموعة المستخدم تحتوي على ...",
+        "USER_GROUP_IS": "مجموعة المستخدم هي ...",
+        "SPECIFIC_CATEGORY": "فئة محددة",
+        "SPECIFIC_PRODUCT": "منتج محدد",
+        "CODE_CONTAINS": "رمز المنتج يحتوي على...",
+        "CURRENCY_IS": "العملة هي...",
+        "IN_STOCK_QUANTITY": "الكمية في المخزون...",
+        "FULL_PRICE_ONLY": "التطبيق على القطع بسعرها الكامل فقط دون القطع المخفّضة",
+        "ITEMS_IN_CART": "عدد القطع في سلة التسوق",
+        "CATEGORY_ITEMS_IN_CART": "عدد القطع من فئة معينة في سلة التسوق",
+        "PRODUCT_ITEMS_IN_CART": "عدد قطع منتج معين في سلة التسوق",
+        "PAYMENT_IS": "طريقة الدفع هي...",
+        "SHIPPING_IS": "طريقة الشحن هي...",
+        "CART_SUBTOTAL": "المجموع الفرعي للسلة...",
+        "CART_ABS_OFF": "خصم $... من المجموع الفرعي للسلة",
+        "CART_REL_OFF": "خصم ...% من المجموع الفرعي للسلة، بحد أقصى $...",
+        "FREE_ITEMS": "... من القطع المجانية من المنتج ...",
+        "ITEM_ABS_OFF": "خصم $...",
+        "ITEM_ABS_OFF_FOR_NUM": "خصم $... على ... من قطع منتج معين",
+        "ITEM_REL_OFF": "خصم ...% على المنتج ...، بحد أقصى $...",
+        "ITEM_REL_OFF_FOR_NUM": "خصم ...% على ... من قطع منتج معين، بحد أقصى $...",
+        "GIFT": "... من قطع المنتج ... كهدية",
+        "SHIPPING_ABS_OFF": "خصم $... على الشحن بطريقة ...",
+        "SHIPPING_REL_OFF": "خصم % على الشحن بطريقة ...، بحد أقصى $...",
+        "PAYMENT_ABS_OFF": "خصم $... عند استخدام طريقة الدفع ...",
+        "PAYMENT_REL_OFF": "خصم ...% عند استخدام طريقة الدفع ...، بحد أقصى $...",
+        "EVERY_NTH_OFF": "خصم ...% على ... من كل ... من قطع منتج معين",
+        "EVERY_NTH_OTHER_OFF": "خصم ...% على ... من قطع منتج معين مقابل كل ... من قطع منتج آخر",
+        "TAGS_CONTAIN": "الوسوم تحتوي على ...",
+        "SEARCHED_PHRASE": "بحث المتسوق في المتجر عن ...",
+        "LANGUAGE_IS": "لغة المستخدم هي...",
+        "AGE_IS": "عمر المتسوق ...",
+        "GENDER_IS": "جنس المتسوق ...",
+        "TIME_ZONE": "المنطقة الزمنية",
+        "ZIP_CODE": "الرمز البريدي",
+        "CITY": "المدينة",
+        "COUNTRY": "البلد",
+        "STATE": "المنطقة/الولاية/المقاطعة"
+      },
+      "TEXT": {
+        "CUSTOMERS_MATCHING": "العملاء الذين يستوفون",
+        "OF_FOLLOWING_CRITERIA": "من المعايير التالية:",
+        "EVERYONE": "الجميع",
+        "FIRST_TIME_BUYER": "مشترٍ لأول مرة",
+        "REGISTERED_USER": "مستخدم مسجّل",
+        "USER_GROUP_CONTAINS": "مجموعة المستخدم تحتوي على",
+        "USER_GROUP_IS": "مجموعة المستخدم هي",
+        "IF": "إذا كان",
+        "CATALOG_CONDITIONS_ARE": "من شروط الكتالوج هذه",
+        "CATEGORY": "الفئة:",
+        "PRODUCT": "المنتج:",
+        "ALL_VARIANTS": "التطبيق على كل متغيرات المنتج:",
+        "CODE_CONTAINS": "رمز المنتج يحتوي على",
+        "CURRENCY_IS": "العملة هي",
+        "IN_STOCK_QUANTITY": "الكمية في المخزون",
+        "ITEMS": "من القطع",
+        "FULL_PRICE_ONLY": "التطبيق على القطع بسعرها الكامل فقط دون القطع المخفّضة",
+        "CART_CONDITIONS_ARE": "من شروط السلة هذه",
+        "ITEMS_IN_CART": "من القطع موجودة في سلة التسوق",
+        "ITEMS_FROM_CATEGORY": "من القطع من هذه الفئة:",
+        "ARE_IN_CART": "موجودة في سلة التسوق",
+        "SPECIFIC_PRODUCT_ITEMS": "من قطع هذا المنتج:",
+        "PAYMENT_IS": "طريقة الدفع هي",
+        "SHIPPING_IS": "طريقة الشحن هي",
+        "CART_SUBTOTAL_IS": "المجموع الفرعي للسلة",
+        "GET_REWARDS": "الحصول على المكافآت التالية:",
+        "CURRENCY": "$",
+        "OFF_CART_SUBTOTAL": "خصم من المجموع الفرعي للسلة",
+        "PCT_OFF_CART_SUBTOTAL_MAX": "% خصم من المجموع الفرعي للسلة، بحد أقصى $",
+        "FREE_ITEMS_OF_PRODUCT": "من القطع المجانية من هذا المنتج:",
+        "OFF_FOR": "خصم على",
+        "ITEMS_OF_PRODUCT": "من قطع هذا المنتج:",
+        "COMMA": "،",
+        "AMOUNT_PER_ITEM": "المبلغ لكل قطعة",
+        "PCT_OFF_FOR": "% خصم على",
+        "NO_MORE_THAN_AMOUNT": "، بحد أقصى $",
+        "PCT_OFF_MAX": "% خصم، بحد أقصى $",
+        "FOR_ITEMS": "على",
+        "AS_GIFT": "كهدية. التفاصيل:",
+        "OFF_FOR_SHIPPING": "خصم على الشحن بهذه الطريقة:",
+        "PCT_OFF_FOR_SHIPPING": "% خصم على الشحن بهذه الطريقة:",
+        "OFF_FOR_PAYMENT": "خصم عند استخدام طريقة الدفع هذه:",
+        "PCT_OFF_FOR_PAYMENT": "% خصم عند استخدام طريقة الدفع هذه:",
+        "FOR": "بالنسبة إلى",
+        "OF_EVERY": "من كل",
+        "RECEIVE": "الحصول على",
+        "PCT_OFF_MAX_ITEMS": "% خصم، بحد أقصى",
+        "ITEMS_AND_MAX_AMOUNT": "من القطع وبحد أقصى $",
+        "CONDITIONS_ARE_TRUE": "من هذه الشروط صحيحًا",
+        "TAGS_CONTAIN": "الوسوم تحتوي على",
+        "SEARCHED_PHRASE": "بحث المتسوق عن نص:",
+        "LANGUAGE_IS": "لغة المستخدم هي",
+        "AGE_IS": "عمر المتسوق",
+        "GENDER_IS": "جنس المتسوق",
+        "FROM_TIME_ZONE": "التصفح من منطقة زمنية",
+        "FROM_ZIP_CODE": "التصفح من موقع رمزه البريدي:",
+        "FROM_CITY": "التصفح من هذه المدينة:",
+        "FROM_COUNTRY": "التصفح من هذا البلد:",
+        "FROM_STATE": "التصفح من هذه الولاية أو المقاطعة:",
+        "AND": "و"
+      },
+      "OPTIONS": {
+        "ALL": "كل",
+        "ANY": "أي",
+        "TRUE": "صحيحًا",
+        "FALSE": "غير صحيح",
+        "ROUND": "مع تقريب",
+        "DONT_ROUND": "دون تقريب",
+        "YES": "نعم",
+        "NO": "لا",
+        "EXACTLY": "بالضبط",
+        "AT_LEAST": "على الأقل",
+        "EXACTLY_OR_LESS": "بالضبط أو أقل من",
+        "BETWEEN": "بين",
+        "ANYTHING_BUT": "أي قيمة عدا",
+        "GREATER_THAN": "أكبر من",
+        "GREATER_OR_EQUAL": "أكبر من أو يساوي",
+        "LESS_THAN": "أقل من",
+        "LESS_OR_EQUAL": "أقل من أو يساوي",
+        "CONTAINING": "يحتوي على",
+        "NOT_CONTAINING": "لا يحتوي على",
+        "BEING_EXACTLY": "يطابق تمامًا",
+        "BEING_ANYTHING_BUT": "لا يطابق",
+        "FEMALE": "أنثى",
+        "MALE": "ذكر"
+      },
+      "FIELDS": {
+        "NAME": "الاسم",
+        "MEASURE_UNIT": "وحدة القياس",
+        "IMAGE_URL": "عنوان URL للصورة",
+        "DESCRIPTION": "الوصف",
+        "AMOUNT": "المبلغ",
+        "MAX_AMOUNT": "الحد الأقصى للمبلغ",
+        "MAX_ITEMS": "الحد الأقصى لعدد القطع",
+        "QUANTITY": "الكمية",
+        "NTH_QUANTITY": "القطع المخفّضة",
+        "EVERY_NTH": "من كل",
+        "SUBTOTAL": "المجموع الفرعي",
+        "UPPER_VALUE": "القيمة العليا",
+        "VALUE": "القيمة"
+      },
+      "PLACEHOLDERS": {
+        "ENTER_GROUP": "أدخل المجموعة",
+        "ENTER_CODE": "أدخل الرمز",
+        "ENTER_TAG": "أدخل الوسم",
+        "ENTER_NAME": "أدخل الاسم",
+        "ENTER_MEASURE_UNIT": "حدّد وحدة القياس",
+        "ENTER_URL": "أدخل عنوان URL",
+        "ENTER_DESCRIPTION": "أدخل الوصف",
+        "SELECT_CATEGORY": "اختر فئة",
+        "SELECT_PRODUCT": "اختر منتجًا",
+        "SELECT_PRODUCTS": "اختر منتجات",
+        "SELECT_CURRENCY": "اختر العملة",
+        "SELECT_SHIPPING_METHOD": "اختر طريقة الشحن",
+        "SELECT_PAYMENT_METHOD": "اختر طريقة الدفع",
+        "SELECT_LANGUAGE": "اختر اللغة",
+        "SELECT_GROUPS": "اختر المجموعات",
+        "SELECT_COUNTRY": "اختر البلد",
+        "SELECT_TIME_ZONE": "اختر المنطقة الزمنية"
+      }
+    },
+    "PAGES": {
+      "PROMOTIONS": {
+        "TITLE": "العروض الترويجية",
+        "EMPTY": "لم يتم العثور على عروض ترويجية",
+        "COLUMNS": {
+          "NAME": "الاسم",
+          "STATUS": "الحالة",
+          "COUPONS": "القسائم",
+          "START": "تاريخ البدء",
+          "END": "تاريخ الانتهاء",
+          "DESCRIPTION": "الوصف"
+        },
+        "FILTERS": {
+          "STATUS": "الحالة",
+          "STORE": "المتجر"
+        },
+        "SAVED_FILTERS": {
+          "PLACEHOLDER": "اختر عامل تصفية",
+          "EDIT": "تحرير عامل التصفية",
+          "NEW": "+ عامل تصفية جديد"
+        }
+      },
+      "FILTER": {
+        "NEW_TITLE": "عامل تصفية جديد",
+        "NAME": "اسم عامل التصفية",
+        "UNNAMED": "عامل تصفية بلا اسم",
+        "ALL": "الكل",
+        "APPLY": "تطبيق عامل التصفية"
+      },
+      "PROMOTION": {
+        "TITLE": "عرض ترويجي",
+        "NEW_TITLE": "عرض ترويجي جديد",
+        "CONDITIONS": "الشروط والمكافآت",
+        "LOCALIZATION": "نصوص واجهة المتجر",
+        "EXCLUSIVITY": {
+          "COMBINED": "يمكن دمجه مع عروض ترويجية أخرى",
+          "EXCLUSIVE": "حصري (لا يمكن دمجه)"
+        },
+        "FIELDS": {
+          "NAME": "اسم العرض الترويجي",
+          "NAME_PLACEHOLDER": "أدخل اسم العرض الترويجي",
+          "NAME_HINT": "اسم داخلي يظهر في لوحة الإدارة",
+          "ACTIVE": "نشط",
+          "PUBLIC": "عام (مرئي في واجهة المتجر)",
+          "START": "تاريخ البدء",
+          "START_HINT": "يبدأ سريان العرض الترويجي في هذا التاريخ",
+          "END": "تاريخ الانتهاء",
+          "END_HINT": "يتوقف سريان العرض الترويجي بعد هذا التاريخ",
+          "STORES": "المتاجر",
+          "STORES_PLACEHOLDER": "كل المتاجر",
+          "STORES_HINT": "اتركه فارغًا لتطبيقه في كل المتاجر",
+          "EXCLUSIVITY": "الدمج",
+          "EXCLUSIVITY_HINT": "هل يمكن تطبيق عروض ترويجية أخرى مع هذا العرض",
+          "PRIORITY": "الأولوية",
+          "PRIORITY_HINT": "تُطبَّق العروض الترويجية ذات الأولوية الأعلى أولًا",
+          "COMBINE_WITH_SELF": "الدمج مع نفسه",
+          "COMBINE_WITH_SELF_HINT": "يمكن تطبيق عدة قسائم من هذا العرض الترويجي على طلب واحد",
+          "DESCRIPTION": "الوصف",
+          "DESCRIPTION_PLACEHOLDER": "أدخل الوصف",
+          "LANGUAGE": "اللغة",
+          "LABEL": "التسمية",
+          "LABEL_PLACEHOLDER": "تسمية قصيرة، مثل نص الشارة",
+          "DISPLAY_NAME": "الاسم المعروض",
+          "DISPLAY_NAME_PLACEHOLDER": "الاسم الذي يراه العملاء",
+          "LOCALIZED_DESCRIPTION": "الوصف للعملاء",
+          "LOCALIZED_DESCRIPTION_PLACEHOLDER": "الوصف الذي يراه العملاء"
+        }
+      },
+      "COUPONS": {
+        "SEARCH": "البحث بالرمز",
+        "EMPTY": "لا توجد قسائم",
+        "COLUMNS": {
+          "CODE": "الرمز",
+          "USED": "مرات الاستخدام",
+          "MAX_USES": "الحد الأقصى للاستخدام",
+          "EXPIRES": "تاريخ الانتهاء"
+        }
+      },
+      "COUPON": {
+        "NEW_TITLE": "قسيمة جديدة",
+        "FIELDS": {
+          "CODE": "رمز القسيمة",
+          "CODE_PLACEHOLDER": "أدخل الرمز",
+          "CODE_HINT": "الرمز الذي يُدخله العملاء عند إتمام الطلب",
+          "EXPIRATION": "تاريخ الانتهاء",
+          "EXPIRATION_HINT": "لا يمكن استخدام القسيمة بعد هذا التاريخ",
+          "MAX_USES": "الحد الأقصى لمرات الاستخدام",
+          "MAX_USES_HINT": "0 = غير محدود",
+          "MAX_PER_USER": "الحد الأقصى لمرات الاستخدام لكل عميل",
+          "MAX_PER_USER_HINT": "0 = غير محدود",
+          "MEMBER": "العميل أو المؤسسة",
+          "MEMBER_PLACEHOLDER": "أي شخص"
+        }
+      },
+      "IMPORT": {
+        "TITLE": "استيراد القسائم",
+        "DELIMITER": "فاصل الأعمدة",
+        "DELIMITER_PLACEHOLDER": "اختر الفاصل",
+        "DELIMITERS": {
+          "SPACE": "مسافة",
+          "COMMA": "فاصلة",
+          "SEMICOLON": "فاصلة منقوطة",
+          "TAB": "علامة جدولة"
+        },
+        "FILE": "ملف CSV بدون صف عناوين: الرمز، الحد الأقصى لمرات الاستخدام، ID العميل",
+        "UPLOADED": "الملف المرفوع",
+        "START": "بدء الاستيراد",
+        "PROGRESS": "تقدم الاستيراد",
+        "PROCESSED": "تمت معالجة {processed} من {total}",
+        "FINISHED": "اكتمل"
+      },
+      "USAGE": {
+        "EMPTY": "لم يُستخدم العرض الترويجي في أي طلب",
+        "COLUMNS": {
+          "NUMBER": "رقم الطلب",
+          "CUSTOMER": "العميل",
+          "STATUS": "الحالة",
+          "CREATED": "تاريخ الإنشاء",
+          "TOTAL": "الإجمالي"
+        }
+      },
+      "PUBLICATIONS": {
+        "COLUMNS": {
+          "NAME": "الاسم",
+          "STORE": "الموقع"
+        }
+      },
+      "PUBLICATION": {
+        "TITLE": "موضع العرض",
+        "NEW_TITLE": "موضع عرض جديد",
+        "NAME_PLACEHOLDER": "أدخل اسم موضع العرض",
+        "DESCRIPTION_PLACEHOLDER": "أدخل الوصف",
+        "STORE_PLACEHOLDER": "اختر المتجر",
+        "PLACES_PLACEHOLDER": "اختر الخانات",
+        "ITEMS_PLACEHOLDER": "اختر اللافتات",
+        "CONDITIONS": "شروط النشر",
+        "BROWSE": "استعراض"
+      },
+      "CONTENT": {
+        "ITEMS_TITLE": "اللافتات",
+        "PLACES_TITLE": "الخانات",
+        "ITEMS_ROOT": "اللافتات",
+        "PLACES_ROOT": "الخانات",
+        "ADD_PLACES_TITLE": "إضافة خانات",
+        "ADD_ITEMS_TITLE": "إضافة لافتات",
+        "PICK_HINT": "انقر على إدخال لإضافته إلى موضع العرض، أو على مجلد لفتحه",
+        "ADDED": "تمت الإضافة",
+        "EMPTY": "هذا المجلد فارغ",
+        "COLUMNS": {
+          "NAME": "الاسم",
+          "DESCRIPTION": "الوصف"
+        }
+      },
+      "CONTENT_ITEM": {
+        "NEW_TITLE": "لافتة جديدة",
+        "NAME_PLACEHOLDER": "أدخل اسم اللافتة",
+        "DESCRIPTION_PLACEHOLDER": "أدخل الوصف",
+        "PROPERTIES": "الخصائص",
+        "NO_PROPERTIES": "لم تُعرَّف أي خصائص للافتات"
+      },
+      "CONTENT_PLACE": {
+        "NEW_TITLE": "خانة جديدة",
+        "NAME_PLACEHOLDER": "أدخل اسم الخانة",
+        "DESCRIPTION_PLACEHOLDER": "أدخل الوصف",
+        "IMAGE": "صورة الخانة"
+      },
+      "CONTENT_FOLDER": {
+        "NEW_TITLE": "مجلد جديد",
+        "NAME_PLACEHOLDER": "أدخل اسم المجلد",
+        "DESCRIPTION_PLACEHOLDER": "أدخل الوصف"
+      }
+    }
+  }
+}
