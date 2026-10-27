@@ -1,0 +1,440 @@
+{
+  "MARKETING": {
+    "MENU": {
+      "PROMOTIONS": "Promocje",
+      "DYNAMIC_CONTENT": "Banery"
+    },
+    "LIBRARY": {
+      "INTRO": "Banery określają, co jest wyświetlane, miejsca – gdzie w sklepie internetowym, a emisje umieszczają baner w miejscu na witrynie na określony czas i dla określonych odbiorców.",
+      "TABS": {
+        "BANNERS": "Banery",
+        "SLOTS": "Miejsca",
+        "PLACEMENTS": "Emisje"
+      },
+      "SEARCH_BANNERS": "Szukaj banerów",
+      "EMPTY_BANNERS": "Nie ma jeszcze banerów",
+      "EMPTY_SLOTS": "Nie ma jeszcze miejsc",
+      "USED_ON": "Nieużywany na żadnej witrynie | Używany na {n} witrynie | Używany na {n} witrynach",
+      "ADD_BANNER": "Dodaj baner",
+      "ADD_SLOT": "Dodaj miejsce",
+      "FOLDERS": "Foldery",
+      "COLUMNS": {
+        "SLOT": "Miejsce",
+        "WHERE": "Gdzie",
+        "BANNERS": "Banery",
+        "PLACEMENT": "Emisja",
+        "SITE": "Witryna",
+        "STATUS": "Status",
+        "STARTS": "Początek",
+        "ENDS": "Koniec"
+      },
+      "EMPTY_PLACEMENTS": "Nie ma jeszcze emisji",
+      "ADD_PLACEMENT": "Dodaj emisję",
+      "STATUS": {
+        "SHOWING": "Wyświetlana",
+        "SCHEDULED": "Zaplanowana",
+        "ENDED": "Zakończona",
+        "OFF": "Wyłączona"
+      }
+    },
+    "UNKNOWN": "nieznany",
+    "UNLIMITED": "Bez limitu",
+    "STATUS": {
+      "ACTIVE": "Aktywny",
+      "INACTIVE": "Nieaktywny"
+    },
+    "PROMOTION_STATUS": {
+      "ACTIVE": "Aktywna",
+      "UPCOMING": "Nadchodząca",
+      "ARCHIVED": "Zarchiwizowana",
+      "DEACTIVATED": "Dezaktywowana",
+      "ALL": "Wszystkie"
+    },
+    "ACTIONS": {
+      "ADD": "Dodaj",
+      "ADD_FOLDER": "Dodaj folder",
+      "ADD_ITEM": "Dodaj baner",
+      "ADD_PLACE": "Dodaj miejsce",
+      "CLONE": "Klonuj",
+      "COPY_ID": "Kopiuj ID",
+      "CREATE": "Utwórz",
+      "DELETE": "Usuń",
+      "IMPORT": "Importuj",
+      "MANAGE": "Zarządzaj",
+      "REFRESH": "Odśwież",
+      "RESET": "Resetuj",
+      "SAVE": "Zapisz"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Istnieją niezapisane zmiany. Zamknąć mimo to?",
+      "DELETE_PROMOTIONS": "Usunąć promocje ({count})?",
+      "DELETE_COUPONS": "Usunąć kupony ({count})?",
+      "DELETE_PUBLICATIONS": "Usunąć emisje ({count})?",
+      "DELETE_CONTENT": "Usunąć wybrane wpisy ({count})?",
+      "DELETE_NAMED": "Usunąć „{name}”?",
+      "DELETE_FOLDER": "Usunąć folder „{name}”?"
+    },
+    "VALIDATION": {
+      "REQUIRED": "To pole jest wymagane",
+      "CODE_PATTERN": "Kod zawiera niedozwolone znaki"
+    },
+    "WIDGETS": {
+      "COUPONS": "Kupony",
+      "USAGE": "Historia użycia"
+    },
+    "EXPRESSIONS": {
+      "ADD": "Dodaj",
+      "REMOVE": "Usuń",
+      "EXCLUDING": "z wyłączeniem",
+      "EXCLUDE_CATEGORIES": "kategorii",
+      "EXCLUDE_PRODUCTS": "produktów",
+      "ADD_USER_GROUP": "Dodaj grupę użytkowników",
+      "ADD_CONDITION": "Dodaj warunek",
+      "ADD_REWARD": "Dodaj nagrodę",
+      "NO_CRITERION": "Promocja musi mieć co najmniej jedno kryterium kwalifikacji",
+      "NO_REWARD": "Promocja musi mieć co najmniej jedną nagrodę",
+      "GROUPS": {
+        "SHOPPER_PROFILE": "Profil kupującego",
+        "CATALOG": "Katalog",
+        "BROWSE_BEHAVIOR": "Zachowanie podczas przeglądania",
+        "LOCATION": "Lokalizacja"
+      },
+      "NAMES": {
+        "EVERYONE": "Wszyscy",
+        "FIRST_TIME_CUSTOMERS": "Nowi klienci",
+        "REGISTERED_USERS": "Zarejestrowani użytkownicy",
+        "USER_GROUP_CONTAINS": "Grupa użytkowników zawiera ...",
+        "USER_GROUP_IS": "Grupa użytkowników to ...",
+        "SPECIFIC_CATEGORY": "Określona kategoria",
+        "SPECIFIC_PRODUCT": "Określony produkt",
+        "CODE_CONTAINS": "Kod produktu zawiera...",
+        "CURRENCY_IS": "Waluta to...",
+        "IN_STOCK_QUANTITY": "Stan magazynowy wynosi...",
+        "FULL_PRICE_ONLY": "Stosuj tylko do produktów w pełnej cenie, nie do przecenionych",
+        "ITEMS_IN_CART": "Liczba produktów w koszyku",
+        "CATEGORY_ITEMS_IN_CART": "Liczba produktów z kategorii w koszyku",
+        "PRODUCT_ITEMS_IN_CART": "Liczba sztuk określonego produktu w koszyku",
+        "PAYMENT_IS": "Rodzaj płatności to...",
+        "SHIPPING_IS": "Rodzaj dostawy to...",
+        "CART_SUBTOTAL": "Suma częściowa koszyka wynosi...",
+        "CART_ABS_OFF": "$... zniżki od sumy częściowej koszyka",
+        "CART_REL_OFF": "...% zniżki od sumy częściowej koszyka, maksymalnie $...",
+        "FREE_ITEMS": "... darmowych sztuk produktu ...",
+        "ITEM_ABS_OFF": "$... zniżki",
+        "ITEM_ABS_OFF_FOR_NUM": "$... zniżki na ... sztuk określonego produktu",
+        "ITEM_REL_OFF": "...% zniżki na produkt ..., maksymalnie $...",
+        "ITEM_REL_OFF_FOR_NUM": "...% zniżki na ... sztuk określonego produktu, maksymalnie $...",
+        "GIFT": "... sztuk produktu ... w prezencie",
+        "SHIPPING_ABS_OFF": "$... zniżki na dostawę metodą ...",
+        "SHIPPING_REL_OFF": "% zniżki na dostawę metodą ..., maksymalnie $...",
+        "PAYMENT_ABS_OFF": "$... zniżki przy płatności metodą ...",
+        "PAYMENT_REL_OFF": "...% zniżki przy płatności metodą ..., maksymalnie $...",
+        "EVERY_NTH_OFF": "...% zniżki na ... z każdych ... sztuk określonego produktu",
+        "EVERY_NTH_OTHER_OFF": "...% zniżki na ... sztuk jednego produktu za każde ... sztuk innego produktu",
+        "TAGS_CONTAIN": "Tagi zawierają ...",
+        "SEARCHED_PHRASE": "Kupujący szukał ... w sklepie",
+        "LANGUAGE_IS": "Język użytkownika to...",
+        "AGE_IS": "Wiek kupującego to ...",
+        "GENDER_IS": "Płeć kupującego to ...",
+        "TIME_ZONE": "Strefa czasowa",
+        "ZIP_CODE": "Kod pocztowy",
+        "CITY": "Miasto",
+        "COUNTRY": "Kraj",
+        "STATE": "Region/stan/województwo"
+      },
+      "TEXT": {
+        "CUSTOMERS_MATCHING": "Klienci spełniający",
+        "OF_FOLLOWING_CRITERIA": "z poniższych kryteriów:",
+        "EVERYONE": "Wszyscy",
+        "FIRST_TIME_BUYER": "Kupujący po raz pierwszy",
+        "REGISTERED_USER": "Zarejestrowany użytkownik",
+        "USER_GROUP_CONTAINS": "Grupa użytkowników zawiera",
+        "USER_GROUP_IS": "Grupa użytkowników to",
+        "IF": "Jeśli",
+        "CATALOG_CONDITIONS_ARE": "z tych warunków katalogu są",
+        "CATEGORY": "Kategoria:",
+        "PRODUCT": "Produkt:",
+        "ALL_VARIANTS": "Zastosuj do wszystkich wariantów produktu:",
+        "CODE_CONTAINS": "Kod produktu zawiera",
+        "CURRENCY_IS": "Waluta to",
+        "IN_STOCK_QUANTITY": "Stan magazynowy wynosi",
+        "ITEMS": "szt.",
+        "FULL_PRICE_ONLY": "Stosuj tylko do produktów w pełnej cenie, nie do przecenionych",
+        "CART_CONDITIONS_ARE": "z tych warunków koszyka są",
+        "ITEMS_IN_CART": "szt. jest w koszyku",
+        "ITEMS_FROM_CATEGORY": "szt. z tej kategorii:",
+        "ARE_IN_CART": "jest w koszyku",
+        "SPECIFIC_PRODUCT_ITEMS": "szt. tego produktu:",
+        "PAYMENT_IS": "Rodzaj płatności to",
+        "SHIPPING_IS": "Rodzaj dostawy to",
+        "CART_SUBTOTAL_IS": "Suma częściowa koszyka wynosi",
+        "GET_REWARDS": "Otrzymaj następujące nagrody:",
+        "CURRENCY": "$",
+        "OFF_CART_SUBTOTAL": "zniżki od sumy częściowej koszyka",
+        "PCT_OFF_CART_SUBTOTAL_MAX": "% zniżki od sumy częściowej koszyka, maksymalnie $",
+        "FREE_ITEMS_OF_PRODUCT": "szt. gratis tego produktu:",
+        "OFF_FOR": "zniżki na",
+        "ITEMS_OF_PRODUCT": "szt. tego produktu:",
+        "COMMA": ",",
+        "AMOUNT_PER_ITEM": "kwotę na sztukę",
+        "PCT_OFF_FOR": "% zniżki na",
+        "NO_MORE_THAN_AMOUNT": ", maksymalnie $",
+        "PCT_OFF_MAX": "% zniżki, maksymalnie $",
+        "FOR_ITEMS": "na",
+        "AS_GIFT": "w prezencie. Szczegóły:",
+        "OFF_FOR_SHIPPING": "zniżki na dostawę tego typu:",
+        "PCT_OFF_FOR_SHIPPING": "% zniżki na dostawę tego typu:",
+        "OFF_FOR_PAYMENT": "zniżki przy płatności tą metodą:",
+        "PCT_OFF_FOR_PAYMENT": "% zniżki przy płatności tą metodą:",
+        "FOR": "Na",
+        "OF_EVERY": "z każdych",
+        "RECEIVE": "otrzymaj",
+        "PCT_OFF_MAX_ITEMS": "% zniżki, maksymalnie",
+        "ITEMS_AND_MAX_AMOUNT": "szt. i maksymalnie $",
+        "CONDITIONS_ARE_TRUE": "z tych warunków są spełnione",
+        "TAGS_CONTAIN": "Tagi zawierają",
+        "SEARCHED_PHRASE": "Kupujący szukał frazy, która",
+        "LANGUAGE_IS": "Język użytkownika to",
+        "AGE_IS": "Wiek kupującego wynosi",
+        "GENDER_IS": "Płeć kupującego to",
+        "FROM_TIME_ZONE": "Przeglądanie ze strefy czasowej, która jest",
+        "FROM_ZIP_CODE": "Przeglądanie z lokalizacji o kodzie pocztowym, który",
+        "FROM_CITY": "Przeglądanie z tego miasta:",
+        "FROM_COUNTRY": "Przeglądanie z tego kraju:",
+        "FROM_STATE": "Przeglądanie z tego stanu lub województwa:",
+        "AND": "a"
+      },
+      "OPTIONS": {
+        "ALL": "wszystkie",
+        "ANY": "dowolne",
+        "TRUE": "spełnione",
+        "FALSE": "niespełnione",
+        "ROUND": "zaokrąglaj",
+        "DONT_ROUND": "nie zaokrąglaj",
+        "YES": "tak",
+        "NO": "nie",
+        "EXACTLY": "dokładnie",
+        "AT_LEAST": "co najmniej",
+        "EXACTLY_OR_LESS": "dokładnie lub mniej niż",
+        "BETWEEN": "między",
+        "ANYTHING_BUT": "inna wartość niż",
+        "GREATER_THAN": "więcej niż",
+        "GREATER_OR_EQUAL": "nie mniej niż",
+        "LESS_THAN": "mniej niż",
+        "LESS_OR_EQUAL": "nie więcej niż",
+        "CONTAINING": "zawiera",
+        "NOT_CONTAINING": "nie zawiera",
+        "BEING_EXACTLY": "jest dokładnie",
+        "BEING_ANYTHING_BUT": "jest inna niż",
+        "FEMALE": "kobieta",
+        "MALE": "mężczyzna"
+      },
+      "FIELDS": {
+        "NAME": "Nazwa",
+        "MEASURE_UNIT": "Jednostka miary",
+        "IMAGE_URL": "URL obrazu",
+        "DESCRIPTION": "Opis",
+        "AMOUNT": "Kwota",
+        "MAX_AMOUNT": "Maksymalna kwota",
+        "MAX_ITEMS": "Maksymalna liczba sztuk",
+        "QUANTITY": "Ilość",
+        "NTH_QUANTITY": "Sztuki objęte zniżką",
+        "EVERY_NTH": "Z każdych",
+        "SUBTOTAL": "Suma częściowa",
+        "UPPER_VALUE": "Górna wartość",
+        "VALUE": "Wartość"
+      },
+      "PLACEHOLDERS": {
+        "ENTER_GROUP": "Wprowadź grupę",
+        "ENTER_CODE": "Wprowadź kod",
+        "ENTER_TAG": "Wprowadź tag",
+        "ENTER_NAME": "Wprowadź nazwę",
+        "ENTER_MEASURE_UNIT": "Określ jednostkę miary",
+        "ENTER_URL": "Wprowadź URL",
+        "ENTER_DESCRIPTION": "Wprowadź opis",
+        "SELECT_CATEGORY": "wybierz kategorię",
+        "SELECT_PRODUCT": "wybierz produkt",
+        "SELECT_PRODUCTS": "wybierz produkty",
+        "SELECT_CURRENCY": "wybierz walutę",
+        "SELECT_SHIPPING_METHOD": "wybierz metodę dostawy",
+        "SELECT_PAYMENT_METHOD": "wybierz metodę płatności",
+        "SELECT_LANGUAGE": "wybierz język",
+        "SELECT_GROUPS": "wybierz grupy",
+        "SELECT_COUNTRY": "wybierz kraj",
+        "SELECT_TIME_ZONE": "wybierz strefę czasową"
+      }
+    },
+    "PAGES": {
+      "PROMOTIONS": {
+        "TITLE": "Promocje",
+        "EMPTY": "Nie znaleziono promocji",
+        "COLUMNS": {
+          "NAME": "Nazwa",
+          "STATUS": "Status",
+          "COUPONS": "Kupony",
+          "START": "Data rozpoczęcia",
+          "END": "Data wygaśnięcia",
+          "DESCRIPTION": "Opis"
+        },
+        "FILTERS": {
+          "STATUS": "Status",
+          "STORE": "Sklep"
+        },
+        "SAVED_FILTERS": {
+          "PLACEHOLDER": "Wybierz filtr",
+          "EDIT": "Edytuj filtr",
+          "NEW": "+ Nowy filtr"
+        }
+      },
+      "FILTER": {
+        "NEW_TITLE": "Nowy filtr",
+        "NAME": "Nazwa filtra",
+        "UNNAMED": "Filtr bez nazwy",
+        "ALL": "Wszystkie",
+        "APPLY": "Zastosuj filtr"
+      },
+      "PROMOTION": {
+        "TITLE": "Promocja",
+        "NEW_TITLE": "Nowa promocja",
+        "CONDITIONS": "Warunki i nagrody",
+        "LOCALIZATION": "Teksty w sklepie internetowym",
+        "EXCLUSIVITY": {
+          "COMBINED": "Można łączyć z innymi promocjami",
+          "EXCLUSIVE": "Ekskluzywna (nie można łączyć)"
+        },
+        "FIELDS": {
+          "NAME": "Nazwa promocji",
+          "NAME_PLACEHOLDER": "Wprowadź nazwę promocji",
+          "NAME_HINT": "Nazwa wewnętrzna, widoczna w panelu administracyjnym",
+          "ACTIVE": "Aktywna",
+          "PUBLIC": "Publiczna (widoczna w sklepie internetowym)",
+          "START": "Data rozpoczęcia",
+          "START_HINT": "Promocja zaczyna obowiązywać od tej daty",
+          "END": "Data wygaśnięcia",
+          "END_HINT": "Promocja przestaje obowiązywać po tej dacie",
+          "STORES": "Sklepy",
+          "STORES_PLACEHOLDER": "Wszystkie sklepy",
+          "STORES_HINT": "Pozostaw puste, aby stosować we wszystkich sklepach",
+          "EXCLUSIVITY": "Łączenie",
+          "EXCLUSIVITY_HINT": "Czy inne promocje mogą być stosowane razem z tą promocją",
+          "PRIORITY": "Priorytet",
+          "PRIORITY_HINT": "Promocje o wyższym priorytecie są stosowane w pierwszej kolejności",
+          "COMBINE_WITH_SELF": "Łączenie z samą sobą",
+          "COMBINE_WITH_SELF_HINT": "Do jednego zamówienia można zastosować kilka kuponów tej promocji",
+          "DESCRIPTION": "Opis",
+          "DESCRIPTION_PLACEHOLDER": "Wprowadź opis",
+          "LANGUAGE": "Język",
+          "LABEL": "Etykieta",
+          "LABEL_PLACEHOLDER": "Krótka etykieta, np. tekst plakietki",
+          "DISPLAY_NAME": "Nazwa wyświetlana",
+          "DISPLAY_NAME_PLACEHOLDER": "Nazwa wyświetlana klientom",
+          "LOCALIZED_DESCRIPTION": "Opis dla klientów",
+          "LOCALIZED_DESCRIPTION_PLACEHOLDER": "Opis wyświetlany klientom"
+        }
+      },
+      "COUPONS": {
+        "SEARCH": "Szukaj według kodu",
+        "EMPTY": "Brak kuponów",
+        "COLUMNS": {
+          "CODE": "Kod",
+          "USED": "Liczba użyć",
+          "MAX_USES": "Maks. liczba użyć",
+          "EXPIRES": "Wygasa"
+        }
+      },
+      "COUPON": {
+        "NEW_TITLE": "Nowy kupon",
+        "FIELDS": {
+          "CODE": "Kod kuponu",
+          "CODE_PLACEHOLDER": "Wprowadź kod",
+          "CODE_HINT": "Kod, który klienci wpisują przy składaniu zamówienia",
+          "EXPIRATION": "Data wygaśnięcia",
+          "EXPIRATION_HINT": "Po tej dacie kuponu nie można użyć",
+          "MAX_USES": "Maksymalna liczba użyć",
+          "MAX_USES_HINT": "0 = bez limitu",
+          "MAX_PER_USER": "Maksymalna liczba użyć na klienta",
+          "MAX_PER_USER_HINT": "0 = bez limitu",
+          "MEMBER": "Klient lub organizacja",
+          "MEMBER_PLACEHOLDER": "Dowolny"
+        }
+      },
+      "IMPORT": {
+        "TITLE": "Importuj kupony",
+        "DELIMITER": "Separator kolumn",
+        "DELIMITER_PLACEHOLDER": "Wybierz separator",
+        "DELIMITERS": {
+          "SPACE": "Spacja",
+          "COMMA": "Przecinek",
+          "SEMICOLON": "Średnik",
+          "TAB": "Tabulator"
+        },
+        "FILE": "Plik CSV bez nagłówka: kod, maks. liczba użyć, ID klienta",
+        "UPLOADED": "Przesłany plik",
+        "START": "Rozpocznij import",
+        "PROGRESS": "Postęp importu",
+        "PROCESSED": "Przetworzono {processed} z {total}",
+        "FINISHED": "Zakończono"
+      },
+      "USAGE": {
+        "EMPTY": "Promocja nie została użyta w żadnym zamówieniu",
+        "COLUMNS": {
+          "NUMBER": "Numer zamówienia",
+          "CUSTOMER": "Klient",
+          "STATUS": "Status",
+          "CREATED": "Utworzono",
+          "TOTAL": "Suma"
+        }
+      },
+      "PUBLICATIONS": {
+        "COLUMNS": {
+          "NAME": "Nazwa",
+          "STORE": "Witryna"
+        }
+      },
+      "PUBLICATION": {
+        "TITLE": "Emisja",
+        "NEW_TITLE": "Nowa emisja",
+        "NAME_PLACEHOLDER": "Wprowadź nazwę emisji",
+        "DESCRIPTION_PLACEHOLDER": "Wprowadź opis",
+        "STORE_PLACEHOLDER": "Wybierz sklep",
+        "PLACES_PLACEHOLDER": "Wybierz miejsca",
+        "ITEMS_PLACEHOLDER": "Wybierz banery",
+        "CONDITIONS": "Warunki publikacji",
+        "BROWSE": "Przeglądaj"
+      },
+      "CONTENT": {
+        "ITEMS_TITLE": "Banery",
+        "PLACES_TITLE": "Miejsca",
+        "ITEMS_ROOT": "Banery",
+        "PLACES_ROOT": "Miejsca",
+        "ADD_PLACES_TITLE": "Dodaj miejsca",
+        "ADD_ITEMS_TITLE": "Dodaj banery",
+        "PICK_HINT": "Kliknij wpis, aby dodać go do emisji, lub folder, aby go otworzyć",
+        "ADDED": "Dodano",
+        "EMPTY": "Ten folder jest pusty",
+        "COLUMNS": {
+          "NAME": "Nazwa",
+          "DESCRIPTION": "Opis"
+        }
+      },
+      "CONTENT_ITEM": {
+        "NEW_TITLE": "Nowy baner",
+        "NAME_PLACEHOLDER": "Wprowadź nazwę banera",
+        "DESCRIPTION_PLACEHOLDER": "Wprowadź opis",
+        "PROPERTIES": "Właściwości",
+        "NO_PROPERTIES": "Dla banerów nie zdefiniowano właściwości"
+      },
+      "CONTENT_PLACE": {
+        "NEW_TITLE": "Nowe miejsce",
+        "NAME_PLACEHOLDER": "Wprowadź nazwę miejsca",
+        "DESCRIPTION_PLACEHOLDER": "Wprowadź opis",
+        "IMAGE": "Obraz miejsca"
+      },
+      "CONTENT_FOLDER": {
+        "NEW_TITLE": "Nowy folder",
+        "NAME_PLACEHOLDER": "Wprowadź nazwę folderu",
+        "DESCRIPTION_PLACEHOLDER": "Wprowadź opis"
+      }
+    }
+  }
+}

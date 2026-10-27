@@ -1,0 +1,440 @@
+{
+  "MARKETING": {
+    "MENU": {
+      "PROMOTIONS": "Promotions",
+      "DYNAMIC_CONTENT": "Banner"
+    },
+    "LIBRARY": {
+      "INTRO": "Banner legen fest, was angezeigt wird, Slots, wo im Onlineshop, und Platzierungen zeigen ein Banner in einem Slot auf einer Website an – für einen Zeitraum und eine Zielgruppe.",
+      "TABS": {
+        "BANNERS": "Banner",
+        "SLOTS": "Slots",
+        "PLACEMENTS": "Platzierungen"
+      },
+      "SEARCH_BANNERS": "Banner suchen",
+      "EMPTY_BANNERS": "Noch keine Banner",
+      "EMPTY_SLOTS": "Noch keine Slots",
+      "USED_ON": "Auf keiner Website verwendet | Auf {n} Website verwendet | Auf {n} Websites verwendet",
+      "ADD_BANNER": "Banner hinzufügen",
+      "ADD_SLOT": "Slot hinzufügen",
+      "FOLDERS": "Ordner",
+      "COLUMNS": {
+        "SLOT": "Slot",
+        "WHERE": "Ort",
+        "BANNERS": "Banner",
+        "PLACEMENT": "Platzierung",
+        "SITE": "Website",
+        "STATUS": "Status",
+        "STARTS": "Beginn",
+        "ENDS": "Ende"
+      },
+      "EMPTY_PLACEMENTS": "Noch keine Platzierungen",
+      "ADD_PLACEMENT": "Platzierung hinzufügen",
+      "STATUS": {
+        "SHOWING": "Wird angezeigt",
+        "SCHEDULED": "Geplant",
+        "ENDED": "Beendet",
+        "OFF": "Aus"
+      }
+    },
+    "UNKNOWN": "unbekannt",
+    "UNLIMITED": "Unbegrenzt",
+    "STATUS": {
+      "ACTIVE": "Aktiv",
+      "INACTIVE": "Inaktiv"
+    },
+    "PROMOTION_STATUS": {
+      "ACTIVE": "Aktiv",
+      "UPCOMING": "Bevorstehend",
+      "ARCHIVED": "Archiviert",
+      "DEACTIVATED": "Deaktiviert",
+      "ALL": "Alle"
+    },
+    "ACTIONS": {
+      "ADD": "Hinzufügen",
+      "ADD_FOLDER": "Ordner hinzufügen",
+      "ADD_ITEM": "Banner hinzufügen",
+      "ADD_PLACE": "Slot hinzufügen",
+      "CLONE": "Klonen",
+      "COPY_ID": "ID kopieren",
+      "CREATE": "Erstellen",
+      "DELETE": "Löschen",
+      "IMPORT": "Importieren",
+      "MANAGE": "Verwalten",
+      "REFRESH": "Aktualisieren",
+      "RESET": "Zurücksetzen",
+      "SAVE": "Speichern"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Sie haben nicht gespeicherte Änderungen. Trotzdem schließen?",
+      "DELETE_PROMOTIONS": "{count} Promotion(s) löschen?",
+      "DELETE_COUPONS": "{count} Gutschein(e) löschen?",
+      "DELETE_PUBLICATIONS": "{count} Platzierung(en) löschen?",
+      "DELETE_CONTENT": "{count} ausgewählte Einträge löschen?",
+      "DELETE_NAMED": "„{name}“ löschen?",
+      "DELETE_FOLDER": "Ordner „{name}“ löschen?"
+    },
+    "VALIDATION": {
+      "REQUIRED": "Dieses Feld ist erforderlich",
+      "CODE_PATTERN": "Der Code enthält unzulässige Zeichen"
+    },
+    "WIDGETS": {
+      "COUPONS": "Gutscheine",
+      "USAGE": "Nutzungsverlauf"
+    },
+    "EXPRESSIONS": {
+      "ADD": "Hinzufügen",
+      "REMOVE": "Entfernen",
+      "EXCLUDING": "ausgenommen",
+      "EXCLUDE_CATEGORIES": "Kategorien",
+      "EXCLUDE_PRODUCTS": "Produkte",
+      "ADD_USER_GROUP": "Benutzergruppe hinzufügen",
+      "ADD_CONDITION": "Bedingung hinzufügen",
+      "ADD_REWARD": "Belohnung hinzufügen",
+      "NO_CRITERION": "Die Promotion braucht mindestens ein Teilnahmekriterium",
+      "NO_REWARD": "Die Promotion braucht mindestens eine Belohnung",
+      "GROUPS": {
+        "SHOPPER_PROFILE": "Käuferprofil",
+        "CATALOG": "Katalog",
+        "BROWSE_BEHAVIOR": "Surfverhalten",
+        "LOCATION": "Standort"
+      },
+      "NAMES": {
+        "EVERYONE": "Alle",
+        "FIRST_TIME_CUSTOMERS": "Erstkunden",
+        "REGISTERED_USERS": "Registrierte Benutzer",
+        "USER_GROUP_CONTAINS": "Benutzergruppe enthält ...",
+        "USER_GROUP_IS": "Benutzergruppe ist ...",
+        "SPECIFIC_CATEGORY": "Bestimmte Kategorie",
+        "SPECIFIC_PRODUCT": "Bestimmtes Produkt",
+        "CODE_CONTAINS": "Produktcode enthält...",
+        "CURRENCY_IS": "Währung ist...",
+        "IN_STOCK_QUANTITY": "Lagerbestand ist...",
+        "FULL_PRICE_ONLY": "Nur auf Artikel zum vollen Preis anwenden, nicht auf Sonderangebote",
+        "ITEMS_IN_CART": "Anzahl der Artikel im Warenkorb",
+        "CATEGORY_ITEMS_IN_CART": "Anzahl der Artikel einer Kategorie im Warenkorb",
+        "PRODUCT_ITEMS_IN_CART": "Anzahl der Artikel eines bestimmten Produkts im Warenkorb",
+        "PAYMENT_IS": "Zahlungsart ist...",
+        "SHIPPING_IS": "Versandart ist...",
+        "CART_SUBTOTAL": "Zwischensumme des Warenkorbs ist...",
+        "CART_ABS_OFF": "$... Rabatt auf die Zwischensumme",
+        "CART_REL_OFF": "...% Rabatt auf die Zwischensumme, höchstens $...",
+        "FREE_ITEMS": "... kostenlose Artikel von Produkt ...",
+        "ITEM_ABS_OFF": "$... Rabatt",
+        "ITEM_ABS_OFF_FOR_NUM": "$... Rabatt auf ... Artikel eines bestimmten Produkts",
+        "ITEM_REL_OFF": "...% Rabatt auf Produkt ..., höchstens $...",
+        "ITEM_REL_OFF_FOR_NUM": "...% Rabatt auf ... Artikel eines bestimmten Produkts, höchstens $...",
+        "GIFT": "... Artikel von Produkt ... als Geschenk",
+        "SHIPPING_ABS_OFF": "$... Rabatt auf Versand per ...",
+        "SHIPPING_REL_OFF": "% Rabatt auf Versand per ..., höchstens $...",
+        "PAYMENT_ABS_OFF": "$... Rabatt bei Zahlung per ...",
+        "PAYMENT_REL_OFF": "...% Rabatt bei Zahlung per ..., höchstens $...",
+        "EVERY_NTH_OFF": "...% Rabatt auf ... von je ... Artikeln eines bestimmten Produkts",
+        "EVERY_NTH_OTHER_OFF": "...% Rabatt auf ... Artikel eines Produkts je ... Artikel eines anderen Produkts",
+        "TAGS_CONTAIN": "Tags enthalten ...",
+        "SEARCHED_PHRASE": "Käufer hat im Shop nach ... gesucht",
+        "LANGUAGE_IS": "Benutzersprache ist...",
+        "AGE_IS": "Alter des Käufers ist ...",
+        "GENDER_IS": "Geschlecht des Käufers ist ...",
+        "TIME_ZONE": "Zeitzone",
+        "ZIP_CODE": "Postleitzahl",
+        "CITY": "Stadt",
+        "COUNTRY": "Land",
+        "STATE": "Region/Bundesland/Provinz"
+      },
+      "TEXT": {
+        "CUSTOMERS_MATCHING": "Kunden, für die",
+        "OF_FOLLOWING_CRITERIA": "der folgenden Kriterien gelten:",
+        "EVERYONE": "Alle",
+        "FIRST_TIME_BUYER": "Erstkäufer",
+        "REGISTERED_USER": "Registrierter Benutzer",
+        "USER_GROUP_CONTAINS": "Benutzergruppe enthält",
+        "USER_GROUP_IS": "Benutzergruppe ist",
+        "IF": "Wenn",
+        "CATALOG_CONDITIONS_ARE": "dieser Katalogbedingungen sind",
+        "CATEGORY": "Kategorie:",
+        "PRODUCT": "Produkt:",
+        "ALL_VARIANTS": "Auf alle Produktvarianten anwenden:",
+        "CODE_CONTAINS": "Produktcode enthält",
+        "CURRENCY_IS": "Währung ist",
+        "IN_STOCK_QUANTITY": "Lagerbestand ist",
+        "ITEMS": "Artikel",
+        "FULL_PRICE_ONLY": "Nur auf Artikel zum vollen Preis anwenden, nicht auf Sonderangebote",
+        "CART_CONDITIONS_ARE": "dieser Warenkorbbedingungen sind",
+        "ITEMS_IN_CART": "Artikel sind im Warenkorb",
+        "ITEMS_FROM_CATEGORY": "Artikel aus dieser Kategorie:",
+        "ARE_IN_CART": "sind im Warenkorb",
+        "SPECIFIC_PRODUCT_ITEMS": "Artikel dieses Produkts:",
+        "PAYMENT_IS": "Zahlungsart ist",
+        "SHIPPING_IS": "Versandart ist",
+        "CART_SUBTOTAL_IS": "Zwischensumme des Warenkorbs ist",
+        "GET_REWARDS": "Folgende Belohnungen erhalten:",
+        "CURRENCY": "$",
+        "OFF_CART_SUBTOTAL": "Rabatt auf die Zwischensumme",
+        "PCT_OFF_CART_SUBTOTAL_MAX": "% Rabatt auf die Zwischensumme, höchstens $",
+        "FREE_ITEMS_OF_PRODUCT": "kostenlose Artikel dieses Produkts:",
+        "OFF_FOR": "Rabatt auf",
+        "ITEMS_OF_PRODUCT": "Artikel dieses Produkts:",
+        "COMMA": ",",
+        "AMOUNT_PER_ITEM": "Betrag pro Artikel",
+        "PCT_OFF_FOR": "% Rabatt auf",
+        "NO_MORE_THAN_AMOUNT": ", höchstens $",
+        "PCT_OFF_MAX": "% Rabatt, höchstens $",
+        "FOR_ITEMS": "für",
+        "AS_GIFT": "als Geschenk. Details:",
+        "OFF_FOR_SHIPPING": "Rabatt auf Versand dieser Art:",
+        "PCT_OFF_FOR_SHIPPING": "% Rabatt auf Versand dieser Art:",
+        "OFF_FOR_PAYMENT": "Rabatt bei Zahlung mit dieser Zahlungsart:",
+        "PCT_OFF_FOR_PAYMENT": "% Rabatt bei Zahlung mit dieser Zahlungsart:",
+        "FOR": "Für",
+        "OF_EVERY": "von je",
+        "RECEIVE": "erhalten",
+        "PCT_OFF_MAX_ITEMS": "% Rabatt, höchstens",
+        "ITEMS_AND_MAX_AMOUNT": "Artikel und höchstens $",
+        "CONDITIONS_ARE_TRUE": "dieser Bedingungen erfüllt sind",
+        "TAGS_CONTAIN": "Tags enthalten",
+        "SEARCHED_PHRASE": "Käufer hat nach einem Ausdruck gesucht:",
+        "LANGUAGE_IS": "Die Benutzersprache ist",
+        "AGE_IS": "Alter des Käufers ist",
+        "GENDER_IS": "Geschlecht des Käufers ist",
+        "FROM_TIME_ZONE": "Besuch aus einer Zeitzone:",
+        "FROM_ZIP_CODE": "Besuch von einem Ort mit Postleitzahl:",
+        "FROM_CITY": "Besuch aus dieser Stadt:",
+        "FROM_COUNTRY": "Besuch aus diesem Land:",
+        "FROM_STATE": "Besuch aus diesem Bundesland bzw. dieser Provinz:",
+        "AND": "und"
+      },
+      "OPTIONS": {
+        "ALL": "alle",
+        "ANY": "beliebige",
+        "TRUE": "wahr",
+        "FALSE": "falsch",
+        "ROUND": "gerundeter",
+        "DONT_ROUND": "nicht gerundeter",
+        "YES": "ja",
+        "NO": "nein",
+        "EXACTLY": "genau",
+        "AT_LEAST": "mindestens",
+        "EXACTLY_OR_LESS": "genau oder weniger als",
+        "BETWEEN": "zwischen",
+        "ANYTHING_BUT": "alles außer",
+        "GREATER_THAN": "größer als",
+        "GREATER_OR_EQUAL": "größer oder gleich",
+        "LESS_THAN": "kleiner als",
+        "LESS_OR_EQUAL": "kleiner oder gleich",
+        "CONTAINING": "enthält",
+        "NOT_CONTAINING": "enthält nicht",
+        "BEING_EXACTLY": "ist genau",
+        "BEING_ANYTHING_BUT": "ist alles außer",
+        "FEMALE": "weiblich",
+        "MALE": "männlich"
+      },
+      "FIELDS": {
+        "NAME": "Name",
+        "MEASURE_UNIT": "Maßeinheit",
+        "IMAGE_URL": "Bild-URL",
+        "DESCRIPTION": "Beschreibung",
+        "AMOUNT": "Betrag",
+        "MAX_AMOUNT": "Höchstbetrag",
+        "MAX_ITEMS": "Höchstanzahl Artikel",
+        "QUANTITY": "Menge",
+        "NTH_QUANTITY": "Rabattierte Artikel",
+        "EVERY_NTH": "Von je",
+        "SUBTOTAL": "Zwischensumme",
+        "UPPER_VALUE": "Oberer Wert",
+        "VALUE": "Wert"
+      },
+      "PLACEHOLDERS": {
+        "ENTER_GROUP": "Gruppe eingeben",
+        "ENTER_CODE": "Code eingeben",
+        "ENTER_TAG": "Tag eingeben",
+        "ENTER_NAME": "Namen eingeben",
+        "ENTER_MEASURE_UNIT": "Maßeinheit angeben",
+        "ENTER_URL": "URL eingeben",
+        "ENTER_DESCRIPTION": "Beschreibung eingeben",
+        "SELECT_CATEGORY": "Kategorie auswählen",
+        "SELECT_PRODUCT": "Produkt auswählen",
+        "SELECT_PRODUCTS": "Produkte auswählen",
+        "SELECT_CURRENCY": "Währung auswählen",
+        "SELECT_SHIPPING_METHOD": "Versandart auswählen",
+        "SELECT_PAYMENT_METHOD": "Zahlungsart auswählen",
+        "SELECT_LANGUAGE": "Sprache auswählen",
+        "SELECT_GROUPS": "Gruppen auswählen",
+        "SELECT_COUNTRY": "Land auswählen",
+        "SELECT_TIME_ZONE": "Zeitzone auswählen"
+      }
+    },
+    "PAGES": {
+      "PROMOTIONS": {
+        "TITLE": "Promotions",
+        "EMPTY": "Keine Promotions gefunden",
+        "COLUMNS": {
+          "NAME": "Name",
+          "STATUS": "Status",
+          "COUPONS": "Gutscheine",
+          "START": "Startdatum",
+          "END": "Ablaufdatum",
+          "DESCRIPTION": "Beschreibung"
+        },
+        "FILTERS": {
+          "STATUS": "Status",
+          "STORE": "Geschäft"
+        },
+        "SAVED_FILTERS": {
+          "PLACEHOLDER": "Filter auswählen",
+          "EDIT": "Filter bearbeiten",
+          "NEW": "+ Neuer Filter"
+        }
+      },
+      "FILTER": {
+        "NEW_TITLE": "Neuer Filter",
+        "NAME": "Filtername",
+        "UNNAMED": "Unbenannter Filter",
+        "ALL": "Alle",
+        "APPLY": "Filter anwenden"
+      },
+      "PROMOTION": {
+        "TITLE": "Promotion",
+        "NEW_TITLE": "Neue Promotion",
+        "CONDITIONS": "Bedingungen und Belohnungen",
+        "LOCALIZATION": "Texte im Onlineshop",
+        "EXCLUSIVITY": {
+          "COMBINED": "Mit anderen Promotions kombinierbar",
+          "EXCLUSIVE": "Exklusiv (nicht kombinierbar)"
+        },
+        "FIELDS": {
+          "NAME": "Name der Promotion",
+          "NAME_PLACEHOLDER": "Namen der Promotion eingeben",
+          "NAME_HINT": "Interner Name, wird im Admin-Bereich angezeigt",
+          "ACTIVE": "Aktiv",
+          "PUBLIC": "Öffentlich (im Onlineshop sichtbar)",
+          "START": "Startdatum",
+          "START_HINT": "Die Promotion gilt ab diesem Datum",
+          "END": "Ablaufdatum",
+          "END_HINT": "Nach diesem Datum gilt die Promotion nicht mehr",
+          "STORES": "Geschäfte",
+          "STORES_PLACEHOLDER": "Alle Geschäfte",
+          "STORES_HINT": "Leer lassen, um sie in allen Geschäften anzuwenden",
+          "EXCLUSIVITY": "Kombinierbarkeit",
+          "EXCLUSIVITY_HINT": "Ob andere Promotions zusammen mit dieser angewendet werden können",
+          "PRIORITY": "Priorität",
+          "PRIORITY_HINT": "Promotions mit höherer Priorität werden zuerst angewendet",
+          "COMBINE_WITH_SELF": "Mit sich selbst kombinieren",
+          "COMBINE_WITH_SELF_HINT": "Mehrere Gutscheine dieser Promotion können auf eine Bestellung angewendet werden",
+          "DESCRIPTION": "Beschreibung",
+          "DESCRIPTION_PLACEHOLDER": "Beschreibung eingeben",
+          "LANGUAGE": "Sprache",
+          "LABEL": "Bezeichnung",
+          "LABEL_PLACEHOLDER": "Kurze Bezeichnung, z. B. ein Badge-Text",
+          "DISPLAY_NAME": "Anzeigename",
+          "DISPLAY_NAME_PLACEHOLDER": "Für Kunden angezeigter Name",
+          "LOCALIZED_DESCRIPTION": "Beschreibung für Kunden",
+          "LOCALIZED_DESCRIPTION_PLACEHOLDER": "Für Kunden angezeigte Beschreibung"
+        }
+      },
+      "COUPONS": {
+        "SEARCH": "Nach Code suchen",
+        "EMPTY": "Keine Gutscheine",
+        "COLUMNS": {
+          "CODE": "Code",
+          "USED": "Verwendungen",
+          "MAX_USES": "Max. Verwendungen",
+          "EXPIRES": "Läuft ab"
+        }
+      },
+      "COUPON": {
+        "NEW_TITLE": "Neuer Gutschein",
+        "FIELDS": {
+          "CODE": "Gutscheincode",
+          "CODE_PLACEHOLDER": "Code eingeben",
+          "CODE_HINT": "Der Code, den Kunden beim Bezahlen eingeben",
+          "EXPIRATION": "Ablaufdatum",
+          "EXPIRATION_HINT": "Nach diesem Datum kann der Gutschein nicht mehr verwendet werden",
+          "MAX_USES": "Maximale Nutzungsanzahl",
+          "MAX_USES_HINT": "0 = unbegrenzt",
+          "MAX_PER_USER": "Maximale Nutzungen pro Kunde",
+          "MAX_PER_USER_HINT": "0 = unbegrenzt",
+          "MEMBER": "Kunde oder Organisation",
+          "MEMBER_PLACEHOLDER": "Alle"
+        }
+      },
+      "IMPORT": {
+        "TITLE": "Gutscheine importieren",
+        "DELIMITER": "Spaltentrennzeichen",
+        "DELIMITER_PLACEHOLDER": "Trennzeichen auswählen",
+        "DELIMITERS": {
+          "SPACE": "Leerzeichen",
+          "COMMA": "Komma",
+          "SEMICOLON": "Semikolon",
+          "TAB": "Tabulator"
+        },
+        "FILE": "CSV-Datei ohne Kopfzeile: Code, max. Verwendungen, Kunden-ID",
+        "UPLOADED": "Hochgeladene Datei",
+        "START": "Import starten",
+        "PROGRESS": "Importfortschritt",
+        "PROCESSED": "{processed} von {total} verarbeitet",
+        "FINISHED": "Abgeschlossen"
+      },
+      "USAGE": {
+        "EMPTY": "Die Promotion wurde noch in keiner Bestellung verwendet",
+        "COLUMNS": {
+          "NUMBER": "Bestellnummer",
+          "CUSTOMER": "Kunde",
+          "STATUS": "Status",
+          "CREATED": "Erstellt",
+          "TOTAL": "Gesamt"
+        }
+      },
+      "PUBLICATIONS": {
+        "COLUMNS": {
+          "NAME": "Name",
+          "STORE": "Website"
+        }
+      },
+      "PUBLICATION": {
+        "TITLE": "Platzierung",
+        "NEW_TITLE": "Neue Platzierung",
+        "NAME_PLACEHOLDER": "Namen der Platzierung eingeben",
+        "DESCRIPTION_PLACEHOLDER": "Beschreibung eingeben",
+        "STORE_PLACEHOLDER": "Geschäft auswählen",
+        "PLACES_PLACEHOLDER": "Slots auswählen",
+        "ITEMS_PLACEHOLDER": "Banner auswählen",
+        "CONDITIONS": "Veröffentlichungsbedingungen",
+        "BROWSE": "Durchsuchen"
+      },
+      "CONTENT": {
+        "ITEMS_TITLE": "Banner",
+        "PLACES_TITLE": "Slots",
+        "ITEMS_ROOT": "Banner",
+        "PLACES_ROOT": "Slots",
+        "ADD_PLACES_TITLE": "Slots hinzufügen",
+        "ADD_ITEMS_TITLE": "Banner hinzufügen",
+        "PICK_HINT": "Klicken Sie auf einen Eintrag, um ihn der Platzierung hinzuzufügen, oder auf einen Ordner, um ihn zu öffnen",
+        "ADDED": "Hinzugefügt",
+        "EMPTY": "Dieser Ordner ist leer",
+        "COLUMNS": {
+          "NAME": "Name",
+          "DESCRIPTION": "Beschreibung"
+        }
+      },
+      "CONTENT_ITEM": {
+        "NEW_TITLE": "Neues Banner",
+        "NAME_PLACEHOLDER": "Namen des Banners eingeben",
+        "DESCRIPTION_PLACEHOLDER": "Beschreibung eingeben",
+        "PROPERTIES": "Eigenschaften",
+        "NO_PROPERTIES": "Für Banner sind keine Eigenschaften definiert"
+      },
+      "CONTENT_PLACE": {
+        "NEW_TITLE": "Neuer Slot",
+        "NAME_PLACEHOLDER": "Namen des Slots eingeben",
+        "DESCRIPTION_PLACEHOLDER": "Beschreibung eingeben",
+        "IMAGE": "Slot-Bild"
+      },
+      "CONTENT_FOLDER": {
+        "NEW_TITLE": "Neuer Ordner",
+        "NAME_PLACEHOLDER": "Ordnernamen eingeben",
+        "DESCRIPTION_PLACEHOLDER": "Beschreibung eingeben"
+      }
+    }
+  }
+}
