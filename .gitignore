@@ -272,3 +272,6 @@ __pycache__/
 # Webpack output
 dist/
 /.serena
+
+# Admin Shell plugin build output
+src/VirtoCommerce.MarketingModule.Web/plugins/

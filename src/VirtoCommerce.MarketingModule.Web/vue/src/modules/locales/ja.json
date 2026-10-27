@@ -1,0 +1,440 @@
+{
+  "MARKETING": {
+    "MENU": {
+      "PROMOTIONS": "プロモーション",
+      "DYNAMIC_CONTENT": "バナー"
+    },
+    "LIBRARY": {
+      "INTRO": "バナーは表示する内容、スロットはストアフロント上の表示位置を表します。配置は、サイト上のスロットにバナーを掲載し、期間と対象者を指定します。",
+      "TABS": {
+        "BANNERS": "バナー",
+        "SLOTS": "スロット",
+        "PLACEMENTS": "配置"
+      },
+      "SEARCH_BANNERS": "バナーを検索",
+      "EMPTY_BANNERS": "バナーはまだありません",
+      "EMPTY_SLOTS": "スロットはまだありません",
+      "USED_ON": "どのサイトでも使用されていません | {n} 件のサイトで使用中 | {n} 件のサイトで使用中",
+      "ADD_BANNER": "バナーを追加",
+      "ADD_SLOT": "スロットを追加",
+      "FOLDERS": "フォルダー",
+      "COLUMNS": {
+        "SLOT": "スロット",
+        "WHERE": "表示場所",
+        "BANNERS": "バナー",
+        "PLACEMENT": "配置",
+        "SITE": "サイト",
+        "STATUS": "ステータス",
+        "STARTS": "開始",
+        "ENDS": "終了"
+      },
+      "EMPTY_PLACEMENTS": "配置はまだありません",
+      "ADD_PLACEMENT": "配置を追加",
+      "STATUS": {
+        "SHOWING": "表示中",
+        "SCHEDULED": "予定",
+        "ENDED": "終了",
+        "OFF": "オフ"
+      }
+    },
+    "UNKNOWN": "不明",
+    "UNLIMITED": "無制限",
+    "STATUS": {
+      "ACTIVE": "アクティブ",
+      "INACTIVE": "非アクティブ"
+    },
+    "PROMOTION_STATUS": {
+      "ACTIVE": "アクティブ",
+      "UPCOMING": "予定",
+      "ARCHIVED": "アーカイブ済み",
+      "DEACTIVATED": "無効化",
+      "ALL": "すべて"
+    },
+    "ACTIONS": {
+      "ADD": "追加",
+      "ADD_FOLDER": "フォルダーを追加",
+      "ADD_ITEM": "バナーを追加",
+      "ADD_PLACE": "スロットを追加",
+      "CLONE": "複製",
+      "COPY_ID": "ID をコピー",
+      "CREATE": "作成",
+      "DELETE": "削除",
+      "IMPORT": "インポート",
+      "MANAGE": "管理",
+      "REFRESH": "更新",
+      "RESET": "リセット",
+      "SAVE": "保存"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "保存されていない変更があります。閉じてもよろしいですか？",
+      "DELETE_PROMOTIONS": "{count} 件のプロモーションを削除しますか？",
+      "DELETE_COUPONS": "{count} 件のクーポンを削除しますか？",
+      "DELETE_PUBLICATIONS": "{count} 件の配置を削除しますか？",
+      "DELETE_CONTENT": "選択した {count} 件の項目を削除しますか？",
+      "DELETE_NAMED": "「{name}」を削除しますか？",
+      "DELETE_FOLDER": "フォルダー「{name}」を削除しますか？"
+    },
+    "VALIDATION": {
+      "REQUIRED": "この項目は必須です",
+      "CODE_PATTERN": "コードに使用できない文字が含まれています"
+    },
+    "WIDGETS": {
+      "COUPONS": "クーポン",
+      "USAGE": "使用履歴"
+    },
+    "EXPRESSIONS": {
+      "ADD": "追加",
+      "REMOVE": "削除",
+      "EXCLUDING": "除外:",
+      "EXCLUDE_CATEGORIES": "カテゴリ",
+      "EXCLUDE_PRODUCTS": "商品",
+      "ADD_USER_GROUP": "ユーザーグループを追加",
+      "ADD_CONDITION": "条件を追加",
+      "ADD_REWARD": "特典を追加",
+      "NO_CRITERION": "プロモーションには少なくとも1つの対象条件が必要です",
+      "NO_REWARD": "プロモーションには少なくとも1つの特典が必要です",
+      "GROUPS": {
+        "SHOPPER_PROFILE": "購入者プロフィール",
+        "CATALOG": "カタログ",
+        "BROWSE_BEHAVIOR": "閲覧行動",
+        "LOCATION": "所在地"
+      },
+      "NAMES": {
+        "EVERYONE": "全員",
+        "FIRST_TIME_CUSTOMERS": "初回購入の顧客",
+        "REGISTERED_USERS": "登録ユーザー",
+        "USER_GROUP_CONTAINS": "ユーザーグループに ... を含む",
+        "USER_GROUP_IS": "ユーザーグループが ... である",
+        "SPECIFIC_CATEGORY": "特定のカテゴリ",
+        "SPECIFIC_PRODUCT": "特定の商品",
+        "CODE_CONTAINS": "商品コードに...を含む",
+        "CURRENCY_IS": "通貨が...である",
+        "IN_STOCK_QUANTITY": "在庫数が...",
+        "FULL_PRICE_ONLY": "定価の商品にのみ適用し、セール品には適用しない",
+        "ITEMS_IN_CART": "カート内の商品数",
+        "CATEGORY_ITEMS_IN_CART": "カート内のカテゴリ商品の数",
+        "PRODUCT_ITEMS_IN_CART": "カート内の特定商品の数",
+        "PAYMENT_IS": "支払い方法が...",
+        "SHIPPING_IS": "配送方法が...",
+        "CART_SUBTOTAL": "カートの小計が...",
+        "CART_ABS_OFF": "カート小計から$...引き",
+        "CART_REL_OFF": "カート小計から...%引き、最大$...",
+        "FREE_ITEMS": "商品 ... を ... 個無料",
+        "ITEM_ABS_OFF": "$...引き",
+        "ITEM_ABS_OFF_FOR_NUM": "特定商品 ... 個に$...引き",
+        "ITEM_REL_OFF": "商品 ... を...%引き、最大$...",
+        "ITEM_REL_OFF_FOR_NUM": "特定商品 ... 個を...%引き、最大$...",
+        "GIFT": "商品 ... を ... 個プレゼント",
+        "SHIPPING_ABS_OFF": "配送方法 ... で$...引き",
+        "SHIPPING_REL_OFF": "配送方法 ... で%引き、最大$...",
+        "PAYMENT_ABS_OFF": "支払い方法 ... で$...引き",
+        "PAYMENT_REL_OFF": "支払い方法 ... で...%引き、最大$...",
+        "EVERY_NTH_OFF": "特定商品 ... 個ごとに ... 個を...%引き",
+        "EVERY_NTH_OTHER_OFF": "別の商品 ... 個ごとに特定商品 ... 個を...%引き",
+        "TAGS_CONTAIN": "タグに ... を含む",
+        "SEARCHED_PHRASE": "購入者がストアで ... を検索した",
+        "LANGUAGE_IS": "ユーザーの言語が...",
+        "AGE_IS": "購入者の年齢が ...",
+        "GENDER_IS": "購入者の性別が ...",
+        "TIME_ZONE": "タイムゾーン",
+        "ZIP_CODE": "郵便番号",
+        "CITY": "市区町村",
+        "COUNTRY": "国",
+        "STATE": "地域/州/都道府県"
+      },
+      "TEXT": {
+        "CUSTOMERS_MATCHING": "次の条件の",
+        "OF_FOLLOWING_CRITERIA": "を満たす顧客:",
+        "EVERYONE": "全員",
+        "FIRST_TIME_BUYER": "初回購入者",
+        "REGISTERED_USER": "登録ユーザー",
+        "USER_GROUP_CONTAINS": "ユーザーグループに次を含む:",
+        "USER_GROUP_IS": "ユーザーグループ:",
+        "IF": "もし",
+        "CATALOG_CONDITIONS_ARE": "のカタログ条件が",
+        "CATEGORY": "カテゴリ:",
+        "PRODUCT": "商品:",
+        "ALL_VARIANTS": "すべての商品バリエーションに適用:",
+        "CODE_CONTAINS": "商品コードに次を含む:",
+        "CURRENCY_IS": "通貨:",
+        "IN_STOCK_QUANTITY": "在庫数:",
+        "ITEMS": "個",
+        "FULL_PRICE_ONLY": "定価の商品にのみ適用し、セール品には適用しない",
+        "CART_CONDITIONS_ARE": "のカート条件が",
+        "ITEMS_IN_CART": "個の商品がカートにある",
+        "ITEMS_FROM_CATEGORY": "個のこのカテゴリの商品:",
+        "ARE_IN_CART": "がカートにある",
+        "SPECIFIC_PRODUCT_ITEMS": "個のこの商品:",
+        "PAYMENT_IS": "支払い方法:",
+        "SHIPPING_IS": "配送方法:",
+        "CART_SUBTOTAL_IS": "カートの小計:",
+        "GET_REWARDS": "次の特典を付与:",
+        "CURRENCY": "$",
+        "OFF_CART_SUBTOTAL": "をカート小計から割引",
+        "PCT_OFF_CART_SUBTOTAL_MAX": "% をカート小計から割引、最大 $",
+        "FREE_ITEMS_OF_PRODUCT": "個を無料、商品:",
+        "OFF_FOR": "割引、対象:",
+        "ITEMS_OF_PRODUCT": "個のこの商品:",
+        "COMMA": "、",
+        "AMOUNT_PER_ITEM": "（1個あたりの金額）",
+        "PCT_OFF_FOR": "% 割引、対象:",
+        "NO_MORE_THAN_AMOUNT": "、最大 $",
+        "PCT_OFF_MAX": "% 割引、最大 $",
+        "FOR_ITEMS": "、対象:",
+        "AS_GIFT": "をプレゼント。詳細:",
+        "OFF_FOR_SHIPPING": "割引、この配送方法:",
+        "PCT_OFF_FOR_SHIPPING": "% 割引、この配送方法:",
+        "OFF_FOR_PAYMENT": "割引、この支払い方法の利用時:",
+        "PCT_OFF_FOR_PAYMENT": "% 割引、この支払い方法の利用時:",
+        "FOR": "対象:",
+        "OF_EVERY": "／ 各",
+        "RECEIVE": "特典:",
+        "PCT_OFF_MAX_ITEMS": "% 割引、最大",
+        "ITEMS_AND_MAX_AMOUNT": "個かつ最大 $",
+        "CONDITIONS_ARE_TRUE": "の条件が真の場合",
+        "TAGS_CONTAIN": "タグに次を含む:",
+        "SEARCHED_PHRASE": "購入者が検索したフレーズ:",
+        "LANGUAGE_IS": "ユーザーの言語:",
+        "AGE_IS": "購入者の年齢:",
+        "GENDER_IS": "購入者の性別:",
+        "FROM_TIME_ZONE": "閲覧元のタイムゾーン:",
+        "FROM_ZIP_CODE": "閲覧元の郵便番号:",
+        "FROM_CITY": "閲覧元の市区町村:",
+        "FROM_COUNTRY": "閲覧元の国:",
+        "FROM_STATE": "閲覧元の州/都道府県:",
+        "AND": "～"
+      },
+      "OPTIONS": {
+        "ALL": "すべて",
+        "ANY": "いずれか",
+        "TRUE": "真",
+        "FALSE": "偽",
+        "ROUND": "端数処理する",
+        "DONT_ROUND": "端数処理しない",
+        "YES": "はい",
+        "NO": "いいえ",
+        "EXACTLY": "ちょうど",
+        "AT_LEAST": "最低",
+        "EXACTLY_OR_LESS": "最大",
+        "BETWEEN": "範囲",
+        "ANYTHING_BUT": "次以外",
+        "GREATER_THAN": "次より大きい",
+        "GREATER_OR_EQUAL": "次以上",
+        "LESS_THAN": "次より小さい",
+        "LESS_OR_EQUAL": "次以下",
+        "CONTAINING": "次を含む",
+        "NOT_CONTAINING": "次を含まない",
+        "BEING_EXACTLY": "次と完全一致",
+        "BEING_ANYTHING_BUT": "次と一致しない",
+        "FEMALE": "女性",
+        "MALE": "男性"
+      },
+      "FIELDS": {
+        "NAME": "名前",
+        "MEASURE_UNIT": "計量単位",
+        "IMAGE_URL": "画像URL",
+        "DESCRIPTION": "説明",
+        "AMOUNT": "金額",
+        "MAX_AMOUNT": "上限金額",
+        "MAX_ITEMS": "上限個数",
+        "QUANTITY": "数量",
+        "NTH_QUANTITY": "割引対象の個数",
+        "EVERY_NTH": "対象単位の個数",
+        "SUBTOTAL": "小計",
+        "UPPER_VALUE": "上限値",
+        "VALUE": "値"
+      },
+      "PLACEHOLDERS": {
+        "ENTER_GROUP": "グループを入力",
+        "ENTER_CODE": "コードを入力",
+        "ENTER_TAG": "タグを入力",
+        "ENTER_NAME": "名前を入力",
+        "ENTER_MEASURE_UNIT": "計量単位を指定",
+        "ENTER_URL": "URLを入力",
+        "ENTER_DESCRIPTION": "説明を入力",
+        "SELECT_CATEGORY": "カテゴリを選択",
+        "SELECT_PRODUCT": "商品を選択",
+        "SELECT_PRODUCTS": "商品を選択（複数可）",
+        "SELECT_CURRENCY": "通貨を選択",
+        "SELECT_SHIPPING_METHOD": "配送方法を選択",
+        "SELECT_PAYMENT_METHOD": "支払い方法を選択",
+        "SELECT_LANGUAGE": "言語を選択",
+        "SELECT_GROUPS": "グループを選択",
+        "SELECT_COUNTRY": "国を選択",
+        "SELECT_TIME_ZONE": "タイムゾーンを選択"
+      }
+    },
+    "PAGES": {
+      "PROMOTIONS": {
+        "TITLE": "プロモーション",
+        "EMPTY": "プロモーションが見つかりません",
+        "COLUMNS": {
+          "NAME": "名前",
+          "STATUS": "ステータス",
+          "COUPONS": "クーポン",
+          "START": "開始日",
+          "END": "有効期限",
+          "DESCRIPTION": "説明"
+        },
+        "FILTERS": {
+          "STATUS": "ステータス",
+          "STORE": "ストア"
+        },
+        "SAVED_FILTERS": {
+          "PLACEHOLDER": "フィルターを選択",
+          "EDIT": "フィルターを編集",
+          "NEW": "+ 新しいフィルター"
+        }
+      },
+      "FILTER": {
+        "NEW_TITLE": "新しいフィルター",
+        "NAME": "フィルター名",
+        "UNNAMED": "名前のないフィルター",
+        "ALL": "すべて",
+        "APPLY": "フィルターを適用"
+      },
+      "PROMOTION": {
+        "TITLE": "プロモーション",
+        "NEW_TITLE": "新しいプロモーション",
+        "CONDITIONS": "条件と特典",
+        "LOCALIZATION": "ストアフロントのテキスト",
+        "EXCLUSIVITY": {
+          "COMBINED": "他のプロモーションと併用可能",
+          "EXCLUSIVE": "排他的（併用不可）"
+        },
+        "FIELDS": {
+          "NAME": "プロモーション名",
+          "NAME_PLACEHOLDER": "プロモーション名を入力",
+          "NAME_HINT": "内部名（管理画面に表示されます）",
+          "ACTIVE": "アクティブ",
+          "PUBLIC": "公開（ストアフロントに表示）",
+          "START": "開始日",
+          "START_HINT": "この日からプロモーションが適用されます",
+          "END": "有効期限",
+          "END_HINT": "この日を過ぎるとプロモーションは適用されなくなります",
+          "STORES": "ストア",
+          "STORES_PLACEHOLDER": "すべてのストア",
+          "STORES_HINT": "すべてのストアに適用する場合は空のままにしてください",
+          "EXCLUSIVITY": "併用",
+          "EXCLUSIVITY_HINT": "他のプロモーションをこのプロモーションと同時に適用できるかどうか",
+          "PRIORITY": "優先度",
+          "PRIORITY_HINT": "優先度の高いプロモーションから先に適用されます",
+          "COMBINE_WITH_SELF": "同一プロモーション内で併用",
+          "COMBINE_WITH_SELF_HINT": "このプロモーションの複数のクーポンを 1 つの注文に適用できます",
+          "DESCRIPTION": "説明",
+          "DESCRIPTION_PLACEHOLDER": "説明を入力",
+          "LANGUAGE": "言語",
+          "LABEL": "ラベル",
+          "LABEL_PLACEHOLDER": "短いラベル（例: バッジのテキスト）",
+          "DISPLAY_NAME": "表示名",
+          "DISPLAY_NAME_PLACEHOLDER": "顧客に表示される名前",
+          "LOCALIZED_DESCRIPTION": "顧客向けの説明",
+          "LOCALIZED_DESCRIPTION_PLACEHOLDER": "顧客に表示される説明"
+        }
+      },
+      "COUPONS": {
+        "SEARCH": "コードで検索",
+        "EMPTY": "クーポンがありません",
+        "COLUMNS": {
+          "CODE": "コード",
+          "USED": "使用回数",
+          "MAX_USES": "最大使用回数",
+          "EXPIRES": "有効期限"
+        }
+      },
+      "COUPON": {
+        "NEW_TITLE": "新しいクーポン",
+        "FIELDS": {
+          "CODE": "クーポンコード",
+          "CODE_PLACEHOLDER": "コードを入力",
+          "CODE_HINT": "顧客がチェックアウト時に入力するコード",
+          "EXPIRATION": "有効期限",
+          "EXPIRATION_HINT": "この日を過ぎるとクーポンは使用できません",
+          "MAX_USES": "最大使用回数",
+          "MAX_USES_HINT": "0 = 無制限",
+          "MAX_PER_USER": "顧客ごとの最大使用回数",
+          "MAX_PER_USER_HINT": "0 = 無制限",
+          "MEMBER": "顧客または組織",
+          "MEMBER_PLACEHOLDER": "指定なし"
+        }
+      },
+      "IMPORT": {
+        "TITLE": "クーポンのインポート",
+        "DELIMITER": "列の区切り文字",
+        "DELIMITER_PLACEHOLDER": "区切り文字を選択",
+        "DELIMITERS": {
+          "SPACE": "スペース",
+          "COMMA": "カンマ",
+          "SEMICOLON": "セミコロン",
+          "TAB": "タブ"
+        },
+        "FILE": "ヘッダー行なしの CSV ファイル: コード、最大使用回数、顧客 ID",
+        "UPLOADED": "アップロードされたファイル",
+        "START": "インポートを開始",
+        "PROGRESS": "インポートの進行状況",
+        "PROCESSED": "{total} 件中 {processed} 件を処理済み",
+        "FINISHED": "完了"
+      },
+      "USAGE": {
+        "EMPTY": "このプロモーションは注文で使用されていません",
+        "COLUMNS": {
+          "NUMBER": "注文番号",
+          "CUSTOMER": "顧客",
+          "STATUS": "ステータス",
+          "CREATED": "作成日",
+          "TOTAL": "合計"
+        }
+      },
+      "PUBLICATIONS": {
+        "COLUMNS": {
+          "NAME": "名前",
+          "STORE": "サイト"
+        }
+      },
+      "PUBLICATION": {
+        "TITLE": "配置",
+        "NEW_TITLE": "新しい配置",
+        "NAME_PLACEHOLDER": "配置名を入力",
+        "DESCRIPTION_PLACEHOLDER": "説明を入力",
+        "STORE_PLACEHOLDER": "ストアを選択",
+        "PLACES_PLACEHOLDER": "スロットを選択",
+        "ITEMS_PLACEHOLDER": "バナーを選択",
+        "CONDITIONS": "公開条件",
+        "BROWSE": "参照"
+      },
+      "CONTENT": {
+        "ITEMS_TITLE": "バナー",
+        "PLACES_TITLE": "スロット",
+        "ITEMS_ROOT": "バナー",
+        "PLACES_ROOT": "スロット",
+        "ADD_PLACES_TITLE": "スロットを追加",
+        "ADD_ITEMS_TITLE": "バナーを追加",
+        "PICK_HINT": "項目をクリックすると配置に追加され、フォルダーをクリックすると開きます",
+        "ADDED": "追加済み",
+        "EMPTY": "このフォルダーは空です",
+        "COLUMNS": {
+          "NAME": "名前",
+          "DESCRIPTION": "説明"
+        }
+      },
+      "CONTENT_ITEM": {
+        "NEW_TITLE": "新しいバナー",
+        "NAME_PLACEHOLDER": "バナー名を入力",
+        "DESCRIPTION_PLACEHOLDER": "説明を入力",
+        "PROPERTIES": "プロパティ",
+        "NO_PROPERTIES": "バナーにはプロパティが定義されていません"
+      },
+      "CONTENT_PLACE": {
+        "NEW_TITLE": "新しいスロット",
+        "NAME_PLACEHOLDER": "スロット名を入力",
+        "DESCRIPTION_PLACEHOLDER": "説明を入力",
+        "IMAGE": "スロットの画像"
+      },
+      "CONTENT_FOLDER": {
+        "NEW_TITLE": "新しいフォルダー",
+        "NAME_PLACEHOLDER": "フォルダー名を入力",
+        "DESCRIPTION_PLACEHOLDER": "説明を入力"
+      }
+    }
+  }
+}

@@ -1,0 +1,440 @@
+{
+  "MARKETING": {
+    "MENU": {
+      "PROMOTIONS": "Kampanjat",
+      "DYNAMIC_CONTENT": "Bannerit"
+    },
+    "LIBRARY": {
+      "INTRO": "Bannerit määrittävät, mitä näytetään, paikat määrittävät, missä kohdassa verkkokauppaa, ja sijoittelut näyttävät bannerin sivuston paikassa tiettynä aikana tietylle yleisölle.",
+      "TABS": {
+        "BANNERS": "Bannerit",
+        "SLOTS": "Paikat",
+        "PLACEMENTS": "Sijoittelut"
+      },
+      "SEARCH_BANNERS": "Hae bannereita",
+      "EMPTY_BANNERS": "Ei vielä bannereita",
+      "EMPTY_SLOTS": "Ei vielä paikkoja",
+      "USED_ON": "Ei käytössä millään sivustolla | Käytössä {n} sivustolla | Käytössä {n} sivustolla",
+      "ADD_BANNER": "Lisää banneri",
+      "ADD_SLOT": "Lisää paikka",
+      "FOLDERS": "Kansiot",
+      "COLUMNS": {
+        "SLOT": "Paikka",
+        "WHERE": "Sijainti",
+        "BANNERS": "Bannerit",
+        "PLACEMENT": "Sijoittelu",
+        "SITE": "Sivusto",
+        "STATUS": "Tila",
+        "STARTS": "Alkaa",
+        "ENDS": "Päättyy"
+      },
+      "EMPTY_PLACEMENTS": "Ei vielä sijoitteluja",
+      "ADD_PLACEMENT": "Lisää sijoittelu",
+      "STATUS": {
+        "SHOWING": "Näkyvissä",
+        "SCHEDULED": "Ajastettu",
+        "ENDED": "Päättynyt",
+        "OFF": "Pois päältä"
+      }
+    },
+    "UNKNOWN": "tuntematon",
+    "UNLIMITED": "Rajoittamaton",
+    "STATUS": {
+      "ACTIVE": "Aktiivinen",
+      "INACTIVE": "Ei aktiivinen"
+    },
+    "PROMOTION_STATUS": {
+      "ACTIVE": "Aktiivinen",
+      "UPCOMING": "Tulossa",
+      "ARCHIVED": "Arkistoitu",
+      "DEACTIVATED": "Poistettu käytöstä",
+      "ALL": "Kaikki"
+    },
+    "ACTIONS": {
+      "ADD": "Lisää",
+      "ADD_FOLDER": "Lisää kansio",
+      "ADD_ITEM": "Lisää banneri",
+      "ADD_PLACE": "Lisää paikka",
+      "CLONE": "Kloonaa",
+      "COPY_ID": "Kopioi ID",
+      "CREATE": "Luo",
+      "DELETE": "Poista",
+      "IMPORT": "Tuo",
+      "MANAGE": "Hallitse",
+      "REFRESH": "Päivitä",
+      "RESET": "Palauta",
+      "SAVE": "Tallenna"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Muutoksia ei ole tallennettu. Suljetaanko silti?",
+      "DELETE_PROMOTIONS": "Poistetaanko {count} kampanja(a)?",
+      "DELETE_COUPONS": "Poistetaanko {count} kuponki(a)?",
+      "DELETE_PUBLICATIONS": "Poistetaanko {count} sijoittelu(a)?",
+      "DELETE_CONTENT": "Poistetaanko {count} valittua kohdetta?",
+      "DELETE_NAMED": "Poistetaanko ”{name}”?",
+      "DELETE_FOLDER": "Poistetaanko kansio ”{name}”?"
+    },
+    "VALIDATION": {
+      "REQUIRED": "Tämä kenttä on pakollinen",
+      "CODE_PATTERN": "Koodi sisältää merkkejä, jotka eivät ole sallittuja"
+    },
+    "WIDGETS": {
+      "COUPONS": "Kupongit",
+      "USAGE": "Käyttöhistoria"
+    },
+    "EXPRESSIONS": {
+      "ADD": "Lisää",
+      "REMOVE": "Poista",
+      "EXCLUDING": "pois lukien",
+      "EXCLUDE_CATEGORIES": "kategoriat",
+      "EXCLUDE_PRODUCTS": "tuotteet",
+      "ADD_USER_GROUP": "Lisää käyttäjäryhmä",
+      "ADD_CONDITION": "Lisää ehto",
+      "ADD_REWARD": "Lisää etu",
+      "NO_CRITERION": "Kampanjalla on oltava vähintään yksi kelpoisuusehto",
+      "NO_REWARD": "Kampanjalla on oltava vähintään yksi etu",
+      "GROUPS": {
+        "SHOPPER_PROFILE": "Ostajan profiili",
+        "CATALOG": "Katalogi",
+        "BROWSE_BEHAVIOR": "Selauskäyttäytyminen",
+        "LOCATION": "Sijainti"
+      },
+      "NAMES": {
+        "EVERYONE": "Kaikki",
+        "FIRST_TIME_CUSTOMERS": "Ensikertalaiset asiakkaat",
+        "REGISTERED_USERS": "Rekisteröityneet käyttäjät",
+        "USER_GROUP_CONTAINS": "Käyttäjäryhmä sisältää ...",
+        "USER_GROUP_IS": "Käyttäjäryhmä on ...",
+        "SPECIFIC_CATEGORY": "Tietty kategoria",
+        "SPECIFIC_PRODUCT": "Tietty tuote",
+        "CODE_CONTAINS": "Tuotekoodi sisältää...",
+        "CURRENCY_IS": "Valuutta on...",
+        "IN_STOCK_QUANTITY": "Varastosaldo on...",
+        "FULL_PRICE_ONLY": "Koskee vain täysihintaisia tuotteita, ei alennustuotteita",
+        "ITEMS_IN_CART": "Tuotteiden määrä ostoskorissa",
+        "CATEGORY_ITEMS_IN_CART": "Kategorian tuotteiden määrä ostoskorissa",
+        "PRODUCT_ITEMS_IN_CART": "Tietyn tuotteen kappalemäärä ostoskorissa",
+        "PAYMENT_IS": "Maksutapa on...",
+        "SHIPPING_IS": "Toimitustapa on...",
+        "CART_SUBTOTAL": "Ostoskorin välisumma on...",
+        "CART_ABS_OFF": "$... alennus ostoskorin välisummasta",
+        "CART_REL_OFF": "...% alennus ostoskorin välisummasta, enintään $...",
+        "FREE_ITEMS": "... ilmaista kappaletta tuotetta ...",
+        "ITEM_ABS_OFF": "$... alennus",
+        "ITEM_ABS_OFF_FOR_NUM": "$... alennus ... kappaleesta tiettyä tuotetta",
+        "ITEM_REL_OFF": "...% alennus tuotteesta ..., enintään $...",
+        "ITEM_REL_OFF_FOR_NUM": "...% alennus ... kappaleesta tiettyä tuotetta, enintään $...",
+        "GIFT": "... kappaletta tuotetta ... lahjaksi",
+        "SHIPPING_ABS_OFF": "$... alennus toimituksesta tavalla ...",
+        "SHIPPING_REL_OFF": "% alennus toimituksesta tavalla ..., enintään $...",
+        "PAYMENT_ABS_OFF": "$... alennus maksettaessa tavalla ...",
+        "PAYMENT_REL_OFF": "...% alennus maksettaessa tavalla ..., enintään $...",
+        "EVERY_NTH_OFF": "...% alennus ... kappaleesta jokaista ... kappaletta kohden tiettyä tuotetta",
+        "EVERY_NTH_OTHER_OFF": "...% alennus ... kappaleesta tuotetta jokaista ... kappaletta kohden toista tuotetta",
+        "TAGS_CONTAIN": "Tunnisteet sisältävät ...",
+        "SEARCHED_PHRASE": "Ostaja haki kaupasta ...",
+        "LANGUAGE_IS": "Käyttäjän kieli on...",
+        "AGE_IS": "Ostajan ikä on ...",
+        "GENDER_IS": "Ostajan sukupuoli on ...",
+        "TIME_ZONE": "Aikavyöhyke",
+        "ZIP_CODE": "Postinumero",
+        "CITY": "Kaupunki",
+        "COUNTRY": "Maa",
+        "STATE": "Alue/osavaltio/maakunta"
+      },
+      "TEXT": {
+        "CUSTOMERS_MATCHING": "Asiakkaat, jotka täyttävät",
+        "OF_FOLLOWING_CRITERIA": "seuraavista ehdoista:",
+        "EVERYONE": "Kaikki",
+        "FIRST_TIME_BUYER": "Ensikertalainen ostaja",
+        "REGISTERED_USER": "Rekisteröitynyt käyttäjä",
+        "USER_GROUP_CONTAINS": "Käyttäjäryhmä sisältää",
+        "USER_GROUP_IS": "Käyttäjäryhmä on",
+        "IF": "Jos",
+        "CATALOG_CONDITIONS_ARE": "näistä katalogiehdoista on",
+        "CATEGORY": "Kategoria:",
+        "PRODUCT": "Tuote:",
+        "ALL_VARIANTS": "Koskee kaikkia tuotevariantteja:",
+        "CODE_CONTAINS": "Tuotekoodi sisältää",
+        "CURRENCY_IS": "Valuutta on",
+        "IN_STOCK_QUANTITY": "Varastosaldo on",
+        "ITEMS": "kpl",
+        "FULL_PRICE_ONLY": "Koskee vain täysihintaisia tuotteita, ei alennustuotteita",
+        "CART_CONDITIONS_ARE": "näistä ostoskoriehdoista on",
+        "ITEMS_IN_CART": "kpl on ostoskorissa",
+        "ITEMS_FROM_CATEGORY": "kpl tästä kategoriasta:",
+        "ARE_IN_CART": "on ostoskorissa",
+        "SPECIFIC_PRODUCT_ITEMS": "kpl tätä tuotetta:",
+        "PAYMENT_IS": "Maksutapa on",
+        "SHIPPING_IS": "Toimitustapa on",
+        "CART_SUBTOTAL_IS": "Ostoskorin välisumma on",
+        "GET_REWARDS": "Saa seuraavat edut:",
+        "CURRENCY": "$",
+        "OFF_CART_SUBTOTAL": "alennus ostoskorin välisummasta",
+        "PCT_OFF_CART_SUBTOTAL_MAX": "% alennus ostoskorin välisummasta, enintään $",
+        "FREE_ITEMS_OF_PRODUCT": "ilmaista kappaletta tätä tuotetta:",
+        "OFF_FOR": "alennus",
+        "ITEMS_OF_PRODUCT": "kpl tätä tuotetta:",
+        "COMMA": ",",
+        "AMOUNT_PER_ITEM": "summa kappaletta kohden",
+        "PCT_OFF_FOR": "% alennus",
+        "NO_MORE_THAN_AMOUNT": ", enintään $",
+        "PCT_OFF_MAX": "% alennus, enintään $",
+        "FOR_ITEMS": "koskien",
+        "AS_GIFT": "lahjaksi. Tiedot:",
+        "OFF_FOR_SHIPPING": "alennus tämän tyyppisestä toimituksesta:",
+        "PCT_OFF_FOR_SHIPPING": "% alennus tämän tyyppisestä toimituksesta:",
+        "OFF_FOR_PAYMENT": "alennus maksettaessa tällä maksutavalla:",
+        "PCT_OFF_FOR_PAYMENT": "% alennus maksettaessa tällä maksutavalla:",
+        "FOR": "Koskee",
+        "OF_EVERY": "jokaisesta",
+        "RECEIVE": "saa",
+        "PCT_OFF_MAX_ITEMS": "% alennus, enintään",
+        "ITEMS_AND_MAX_AMOUNT": "kpl ja enintään $",
+        "CONDITIONS_ARE_TRUE": "näistä ehdoista täyttyy",
+        "TAGS_CONTAIN": "Tunnisteet sisältävät",
+        "SEARCHED_PHRASE": "Ostaja haki fraasia, joka",
+        "LANGUAGE_IS": "Käyttäjän kieleksi on asetettu",
+        "AGE_IS": "Ostajan ikä on",
+        "GENDER_IS": "Ostajan sukupuoli on",
+        "FROM_TIME_ZONE": "Selaa aikavyöhykkeeltä, joka on",
+        "FROM_ZIP_CODE": "Selaa sijainnista, jonka postinumero",
+        "FROM_CITY": "Selaa tästä kaupungista:",
+        "FROM_COUNTRY": "Selaa tästä maasta:",
+        "FROM_STATE": "Selaa tästä osavaltiosta tai maakunnasta:",
+        "AND": "ja"
+      },
+      "OPTIONS": {
+        "ALL": "kaikki",
+        "ANY": "mikä tahansa",
+        "TRUE": "tosi",
+        "FALSE": "epätosi",
+        "ROUND": "pyöristä",
+        "DONT_ROUND": "älä pyöristä",
+        "YES": "kyllä",
+        "NO": "ei",
+        "EXACTLY": "tasan",
+        "AT_LEAST": "vähintään",
+        "EXACTLY_OR_LESS": "tasan tai alle",
+        "BETWEEN": "välillä",
+        "ANYTHING_BUT": "mikä tahansa paitsi",
+        "GREATER_THAN": "suurempi kuin",
+        "GREATER_OR_EQUAL": "suurempi tai yhtä suuri kuin",
+        "LESS_THAN": "pienempi kuin",
+        "LESS_OR_EQUAL": "pienempi tai yhtä suuri kuin",
+        "CONTAINING": "sisältää",
+        "NOT_CONTAINING": "ei sisällä",
+        "BEING_EXACTLY": "on tasan",
+        "BEING_ANYTHING_BUT": "on mikä tahansa paitsi",
+        "FEMALE": "nainen",
+        "MALE": "mies"
+      },
+      "FIELDS": {
+        "NAME": "Nimi",
+        "MEASURE_UNIT": "Mittayksikkö",
+        "IMAGE_URL": "Kuvan URL",
+        "DESCRIPTION": "Kuvaus",
+        "AMOUNT": "Summa",
+        "MAX_AMOUNT": "Enimmäissumma",
+        "MAX_ITEMS": "Kappaleiden enimmäismäärä",
+        "QUANTITY": "Määrä",
+        "NTH_QUANTITY": "Alennetut kappaleet",
+        "EVERY_NTH": "Jokaisesta",
+        "SUBTOTAL": "Välisumma",
+        "UPPER_VALUE": "Yläraja",
+        "VALUE": "Arvo"
+      },
+      "PLACEHOLDERS": {
+        "ENTER_GROUP": "Anna ryhmä",
+        "ENTER_CODE": "Anna koodi",
+        "ENTER_TAG": "Anna tunniste",
+        "ENTER_NAME": "Anna nimi",
+        "ENTER_MEASURE_UNIT": "Määritä mittayksikkö",
+        "ENTER_URL": "Anna URL",
+        "ENTER_DESCRIPTION": "Anna kuvaus",
+        "SELECT_CATEGORY": "valitse kategoria",
+        "SELECT_PRODUCT": "valitse tuote",
+        "SELECT_PRODUCTS": "valitse tuotteet",
+        "SELECT_CURRENCY": "valitse valuutta",
+        "SELECT_SHIPPING_METHOD": "valitse toimitustapa",
+        "SELECT_PAYMENT_METHOD": "valitse maksutapa",
+        "SELECT_LANGUAGE": "valitse kieli",
+        "SELECT_GROUPS": "valitse ryhmät",
+        "SELECT_COUNTRY": "valitse maa",
+        "SELECT_TIME_ZONE": "valitse aikavyöhyke"
+      }
+    },
+    "PAGES": {
+      "PROMOTIONS": {
+        "TITLE": "Kampanjat",
+        "EMPTY": "Kampanjoita ei löytynyt",
+        "COLUMNS": {
+          "NAME": "Nimi",
+          "STATUS": "Tila",
+          "COUPONS": "Kupongit",
+          "START": "Aloituspäivä",
+          "END": "Vanhenemispäivä",
+          "DESCRIPTION": "Kuvaus"
+        },
+        "FILTERS": {
+          "STATUS": "Tila",
+          "STORE": "Kauppa"
+        },
+        "SAVED_FILTERS": {
+          "PLACEHOLDER": "Valitse suodatin",
+          "EDIT": "Muokkaa suodatinta",
+          "NEW": "+ Uusi suodatin"
+        }
+      },
+      "FILTER": {
+        "NEW_TITLE": "Uusi suodatin",
+        "NAME": "Suodattimen nimi",
+        "UNNAMED": "Nimetön suodatin",
+        "ALL": "Kaikki",
+        "APPLY": "Käytä suodatinta"
+      },
+      "PROMOTION": {
+        "TITLE": "Kampanja",
+        "NEW_TITLE": "Uusi kampanja",
+        "CONDITIONS": "Ehdot ja edut",
+        "LOCALIZATION": "Verkkokaupan tekstit",
+        "EXCLUSIVITY": {
+          "COMBINED": "Voidaan yhdistää muihin kampanjoihin",
+          "EXCLUSIVE": "Eksklusiivinen (ei voida yhdistää)"
+        },
+        "FIELDS": {
+          "NAME": "Kampanjan nimi",
+          "NAME_PLACEHOLDER": "Anna kampanjan nimi",
+          "NAME_HINT": "Sisäinen nimi, näkyy hallinnassa",
+          "ACTIVE": "Aktiivinen",
+          "PUBLIC": "Julkinen (näkyy verkkokaupassa)",
+          "START": "Aloituspäivä",
+          "START_HINT": "Kampanja on voimassa tästä päivästä alkaen",
+          "END": "Vanhenemispäivä",
+          "END_HINT": "Kampanja ei ole voimassa tämän päivän jälkeen",
+          "STORES": "Kaupat",
+          "STORES_PLACEHOLDER": "Kaikki kaupat",
+          "STORES_HINT": "Jätä tyhjäksi, jos kampanja koskee kaikkia kauppoja",
+          "EXCLUSIVITY": "Yhdistettävyys",
+          "EXCLUSIVITY_HINT": "Voidaanko muita kampanjoita soveltaa yhdessä tämän kanssa",
+          "PRIORITY": "Prioriteetti",
+          "PRIORITY_HINT": "Korkeamman prioriteetin kampanjoita sovelletaan ensin",
+          "COMBINE_WITH_SELF": "Yhdistä itsensä kanssa",
+          "COMBINE_WITH_SELF_HINT": "Samaan tilaukseen voidaan käyttää useita tämän kampanjan kuponkeja",
+          "DESCRIPTION": "Kuvaus",
+          "DESCRIPTION_PLACEHOLDER": "Anna kuvaus",
+          "LANGUAGE": "Kieli",
+          "LABEL": "Tunniste",
+          "LABEL_PLACEHOLDER": "Lyhyt tunniste, esim. merkin teksti",
+          "DISPLAY_NAME": "Näyttönimi",
+          "DISPLAY_NAME_PLACEHOLDER": "Asiakkaille näytettävä nimi",
+          "LOCALIZED_DESCRIPTION": "Kuvaus asiakkaille",
+          "LOCALIZED_DESCRIPTION_PLACEHOLDER": "Asiakkaille näytettävä kuvaus"
+        }
+      },
+      "COUPONS": {
+        "SEARCH": "Hae koodilla",
+        "EMPTY": "Ei kuponkeja",
+        "COLUMNS": {
+          "CODE": "Koodi",
+          "USED": "Käyttökerrat",
+          "MAX_USES": "Enimmäiskäytöt",
+          "EXPIRES": "Vanhenee"
+        }
+      },
+      "COUPON": {
+        "NEW_TITLE": "Uusi kuponki",
+        "FIELDS": {
+          "CODE": "Kuponkikoodi",
+          "CODE_PLACEHOLDER": "Anna koodi",
+          "CODE_HINT": "Koodi, jonka asiakkaat syöttävät kassalla",
+          "EXPIRATION": "Vanhenemispäivä",
+          "EXPIRATION_HINT": "Kuponkia ei voi käyttää tämän päivän jälkeen",
+          "MAX_USES": "Maksimikäyttömäärä",
+          "MAX_USES_HINT": "0 = rajoittamaton",
+          "MAX_PER_USER": "Maksimikäytöt asiakasta kohden",
+          "MAX_PER_USER_HINT": "0 = rajoittamaton",
+          "MEMBER": "Asiakas tai organisaatio",
+          "MEMBER_PLACEHOLDER": "Kuka tahansa"
+        }
+      },
+      "IMPORT": {
+        "TITLE": "Tuo kuponkeja",
+        "DELIMITER": "Sarake-erotin",
+        "DELIMITER_PLACEHOLDER": "Valitse erotin",
+        "DELIMITERS": {
+          "SPACE": "Välilyönti",
+          "COMMA": "Pilkku",
+          "SEMICOLON": "Puolipiste",
+          "TAB": "Sarkain"
+        },
+        "FILE": "CSV-tiedosto ilman otsikkoriviä: koodi, enimmäiskäytöt, asiakastunnus",
+        "UPLOADED": "Ladattu tiedosto",
+        "START": "Aloita tuonti",
+        "PROGRESS": "Tuonnin edistyminen",
+        "PROCESSED": "Käsitelty {processed}/{total}",
+        "FINISHED": "Valmis"
+      },
+      "USAGE": {
+        "EMPTY": "Kampanjaa ei ole käytetty tilauksissa",
+        "COLUMNS": {
+          "NUMBER": "Tilausnumero",
+          "CUSTOMER": "Asiakas",
+          "STATUS": "Tila",
+          "CREATED": "Luotu",
+          "TOTAL": "Yhteensä"
+        }
+      },
+      "PUBLICATIONS": {
+        "COLUMNS": {
+          "NAME": "Nimi",
+          "STORE": "Sivusto"
+        }
+      },
+      "PUBLICATION": {
+        "TITLE": "Sijoittelu",
+        "NEW_TITLE": "Uusi sijoittelu",
+        "NAME_PLACEHOLDER": "Anna sijoittelun nimi",
+        "DESCRIPTION_PLACEHOLDER": "Anna kuvaus",
+        "STORE_PLACEHOLDER": "Valitse kauppa",
+        "PLACES_PLACEHOLDER": "Valitse paikat",
+        "ITEMS_PLACEHOLDER": "Valitse bannerit",
+        "CONDITIONS": "Julkaisuehdot",
+        "BROWSE": "Selaa"
+      },
+      "CONTENT": {
+        "ITEMS_TITLE": "Bannerit",
+        "PLACES_TITLE": "Paikat",
+        "ITEMS_ROOT": "Bannerit",
+        "PLACES_ROOT": "Paikat",
+        "ADD_PLACES_TITLE": "Lisää paikkoja",
+        "ADD_ITEMS_TITLE": "Lisää bannereita",
+        "PICK_HINT": "Lisää kohde sijoitteluun napsauttamalla sitä tai avaa kansio napsauttamalla sitä",
+        "ADDED": "Lisätty",
+        "EMPTY": "Tämä kansio on tyhjä",
+        "COLUMNS": {
+          "NAME": "Nimi",
+          "DESCRIPTION": "Kuvaus"
+        }
+      },
+      "CONTENT_ITEM": {
+        "NEW_TITLE": "Uusi banneri",
+        "NAME_PLACEHOLDER": "Anna bannerin nimi",
+        "DESCRIPTION_PLACEHOLDER": "Anna kuvaus",
+        "PROPERTIES": "Ominaisuudet",
+        "NO_PROPERTIES": "Bannereille ei ole määritetty ominaisuuksia"
+      },
+      "CONTENT_PLACE": {
+        "NEW_TITLE": "Uusi paikka",
+        "NAME_PLACEHOLDER": "Anna paikan nimi",
+        "DESCRIPTION_PLACEHOLDER": "Anna kuvaus",
+        "IMAGE": "Paikan kuva"
+      },
+      "CONTENT_FOLDER": {
+        "NEW_TITLE": "Uusi kansio",
+        "NAME_PLACEHOLDER": "Anna kansion nimi",
+        "DESCRIPTION_PLACEHOLDER": "Anna kuvaus"
+      }
+    }
+  }
+}
