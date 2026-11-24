@@ -30,6 +30,7 @@
       },
       "EMPTY_PLACEMENTS": "אין עדיין שיבוצים",
       "ADD_PLACEMENT": "הוספת שיבוץ",
+      "SHOWING_NOW": "מוצג כעת",
       "STATUS": {
         "SHOWING": "מוצג",
         "SCHEDULED": "מתוזמן",
@@ -39,16 +40,11 @@
     },
     "UNKNOWN": "לא ידוע",
     "UNLIMITED": "ללא הגבלה",
-    "STATUS": {
-      "ACTIVE": "פעיל",
-      "INACTIVE": "לא פעיל"
-    },
     "PROMOTION_STATUS": {
       "ACTIVE": "פעיל",
       "UPCOMING": "עתידי",
       "ARCHIVED": "בארכיון",
-      "DEACTIVATED": "מושבת",
-      "ALL": "הכול"
+      "DEACTIVATED": "מושבת"
     },
     "ACTIONS": {
       "ADD": "הוספה",
@@ -279,19 +275,7 @@
         "FILTERS": {
           "STATUS": "סטטוס",
           "STORE": "חנות"
-        },
-        "SAVED_FILTERS": {
-          "PLACEHOLDER": "יש לבחור מסנן",
-          "EDIT": "עריכת מסנן",
-          "NEW": "+ מסנן חדש"
         }
-      },
-      "FILTER": {
-        "NEW_TITLE": "מסנן חדש",
-        "NAME": "שם המסנן",
-        "UNNAMED": "מסנן ללא שם",
-        "ALL": "הכול",
-        "APPLY": "החלת מסנן"
       },
       "PROMOTION": {
         "TITLE": "מבצע",

@@ -30,6 +30,7 @@
       },
       "EMPTY_PLACEMENTS": "لا توجد مواضع عرض بعد",
       "ADD_PLACEMENT": "إضافة موضع عرض",
+      "SHOWING_NOW": "معروض الآن",
       "STATUS": {
         "SHOWING": "معروض",
         "SCHEDULED": "مجدول",
@@ -39,16 +40,11 @@
     },
     "UNKNOWN": "غير معروف",
     "UNLIMITED": "غير محدود",
-    "STATUS": {
-      "ACTIVE": "نشط",
-      "INACTIVE": "غير نشط"
-    },
     "PROMOTION_STATUS": {
       "ACTIVE": "نشط",
       "UPCOMING": "قادم",
       "ARCHIVED": "مؤرشف",
-      "DEACTIVATED": "معطّل",
-      "ALL": "الكل"
+      "DEACTIVATED": "معطّل"
     },
     "ACTIONS": {
       "ADD": "إضافة",
@@ -279,19 +275,7 @@
         "FILTERS": {
           "STATUS": "الحالة",
           "STORE": "المتجر"
-        },
-        "SAVED_FILTERS": {
-          "PLACEHOLDER": "اختر عامل تصفية",
-          "EDIT": "تحرير عامل التصفية",
-          "NEW": "+ عامل تصفية جديد"
         }
-      },
-      "FILTER": {
-        "NEW_TITLE": "عامل تصفية جديد",
-        "NAME": "اسم عامل التصفية",
-        "UNNAMED": "عامل تصفية بلا اسم",
-        "ALL": "الكل",
-        "APPLY": "تطبيق عامل التصفية"
       },
       "PROMOTION": {
         "TITLE": "عرض ترويجي",

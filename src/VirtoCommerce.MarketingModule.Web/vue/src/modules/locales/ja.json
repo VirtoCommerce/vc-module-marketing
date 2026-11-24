@@ -30,6 +30,7 @@
       },
       "EMPTY_PLACEMENTS": "配置はまだありません",
       "ADD_PLACEMENT": "配置を追加",
+      "SHOWING_NOW": "現在表示中",
       "STATUS": {
         "SHOWING": "表示中",
         "SCHEDULED": "予定",
@@ -39,16 +40,11 @@
     },
     "UNKNOWN": "不明",
     "UNLIMITED": "無制限",
-    "STATUS": {
-      "ACTIVE": "アクティブ",
-      "INACTIVE": "非アクティブ"
-    },
     "PROMOTION_STATUS": {
       "ACTIVE": "アクティブ",
       "UPCOMING": "予定",
       "ARCHIVED": "アーカイブ済み",
-      "DEACTIVATED": "無効化",
-      "ALL": "すべて"
+      "DEACTIVATED": "無効化"
     },
     "ACTIONS": {
       "ADD": "追加",
@@ -279,19 +275,7 @@
         "FILTERS": {
           "STATUS": "ステータス",
           "STORE": "ストア"
-        },
-        "SAVED_FILTERS": {
-          "PLACEHOLDER": "フィルターを選択",
-          "EDIT": "フィルターを編集",
-          "NEW": "+ 新しいフィルター"
         }
-      },
-      "FILTER": {
-        "NEW_TITLE": "新しいフィルター",
-        "NAME": "フィルター名",
-        "UNNAMED": "名前のないフィルター",
-        "ALL": "すべて",
-        "APPLY": "フィルターを適用"
       },
       "PROMOTION": {
         "TITLE": "プロモーション",

@@ -30,6 +30,7 @@
       },
       "EMPTY_PLACEMENTS": "Размещений пока нет",
       "ADD_PLACEMENT": "Добавить размещение",
+      "SHOWING_NOW": "Показывается сейчас",
       "STATUS": {
         "SHOWING": "Показывается",
         "SCHEDULED": "Запланировано",
@@ -39,16 +40,11 @@
     },
     "UNKNOWN": "неизвестно",
     "UNLIMITED": "Без ограничений",
-    "STATUS": {
-      "ACTIVE": "Активно",
-      "INACTIVE": "Неактивно"
-    },
     "PROMOTION_STATUS": {
       "ACTIVE": "Активная",
       "UPCOMING": "Предстоящая",
       "ARCHIVED": "Архивная",
-      "DEACTIVATED": "Деактивированная",
-      "ALL": "Все"
+      "DEACTIVATED": "Деактивированная"
     },
     "ACTIONS": {
       "ADD": "Добавить",
@@ -279,19 +275,7 @@
         "FILTERS": {
           "STATUS": "Статус",
           "STORE": "Магазин"
-        },
-        "SAVED_FILTERS": {
-          "PLACEHOLDER": "Выберите фильтр",
-          "EDIT": "Изменить фильтр",
-          "NEW": "+ Новый фильтр"
         }
-      },
-      "FILTER": {
-        "NEW_TITLE": "Новый фильтр",
-        "NAME": "Название фильтра",
-        "UNNAMED": "Фильтр без названия",
-        "ALL": "Все",
-        "APPLY": "Применить фильтр"
       },
       "PROMOTION": {
         "TITLE": "Акция",

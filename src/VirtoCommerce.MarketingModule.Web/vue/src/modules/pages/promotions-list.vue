@@ -15,6 +15,7 @@
       :total-count="totalCount"
       :pagination="pagination"
       :searchable="true"
+      search-bar
       :state-key="'MARKETING_PROMOTIONS'"
       :active-item-id="activeChildParam"
       :show-all-columns="expanded"
@@ -26,28 +27,6 @@
       @pagination-click="pagination.goToPage"
       @filter="onFilter"
     >
-      <!-- saved filters (the AngularJS filter dropdown): statuses, the user's named filters, "new filter" -->
-      <template #search-header-actions>
-        <div class="mk-saved-filter">
-          <VcSelect
-            :model-value="currentId"
-            :options="savedFilterOptions"
-            :placeholder="$t('MARKETING.PAGES.PROMOTIONS.SAVED_FILTERS.PLACEHOLDER')"
-            :aria-label="$t('MARKETING.PAGES.PROMOTIONS.SAVED_FILTERS.PLACEHOLDER')"
-            size="small"
-            @update:model-value="onSavedFilterPicked"
-          />
-          <VcButton
-            v-if="currentFilter && !currentFilter.predefined"
-            class="mk-saved-filter__edit"
-            icon="lucide-pencil"
-            variant="ghost"
-            size="sm"
-            :aria-label="$t('MARKETING.PAGES.PROMOTIONS.SAVED_FILTERS.EDIT')"
-            @click="openFilter(currentFilter.id)"
-          />
-        </div>
-      </template>
       <VcColumn
         id="name"
         :title="$t('MARKETING.PAGES.PROMOTIONS.COLUMNS.NAME')"
@@ -56,16 +35,14 @@
         always-visible
       />
       <VcColumn
-        id="isActive"
+        id="status"
         :title="$t('MARKETING.PAGES.PROMOTIONS.COLUMNS.STATUS')"
-        sortable
         always-visible
       >
+        <!-- the same status the Status filter uses; computed from the switch and the dates, so not sortable -->
         <template #body="{ data }">
           <div class="tw-inline-flex">
-            <VcStatus :variant="data.isActive ? 'success' : 'info'">{{
-              $t(data.isActive ? "MARKETING.STATUS.ACTIVE" : "MARKETING.STATUS.INACTIVE")
-            }}</VcStatus>
+            <VcStatus :variant="promotionStatusVariant(promotionStatus(data))">{{ $t(promotionStatusKey(promotionStatus(data))) }}</VcStatus>
           </div>
         </template>
       </VcColumn>
@@ -109,12 +86,12 @@ import {
   useTableSearch,
   type IBladeToolbar,
 } from "@vc-shell/framework";
-import { VcBlade, VcButton, VcColumn, VcDataTable, VcSelect, VcStatus } from "@vc-shell/framework/ui";
+import { VcBlade, VcColumn, VcDataTable, VcStatus } from "@vc-shell/framework/ui";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { MarketingModulePromotionClient, PromotionStatus, type Promotion } from "../../api_client/virtocommerce.marketing";
 import { searchStores } from "../lookups";
-import { PROMOTION_STATUSES, predefinedFilters, useSavedFilters } from "../savedFilters";
+import { PROMOTION_STATUSES, promotionStatus, promotionStatusKey, promotionStatusVariant } from "../promotionStatus";
 
 defineBlade({
   url: "/marketing",
@@ -144,7 +121,8 @@ const { sortField, sortOrder, sortExpression } = useDataTableSort({ stateKey: "M
 const { searchValue } = useTableSearch({ stateKey: "MARKETING_PROMOTIONS" });
 const pagination = useDataTablePagination({ stateKey: "MARKETING_PROMOTIONS", pageSize: PAGE_SIZE, totalCount });
 
-// status and store filters (the AngularJS predefined filters + filter blade)
+// The AngularJS predefined filters and saved-filter blade: a promotion's status (the API takes one) and its
+// stores (the API takes a list). The search bar keeps both in the blade URL and saves named views itself.
 const filters = ref<{ status?: PromotionStatus; storeIds?: string[] }>({});
 const stores = ref<{ id: string; name: string }[]>([]);
 searchStores(undefined, 0).then((r) => (stores.value = r.results));
@@ -156,7 +134,7 @@ const globalFilters = computed(() => [
     filter: {
       options: PROMOTION_STATUSES.map((s) => ({
         value: s,
-        label: t(`MARKETING.PROMOTION_STATUS.${s.toUpperCase()}`),
+        label: t(promotionStatusKey(s)),
       })),
     },
   },
@@ -176,26 +154,6 @@ function onFilter(event: { filters: Record<string, unknown> }) {
   reloadFirstPage();
 }
 
-// saved filters: the panel's values win over the saved filter's
-const { filters: savedFilters, currentId, find } = useSavedFilters();
-const NEW_FILTER = "__new";
-const currentFilter = computed(() => find(currentId.value));
-const savedFilterOptions = computed(() => [
-  ...predefinedFilters().map((f) => ({ id: f.id, title: t(`MARKETING.PROMOTION_STATUS.${f.name.toUpperCase()}`) })),
-  ...savedFilters.value.map((f) => ({ id: f.id, title: f.name })),
-  { id: NEW_FILTER, title: t("MARKETING.PAGES.PROMOTIONS.SAVED_FILTERS.NEW") },
-]);
-
-function onSavedFilterPicked(id: unknown) {
-  if (id === NEW_FILTER) return openFilter();
-  currentId.value = (id as string) || undefined;
-  reloadFirstPage();
-}
-
-function openFilter(filterId?: string) {
-  openBlade({ name: "MarketingPromotionFilter", options: { filterId } });
-}
-
 function reloadFirstPage() {
   if (pagination.skip) pagination.setPage(1);
   else load();
@@ -204,8 +162,7 @@ function reloadFirstPage() {
 const search = useLatestRequest();
 const { loading: listLoading, action: load } = useAsync(async () => {
   const client = await getApiClient();
-  const status = filters.value.status ?? currentFilter.value?.status;
-  const storeIds = filters.value.storeIds?.length ? filters.value.storeIds : currentFilter.value?.storeIds;
+  const { status, storeIds } = filters.value;
   const result = await search.latest(
     client.promotionsSearch({
       keyword: searchValue.value || undefined,
@@ -295,15 +252,3 @@ const bladeToolbar = ref<IBladeToolbar[]>([
 
 exposeToChildren({ reload: () => load(), reloadFirstPage, clone: (promotion: Promotion) => openDetails(undefined, promotion) });
 </script>
-
-<style lang="scss">
-.mk-saved-filter {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-
-  .vc-select {
-    width: 200px;
-  }
-}
-</style>
