@@ -40,10 +40,6 @@
     },
     "UNKNOWN": "不明",
     "UNLIMITED": "無制限",
-    "STATUS": {
-      "ACTIVE": "アクティブ",
-      "INACTIVE": "非アクティブ"
-    },
     "PROMOTION_STATUS": {
       "ACTIVE": "アクティブ",
       "UPCOMING": "予定",

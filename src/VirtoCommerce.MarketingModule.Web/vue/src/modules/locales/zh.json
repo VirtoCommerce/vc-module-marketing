@@ -40,10 +40,6 @@
     },
     "UNKNOWN": "未知",
     "UNLIMITED": "不限",
-    "STATUS": {
-      "ACTIVE": "活动",
-      "INACTIVE": "非活动"
-    },
     "PROMOTION_STATUS": {
       "ACTIVE": "活动",
       "UPCOMING": "即将开始",

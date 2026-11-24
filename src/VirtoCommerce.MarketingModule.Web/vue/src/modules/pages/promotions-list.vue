@@ -35,16 +35,14 @@
         always-visible
       />
       <VcColumn
-        id="isActive"
+        id="status"
         :title="$t('MARKETING.PAGES.PROMOTIONS.COLUMNS.STATUS')"
-        sortable
         always-visible
       >
+        <!-- the same status the Status filter uses; computed from the switch and the dates, so not sortable -->
         <template #body="{ data }">
           <div class="tw-inline-flex">
-            <VcStatus :variant="data.isActive ? 'success' : 'info'">{{
-              $t(data.isActive ? "MARKETING.STATUS.ACTIVE" : "MARKETING.STATUS.INACTIVE")
-            }}</VcStatus>
+            <VcStatus :variant="promotionStatusVariant(promotionStatus(data))">{{ $t(promotionStatusKey(promotionStatus(data))) }}</VcStatus>
           </div>
         </template>
       </VcColumn>
@@ -93,6 +91,7 @@ import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { MarketingModulePromotionClient, PromotionStatus, type Promotion } from "../../api_client/virtocommerce.marketing";
 import { searchStores } from "../lookups";
+import { PROMOTION_STATUSES, promotionStatus, promotionStatusKey, promotionStatusVariant } from "../promotionStatus";
 
 defineBlade({
   url: "/marketing",
@@ -124,7 +123,6 @@ const pagination = useDataTablePagination({ stateKey: "MARKETING_PROMOTIONS", pa
 
 // The AngularJS predefined filters and saved-filter blade: a promotion's status (the API takes one) and its
 // stores (the API takes a list). The search bar keeps both in the blade URL and saves named views itself.
-const PROMOTION_STATUSES = [PromotionStatus.Active, PromotionStatus.Upcoming, PromotionStatus.Archived, PromotionStatus.Deactivated];
 const filters = ref<{ status?: PromotionStatus; storeIds?: string[] }>({});
 const stores = ref<{ id: string; name: string }[]>([]);
 searchStores(undefined, 0).then((r) => (stores.value = r.results));
@@ -136,7 +134,7 @@ const globalFilters = computed(() => [
     filter: {
       options: PROMOTION_STATUSES.map((s) => ({
         value: s,
-        label: t(`MARKETING.PROMOTION_STATUS.${s.toUpperCase()}`),
+        label: t(promotionStatusKey(s)),
       })),
     },
   },

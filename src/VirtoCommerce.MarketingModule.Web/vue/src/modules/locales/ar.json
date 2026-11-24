@@ -40,10 +40,6 @@
     },
     "UNKNOWN": "غير معروف",
     "UNLIMITED": "غير محدود",
-    "STATUS": {
-      "ACTIVE": "نشط",
-      "INACTIVE": "غير نشط"
-    },
     "PROMOTION_STATUS": {
       "ACTIVE": "نشط",
       "UPCOMING": "قادم",

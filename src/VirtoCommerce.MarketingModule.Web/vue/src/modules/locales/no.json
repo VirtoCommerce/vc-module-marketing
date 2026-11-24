@@ -40,10 +40,6 @@
     },
     "UNKNOWN": "ukjent",
     "UNLIMITED": "Ubegrenset",
-    "STATUS": {
-      "ACTIVE": "Aktiv",
-      "INACTIVE": "Inaktiv"
-    },
     "PROMOTION_STATUS": {
       "ACTIVE": "Aktiv",
       "UPCOMING": "Kommende",

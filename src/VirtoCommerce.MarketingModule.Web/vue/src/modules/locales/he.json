@@ -40,10 +40,6 @@
     },
     "UNKNOWN": "לא ידוע",
     "UNLIMITED": "ללא הגבלה",
-    "STATUS": {
-      "ACTIVE": "פעיל",
-      "INACTIVE": "לא פעיל"
-    },
     "PROMOTION_STATUS": {
       "ACTIVE": "פעיל",
       "UPCOMING": "עתידי",

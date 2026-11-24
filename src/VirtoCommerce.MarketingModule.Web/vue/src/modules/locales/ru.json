@@ -40,10 +40,6 @@
     },
     "UNKNOWN": "неизвестно",
     "UNLIMITED": "Без ограничений",
-    "STATUS": {
-      "ACTIVE": "Активно",
-      "INACTIVE": "Неактивно"
-    },
     "PROMOTION_STATUS": {
       "ACTIVE": "Активная",
       "UPCOMING": "Предстоящая",

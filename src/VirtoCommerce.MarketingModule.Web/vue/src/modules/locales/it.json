@@ -40,10 +40,6 @@
     },
     "UNKNOWN": "sconosciuto",
     "UNLIMITED": "Illimitato",
-    "STATUS": {
-      "ACTIVE": "Attivo",
-      "INACTIVE": "Inattivo"
-    },
     "PROMOTION_STATUS": {
       "ACTIVE": "Attiva",
       "UPCOMING": "In arrivo",
