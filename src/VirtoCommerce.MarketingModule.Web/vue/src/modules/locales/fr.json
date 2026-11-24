@@ -30,6 +30,7 @@
       },
       "EMPTY_PLACEMENTS": "Aucun placement pour le moment",
       "ADD_PLACEMENT": "Ajouter un placement",
+      "SHOWING_NOW": "Affiché maintenant",
       "STATUS": {
         "SHOWING": "Affiché",
         "SCHEDULED": "Planifié",
@@ -39,16 +40,11 @@
     },
     "UNKNOWN": "inconnu",
     "UNLIMITED": "Illimité",
-    "STATUS": {
-      "ACTIVE": "Actif",
-      "INACTIVE": "Inactif"
-    },
     "PROMOTION_STATUS": {
       "ACTIVE": "Active",
       "UPCOMING": "À venir",
       "ARCHIVED": "Archivée",
-      "DEACTIVATED": "Désactivée",
-      "ALL": "Toutes"
+      "DEACTIVATED": "Désactivée"
     },
     "ACTIONS": {
       "ADD": "Ajouter",
@@ -279,19 +275,7 @@
         "FILTERS": {
           "STATUS": "Statut",
           "STORE": "Magasin"
-        },
-        "SAVED_FILTERS": {
-          "PLACEHOLDER": "Sélectionnez un filtre",
-          "EDIT": "Modifier le filtre",
-          "NEW": "+ Nouveau filtre"
         }
-      },
-      "FILTER": {
-        "NEW_TITLE": "Nouveau filtre",
-        "NAME": "Nom du filtre",
-        "UNNAMED": "Filtre sans nom",
-        "ALL": "Tous",
-        "APPLY": "Appliquer le filtre"
       },
       "PROMOTION": {
         "TITLE": "Promotion",
