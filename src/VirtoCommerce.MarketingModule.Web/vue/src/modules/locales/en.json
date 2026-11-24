@@ -30,6 +30,7 @@
       },
       "EMPTY_PLACEMENTS": "No placements yet",
       "ADD_PLACEMENT": "Add placement",
+      "SHOWING_NOW": "Showing now",
       "STATUS": {
         "SHOWING": "Showing",
         "SCHEDULED": "Scheduled",
@@ -47,8 +48,7 @@
       "ACTIVE": "Active",
       "UPCOMING": "Upcoming",
       "ARCHIVED": "Archived",
-      "DEACTIVATED": "Deactivated",
-      "ALL": "All"
+      "DEACTIVATED": "Deactivated"
     },
     "ACTIONS": {
       "ADD": "Add",
@@ -279,19 +279,7 @@
         "FILTERS": {
           "STATUS": "Status",
           "STORE": "Store"
-        },
-        "SAVED_FILTERS": {
-          "PLACEHOLDER": "Select filter",
-          "EDIT": "Edit filter",
-          "NEW": "+ New filter"
         }
-      },
-      "FILTER": {
-        "NEW_TITLE": "New filter",
-        "NAME": "Filter name",
-        "UNNAMED": "Unnamed filter",
-        "ALL": "All",
-        "APPLY": "Apply filter"
       },
       "PROMOTION": {
         "TITLE": "Promotion",

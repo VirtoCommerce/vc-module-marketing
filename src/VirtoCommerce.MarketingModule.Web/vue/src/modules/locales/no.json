@@ -30,6 +30,7 @@
       },
       "EMPTY_PLACEMENTS": "Ingen plasseringer ennå",
       "ADD_PLACEMENT": "Legg til plassering",
+      "SHOWING_NOW": "Vises nå",
       "STATUS": {
         "SHOWING": "Vises",
         "SCHEDULED": "Planlagt",
@@ -47,8 +48,7 @@
       "ACTIVE": "Aktiv",
       "UPCOMING": "Kommende",
       "ARCHIVED": "Arkivert",
-      "DEACTIVATED": "Deaktivert",
-      "ALL": "Alle"
+      "DEACTIVATED": "Deaktivert"
     },
     "ACTIONS": {
       "ADD": "Legg til",
@@ -279,19 +279,7 @@
         "FILTERS": {
           "STATUS": "Status",
           "STORE": "Butikk"
-        },
-        "SAVED_FILTERS": {
-          "PLACEHOLDER": "Velg filter",
-          "EDIT": "Rediger filter",
-          "NEW": "+ Nytt filter"
         }
-      },
-      "FILTER": {
-        "NEW_TITLE": "Nytt filter",
-        "NAME": "Filternavn",
-        "UNNAMED": "Filter uten navn",
-        "ALL": "Alle",
-        "APPLY": "Bruk filter"
       },
       "PROMOTION": {
         "TITLE": "Kampanje",

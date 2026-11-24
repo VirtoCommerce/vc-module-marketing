@@ -30,6 +30,7 @@
       },
       "EMPTY_PLACEMENTS": "Nie ma jeszcze emisji",
       "ADD_PLACEMENT": "Dodaj emisję",
+      "SHOWING_NOW": "Wyświetlane teraz",
       "STATUS": {
         "SHOWING": "Wyświetlana",
         "SCHEDULED": "Zaplanowana",
@@ -47,8 +48,7 @@
       "ACTIVE": "Aktywna",
       "UPCOMING": "Nadchodząca",
       "ARCHIVED": "Zarchiwizowana",
-      "DEACTIVATED": "Dezaktywowana",
-      "ALL": "Wszystkie"
+      "DEACTIVATED": "Dezaktywowana"
     },
     "ACTIONS": {
       "ADD": "Dodaj",
@@ -279,19 +279,7 @@
         "FILTERS": {
           "STATUS": "Status",
           "STORE": "Sklep"
-        },
-        "SAVED_FILTERS": {
-          "PLACEHOLDER": "Wybierz filtr",
-          "EDIT": "Edytuj filtr",
-          "NEW": "+ Nowy filtr"
         }
-      },
-      "FILTER": {
-        "NEW_TITLE": "Nowy filtr",
-        "NAME": "Nazwa filtra",
-        "UNNAMED": "Filtr bez nazwy",
-        "ALL": "Wszystkie",
-        "APPLY": "Zastosuj filtr"
       },
       "PROMOTION": {
         "TITLE": "Promocja",

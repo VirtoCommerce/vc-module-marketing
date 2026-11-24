@@ -117,10 +117,14 @@
       :total-count="totalCount"
       :pagination="pagination"
       :searchable="true"
+      search-bar
+      :state-key="'MARKETING_PLACEMENTS'"
+      :global-filters="placementFilters"
       :active-item-id="activeChildParam"
       :empty-state="{ icon: 'lucide-calendar-range', title: $t('MARKETING.LIBRARY.EMPTY_PLACEMENTS') }"
       @row-click="(e: { data: DynamicContentPublication }) => openDetails(e.data.id)"
       @pagination-click="pagination.goToPage"
+      @filter="onPlacementFilter"
     >
       <VcColumn
         id="name"
@@ -158,7 +162,17 @@
 </template>
 
 <script setup lang="ts">
-import { useApiClient, useAsync, useBlade, useDataTablePagination, useFunctions, useLatestRequest, useLoading, type IBladeToolbar } from "@vc-shell/framework";
+import {
+  useApiClient,
+  useAsync,
+  useBlade,
+  useDataTablePagination,
+  useFunctions,
+  useLatestRequest,
+  useLoading,
+  type GlobalFilterConfig,
+  type IBladeToolbar,
+} from "@vc-shell/framework";
 import { VcBlade, VcColumn, VcDataTable, VcImage, VcInput, VcPagination, VcStatus } from "@vc-shell/framework/ui";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -169,6 +183,7 @@ import {
   type DynamicContentPublication,
 } from "../../api_client/virtocommerce.marketing";
 import { imageOf } from "../banners";
+import { searchStores } from "../lookups";
 
 // Banners: the content items as cards, the content places ("slots") and the publications ("placements": a banner in a
 // slot on a site, for a time and an audience) as rows; details open the existing blades
@@ -201,12 +216,45 @@ const placements = ref<DynamicContentPublication[]>([]);
 const totalCount = ref(0);
 const pagination = useDataTablePagination({ pageSize: PAGE_SIZE, totalCount });
 
+// Placements: the site (the API takes one) and "showing now", the storefront's own rule (switched on, and today
+// within the dates), so a marketer sees what a site shows without opening every placement
+const placementFilter = ref<{ store?: string; showingNow?: boolean }>({});
+const stores = ref<{ id: string; name: string }[]>([]);
+// the search bar takes toggle fields, which vc-shell 2.13 does not yet type in GlobalFilterConfig
+const placementFilters = computed(
+  () =>
+    [
+      {
+        id: "store",
+        label: t("MARKETING.LIBRARY.COLUMNS.SITE"),
+        filter: { options: stores.value.map((s) => ({ value: s.id, label: s.name })) },
+      },
+      { id: "showingNow", label: t("MARKETING.LIBRARY.SHOWING_NOW"), filter: { toggle: true } },
+    ] as unknown as GlobalFilterConfig[],
+);
+
+function onPlacementFilter(event: { filters: Record<string, unknown> }) {
+  placementFilter.value = {
+    store: (event.filters.store as string) || undefined,
+    showingNow: event.filters.showingNow === true || undefined,
+  };
+}
+
 const search = useLatestRequest();
 const { loading: listLoading, action: load } = useAsync(async () => {
   const client = await getApiClient();
   const criteria = { keyword: keyword.value || undefined, skip: pagination.skip, take: PAGE_SIZE };
   if (tab.value === "placements") {
-    const placed = await search.latest(client.dynamicContentPublicationsSearch({ ...criteria, sort: "name" }));
+    const { store, showingNow } = placementFilter.value;
+    const placed = await search.latest(
+      client.dynamicContentPublicationsSearch({
+        ...criteria,
+        sort: "name",
+        store,
+        onlyActive: showingNow,
+        toDate: showingNow ? new Date() : undefined,
+      }),
+    );
     if (!placed) return;
     placements.value = placed.results ?? [];
     totalCount.value = placed.totalCount ?? 0;
@@ -255,13 +303,16 @@ const cardMeta = (item: DynamicContentItem) =>
 
 load();
 loadUsage();
-watch(tab, () => {
+watch(tab, (value) => {
   rows.value = [];
   placements.value = [];
   keyword.value = "";
+  placementFilter.value = {};
+  // the site filter's options, once the placements tab is first opened
+  if (value === "placements" && !stores.value.length) searchStores(undefined, 0).then((r) => (stores.value = r.results));
 });
-watch([tab, keyword], () => pagination.setPage(1));
-watch([tab, keyword, () => pagination.skip], debounce(load, 300));
+watch([tab, keyword, placementFilter], () => pagination.setPage(1));
+watch([tab, keyword, placementFilter, () => pagination.skip], debounce(load, 300));
 
 // new entries go to the root folder, as from the folder browser's root
 function openDetails(id?: string) {

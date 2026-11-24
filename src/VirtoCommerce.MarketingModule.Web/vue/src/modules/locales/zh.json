@@ -30,6 +30,7 @@
       },
       "EMPTY_PLACEMENTS": "暂无投放",
       "ADD_PLACEMENT": "添加投放",
+      "SHOWING_NOW": "当前展示",
       "STATUS": {
         "SHOWING": "展示中",
         "SCHEDULED": "已计划",
@@ -47,8 +48,7 @@
       "ACTIVE": "活动",
       "UPCOMING": "即将开始",
       "ARCHIVED": "已归档",
-      "DEACTIVATED": "已停用",
-      "ALL": "全部"
+      "DEACTIVATED": "已停用"
     },
     "ACTIONS": {
       "ADD": "添加",
@@ -279,19 +279,7 @@
         "FILTERS": {
           "STATUS": "状态",
           "STORE": "商店"
-        },
-        "SAVED_FILTERS": {
-          "PLACEHOLDER": "选择筛选器",
-          "EDIT": "编辑筛选器",
-          "NEW": "+ 新建筛选器"
         }
-      },
-      "FILTER": {
-        "NEW_TITLE": "新建筛选器",
-        "NAME": "筛选器名称",
-        "UNNAMED": "未命名筛选器",
-        "ALL": "全部",
-        "APPLY": "应用筛选器"
       },
       "PROMOTION": {
         "TITLE": "促销",

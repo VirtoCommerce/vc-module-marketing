@@ -30,6 +30,7 @@
       },
       "EMPTY_PLACEMENTS": "Ainda não há posicionamentos",
       "ADD_PLACEMENT": "Adicionar posicionamento",
+      "SHOWING_NOW": "Exibindo agora",
       "STATUS": {
         "SHOWING": "Em exibição",
         "SCHEDULED": "Agendado",
@@ -47,8 +48,7 @@
       "ACTIVE": "Ativa",
       "UPCOMING": "Próxima",
       "ARCHIVED": "Arquivada",
-      "DEACTIVATED": "Desativada",
-      "ALL": "Todas"
+      "DEACTIVATED": "Desativada"
     },
     "ACTIONS": {
       "ADD": "Adicionar",
@@ -279,19 +279,7 @@
         "FILTERS": {
           "STATUS": "Status",
           "STORE": "Loja"
-        },
-        "SAVED_FILTERS": {
-          "PLACEHOLDER": "Selecione um filtro",
-          "EDIT": "Editar filtro",
-          "NEW": "+ Novo filtro"
         }
-      },
-      "FILTER": {
-        "NEW_TITLE": "Novo filtro",
-        "NAME": "Nome do filtro",
-        "UNNAMED": "Filtro sem nome",
-        "ALL": "Todos",
-        "APPLY": "Aplicar filtro"
       },
       "PROMOTION": {
         "TITLE": "Promoção",

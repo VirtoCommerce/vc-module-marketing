@@ -1,6 +1,5 @@
 export { default as MarketingPromotions } from "./promotions-list.vue";
 export { default as MarketingPromotionDetails } from "./promotion-details.vue";
-export { default as MarketingPromotionFilter } from "./promotion-filter.vue";
 export { default as MarketingCoupons } from "./coupons.vue";
 export { default as MarketingCouponDetails } from "./coupon-details.vue";
 export { default as MarketingCouponImport } from "./coupon-import.vue";

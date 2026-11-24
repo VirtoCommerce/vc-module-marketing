@@ -30,6 +30,7 @@
       },
       "EMPTY_PLACEMENTS": "Inga placeringar ännu",
       "ADD_PLACEMENT": "Lägg till placering",
+      "SHOWING_NOW": "Visas nu",
       "STATUS": {
         "SHOWING": "Visas",
         "SCHEDULED": "Schemalagd",
@@ -47,8 +48,7 @@
       "ACTIVE": "Aktiv",
       "UPCOMING": "Kommande",
       "ARCHIVED": "Arkiverad",
-      "DEACTIVATED": "Inaktiverad",
-      "ALL": "Alla"
+      "DEACTIVATED": "Inaktiverad"
     },
     "ACTIONS": {
       "ADD": "Lägg till",
@@ -279,19 +279,7 @@
         "FILTERS": {
           "STATUS": "Status",
           "STORE": "Butik"
-        },
-        "SAVED_FILTERS": {
-          "PLACEHOLDER": "Välj filter",
-          "EDIT": "Redigera filter",
-          "NEW": "+ Nytt filter"
         }
-      },
-      "FILTER": {
-        "NEW_TITLE": "Nytt filter",
-        "NAME": "Filternamn",
-        "UNNAMED": "Namnlöst filter",
-        "ALL": "Alla",
-        "APPLY": "Använd filter"
       },
       "PROMOTION": {
         "TITLE": "Kampanj",

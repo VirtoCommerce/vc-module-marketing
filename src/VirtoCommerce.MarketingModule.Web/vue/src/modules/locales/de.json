@@ -30,6 +30,7 @@
       },
       "EMPTY_PLACEMENTS": "Noch keine Platzierungen",
       "ADD_PLACEMENT": "Platzierung hinzufügen",
+      "SHOWING_NOW": "Jetzt sichtbar",
       "STATUS": {
         "SHOWING": "Wird angezeigt",
         "SCHEDULED": "Geplant",
@@ -47,8 +48,7 @@
       "ACTIVE": "Aktiv",
       "UPCOMING": "Bevorstehend",
       "ARCHIVED": "Archiviert",
-      "DEACTIVATED": "Deaktiviert",
-      "ALL": "Alle"
+      "DEACTIVATED": "Deaktiviert"
     },
     "ACTIONS": {
       "ADD": "Hinzufügen",
@@ -279,19 +279,7 @@
         "FILTERS": {
           "STATUS": "Status",
           "STORE": "Geschäft"
-        },
-        "SAVED_FILTERS": {
-          "PLACEHOLDER": "Filter auswählen",
-          "EDIT": "Filter bearbeiten",
-          "NEW": "+ Neuer Filter"
         }
-      },
-      "FILTER": {
-        "NEW_TITLE": "Neuer Filter",
-        "NAME": "Filtername",
-        "UNNAMED": "Unbenannter Filter",
-        "ALL": "Alle",
-        "APPLY": "Filter anwenden"
       },
       "PROMOTION": {
         "TITLE": "Promotion",

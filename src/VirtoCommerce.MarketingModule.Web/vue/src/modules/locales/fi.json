@@ -30,6 +30,7 @@
       },
       "EMPTY_PLACEMENTS": "Ei vielä sijoitteluja",
       "ADD_PLACEMENT": "Lisää sijoittelu",
+      "SHOWING_NOW": "Näkyy nyt",
       "STATUS": {
         "SHOWING": "Näkyvissä",
         "SCHEDULED": "Ajastettu",
@@ -47,8 +48,7 @@
       "ACTIVE": "Aktiivinen",
       "UPCOMING": "Tulossa",
       "ARCHIVED": "Arkistoitu",
-      "DEACTIVATED": "Poistettu käytöstä",
-      "ALL": "Kaikki"
+      "DEACTIVATED": "Poistettu käytöstä"
     },
     "ACTIONS": {
       "ADD": "Lisää",
@@ -279,19 +279,7 @@
         "FILTERS": {
           "STATUS": "Tila",
           "STORE": "Kauppa"
-        },
-        "SAVED_FILTERS": {
-          "PLACEHOLDER": "Valitse suodatin",
-          "EDIT": "Muokkaa suodatinta",
-          "NEW": "+ Uusi suodatin"
         }
-      },
-      "FILTER": {
-        "NEW_TITLE": "Uusi suodatin",
-        "NAME": "Suodattimen nimi",
-        "UNNAMED": "Nimetön suodatin",
-        "ALL": "Kaikki",
-        "APPLY": "Käytä suodatinta"
       },
       "PROMOTION": {
         "TITLE": "Kampanja",
